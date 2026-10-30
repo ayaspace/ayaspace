@@ -2876,4 +2876,60 @@
         }
     </script>
 </body>
+    <!-- =========================================================================
+         УМНОЕ ОКНО УСТАНОВКИ ЯРЛЫКА НА ЭКРАН ТЕЛЕФОНА (ПРИ ПЕРВОМ ВХОДЕ)
+         Само определяет iPhone или Android и скрывается, если ярлык уже установлен
+         ========================================================================= -->
+    <div id="pwa-install-banner" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xl flex items-end sm:items-center justify-center p-4">
+        <div class="obsidian-matte w-full max-w-md rounded-[32px] p-6 space-y-4 border border-amberGlow/40 shadow-2xl mb-2">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border border-white/25"
+                         style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 50%, #9E3304 100%);">
+                        <svg viewBox="0 0 100 100" class="w-7 h-7" fill="none">
+                            <path fill="#FFFFFF" d="M 50 6 C 52 9.5, 52 12, 50 15 C 48 12, 48 9.5, 50 6 Z"/>
+                            <path fill="#FFFFFF" d="M 50 14 C 33 25, 18 41, 18 59 C 18 77, 33 89, 52 89 C 64 89, 73 82, 77 72 C 70 78, 59 80, 49 76 C 35 70, 30 55, 36 42 C 41 30, 55 25, 68 32 C 73 35, 77 39, 79 44 C 76 31, 63 22, 50 14 Z"/>
+                            <path fill="#FFFFFF" d="M 61 45 Q 61 56 72 56 Q 61 56 61 67 Q 61 56 50 56 Q 61 56 61 45 Z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-white">Добавьте AyaSpace на телефон</h3>
+                        <p class="text-xs text-orange-200/80 font-body">Чтобы открывать в 1 касание без браузера</p>
+                    </div>
+                </div>
+                <button onclick="dismissInstallBanner()" class="p-2 rounded-full bg-white/10 text-white/70 hover:text-white">
+                    ✕
+                </button>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2.5 text-xs text-white/90 font-body leading-relaxed">
+                <p><strong>На iPhone (Safari):</strong> нажмите внизу кнопку <strong>«Поделиться»</strong> (квадратик со стрелкой вверх ↑) и выберите <strong>«На экран "Домой"»</strong>.</p>
+                <p class="pt-2 border-t border-white/10"><strong>На Android (Chrome):</strong> нажмите на три точки <strong>⋮</strong> в углу и выберите <strong>«Добавить на главный экран»</strong>.</p>
+            </div>
+
+            <button onclick="dismissInstallBanner()" class="spring-interactive w-full py-3.5 rounded-2xl bg-gradient-to-r from-amberDeep via-amberCore to-amberGlow text-white font-bold text-xs uppercase tracking-wider shadow-lg">
+                Понятно, сейчас добавлю
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Проверяем, не открыто ли приложение УЖЕ с рабочего стола телефона
+            const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+            const isDismissed = localStorage.getItem('aya_install_prompt_seen') === 'true';
+
+            if (!isStandalone && !isDismissed) {
+                setTimeout(() => {
+                    const banner = document.getElementById('pwa-install-banner');
+                    if (banner) banner.classList.remove('hidden');
+                }, 1500);
+            }
+        })();
+
+        function dismissInstallBanner() {
+            localStorage.setItem('aya_install_prompt_seen', 'true');
+            document.getElementById('pwa-install-banner').classList.add('hidden');
+        }
+    </script>
 </html>
