@@ -73,8 +73,7 @@
         }
 
         /* =====================================================================
-           РИФЛЕНЫЙ СТЕКЛЯННЫЙ ФОН (FLUTED GLASS SYNERGYPOINT + ПЛАВНОЕ СВЕЧЕНИЕ)
-           Оптимизировано через GPU translate3d (0% нагрузки на телефон)
+           НАСТОЯЩЕЕ 3D РИФЛЕНОЕ СТЕКЛО (REEDED GLASS + ОГНЕННЫЕ КАУСТИЧЕСКИЕ ВОЛНЫ)
            ===================================================================== */
         .afterglow-stage {
             position: fixed;
@@ -82,48 +81,68 @@
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
-            background: radial-gradient(circle at 50% 0%, #1A0B04 0%, #0A0A0C 75%);
+            background-color: #060100;
         }
 
-        .aurora-flow {
+        /* Огненное полотно с S-образными черными тенями позади стекла */
+        .caustic-waves-canvas {
             position: absolute;
-            inset: -20%;
-            background:
-                radial-gradient(circle at 25% 20%, rgba(255, 122, 41, 0.38) 0%, rgba(200, 75, 17, 0.16) 38%, transparent 68%),
-                radial-gradient(circle at 80% 45%, rgba(230, 92, 25, 0.28) 0%, rgba(16, 185, 129, 0.08) 42%, transparent 70%),
-                radial-gradient(circle at 40% 80%, rgba(255, 122, 41, 0.22) 0%, rgba(59, 130, 246, 0.07) 48%, transparent 72%);
-            filter: blur(65px);
+            inset: -12%;
+            width: 124%;
+            height: 124%;
             will-change: transform;
-            animation: slowAuroraDrift 22s ease-in-out infinite alternate;
+            animation: causticSlowFlow 18s ease-in-out infinite alternate;
         }
 
-        @keyframes slowAuroraDrift {
-            0% { transform: translate3d(-2%, -1%, 0) scale(1); }
-            50% { transform: translate3d(2%, 2%, 0) scale(1.04); }
-            100% { transform: translate3d(-1%, 3%, 0) scale(0.98); }
+        @keyframes causticSlowFlow {
+            0% { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
+            50% { transform: translate3d(2%, 1.5%, 0) scale(1.05) rotate(1.2deg); }
+            100% { transform: translate3d(-1%, 2.5%, 0) scale(1.02) rotate(-1deg); }
         }
 
-        /* Вертикальные стеклянные грани (как на референсе Synergypoint) */
-        .fluted-glass-ribbing {
+        /* Слой 1: Физическое размытие и насыщение сквозь толщу стекла */
+        .fluted-glass-refraction {
             position: absolute;
             inset: 0;
-            backgroundImage: repeating-linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0.022) 0px,
-                rgba(255, 255, 255, 0.022) 1px,
-                rgba(0, 0, 0, 0.18) 1px,
-                rgba(0, 0, 0, 0.0) 14px,
-                rgba(255, 122, 41, 0.015) 28px
-            );
+            backdrop-filter: blur(18px) saturate(165%) contrast(115%);
+            -webkit-backdrop-filter: blur(18px) saturate(165%) contrast(115%);
+        }
+
+        /* Слой 2: Объемные 3D-цилиндры рифленого стекла (свет -> линза -> глубокая тень -> острый блик грани) */
+        .fluted-glass-rods {
+            position: absolute;
+            inset: 0;
             background-image: repeating-linear-gradient(
                 90deg,
-                rgba(255, 255, 255, 0.024) 0px,
-                rgba(255, 255, 255, 0.024) 1px,
-                rgba(0, 0, 0, 0.22) 2px,
-                transparent 16px,
-                rgba(255, 140, 66, 0.014) 30px
+                /* Тонкий яркий стеклянный блик на левом ребре грани */
+                rgba(255, 235, 210, 0.24) 0px,
+                rgba(255, 180, 120, 0.14) 1px,
+                /* Выпуклая светлая часть стеклянного цилиндра */
+                rgba(255, 130, 50, 0.06) 4px,
+                rgba(255, 255, 255, 0.0) 12px,
+                /* Уход цилиндра в глубокую темную впадину справа */
+                rgba(15, 3, 0, 0.28) 20px,
+                rgba(5, 1, 0, 0.68) 28px,
+                /* Стык (шов) между стеклянными трубками */
+                rgba(0, 0, 0, 0.88) 30px,
+                rgba(255, 200, 150, 0.08) 31px
             );
-            opacity: 0.85;
+            mix-blend-mode: hard-light;
+        }
+
+        /* Слой 3: Дополнительный зеркальный микро-блик ребер (Specular Rim) */
+        .fluted-glass-specular {
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.16) 0px,
+                rgba(255, 255, 255, 0.0) 2px,
+                rgba(0, 0, 0, 0.0) 24px,
+                rgba(0, 0, 0, 0.45) 30px,
+                rgba(255, 255, 255, 0.12) 31px
+            );
+            opacity: 0.9;
         }
 
         /* Премиальный Apple Glassmorphism */
@@ -303,12 +322,53 @@
         ::-webkit-scrollbar-thumb { background: rgba(230, 92, 25, 0.5); border-radius: 9999px; }
     </style>
 </head>
-<body class="selection:bg-amberCore selection:text-white">
-
-    <!-- Рифленый стеклянный фон (Synergypoint Fluted Glass) + плавное свечение -->
+<!-- Настоящий 3D рифленый стеклянный фон как на референсе -->
     <div class="afterglow-stage">
-        <div class="aurora-flow"></div>
-        <div class="fluted-glass-ribbing"></div>
+        <!-- Огненные волны и черные каустические S-изгибы за стеклом -->
+        <svg class="caustic-waves-canvas" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="heavyCausticBlur" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="55" />
+                </filter>
+                <linearGradient id="fireCore" x1="0%" y1="15%" x2="85%" y2="85%">
+                    <stop offset="0%" stop-color="#FF9A3C" />
+                    <stop offset="35%" stop-color="#FF5500" />
+                    <stop offset="70%" stop-color="#B82900" />
+                    <stop offset="100%" stop-color="#080200" />
+                </linearGradient>
+                <linearGradient id="hotGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FFB86C" />
+                    <stop offset="50%" stop-color="#FF6200" />
+                    <stop offset="100%" stop-color="#3D0A00" />
+                </linearGradient>
+            </defs>
+
+            <!-- Глубокая темная подложка -->
+            <rect width="1000" height="1000" fill="#070200" />
+
+            <g filter="url(#heavyCausticBlur)">
+                <!-- Главная диагональная огненная волна слева сверху в центр и низ -->
+                <path d="M-150,-100 C250,-50 450,250 850,450 C950,650 750,1050 200,1100 L-150,1100 Z" fill="url(#fireCore)" />
+
+                <!-- Яркое раскаленное ядро слева и внизу по центру -->
+                <ellipse cx="180" cy="450" rx="340" ry="420" fill="url(#hotGold)" opacity="0.95" />
+                <ellipse cx="480" cy="720" rx="380" ry="290" fill="#FF5E00" opacity="0.85" />
+
+                <!-- Черные контрастные S-образные волны теней (как в левом нижнем и правом углу референса) -->
+                <path d="M-100,520 C120,380 280,680 420,980 L260,1100 C150,820 40,580 -100,680 Z" fill="#050100" />
+                <path d="M-120,760 C140,620 480,740 620,1080 L-120,1100 Z" fill="#080200" opacity="0.92" />
+                <path d="M450,-100 C650,120 520,420 1050,620 L1050,-100 Z" fill="#050100" opacity="0.95" />
+                <path d="M480,880 C720,780 900,720 1080,680 L1080,1050 L420,1050 Z" fill="#040100" />
+
+                <!-- Повторный огненный отсвет в самом низу слева -->
+                <ellipse cx="290" cy="940" rx="240" ry="130" fill="#FF7714" opacity="0.9" />
+            </g>
+        </svg>
+
+        <!-- Физические 3D-грани рифленого стекла поверх огня -->
+        <div class="fluted-glass-refraction"></div>
+        <div class="fluted-glass-rods"></div>
+        <div class="fluted-glass-specular"></div>
     </div>
 
     <!-- =========================================================================
