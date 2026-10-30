@@ -575,47 +575,30 @@
     <!-- =========================================================================
          ШАПКА ПРИЛОЖЕНИЯ AYASPACE
          ========================================================================= -->
-    <header class="relative z-10 max-w-xl mx-auto px-4 pt-1 pb-2 flex items-center justify-between">
-        <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 rounded-2xl obsidian-matte flex items-center justify-center relative border border-white/15 shadow-lg shrink-0">
+    <!-- Авторский логотип AyaSpace: Купол-Полумесяц на оранжевом градиенте -->
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center relative border border-white/25 shadow-lg shrink-0"
+                 style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 50%, #9E3304 100%); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 8px 20px rgba(230,92,25,0.35);">
                 <svg viewBox="0 0 100 100" class="w-8 h-8 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <filter id="ayaLogoGlow" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="0" dy="1" stdDeviation="2.5" flood-color="#FF7A29" flood-opacity="0.35"/>
-                        </filter>
-                        <linearGradient id="ayaCrescentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#FFFFFF"/>
-                            <stop offset="100%" stop-color="#F4E6DC"/>
-                        </linearGradient>
-                    </defs>
-                    <path filter="url(#ayaLogoGlow)" fill="url(#ayaCrescentGrad)" d="
-                        M 49.5 18.5
-                        C 31.0 16.5, 16.0 32.0, 16.5 52.5
-                        C 17.0 73.5, 34.5 87.5, 55.0 85.5
-                        C 73.5 83.8, 84.5 68.5, 81.5 50.5
-                        C 79.8 41.0, 77.2 33.0, 82.0 23.0
-                        C 82.6 21.8, 81.5 21.0, 80.3 21.5
-                        C 72.5 24.8, 65.5 24.8, 56.5 22.2
-                        C 55.2 21.8, 54.6 23.0, 55.6 24.0
-                        C 61.5 29.5, 60.5 36.0, 53.0 44.5
-                        L 43.8 55.2
-                        C 42.9 56.2, 43.9 57.3, 45.0 56.5
-                        L 57.5 47.8
-                        C 66.2 42.0, 73.8 45.2, 74.5 54.8
-                        C 75.5 65.8, 65.2 74.2, 52.5 72.8
-                        C 37.8 71.0, 28.5 57.5, 30.2 41.8
-                        C 31.6 29.2, 40.2 21.8, 49.5 20.8
-                        C 51.0 20.6, 51.0 18.7, 49.5 18.5
+                    <!-- Шпиль купола -->
+                    <path fill="#FFFFFF" d="M 50 6 C 52 9.5, 52 12, 50 15 C 48 12, 48 9.5, 50 6 Z"/>
+                    <!-- Силуэт купола, переходящий в полумесяц -->
+                    <path fill="#FFFFFF" d="
+                        M 50 14
+                        C 33 25, 18 41, 18 59
+                        C 18 77, 33 89, 52 89
+                        C 64 89, 73 82, 77 72
+                        C 70 78, 59 80, 49 76
+                        C 35 70, 30 55, 36 42
+                        C 41 30, 55 25, 68 32
+                        C 73 35, 77 39, 79 44
+                        C 76 31, 63 22, 50 14
                         Z
                     "/>
+                    <!-- Четырехконечная звезда под сводом купола -->
+                    <path fill="#FFFFFF" d="M 61 45 Q 61 56 72 56 Q 61 56 61 67 Q 61 56 50 56 Q 61 56 61 45 Z"/>
                 </svg>
             </div>
-            <div>
-                <h1 class="font-bold text-xl tracking-tight glass-text-title">AyaSpace</h1>
-                <p id="hijri-header" class="text-xs text-white/60 font-body mt-0.5">Синхронизация календаря Хиджры...</p>
-            </div>
-        </div>
-
+    
         <button onclick="switchTab('settings')" class="spring-interactive apple-glass px-3.5 py-2.5 rounded-2xl flex items-center gap-2 text-xs font-medium hover:border-white/30 shrink-0">
             <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amberGlow"></i>
             <span id="current-city-badge" class="max-w-[115px] truncate">Москва</span>
