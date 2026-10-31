@@ -2877,50 +2877,96 @@
     </script>
 </body>
 <!-- =========================================================================
-         ПУШ-УВЕДОМЛЕНИЕ И БЛОК №1 В «НАСТРОЙКАХ» ДЛЯ УСТАНОВКИ НА РАБОЧИЙ СТОЛ
-         Автоматически встраивается наверх «Настроек» (над «Уведомления о намазе и праздниках»)
+         НАСТОЯЩЕЕ ПУШ-УВЕДОМЛЕНИЕ В СТИЛЕ iOS (ВЫЕЗЖАЕТ СВЕРХУ ЧЕРЕЗ 2.5 СЕК)
          ========================================================================= -->
+    <style>
+        #ios-push-banner {
+            position: fixed;
+            top: calc(max(env(safe-area-inset-top, 44px), 48px) + 6px);
+            left: 50%;
+            z-index: 60;
+            width: 92%;
+            max-width: 390px;
+            /* Теплое матовое стекло iOS как на референсе */
+            background: linear-gradient(115deg, rgba(85, 75, 70, 0.78) 0%, rgba(235, 195, 145, 0.88) 52%, rgba(110, 95, 85, 0.80) 100%);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.55);
+            border-radius: 24px;
+            padding: 11px 14px;
+            cursor: pointer;
+            /* Пружинящая анимация выезда сверху как на iPhone */
+            transform: translate3d(-50%, -180%, 0) scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.65s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.4s ease;
+        }
+
+        #ios-push-banner.ios-push-visible {
+            transform: translate3d(-50%, 0, 0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #ios-push-banner:active {
+            transform: translate3d(-50%, 0, 0) scale(0.97);
+        }
+    </style>
+
+    <!-- Компактная плашка уведомления iOS -->
+    <div id="ios-push-banner" onclick="openInstallSettingsGuide()">
+        <div class="flex items-center gap-3">
+            <!-- Иконка приложения слева -->
+            <div class="w-10 h-10 rounded-[12px] flex items-center justify-center shrink-0 shadow-md"
+                 style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 55%, #9E3304 100%); border: 1px solid rgba(255,255,255,0.35);">
+                <svg viewBox="0 0 100 100" class="w-6 h-6" fill="none">
+                    <path fill="#FFFFFF" d="M 50 6 C 52 9.5, 52 12, 50 15 C 48 12, 48 9.5, 50 6 Z"/>
+                    <path fill="#FFFFFF" d="M 50 14 C 33 25, 18 41, 18 59 C 18 77, 33 89, 52 89 C 64 89, 73 82, 77 72 C 70 78, 59 80, 49 76 C 35 70, 30 55, 36 42 C 41 30, 55 25, 68 32 C 73 35, 77 39, 79 44 C 76 31, 63 22, 50 14 Z"/>
+                    <path fill="#FFFFFF" d="M 61 45 Q 61 56 72 56 Q 61 56 61 67 Q 61 56 50 56 Q 61 56 61 45 Z"/>
+                </svg>
+            </div>
+
+            <!-- Текст уведомления (темный контрастный шрифт как на iOS-баннере) -->
+            <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between">
+                    <span class="text-[13px] font-bold text-[#141210] tracking-tight leading-none">AyaSpace</span>
+                    <span class="text-[11px] font-medium text-[#141210]/60 leading-none">сейчас</span>
+                </div>
+                <p class="text-[11.5px] font-semibold text-[#181412]/90 leading-snug mt-1 truncate">
+                    Добавьте ярлык приложения на рабочий стол
+                </p>
+                <p class="text-[10.5px] font-medium text-[#181412]/75 leading-tight truncate">
+                    Нажмите, чтобы открыть инструкцию в Настройках
+                </p>
+            </div>
+        </div>
+    </div>
+
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // Проверяем, запущено ли приложение УЖЕ с ярлыка на рабочем столе
             const isInstalled = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-            if (isInstalled) return; // Если уже установлено на рабочий стол — ничего не показываем
+            if (isInstalled) return;
 
-            // Проверяем, не сидит ли пользователь iPhone через Google, Яндекс или встроенный браузер WhatsApp/Telegram
             const ua = navigator.userAgent || '';
             const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
             const isNotSafariOnIOS = isIOS && (/CriOS|FxiOS|YaBrowser|WhatsApp|Telegram|Instagram|FBAN/i.test(ua));
 
-            // 1. Создаем пуш-уведомление сверху экрана (при клике открывает вкладку «Настройки»)
-            const headerEl = document.querySelector('header');
-            if (headerEl) {
-                const topPush = document.createElement('div');
-                topPush.id = 'install-top-push';
-                topPush.className = 'relative z-40 max-w-xl mx-auto px-4 pt-1 pb-2 cursor-pointer';
-                topPush.innerHTML = `
-                    <div onclick="openInstallSettingsGuide()" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 border border-amberGlow/50 shadow-2xl">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-white/25"
-                                 style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 50%, #9E3304 100%);">
-                                <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-bold text-white truncate">Установите ярлык AyaSpace на рабочий стол</p>
-                                <p class="text-[11px] text-amberGlow truncate">Нажмите здесь — откроется инструкция в Настройках →</p>
-                            </div>
-                        </div>
-                        <button onclick="event.stopPropagation(); document.getElementById('install-top-push').remove();" class="p-1.5 text-white/50 hover:text-white shrink-0">
-                            <i data-lucide="x" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                `;
-                headerEl.parentNode.insertBefore(topPush, headerEl);
-            }
+            // 1. Плавно выкатываем пуш-уведомление сверху через 2.5 секунды после входа
+            setTimeout(() => {
+                const pushEl = document.getElementById('ios-push-banner');
+                if (pushEl) {
+                    pushEl.classList.add('ios-push-visible');
+                    // Автоматически мягко убираем наверх через 9 секунд, чтобы не мешало
+                    setTimeout(() => {
+                        pushEl.classList.remove('ios-push-visible');
+                    }, 9000);
+                }
+            }, 2500);
 
-            // 2. Вставляем карточку-инструкцию САМЫМ ПЕРВЫМ БЛОКОМ сверху во вкладку «Настройки»
-            // (прямо над блоком «Уведомления о намазе и праздниках»)
+            // 2. Вставляем карточку-инструкцию самым первым блоком в «Настройки»
             const settingsTab = document.getElementById('tab-settings');
-            if (settingsTab) {
+            if (settingsTab && !document.getElementById('settings-install-guide-card')) {
                 const installCard = document.createElement('div');
                 installCard.id = 'settings-install-guide-card';
                 installCard.className = 'apple-glass-amber rounded-[30px] p-5 space-y-4 border-2 border-amberGlow/60 shadow-2xl';
@@ -2946,52 +2992,40 @@
                     ` : ''}
 
                     <div class="space-y-3 text-xs font-body">
-                        <!-- Инструкция для iPhone (переход из Google / Яндекс / WhatsApp в Safari) -->
                         <div class="p-4 rounded-2xl bg-black/50 border border-white/15 space-y-2">
-                            <p class="font-bold text-amberGlow text-sm flex items-center gap-1.5">
-                                <span>🍎</span> Для владельцев iPhone (iOS):
-                            </p>
+                            <p class="font-bold text-amberGlow text-sm">🍎 Для владельцев iPhone (iOS):</p>
                             <p class="text-white/90 leading-relaxed">
-                                <strong>1. Если вы зашли через Google, Яндекс, WhatsApp или Telegram:</strong> на iPhone другие браузеры не умеют ставить ярлык. Вам нужно открыть этот сайт в <strong>Safari</strong>! Для этого нажмите на <strong>три точки (⋯)</strong> в углу экрана, выберите <strong>«Поделиться»</strong> и нажмите <strong>«Открыть в браузере / Открыть в Safari»</strong> (либо скопируйте ссылку кнопкой ниже и вставьте её в Safari).
+                                <strong>1. Если у вас открыт Google, Яндекс или WhatsApp:</strong> сначала нажмите на <strong>три точки (⋯)</strong>, выберите <strong>«Поделиться»</strong> и откройте сайт через <strong>Safari</strong> (или скопируйте ссылку кнопкой ниже и вставьте в Safari).
                             </p>
                             <p class="text-white/90 leading-relaxed pt-1.5 border-t border-white/10">
-                                <strong>2. Когда вы уже в Safari:</strong> нажмите в самом низу экрана по центру значок <strong>«Поделиться»</strong> (квадратик со стрелкой вверх <strong>↑</strong>), прокрутите список вниз и нажмите <strong>«На экран "Домой"»</strong> → <strong>«Добавить»</strong>.
+                                <strong>2. В самом Safari:</strong> нажмите внизу по центру значок <strong>«Поделиться»</strong> (квадрат со стрелкой вверх <strong>↑</strong>) и выберите <strong>«На экран "Домой"»</strong> → <strong>«Добавить»</strong>.
                             </p>
                         </div>
 
-                        <!-- Инструкция для Android -->
                         <div class="p-4 rounded-2xl bg-black/50 border border-white/15 space-y-1.5">
-                            <p class="font-bold text-emeraldAccent text-sm flex items-center gap-1.5">
-                                <span>🤖</span> Для владельцев Android:
-                            </p>
+                            <p class="font-bold text-emeraldAccent text-sm">🤖 Для владельцев Android:</p>
                             <p class="text-white/90 leading-relaxed">
-                                Нажмите на <strong>три точки (⋮)</strong> в углу вашего браузера (Chrome, Яндекс и др.) и выберите пункт <strong>«Добавить на главный экран»</strong> (или «Установить приложение»).
+                                Нажмите на <strong>три точки (⋮)</strong> в углу браузера и выберите <strong>«Добавить на главный экран»</strong>.
                             </p>
                         </div>
                     </div>
 
                     <button onclick="copyLinkForSafari(this)" class="spring-interactive w-full py-3 px-4 rounded-2xl bg-white text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
                         <i data-lucide="copy" class="w-4 h-4"></i>
-                        <span>Скопировать ссылку (для вставки в Safari)</span>
+                        <span>Скопировать ссылку (для Safari)</span>
                     </button>
                 `;
-
-                // Ставим этот блок САМЫМ ПЕРВЫМ сверху в Настройках
                 settingsTab.insertBefore(installCard, settingsTab.firstChild);
             }
 
             if (window.lucide) lucide.createIcons();
         });
 
-        // Переход по клику на пуш-уведомление сразу в «Настройки» к инструкции
         function openInstallSettingsGuide() {
+            const pushEl = document.getElementById('ios-push-banner');
+            if (pushEl) pushEl.classList.remove('ios-push-visible');
             switchTab('settings');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            const card = document.getElementById('settings-install-guide-card');
-            if (card) {
-                card.style.transform = 'scale(1.02)';
-                setTimeout(() => { card.style.transform = 'scale(1)'; }, 400);
-            }
         }
 
         function copyLinkForSafari(btn) {
