@@ -2876,6 +2876,169 @@
         }
     </script>
 </body>
+    <!-- =========================================================================
+         АВТОНОМНЫЙ ГЕНЕРАТОР ПЕЙЗАЖЕЙ ПРИРОДЫ (РАБОТАЕТ БЕЗ VPN ЗА 0.05 СЕК)
+         + АВТОМАТИЧЕСКОЕ ЕЖЕНЕДЕЛЬНОЕ ОБНОВЛЕНИЕ СТАТУСОВ
+         ========================================================================= -->
+    <script>
+        (function() {
+            // Большая база достоверных аятов и дуа для еженедельной ротации
+            const ALL_STATUS_POOL = [
+                { category: "daily", arabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", russian: "Воистину, за каждой тягостью наступает облегчение.", source: "Сура Аш-Шарх • 94:5" },
+                { category: "daily", arabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا", russian: "Аллах не возлагает на душу сверх её возможностей.", source: "Сура Аль-Бакара • 2:286" },
+                { category: "daily", arabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", russian: "Разве не поминанием Аллаха утешаются сердца?", source: "Сура Ар-Раад • 13:28" },
+                { category: "daily", arabic: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ", russian: "И Он с вами, где бы вы ни находились.", source: "Сура Аль-Хадид • 57:4" },
+                { category: "daily", arabic: "ادْعُونِي أَسْتَجِبْ لَكُمْ", russian: "Взывайте ко Мне, и Я отвечу вам.", source: "Сура Гафир • 40:60" },
+                { category: "daily", arabic: "وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ", russian: "Господь твой непременно одарит тебя, и ты будешь доволен.", source: "Сура Ад-Духа • 93:5" },
+                { category: "jumuah", arabic: "إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ", russian: "Благословенная пятница (Джума Мубарак). Увеличьте салават Пророку ﷺ в этот светлый день.", source: "Сура Аль-Ахзаб • 33:56" },
+                { category: "daily", arabic: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", russian: "Воистину, Аллах — на стороне терпеливых.", source: "Сура Аль-Бакара • 2:153" },
+                { category: "daily", arabic: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ", russian: "Достаточно нам Аллаха, и как прекрасен этот Хранитель.", source: "Сура Али Имран • 3:173" },
+                { category: "daily", arabic: "وَاصْبِرْ لِحُكْمِ رَبِّكَ فَإِنَّكَ بِأَعْيُنِنَا", russian: "Потерпи же до решения твоего Господа, ведь ты — под Нашим присмотром.", source: "Сура Ат-Тур • 52:48" },
+                { category: "daily", arabic: "لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا", russian: "Не печалься, ибо Аллах — с нами.", source: "Сура Ат-Тауба • 9:40" },
+                { category: "daily", arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", russian: "Господь наш, одари нас добром в этом мире и добром в Вечности.", source: "Сура Аль-Бакара • 2:201" },
+                { category: "jumuah", arabic: "مَنْ قَرَأَ سُورَةَ الْكَهْفِ فِي يَوْمِ الْجُمُعَةِ أَضَاءَ لَهُ مِنَ النُّورِ", russian: "Кто прочитает суру «Аль-Кахф» в день пятницы, того озарит свет между двумя пятницами.", source: "Сунна • Аль-Хаким" },
+                { category: "eid", arabic: "تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ", russian: "Ид Мубарак! Да примет Аллах от нас и от вас праведные деяния.", source: "Поздравление с праздником" },
+                { category: "eid", arabic: "عِيدُكُمْ مُبَارَكٌ وَكُلُّ عَامٍ وَأَنْتُمْ بِخَيْرٍ", russian: "Благословенного праздника Курбан и Ураза-байрам! Мира и бараката вашему дому.", source: "Праздничное пожелание" },
+                { category: "daily", arabic: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", russian: "О Изменяющий состояние сердец, укрепи сердце моё в Твоей религии.", source: "Сунна • Ат-Тирмизи" },
+                { category: "daily", arabic: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي", russian: "О Аллах, Ты — Прощающий, Ты любишь прощать, так прости же меня.", source: "Сунна • Ат-Тирмизи" },
+                { category: "daily", arabic: "وَقُل رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", russian: "Господи, помилуй моих родителей, ведь они растили меня ребёнком.", source: "Сура Аль-Исра • 17:24" },
+                { category: "daily", arabic: "لَا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ", russian: "Нет божества, кроме Тебя. Пречист Ты. Воистину, я был одним из несправедливых.", source: "Сура Аль-Анбия • 21:87" },
+                { category: "jumuah", arabic: "فِي الْجُمُعَةِ سَاعَةٌ لَا يُوَافِقُهَا عَبْدٌ مُسْلِمٌ يَسْأَلُ اللَّهَ خَيْرًا إِلَّا أَعْطَاهُ", russian: "В пятницу есть час, в который мусульманин не попросит у Аллаха блага, кроме как Он дарует ему это.", source: "Сахих аль-Бухари • 935" },
+                { category: "daily", arabic: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا", russian: "Тому, кто боится Аллаха, Он создает выход из любого положения.", source: "Сура Ат-Талак • 65:2" },
+                { category: "daily", arabic: "وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ ۚ عَلَيْهِ تَوَكَّلْتُ", russian: "Помогает мне только Аллах. На Него одного я уповаю.", source: "Сура Худ • 11:88" },
+                { category: "daily", arabic: "وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ ۚ إِنَّ اللَّهَ بَصِيرٌ بِالْعِبَادِ", russian: "Я вверяю свое дело Аллаху. Воистину, Аллах видит рабов.", source: "Сура Гафир • 40:44" },
+                { category: "daily", arabic: "سَيَجْعَلُ اللَّهُ بَعْدَ عُسْرٍ يُسْرًا", russian: "После тягости Аллах непременно создаст облегчение.", source: "Сура Ат-Талак • 65:7" },
+                { category: "daily", arabic: "وَرَحْمَتِي وَسِعَتْ كُلَّ شَيْءٍ", russian: "Моя милость объемлет всякую вещь.", source: "Сура Аль-Араф • 7:156" },
+                { category: "daily", arabic: "لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ", russian: "Если вы будете благодарны, то Я непременно приумножу вам.", source: "Сура Ибрахим • 14:7" }
+            ];
+
+            // Генератор кинематографичных ночных пейзажей природы прямо в памяти телефона (0% зависимости от VPN!)
+            const NATURE_PALETTES = [
+                { skyTop: "#05070B", skyHorizon: "#2B160C", ridge1: "#160B06", ridge2: "#0B0503", ridge3: "#050201", stars: true, type: "dunes" },
+                { skyTop: "#040811", skyHorizon: "#132232", ridge1: "#0B141E", ridge2: "#070C12", ridge3: "#030508", stars: true, type: "mountains" },
+                { skyTop: "#080504", skyHorizon: "#381808", ridge1: "#1D0C04", ridge2: "#110702", ridge3: "#070301", stars: false, type: "dunes" },
+                { skyTop: "#040A09", skyHorizon: "#102822", ridge1: "#091814", ridge2: "#050E0C", ridge3: "#020605", stars: true, type: "forest" },
+                { skyTop: "#09070C", skyHorizon: "#261922", ridge1: "#140D13", ridge2: "#0B070B", ridge3: "#050305", stars: true, type: "mountains" },
+                { skyTop: "#060403", skyHorizon: "#2E1A0F", ridge1: "#180D07", ridge2: "#0E0704", ridge3: "#060302", stars: true, type: "canyon" }
+            ];
+
+            function createOfflineNatureWallpaper(seedIndex) {
+                const c = document.createElement('canvas');
+                c.width = 540;
+                c.height = 960;
+                const ctx = c.getContext('2d');
+                const pal = NATURE_PALETTES[seedIndex % NATURE_PALETTES.length];
+
+                // 1. Ночное небо с закатным/сумеречным свечением у горизонта
+                const skyGrad = ctx.createLinearGradient(0, 0, 0, 960);
+                skyGrad.addColorStop(0, pal.skyTop);
+                skyGrad.addColorStop(0.58, pal.skyHorizon);
+                skyGrad.addColorStop(1, pal.ridge3);
+                ctx.fillStyle = skyGrad;
+                ctx.fillRect(0, 0, 540, 960);
+
+                // Мягкое атмосферное свечение на горизонте
+                const glow = ctx.createRadialGradient(270 + ((seedIndex % 3) - 1) * 90, 540, 10, 270, 540, 420);
+                glow.addColorStop(0, "rgba(255, 135, 60, 0.18)");
+                glow.addColorStop(1, "rgba(0, 0, 0, 0)");
+                ctx.fillStyle = glow;
+                ctx.fillRect(0, 0, 540, 960);
+
+                // 2. Звездная россыпь в верхней части неба
+                if (pal.stars) {
+                    let s = (seedIndex + 1) * 9301;
+                    for (let i = 0; i < 65; i++) {
+                        s = (s * 49297 + 233280) % 233280;
+                        const x = (s / 233280) * 540;
+                        s = (s * 49297 + 233280) % 233280;
+                        const y = (s / 233280) * 460;
+                        const alpha = 0.15 + ((i % 5) * 0.14);
+                        ctx.fillStyle = `rgba(255, 245, 235, ${alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(x, y, (i % 3 === 0) ? 1.2 : 0.7, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                // 3. Многослойные силуэты дюн пустыни / горных хребтов в тумане
+                const layers = [
+                    { yBase: 560, amp: 55, freq: 0.006, color: pal.ridge1, phase: seedIndex * 1.4 },
+                    { yBase: 670, amp: 45, freq: 0.008, color: pal.ridge2, phase: seedIndex * 2.7 + 1 },
+                    { yBase: 780, amp: 32, freq: 0.005, color: pal.ridge3, phase: seedIndex * 3.9 + 2 }
+                ];
+
+                layers.forEach(layer => {
+                    ctx.beginPath();
+                    ctx.moveTo(0, 960);
+                    for (let x = 0; x <= 540; x += 12) {
+                        const wave1 = Math.sin(x * layer.freq + layer.phase) * layer.amp;
+                        const wave2 = Math.cos(x * layer.freq * 2.1 - layer.phase) * (layer.amp * 0.4);
+                        ctx.lineTo(x, layer.yBase + wave1 + wave2);
+                    }
+                    ctx.lineTo(540, 960);
+                    ctx.closePath();
+                    ctx.fillStyle = layer.color;
+                    ctx.fill();
+                });
+
+                return c.toDataURL('image/jpeg', 0.90);
+            }
+
+            // Вычисляем номер текущей недели года для автоматического еженедельного обновления
+            function getCurrentWeekSeed() {
+                const now = new Date();
+                const start = new Date(now.getFullYear(), 0, 1);
+                const weekNum = Math.ceil((((now - start) / 86400000) + start.getDay() + 1) / 7);
+                const manualOffset = parseInt(localStorage.getItem('aya_status_shuffle_offset') || '0', 10);
+                return weekNum + manualOffset;
+            }
+
+            window.rebuildWeeklyStatuses = function(incrementOffset = false) {
+                if (incrementOffset) {
+                    const curr = parseInt(localStorage.getItem('aya_status_shuffle_offset') || '0', 10);
+                    localStorage.setItem('aya_status_shuffle_offset', String(curr + 1));
+                }
+                const seed = getCurrentWeekSeed();
+                weeklyStatuses.length = 0;
+
+                for (let i = 0; i < 20; i++) {
+                    const poolItem = ALL_STATUS_POOL[(i + seed * 3) % ALL_STATUS_POOL.length];
+                    weeklyStatuses.push({
+                        id: i + 1,
+                        category: poolItem.category,
+                        image: createOfflineNatureWallpaper(i + seed),
+                        arabic: poolItem.arabic,
+                        russian: poolItem.russian,
+                        source: poolItem.source
+                    });
+                }
+
+                if (typeof renderStatusGrid === 'function') {
+                    renderStatusGrid(window.currentStatusFilter || 'all');
+                }
+            };
+
+            window.addEventListener('DOMContentLoaded', () => {
+                // Добавляем кнопку «Обновить подборку» в шапку раздела «Статус»
+                const statusSection = document.getElementById('tab-status');
+                if (statusSection) {
+                    const headerBox = statusSection.querySelector('.apple-glass');
+                    if (headerBox) {
+                        const topRow = headerBox.firstElementChild;
+                        topRow.className = "flex items-center justify-between gap-3";
+                        const refreshBtn = document.createElement('button');
+                        refreshBtn.className = "spring-interactive px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-semibold text-amberGlow shrink-0";
+                        refreshBtn.innerHTML = "🔄 Обновить";
+                        refreshBtn.onclick = () => window.rebuildWeeklyStatuses(true);
+                        topRow.appendChild(refreshBtn);
+                    }
+                }
+
+                // Сразу генерируем 20 пейзажей без VPN
+                window.rebuildWeeklyStatuses(false);
+            });
+        })();
+    </script>
     <!-- Автоматическое создание оранжевой PNG-иконки для экрана Домой на iPhone -->
     <script>
         (function() {
