@@ -2876,6 +2876,47 @@
         }
     </script>
 </body>
+    <!-- Автоматическое создание оранжевой PNG-иконки для экрана Домой на iPhone -->
+    <script>
+        (function() {
+            const c = document.createElement('canvas');
+            c.width = 180;
+            c.height = 180;
+            const ctx = c.getContext('2d');
+
+            // 1. Оранжевый градиентный фон ярлыка
+            const g = ctx.createLinearGradient(0, 0, 180, 180);
+            g.addColorStop(0, '#FF8A3D');
+            g.addColorStop(0.5, '#E65C19');
+            g.addColorStop(1, '#8F2B03');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, 180, 180);
+
+            // 2. Белый авторский Купол-Полумесяц со звездой
+            ctx.scale(1.8, 1.8);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fill(new Path2D('M 50 6 C 52 9.5, 52 12, 50 15 C 48 12, 48 9.5, 50 6 Z'));
+            ctx.fill(new Path2D('M 50 14 C 33 25, 18 41, 18 59 C 18 77, 33 89, 52 89 C 64 89, 73 82, 77 72 C 70 78, 59 80, 49 76 C 35 70, 30 55, 36 42 C 41 30, 55 25, 68 32 C 73 35, 77 39, 79 44 C 76 31, 63 22, 50 14 Z'));
+            ctx.fill(new Path2D('M 61 45 Q 61 56 72 56 Q 61 56 61 67 Q 61 56 50 56 Q 61 56 61 45 Z'));
+
+            const pngUrl = c.toDataURL('image/png');
+
+            // Убираем старые ссылки и ставим готовую PNG-иконку в память Safari
+            document.querySelectorAll("link[rel*='icon']").forEach(el => el.remove());
+
+            const appleIcon = document.createElement('link');
+            appleIcon.rel = 'apple-touch-icon';
+            appleIcon.sizes = '180x180';
+            appleIcon.href = pngUrl;
+            document.head.appendChild(appleIcon);
+
+            const favIcon = document.createElement('link');
+            favIcon.rel = 'icon';
+            favIcon.type = 'image/png';
+            favIcon.href = pngUrl;
+            document.head.appendChild(favIcon);
+        })();
+    </script>
 <!-- =========================================================================
          НАСТОЯЩЕЕ ПУШ-УВЕДОМЛЕНИЕ В СТИЛЕ iOS (ВЫЕЗЖАЕТ СВЕРХУ ЧЕРЕЗ 2.5 СЕК)
          ========================================================================= -->
