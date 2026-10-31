@@ -2310,7 +2310,7 @@
         async function exportPrayersToICS() {
             const btn = document.getElementById('export-ics-btn');
             const oldHtml = btn.innerHTML;
-            btn.innerHTML = `<span>Загрузка точного расписания на 31 день...</span>`;
+            btn.innerHTML = `<span>Подготовка календаря на 31 день...</span>`;
 
             try {
                 const now = new Date();
@@ -2326,6 +2326,7 @@
 
                 const allDays = [...(data1.data || []), ...(data2.data || [])];
                 const todayTs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+                const dtStamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 
                 const prayersToExport = [
                     { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
@@ -2335,7 +2336,15 @@
                     { key: 'Isha', title: 'Ночной намаз (Иша)' }
                 ];
 
-                let icsLines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//AyaSpace//Official Prayer Calendar 31 Days//RU", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+                let icsLines = [
+                    "BEGIN:VCALENDAR",
+                    "VERSION:2.0",
+                    "PRODID:-//AyaSpace//Official Prayer Calendar 31 Days//RU",
+                    "CALSCALE:GREGORIAN",
+                    "METHOD:PUBLISH",
+                    `X-WR-CALNAME:Намаз — ${prayerState.city}`
+                ];
+
                 let exportedDays = 0;
 
                 for (const dayEntry of allDays) {
@@ -2355,17 +2364,48 @@
                         icsLines.push(
                             "BEGIN:VEVENT",
                             `UID:ayaspace-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
+                            `DTSTAMP:${dtStamp}`,
                             `DTSTART:${dtStart}`,
                             `DTEND:${dtEnd}`,
-                            `SUMMARY:${p.title} (${cleanTime})`,
-                            `DESCRIPTION:Точное время намаза (${prayerState.city}) от AyaSpace`,
-                            "BEGIN:VALARM", "TRIGGER:-PT10M", "ACTION:DISPLAY", `DESCRIPTION:Через 10 минут ${p.title}`, "END:VALARM",
-                            "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", `DESCRIPTION:Наступило время: ${p.title}`, "END:VALARM",
+                            `SUMMARY:🕋 ${p.title}`,
+                            `DESCRIPTION:Время намаза (${prayerState.city}) — AyaSpace`,
+                            "BEGIN:VALARM",
+                            "TRIGGER:-PT10M",
+                            "ACTION:DISPLAY",
+                            `DESCRIPTION:Через 10 минут ${p.title}`,
+                            "END:VALARM",
+                            "BEGIN:VALARM",
+                            "TRIGGER:PT0M",
+                            "ACTION:DISPLAY",
+                            `DESCRIPTION:Наступило время: ${p.title}`,
+                            "END:VALARM",
                             "END:VEVENT"
                         );
                     });
                 }
 
+                icsLines.push("END:VCALENDAR");
+                const icsContent = icsLines.join("\r\n");
+
+                // На iPhone открываем системное окно импорта в Календарь напрямую
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
+                } else {
+                    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `ayaspace-namaz-month-${prayerState.city}.ics`;
+                    a.click();
+                }
+            } catch (err) {
+                alert("Ошибка загрузки месячного расписания. Проверьте интернет.");
+            } finally {
+                btn.innerHTML = oldHtml;
+                lucide.createIcons();
+            }
+        }
+        
                 icsLines.push("END:VCALENDAR");
                 const blob = new Blob([icsLines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
                 const a = document.createElement('a');
