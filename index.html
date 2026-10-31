@@ -254,7 +254,7 @@
 </head>
 <body class="selection:bg-amberCore selection:text-white">
 
-    <!-- Глубокий хаотичный янтарно-коньячный градиент (сверху и снизу без морковного оттенка) -->
+    <!-- Глубокий хаотичный янтарно-коньячный градиент -->
     <div class="afterglow-stage"></div>
 
     <!-- Компактная плашка пуш-уведомления iOS (выезжает сверху через 2.5 сек) -->
@@ -283,7 +283,7 @@
         </div>
     </div>
 
-    <!-- ВСТРОЕННЫЕ ДАННЫЕ: ФОТО ПРИРОДЫ (БЕЗ VPN), ЦИТАТЫ, ХАЛЯЛЬ-БАЗА, ПОСЛОВНЫЙ НАМАЗ И СУННА -->
+    <!-- ВСТРОЕННЫЕ ДАННЫЕ: ФОТО ПРИРОДЫ, ЦИТАТЫ, ХАЛЯЛЬ-БАЗА, ПОСЛОВНЫЙ НАМАЗ, СУННА И СПИСОК ГОРОДОВ -->
     <script>
         const REAL_NATURE_PHOTOS = [
             "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Desert_Sand_Dunes_near_sunset.jpg/1280px-Desert_Sand_Dunes_near_sunset.jpg",
@@ -437,6 +437,38 @@
             Maghrib: { s1: "Сура Аль-Кафирун (109)", s2: "Сура Аль-Ихляс (112)", text1: "Куль йа аййухаль-кяфирун. Ля а'буду ма та'будун...", text2: "Куль хува Ллаху Ахад, Аллаху с-Самад..." },
             Isha: { s1: "Сура Аш-Шарх (94)", s2: "Сура Аль-Фаляк (113)", text1: "Алям нашрах ляка садрак. Ва вада'на 'анка визрак...", text2: "Куль а'узу би-Раббиль-фаляк. Мин шарри ма халяк..." }
         };
+
+        const QUICK_CITIES = [
+            { name: "Москва", lat: 55.7558, lng: 37.6173 },
+            { name: "Махачкала", lat: 42.9849, lng: 47.5047 },
+            { name: "Грозный", lat: 43.3183, lng: 45.6981 },
+            { name: "Казань", lat: 55.7961, lng: 49.1064 },
+            { name: "Уфа", lat: 54.7388, lng: 55.9721 },
+            { name: "Дербент", lat: 42.0578, lng: 48.2888 },
+            { name: "Хасавюрт", lat: 43.2505, lng: 46.5877 },
+            { name: "Назрань / Магас", lat: 43.1625, lng: 44.8122 },
+            { name: "Нальчик", lat: 43.4853, lng: 43.6071 },
+            { name: "Черкесск", lat: 44.2269, lng: 42.0468 },
+            { name: "Майкоп", lat: 44.6098, lng: 40.1006 },
+            { name: "Владикавказ", lat: 43.0251, lng: 44.6819 },
+            { name: "Санкт-Петербург", lat: 59.9343, lng: 30.3351 },
+            { name: "Набережные Челны", lat: 55.7415, lng: 52.3989 },
+            { name: "Саратов", lat: 51.5336, lng: 46.0343 },
+            { name: "Астрахань", lat: 46.3479, lng: 48.0336 },
+            { name: "Екатеринбург", lat: 56.8389, lng: 60.6057 },
+            { name: "Тюмень", lat: 57.1522, lng: 65.5272 },
+            { name: "Сургут", lat: 61.2540, lng: 73.3962 },
+            { name: "Ташкент", lat: 41.2995, lng: 69.2401 },
+            { name: "Алматы", lat: 43.2389, lng: 76.8897 },
+            { name: "Астана", lat: 51.1694, lng: 71.4491 },
+            { name: "Бишкек", lat: 42.8746, lng: 74.5698 },
+            { name: "Душанбе", lat: 38.5598, lng: 68.7870 },
+            { name: "Баку", lat: 40.4093, lng: 49.8671 },
+            { name: "Мекка", lat: 21.4225, lng: 39.8262 },
+            { name: "Медина", lat: 24.4672, lng: 39.6112 },
+            { name: "Дубай", lat: 25.2048, lng: 55.2708 },
+            { name: "Стамбул", lat: 41.0082, lng: 28.9784 }
+        ];
     </script>
 
     <!-- Праздничное / Пятничное уведомление -->
@@ -484,7 +516,7 @@
         </div>
     </div>
 
-    <!-- ШАПКА ПРИЛОЖЕНИЯ AYASPACE (Слева Лого+Имя, Справа Город + Кнопка Настроек) -->
+    <!-- ШАПКА ПРИЛОЖЕНИЯ AYASPACE -->
     <header class="relative z-10 w-full max-w-xl mx-auto px-4 pt-2 pb-2 flex items-center justify-between gap-2">
         <div class="flex items-center gap-3.5 min-w-0">
             <div class="w-12 h-12 rounded-2xl flex items-center justify-center relative border border-white/25 shadow-lg shrink-0"
@@ -515,7 +547,7 @@
     <!-- ОСНОВНОЙ КОНТЕЙНЕР ВКЛАДОК -->
     <main class="relative z-10 max-w-xl mx-auto px-4 pt-2 space-y-5">
 
-        <!-- ВКЛАДКА 1: НАМАЗ + РЕЖИМ МУСАФИРА + ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ ВНИЗУ ПРИ ПРОКРУТКЕ -->
+        <!-- ВКЛАДКА 1: НАМАЗ + РЕЖИМ МУСАФИРА + ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ ВНИЗУ -->
         <section id="tab-prayer" class="tab-view space-y-5">
             <div class="apple-glass-amber rounded-[32px] p-6 relative overflow-hidden">
                 <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-amberGlow/20 blur-3xl pointer-events-none"></div>
@@ -575,7 +607,7 @@
                 </div>
             </div>
 
-            <!-- ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ (ВНИЗУ ГЛАВНОГО ЭКРАНА ПРИ ПРОЛИСТЫВАНИИ) -->
+            <!-- ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ -->
             <div id="main-tools-anchor" class="pt-2 space-y-4">
                 <div class="px-1">
                     <h2 class="text-base font-bold glass-text-title">Полезные инструменты</h2>
@@ -770,7 +802,7 @@
             <div id="memorize-ayahs-container" class="space-y-3.5"></div>
         </section>
 
-        <!-- ВКЛАДКА 4: РАЗДЕЛ «СТАТУС» (РАЗНЫЕ ШРИФТЫ, КРУПНЫЙ ТЕКСТ НА ВЫХОДЕ, ЧИСТОЕ ФОТО В WHATSAPP) -->
+        <!-- ВКЛАДКА 4: РАЗДЕЛ «СТАТУС» -->
         <section id="tab-status" class="tab-view hidden space-y-4">
             <div class="apple-glass rounded-[30px] p-5 space-y-3.5">
                 <div class="flex items-center justify-between gap-3">
@@ -798,9 +830,9 @@
             <div id="status-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5"></div>
         </section>
 
-        <!-- ВКЛАДКА 5: НАСТРОЙКИ (ОТКРЫВАЕТСЯ ПО КНОПКЕ СПРАВА СВЕРХУ ИЛИ ЧЕРЕЗ ПУШ-УВЕДОМЛЕНИЕ) -->
+        <!-- ВКЛАДКА 5: НАСТРОЙКИ -->
         <section id="tab-settings" class="tab-view hidden space-y-4">
-            <!-- Блок №1: Инструкция установки ярлыка на рабочий стол (автоматически скрывается, если уже установлен) -->
+            <!-- Блок №1: Инструкция установки ярлыка на рабочий стол -->
             <div id="settings-install-guide-card" class="apple-glass-amber rounded-[30px] p-5 space-y-4 border-2 border-amberGlow/60 shadow-2xl">
                 <div class="flex items-center gap-3">
                     <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border border-white/30"
@@ -833,12 +865,12 @@
                 </button>
             </div>
 
-            <!-- Блок №2: Уведомления о намазе и праздниках (на 30 дней вперед) -->
+            <!-- Блок №2: Уведомления о намазе и праздниках -->
             <div class="apple-glass-amber rounded-[30px] p-5 space-y-4">
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <h2 class="text-base font-bold glass-text-title">Уведомления о намазе и праздниках</h2>
-                        <p class="text-xs text-white/75 font-body mt-0.5">Пуш-оповещения и официальное расписание на 30 дней вперед</p>
+                        <p class="text-xs text-white/75 font-body mt-0.5">Пуш-оповещения и официальное расписание на 31 день вперед</p>
                     </div>
                     <span id="notif-permission-badge" class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-white/10 border border-white/20 text-white shrink-0">Проверка...</span>
                 </div>
@@ -884,7 +916,7 @@
                 </div>
             </div>
 
-   <!-- Блок №3: Единый умный выбор города и метода (автосохранение в 1 касание) -->
+            <!-- Блок №3: Единый умный выбор города и метода -->
             <div class="apple-glass rounded-[30px] p-5 space-y-4 text-xs">
                 <div class="flex items-center justify-between gap-2">
                     <div>
@@ -896,7 +928,6 @@
                     </button>
                 </div>
 
-                <!-- Текущий город + Домашний город для Мусафира в одной плашке -->
                 <div class="p-3.5 rounded-2xl bg-black/45 border border-white/12 flex flex-wrap items-center justify-between gap-2">
                     <div>
                         <span class="text-[10px] uppercase tracking-wider text-white/50 block">Сейчас выбран город:</span>
@@ -917,11 +948,10 @@
                         <button onclick="document.getElementById('unified-city-input').value=''; onUnifiedCityInput('');" class="absolute right-3 top-2.5 text-white/40 hover:text-white">✕</button>
                     </div>
 
-                    <!-- Единый список (показывает быстрые города или живые результаты поиска по миру) -->
                     <div id="unified-city-results" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pt-1"></div>
                 </div>
 
-                <!-- Метод расчета и Мазхаб (сохраняются сразу при переключении) -->
+                <!-- Метод расчета и Мазхаб -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/10">
                     <div>
                         <label class="block font-semibold text-white/75 mb-1.5">Метод расчета:</label>
@@ -943,137 +973,10 @@
                         </select>
                     </div>
                 </div>
-
-                <input id="settings-city" type="hidden">
-                <div id="nominatim-results" class="hidden"></div>
             </div>
+        </section>
 
-            <script>
-                const QUICK_CITIES = [
-                    { name: "Москва", lat: 55.7558, lng: 37.6173 },
-                    { name: "Махачкала", lat: 42.9849, lng: 47.5047 },
-                    { name: "Грозный", lat: 43.3183, lng: 45.6981 },
-                    { name: "Казань", lat: 55.7961, lng: 49.1064 },
-                    { name: "Уфа", lat: 54.7388, lng: 55.9721 },
-                    { name: "Дербент", lat: 42.0578, lng: 48.2888 },
-                    { name: "Хасавюрт", lat: 43.2505, lng: 46.5877 },
-                    { name: "Назрань / Магас", lat: 43.1625, lng: 44.8122 },
-                    { name: "Нальчик", lat: 43.4853, lng: 43.6071 },
-                    { name: "Черкесск", lat: 44.2269, lng: 42.0468 },
-                    { name: "Майкоп", lat: 44.6098, lng: 40.1006 },
-                    { name: "Владикавказ", lat: 43.0251, lng: 44.6819 },
-                    { name: "Санкт-Петербург", lat: 59.9343, lng: 30.3351 },
-                    { name: "Набережные Челны", lat: 55.7415, lng: 52.3989 },
-                    { name: "Саратов", lat: 51.5336, lng: 46.0343 },
-                    { name: "Астрахань", lat: 46.3479, lng: 48.0336 },
-                    { name: "Екатеринбург", lat: 56.8389, lng: 60.6057 },
-                    { name: "Тюмень", lat: 57.1522, lng: 65.5272 },
-                    { name: "Сургут", lat: 61.2540, lng: 73.3962 },
-                    { name: "Ташкент", lat: 41.2995, lng: 69.2401 },
-                    { name: "Алматы", lat: 43.2389, lng: 76.8897 },
-                    { name: "Астана", lat: 51.1694, lng: 71.4491 },
-                    { name: "Бишкек", lat: 42.8746, lng: 74.5698 },
-                    { name: "Душанбе", lat: 38.5598, lng: 68.7870 },
-                    { name: "Баку", lat: 40.4093, lng: 49.8671 },
-                    { name: "Мекка", lat: 21.4225, lng: 39.8262 },
-                    { name: "Медина", lat: 24.4672, lng: 39.6112 },
-                    { name: "Дубай", lat: 25.2048, lng: 55.2708 },
-                    { name: "Стамбул", lat: 41.0082, lng: 28.9784 }
-                ];
-
-                let searchDebounceTimer = null;
-
-                function renderQuickCities(filterText = '') {
-                    const box = document.getElementById('unified-city-results');
-                    if (!box) return;
-                    const q = filterText.toLowerCase().trim();
-                    const matched = QUICK_CITIES.filter(c => c.name.toLowerCase().includes(q));
-
-                    box.innerHTML = matched.map(c => {
-                        const isSelected = prayerState.city === c.name;
-                        return `
-                            <button type="button" onclick="selectAndSaveCityInstantly(${c.lat}, ${c.lng}, '${c.name}')"
-                                class="spring-interactive px-3 py-1.5 rounded-xl text-xs font-semibold border ${
-                                    isSelected
-                                        ? 'bg-emeraldAccent text-obsidian border-emeraldAccent font-bold shadow'
-                                        : 'bg-white/8 hover:bg-white/15 border-white/12 text-white/85'
-                                }">
-                                ${isSelected ? '✓ ' : ''}${c.name}
-                            </button>
-                        `;
-                    }).join('');
-                }
-
-                function onUnifiedCityInput(val) {
-                    const q = val.trim();
-                    renderQuickCities(q);
-                    clearTimeout(searchDebounceTimer);
-                    if (q.length < 2) return;
-
-                    searchDebounceTimer = setTimeout(async () => {
-                        const box = document.getElementById('unified-city-results');
-                        try {
-                            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&accept-language=ru&limit=6&q=${encodeURIComponent(q)}`);
-                            const places = await res.json();
-                            if (!places || !places.length) return;
-
-                            places.forEach(p => {
-                                const shortName = p.display_name.split(',')[0].replace(/'/g, "");
-                                const lat = parseFloat(p.lat).toFixed(4);
-                                const lng = parseFloat(p.lon).toFixed(4);
-                                const btn = document.createElement('button');
-                                btn.type = 'button';
-                                btn.className = "spring-interactive w-full text-left p-2.5 rounded-xl bg-amberCore/20 hover:bg-amberCore/35 border border-amberGlow/40 flex items-center justify-between gap-2 mt-1";
-                                btn.onclick = () => selectAndSaveCityInstantly(lat, lng, shortName);
-                                btn.innerHTML = `<span class="truncate text-white font-semibold text-xs">📍 ${p.display_name}</span><span class="text-[10px] text-amberGlow font-bold shrink-0">Выбрать</span>`;
-                                box.appendChild(btn);
-                            });
-                        } catch (e) {}
-                    }, 380);
-                }
-
-                function selectAndSaveCityInstantly(lat, lng, cityName) {
-                    prayerState.lat = parseFloat(lat);
-                    prayerState.lng = parseFloat(lng);
-                    prayerState.city = cityName;
-                    pendingCitySelection = { lat: prayerState.lat, lng: prayerState.lng, city: cityName };
-
-                    localStorage.setItem('aya_lat', prayerState.lat);
-                    localStorage.setItem('aya_lng', prayerState.lng);
-                    localStorage.setItem('aya_city', prayerState.city);
-
-                    document.getElementById('settings-selected-city-label').textContent = `✓ ${cityName} (Сохранено)`;
-                    document.getElementById('unified-city-input').value = '';
-                    renderQuickCities('');
-                    initPrayerTab();
-                }
-
-                function instantSaveMethodAndSchool() {
-                    prayerState.method = document.getElementById('settings-method').value;
-                    prayerState.school = document.getElementById('settings-school').value;
-                    localStorage.setItem('aya_method', prayerState.method);
-                    localStorage.setItem('aya_school', prayerState.school);
-                    initPrayerTab();
-                }
-
-                function setInstantHomeCity() {
-                    prayerState.homeLat = parseFloat(prayerState.lat);
-                    prayerState.homeLng = parseFloat(prayerState.lng);
-                    prayerState.homeCity = prayerState.city;
-                    localStorage.setItem('aya_home_lat', prayerState.homeLat);
-                    localStorage.setItem('aya_home_lng', prayerState.homeLng);
-                    localStorage.setItem('aya_home_city', prayerState.homeCity);
-                    document.getElementById('home-city-label').textContent = prayerState.homeCity;
-                    const btn = document.getElementById('make-home-btn');
-                    btn.textContent = "✓ Сохранено как дом";
-                    setTimeout(() => { btn.textContent = "Сделать домашним"; }, 2000);
-                    updateMusafirUI();
-                }
-
-                window.addEventListener('DOMContentLoaded', () => {
-                    setTimeout(() => renderQuickCities(''), 100);
-                });
-            </script>
+    </main>
 
     <!-- МОДАЛЬНОЕ ОКНО ПРЯМОГО ЭФИРА MAKKAH LIVE -->
     <div id="makkah-live-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-2xl flex items-center justify-center p-4">
@@ -1138,7 +1041,7 @@
         <canvas id="status-canvas" width="1080" height="1920" class="hidden"></canvas>
     </div>
 
-    <!-- НИЖНЕЕ ПЛАВАЮЩЕЕ МЕНЮ LIQUID GLASS (4 ПРОСТОРНЫЕ ВКЛАДКИ: НАМАЗ, КОРАН, ЗАУЧИВАНИЕ, СТАТУС) -->
+    <!-- НИЖНЕЕ ПЛАВАЮЩЕЕ МЕНЮ LIQUID GLASS -->
     <nav style="bottom: max(env(safe-area-inset-bottom, 14px), 14px);" class="fixed left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-md obsidian-matte rounded-full p-1.5 flex items-center justify-between">
         <button onclick="switchTab('prayer')" id="nav-prayer" class="spring-interactive flex-1 py-2.5 rounded-full flex flex-col items-center justify-center gap-0.5 bg-gradient-to-r from-amberDeep to-amberGlow text-white shadow-lg">
             <i data-lucide="clock-4" class="w-4 h-4"></i>
@@ -1158,7 +1061,7 @@
         </button>
     </nav>
 
-   <!-- JAVASCRIPT ЯДРО AYASPACE -->
+    <!-- JAVASCRIPT ЯДРО AYASPACE -->
     <script>
         let prayerState = {
             lat: parseFloat(localStorage.getItem('aya_lat')) || 55.7558,
@@ -1174,6 +1077,7 @@
         };
 
         let pendingCitySelection = { lat: prayerState.lat, lng: prayerState.lng, city: prayerState.city };
+        let searchDebounceTimer = null;
         let globalAudio = new Audio();
         let allSurahs = [];
         let currentSurahAyahs = [];
@@ -1218,6 +1122,7 @@
             checkFridayOrHolidayBanner();
             updateNotificationBadge();
             syncSettingsUI();
+            renderQuickCities('');
             updateQiblaCompassCalculations();
         });
 
@@ -1269,8 +1174,10 @@
             if (tabName === 'memorize' && trainerState.ayahs.length === 0) loadMemorizeSurah(trainerState.surahNumber);
             if (tabName === 'settings') {
                 syncSettingsUI();
+                renderQuickCities('');
                 updateNotificationBadge();
             }
+            lucide.createIcons();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1288,6 +1195,127 @@
                 }
             });
             if (sectionKey === 'qibla') updateQiblaCompassCalculations();
+        }
+
+        // УМНЫЙ ВЫБОР И ПОИСК ГОРОДА В 1 КАСАНИЕ
+        function renderQuickCities(filterText = '') {
+            const box = document.getElementById('unified-city-results');
+            if (!box) return;
+            const q = filterText.toLowerCase().trim();
+            const matched = QUICK_CITIES.filter(c => c.name.toLowerCase().includes(q));
+
+            box.innerHTML = matched.map(c => {
+                const isSelected = prayerState.city === c.name;
+                return `
+                    <button type="button" onclick="selectAndSaveCityInstantly(${c.lat}, ${c.lng}, '${c.name}')"
+                        class="spring-interactive px-3 py-1.5 rounded-xl text-xs font-semibold border ${
+                            isSelected
+                                ? 'bg-emeraldAccent text-obsidian border-emeraldAccent font-bold shadow'
+                                : 'bg-white/8 hover:bg-white/15 border-white/12 text-white/85'
+                        }">
+                        ${isSelected ? '✓ ' : ''}${c.name}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function onUnifiedCityInput(val) {
+            const q = val.trim();
+            renderQuickCities(q);
+            clearTimeout(searchDebounceTimer);
+            if (q.length < 2) return;
+
+            searchDebounceTimer = setTimeout(async () => {
+                const box = document.getElementById('unified-city-results');
+                if (!box) return;
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&accept-language=ru&limit=6&q=${encodeURIComponent(q)}`);
+                    const places = await res.json();
+                    if (!places || !places.length) return;
+
+                    places.forEach(p => {
+                        const shortName = p.display_name.split(',')[0].replace(/'/g, "");
+                        const lat = parseFloat(p.lat).toFixed(4);
+                        const lng = parseFloat(p.lon).toFixed(4);
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = "spring-interactive w-full text-left p-2.5 rounded-xl bg-amberCore/20 hover:bg-amberCore/35 border border-amberGlow/40 flex items-center justify-between gap-2 mt-1";
+                        btn.onclick = () => selectAndSaveCityInstantly(lat, lng, shortName);
+                        btn.innerHTML = `<span class="truncate text-white font-semibold text-xs">📍 ${p.display_name}</span><span class="text-[10px] text-amberGlow font-bold shrink-0">Выбрать</span>`;
+                        box.appendChild(btn);
+                    });
+                } catch (e) {}
+            }, 380);
+        }
+
+        function selectAndSaveCityInstantly(lat, lng, cityName) {
+            prayerState.lat = parseFloat(lat);
+            prayerState.lng = parseFloat(lng);
+            prayerState.city = cityName;
+            pendingCitySelection = { lat: prayerState.lat, lng: prayerState.lng, city: cityName };
+
+            localStorage.setItem('aya_lat', prayerState.lat);
+            localStorage.setItem('aya_lng', prayerState.lng);
+            localStorage.setItem('aya_city', prayerState.city);
+
+            const label = document.getElementById('settings-selected-city-label');
+            if (label) label.textContent = `✓ ${cityName} (Сохранено)`;
+            const input = document.getElementById('unified-city-input');
+            if (input) input.value = '';
+
+            renderQuickCities('');
+            initPrayerTab();
+        }
+
+        function instantSaveMethodAndSchool() {
+            prayerState.method = document.getElementById('settings-method').value;
+            prayerState.school = document.getElementById('settings-school').value;
+            localStorage.setItem('aya_method', prayerState.method);
+            localStorage.setItem('aya_school', prayerState.school);
+            initPrayerTab();
+        }
+
+        function setInstantHomeCity() {
+            prayerState.homeLat = parseFloat(prayerState.lat);
+            prayerState.homeLng = parseFloat(prayerState.lng);
+            prayerState.homeCity = prayerState.city;
+            localStorage.setItem('aya_home_lat', prayerState.homeLat);
+            localStorage.setItem('aya_home_lng', prayerState.homeLng);
+            localStorage.setItem('aya_home_city', prayerState.homeCity);
+            document.getElementById('home-city-label').textContent = prayerState.homeCity;
+            const btn = document.getElementById('make-home-btn');
+            if (btn) {
+                btn.textContent = "✓ Сохранено как дом";
+                setTimeout(() => { btn.textContent = "Сделать домашним"; }, 2000);
+            }
+            updateMusafirUI();
+        }
+
+        function syncSettingsUI() {
+            pendingCitySelection = { lat: prayerState.lat, lng: prayerState.lng, city: prayerState.city };
+            const cityLabel = document.getElementById('settings-selected-city-label');
+            if (cityLabel) cityLabel.textContent = `${prayerState.city} (${prayerState.lat}, ${prayerState.lng})`;
+            const homeLabel = document.getElementById('home-city-label');
+            if (homeLabel) homeLabel.textContent = prayerState.homeCity;
+            const methodSelect = document.getElementById('settings-method');
+            if (methodSelect) methodSelect.value = prayerState.method;
+            const schoolSelect = document.getElementById('settings-school');
+            if (schoolSelect) schoolSelect.value = prayerState.school;
+        }
+
+        function detectGeolocation() {
+            if (!navigator.geolocation) { switchTab('settings'); return; }
+            navigator.geolocation.getCurrentPosition(pos => {
+                prayerState.lat = parseFloat(pos.coords.latitude.toFixed(4));
+                prayerState.lng = parseFloat(pos.coords.longitude.toFixed(4));
+                prayerState.city = "Моя геопозиция";
+                localStorage.setItem('aya_lat', prayerState.lat);
+                localStorage.setItem('aya_lng', prayerState.lng);
+                localStorage.setItem('aya_city', prayerState.city);
+                syncSettingsUI();
+                renderQuickCities('');
+                initPrayerTab();
+            }, () => switchTab('settings'));
         }
 
         // DYNAMIC ISLAND ПЛЕЕР
@@ -2165,7 +2193,7 @@
             });
         }
 
-        // 5. СТАТУСЫ (РАЗНЫЕ ШРИФТЫ, КРУПНЫЙ ТЕКСТ НА ВЫХОДЕ, ЧИСТОЕ ФОТО В WHATSAPP БЕЗ ТЕКСТА)
+        // 5. СТАТУСЫ
         function getCurrentWeekSeed() {
             const now = new Date(), start = new Date(now.getFullYear(), 0, 1);
             const weekNum = Math.ceil((((now - start) / 86400000) + start.getDay() + 1) / 7);
@@ -2345,7 +2373,7 @@
             return y + lineHeight;
         }
 
-        // 6. НАСТРОЙКИ И ОФИЦИАЛЬНОЕ РАСПИСАНИЕ НАМАЗОВ НА 31 ДЕНЬ ВПЕРЕД (.ICS)
+        // 6. УВЕДОМЛЕНИЯ И ОФИЦИАЛЬНОЕ РАСПИСАНИЕ НАМАЗОВ НА 31 ДЕНЬ ВПЕРЕД (.ICS)
         function checkFridayOrHolidayBanner() {
             if (new Date().getDay() === 5) document.getElementById('special-day-banner').classList.remove('hidden');
         }
@@ -2354,6 +2382,7 @@
 
         function updateNotificationBadge() {
             const badge = document.getElementById('notif-permission-badge');
+            if (!badge) return;
             if (!('Notification' in window)) { badge.textContent = "Через Календарь"; return; }
             if (Notification.permission === 'granted') {
                 badge.textContent = "Разрешено";
@@ -2468,7 +2497,6 @@
                 icsLines.push("END:VCALENDAR");
                 const icsContent = icsLines.join("\r\n");
 
-                // На iPhone открываем системное окно импорта в Календарь напрямую
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 if (isIOS) {
                     window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
@@ -2486,102 +2514,7 @@
                 lucide.createIcons();
             }
         }
-        
-                icsLines.push("END:VCALENDAR");
-                const blob = new Blob([icsLines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = `ayaspace-namaz-month-${prayerState.city}.ics`;
-                a.click();
-            } catch (err) {
-                alert("Ошибка загрузки месячного расписания. Проверьте подключение к сети.");
-            } finally {
-                btn.innerHTML = oldHtml;
-                lucide.createIcons();
-            }
-        }
-
-        async function searchGlobalCity() {
-            const q = document.getElementById('global-city-search').value.trim();
-            const resultsBox = document.getElementById('nominatim-results');
-            if (!q) return;
-            resultsBox.classList.remove('hidden');
-            resultsBox.innerHTML = `<div class="p-2.5 text-white/60 text-xs">Поиск «${q}»...</div>`;
-            try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&accept-language=ru&limit=5&q=${encodeURIComponent(q)}`);
-                const places = await res.json();
-                if (!places || !places.length) { resultsBox.innerHTML = `<div class="p-2.5 text-orange-300 text-xs">Населенный пункт не найден.</div>`; return; }
-                resultsBox.innerHTML = '';
-                places.forEach(p => {
-                    const shortName = p.display_name.split(',')[0];
-                    const item = document.createElement('button');
-                    item.type = 'button';
-                    item.className = "spring-interactive w-full text-left p-2.5 rounded-xl bg-white/5 hover:bg-amberCore/25 border border-white/10 flex items-center justify-between gap-2";
-                    item.onclick = () => {
-                        pendingCitySelection = { lat: parseFloat(p.lat).toFixed(4), lng: parseFloat(p.lon).toFixed(4), city: shortName };
-                        document.getElementById('settings-selected-city-label').textContent = `${shortName} (${pendingCitySelection.lat}, ${pendingCitySelection.lng})`;
-                        resultsBox.classList.add('hidden');
-                    };
-                    item.innerHTML = `<span class="truncate text-white/90 text-xs">${p.display_name}</span><span class="text-[10px] text-amberGlow shrink-0">Выбрать</span>`;
-                    resultsBox.appendChild(item);
-                });
-            } catch (e) { resultsBox.innerHTML = `<div class="p-2.5 text-red-400 text-xs">Ошибка поиска города.</div>`; }
-        }
-
-        function applyPresetCity(val) {
-            const parts = val.split(',');
-            pendingCitySelection = { lat: parseFloat(parts[0]), lng: parseFloat(parts[1]), city: parts[2] };
-            document.getElementById('settings-selected-city-label').textContent = `${pendingCitySelection.city} (${pendingCitySelection.lat}, ${pendingCitySelection.lng})`;
-        }
-
-        function setCurrentCityAsHome() {
-            prayerState.homeLat = parseFloat(pendingCitySelection.lat);
-            prayerState.homeLng = parseFloat(pendingCitySelection.lng);
-            prayerState.homeCity = pendingCitySelection.city;
-            localStorage.setItem('aya_home_lat', prayerState.homeLat);
-            localStorage.setItem('aya_home_lng', prayerState.homeLng);
-            localStorage.setItem('aya_home_city', prayerState.homeCity);
-            document.getElementById('home-city-label').textContent = prayerState.homeCity;
-            updateMusafirUI();
-        }
-
-        function syncSettingsUI() {
-            pendingCitySelection = { lat: prayerState.lat, lng: prayerState.lng, city: prayerState.city };
-            document.getElementById('settings-selected-city-label').textContent = `${prayerState.city} (${prayerState.lat}, ${prayerState.lng})`;
-            document.getElementById('home-city-label').textContent = prayerState.homeCity;
-            document.getElementById('settings-method').value = prayerState.method;
-            document.getElementById('settings-school').value = prayerState.school;
-        }
-
-        function detectGeolocation() {
-            if (!navigator.geolocation) { switchTab('settings'); return; }
-            navigator.geolocation.getCurrentPosition(pos => {
-                prayerState.lat = parseFloat(pos.coords.latitude.toFixed(4));
-                prayerState.lng = parseFloat(pos.coords.longitude.toFixed(4));
-                prayerState.city = "Моя геопозиция";
-                localStorage.setItem('aya_lat', prayerState.lat);
-                localStorage.setItem('aya_lng', prayerState.lng);
-                localStorage.setItem('aya_city', prayerState.city);
-                initPrayerTab();
-            }, () => switchTab('settings'));
-        }
-
-        function savePrayerSettings() {
-            prayerState.lat = parseFloat(pendingCitySelection.lat);
-            prayerState.lng = parseFloat(pendingCitySelection.lng);
-            prayerState.city = pendingCitySelection.city;
-            prayerState.method = document.getElementById('settings-method').value;
-            prayerState.school = document.getElementById('settings-school').value;
-
-            localStorage.setItem('aya_lat', prayerState.lat);
-            localStorage.setItem('aya_lng', prayerState.lng);
-            localStorage.setItem('aya_city', prayerState.city);
-            localStorage.setItem('aya_method', prayerState.method);
-            localStorage.setItem('aya_school', prayerState.school);
-
-            initPrayerTab();
-            switchTab('prayer');
-        }
     </script>
 </body>
 </html>
+            
