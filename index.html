@@ -2876,13 +2876,19 @@
         }
     </script>
 </body>
-    <!-- =========================================================================
-         АВТОНОМНЫЙ ГЕНЕРАТОР ПЕЙЗАЖЕЙ ПРИРОДЫ (РАБОТАЕТ БЕЗ VPN ЗА 0.05 СЕК)
-         + АВТОМАТИЧЕСКОЕ ЕЖЕНЕДЕЛЬНОЕ ОБНОВЛЕНИЕ СТАТУСОВ
+   <!-- =========================================================================
+         ЯРКИЕ ОБЪЕМНЫЕ ПЕЙЗАЖИ ПРИРОДЫ БЕЗ VPN + ЕЖЕНЕДЕЛЬНОЕ ОБНОВЛЕНИЕ
+         (Убрано двойное черное затемнение, добавлены туман, светотень дюн, лес и озера)
          ========================================================================= -->
+    <style>
+        /* Отключаем старое черное затемнение, которое делало картинки черными */
+        .status-photo-exposure {
+            filter: brightness(0.92) contrast(1.05) !important;
+        }
+    </style>
+
     <script>
         (function() {
-            // Большая база достоверных аятов и дуа для еженедельной ротации
             const ALL_STATUS_POOL = [
                 { category: "daily", arabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", russian: "Воистину, за каждой тягостью наступает облегчение.", source: "Сура Аш-Шарх • 94:5" },
                 { category: "daily", arabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا", russian: "Аллах не возлагает на душу сверх её возможностей.", source: "Сура Аль-Бакара • 2:286" },
@@ -2906,85 +2912,138 @@
                 { category: "jumuah", arabic: "فِي الْجُمُعَةِ سَاعَةٌ لَا يُوَافِقُهَا عَبْدٌ مُسْلِمٌ يَسْأَلُ اللَّهَ خَيْرًا إِلَّا أَعْطَاهُ", russian: "В пятницу есть час, в который мусульманин не попросит у Аллаха блага, кроме как Он дарует ему это.", source: "Сахих аль-Бухари • 935" },
                 { category: "daily", arabic: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا", russian: "Тому, кто боится Аллаха, Он создает выход из любого положения.", source: "Сура Ат-Талак • 65:2" },
                 { category: "daily", arabic: "وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ ۚ عَلَيْهِ تَوَكَّلْتُ", russian: "Помогает мне только Аллах. На Него одного я уповаю.", source: "Сура Худ • 11:88" },
-                { category: "daily", arabic: "وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ ۚ إِنَّ اللَّهَ بَصِيرٌ بِالْعِبَادِ", russian: "Я вверяю свое дело Аллаху. Воистину, Аллах видит рабов.", source: "Сура Гафир • 40:44" },
                 { category: "daily", arabic: "سَيَجْعَلُ اللَّهُ بَعْدَ عُسْرٍ يُسْرًا", russian: "После тягости Аллах непременно создаст облегчение.", source: "Сура Ат-Талак • 65:7" },
-                { category: "daily", arabic: "وَرَحْمَتِي وَسِعَتْ كُلَّ شَيْءٍ", russian: "Моя милость объемлет всякую вещь.", source: "Сура Аль-Араф • 7:156" },
                 { category: "daily", arabic: "لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ", russian: "Если вы будете благодарны, то Я непременно приумножу вам.", source: "Сура Ибрахим • 14:7" }
             ];
 
-            // Генератор кинематографичных ночных пейзажей природы прямо в памяти телефона (0% зависимости от VPN!)
-            const NATURE_PALETTES = [
-                { skyTop: "#05070B", skyHorizon: "#2B160C", ridge1: "#160B06", ridge2: "#0B0503", ridge3: "#050201", stars: true, type: "dunes" },
-                { skyTop: "#040811", skyHorizon: "#132232", ridge1: "#0B141E", ridge2: "#070C12", ridge3: "#030508", stars: true, type: "mountains" },
-                { skyTop: "#080504", skyHorizon: "#381808", ridge1: "#1D0C04", ridge2: "#110702", ridge3: "#070301", stars: false, type: "dunes" },
-                { skyTop: "#040A09", skyHorizon: "#102822", ridge1: "#091814", ridge2: "#050E0C", ridge3: "#020605", stars: true, type: "forest" },
-                { skyTop: "#09070C", skyHorizon: "#261922", ridge1: "#140D13", ridge2: "#0B070B", ridge3: "#050305", stars: true, type: "mountains" },
-                { skyTop: "#060403", skyHorizon: "#2E1A0F", ridge1: "#180D07", ridge2: "#0E0704", ridge3: "#060302", stars: true, type: "canyon" }
+            // 6 богатых, хорошо освещенных природных палитр (Закатные барханы, Туманные горы, Изумрудный лес, Озеро, Каньон)
+            const NATURE_SCENES = [
+                { sky1: "#2A1520", sky2: "#9E472A", sky3: "#E88D48", sun: "rgba(255, 200, 130, 0.55)", r1: "#7A3219", r2: "#521E0C", r3: "#2B0E05", mist: "rgba(255, 165, 100, 0.22)" },
+                { sky1: "#162638", sky2: "#3E627A", sky3: "#9BB5C4", sun: "rgba(255, 235, 210, 0.45)", r1: "#334F63", r2: "#213545", r3: "#111D26", mist: "rgba(200, 225, 240, 0.28)" },
+                { sky1: "#122926", sky2: "#2E5E54", sky3: "#82B09A", sun: "rgba(220, 255, 230, 0.40)", r1: "#23473F", r2: "#16302A", r3: "#0B1A17", mist: "rgba(180, 230, 210, 0.25)" },
+                { sky1: "#24192E", sky2: "#6B435B", sky3: "#D4886A", sun: "rgba(255, 190, 150, 0.50)", r1: "#4F2E42", r2: "#331C2B", r3: "#1B0E17", mist: "rgba(240, 175, 155, 0.22)" },
+                { sky1: "#1F140E", sky2: "#783C1E", sky3: "#D67A3C", sun: "rgba(255, 185, 110, 0.50)", r1: "#612D13", r2: "#401C0A", r3: "#210D04", mist: "rgba(255, 160, 95, 0.20)" },
+                { sky1: "#0F1E2E", sky2: "#294D6B", sky3: "#7DA1B8", sun: "rgba(215, 240, 255, 0.42)", r1: "#223E57", r2: "#152838", r3: "#0B1621", mist: "rgba(185, 215, 240, 0.25)" }
             ];
 
-            function createOfflineNatureWallpaper(seedIndex) {
+            function createRichNatureWallpaper(seedIndex) {
                 const c = document.createElement('canvas');
                 c.width = 540;
                 c.height = 960;
                 const ctx = c.getContext('2d');
-                const pal = NATURE_PALETTES[seedIndex % NATURE_PALETTES.length];
+                const sc = NATURE_SCENES[seedIndex % NATURE_SCENES.length];
 
-                // 1. Ночное небо с закатным/сумеречным свечением у горизонта
-                const skyGrad = ctx.createLinearGradient(0, 0, 0, 960);
-                skyGrad.addColorStop(0, pal.skyTop);
-                skyGrad.addColorStop(0.58, pal.skyHorizon);
-                skyGrad.addColorStop(1, pal.ridge3);
+                // 1. Яркое многослойное небо (от глубокого зенита к светящемуся горизонту)
+                const skyGrad = ctx.createLinearGradient(0, 0, 0, 650);
+                skyGrad.addColorStop(0, sc.sky1);
+                skyGrad.addColorStop(0.55, sc.sky2);
+                skyGrad.addColorStop(1, sc.sky3);
                 ctx.fillStyle = skyGrad;
                 ctx.fillRect(0, 0, 540, 960);
 
-                // Мягкое атмосферное свечение на горизонте
-                const glow = ctx.createRadialGradient(270 + ((seedIndex % 3) - 1) * 90, 540, 10, 270, 540, 420);
-                glow.addColorStop(0, "rgba(255, 135, 60, 0.18)");
-                glow.addColorStop(1, "rgba(0, 0, 0, 0)");
-                ctx.fillStyle = glow;
+                // 2. Мягкое солнце / лунное свечение над горами или барханами
+                const sunX = 150 + ((seedIndex * 97) % 240);
+                const sunY = 390 + ((seedIndex * 43) % 110);
+                const sunGlow = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, 320);
+                sunGlow.addColorStop(0, sc.sun);
+                sunGlow.addColorStop(1, "rgba(0,0,0,0)");
+                ctx.fillStyle = sunGlow;
                 ctx.fillRect(0, 0, 540, 960);
 
-                // 2. Звездная россыпь в верхней части неба
-                if (pal.stars) {
-                    let s = (seedIndex + 1) * 9301;
-                    for (let i = 0; i < 65; i++) {
-                        s = (s * 49297 + 233280) % 233280;
-                        const x = (s / 233280) * 540;
-                        s = (s * 49297 + 233280) % 233280;
-                        const y = (s / 233280) * 460;
-                        const alpha = 0.15 + ((i % 5) * 0.14);
-                        ctx.fillStyle = `rgba(255, 245, 235, ${alpha})`;
-                        ctx.beginPath();
-                        ctx.arc(x, y, (i % 3 === 0) ? 1.2 : 0.7, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
+                // 3. Звезды в верхней части неба
+                let s = (seedIndex + 3) * 7919;
+                for (let i = 0; i < 45; i++) {
+                    s = (s * 49297 + 233280) % 233280;
+                    const x = (s / 233280) * 540;
+                    s = (s * 49297 + 233280) % 233280;
+                    const y = (s / 233280) * 320;
+                    ctx.fillStyle = `rgba(255, 250, 240, ${0.25 + (i % 4) * 0.15})`;
+                    ctx.beginPath();
+                    ctx.arc(x, y, (i % 3 === 0) ? 1.3 : 0.8, 0, Math.PI * 2);
+                    ctx.fill();
                 }
 
-                // 3. Многослойные силуэты дюн пустыни / горных хребтов в тумане
-                const layers = [
-                    { yBase: 560, amp: 55, freq: 0.006, color: pal.ridge1, phase: seedIndex * 1.4 },
-                    { yBase: 670, amp: 45, freq: 0.008, color: pal.ridge2, phase: seedIndex * 2.7 + 1 },
-                    { yBase: 780, amp: 32, freq: 0.005, color: pal.ridge3, phase: seedIndex * 3.9 + 2 }
+                // 4. Четыре объемных слоя барханов / горных хребтов с туманной дымкой между ними
+                const ridges = [
+                    { yBase: 510, amp: 52, freq: 0.0055, color: sc.r1, phase: seedIndex * 1.3 },
+                    { yBase: 625, amp: 44, freq: 0.0075, color: sc.r2, phase: seedIndex * 2.4 + 1.2 },
+                    { yBase: 745, amp: 34, freq: 0.0060, color: sc.r3, phase: seedIndex * 3.7 + 2.5 }
                 ];
 
-                layers.forEach(layer => {
+                ridges.forEach((layer, idx) => {
                     ctx.beginPath();
                     ctx.moveTo(0, 960);
-                    for (let x = 0; x <= 540; x += 12) {
-                        const wave1 = Math.sin(x * layer.freq + layer.phase) * layer.amp;
-                        const wave2 = Math.cos(x * layer.freq * 2.1 - layer.phase) * (layer.amp * 0.4);
-                        ctx.lineTo(x, layer.yBase + wave1 + wave2);
+                    for (let x = 0; x <= 540; x += 8) {
+                        const w1 = Math.sin(x * layer.freq + layer.phase) * layer.amp;
+                        const w2 = Math.cos(x * layer.freq * 1.9 - layer.phase) * (layer.amp * 0.35);
+                        ctx.lineTo(x, layer.yBase + w1 + w2);
                     }
                     ctx.lineTo(540, 960);
                     ctx.closePath();
                     ctx.fillStyle = layer.color;
                     ctx.fill();
+
+                    // Слой утреннего/вечернего тумана в ложбинах между хребтами
+                    if (idx < 2) {
+                        const mistGrad = ctx.createLinearGradient(0, layer.yBase - 20, 0, layer.yBase + 95);
+                        mistGrad.addColorStop(0, "rgba(255,255,255,0)");
+                        mistGrad.addColorStop(0.5, sc.mist);
+                        mistGrad.addColorStop(1, "rgba(0,0,0,0)");
+                        ctx.fillStyle = mistGrad;
+                        ctx.fillRect(0, layer.yBase - 20, 540, 120);
+                    }
                 });
 
-                return c.toDataURL('image/jpeg', 0.90);
+                // 5. Легкая центральная виньетка только под сам текст, чтобы буквы читались идеально
+                const textShade = ctx.createRadialGradient(270, 480, 40, 270, 480, 380);
+                textShade.addColorStop(0, "rgba(10, 10, 14, 0.38)");
+                textShade.addColorStop(1, "rgba(10, 10, 14, 0.12)");
+                ctx.fillStyle = textShade;
+                ctx.fillRect(0, 0, 540, 960);
+
+                return c.toDataURL('image/jpeg', 0.92);
             }
 
-            // Вычисляем номер текущей недели года для автоматического еженедельного обновления
+            // Переопределяем генератор 1080x1920 для WhatsApp (без черного фильтра 42%!)
+            window.generateStatusImageBlob = async function() {
+                const canvas = document.getElementById('status-canvas');
+                const ctx = canvas.getContext('2d');
+
+                const img = new Image();
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = activeStatusCard.image;
+                });
+
+                ctx.filter = "none";
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Деликатная полупрозрачная вуаль только для четкости белого текста
+                const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                grad.addColorStop(0, "rgba(8, 8, 12, 0.18)");
+                grad.addColorStop(0.5, "rgba(8, 8, 12, 0.32)");
+                grad.addColorStop(1, "rgba(8, 8, 12, 0.55)");
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.textAlign = "center";
+
+                ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+                ctx.font = "400 36px 'Scheherazade New', serif";
+                const nextY = wrapCanvasLines(ctx, activeStatusCard.arabic, canvas.width / 2, 895, 620, 54);
+
+                ctx.fillStyle = "rgba(255, 255, 255, 0.88)";
+                ctx.font = "italic 400 25px 'Playfair Display', 'Cormorant Garamond', serif";
+                const afterRusY = wrapCanvasLines(ctx, activeStatusCard.russian, canvas.width / 2, nextY + 16, 570, 38);
+
+                ctx.fillStyle = "rgba(255, 220, 190, 0.65)";
+                ctx.font = "500 14px 'Montserrat', sans-serif";
+                ctx.fillText(activeStatusCard.source.toUpperCase(), canvas.width / 2, afterRusY + 36);
+
+                return new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.94));
+            };
+
             function getCurrentWeekSeed() {
                 const now = new Date();
                 const start = new Date(now.getFullYear(), 0, 1);
@@ -3006,7 +3065,7 @@
                     weeklyStatuses.push({
                         id: i + 1,
                         category: poolItem.category,
-                        image: createOfflineNatureWallpaper(i + seed),
+                        image: createRichNatureWallpaper(i + seed),
                         arabic: poolItem.arabic,
                         russian: poolItem.russian,
                         source: poolItem.source
@@ -3019,26 +3078,25 @@
             };
 
             window.addEventListener('DOMContentLoaded', () => {
-                // Добавляем кнопку «Обновить подборку» в шапку раздела «Статус»
                 const statusSection = document.getElementById('tab-status');
                 if (statusSection) {
                     const headerBox = statusSection.querySelector('.apple-glass');
-                    if (headerBox) {
+                    if (headerBox && !document.getElementById('refresh-statuses-btn')) {
                         const topRow = headerBox.firstElementChild;
                         topRow.className = "flex items-center justify-between gap-3";
                         const refreshBtn = document.createElement('button');
+                        refreshBtn.id = 'refresh-statuses-btn';
                         refreshBtn.className = "spring-interactive px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-semibold text-amberGlow shrink-0";
                         refreshBtn.innerHTML = "🔄 Обновить";
                         refreshBtn.onclick = () => window.rebuildWeeklyStatuses(true);
                         topRow.appendChild(refreshBtn);
                     }
                 }
-
-                // Сразу генерируем 20 пейзажей без VPN
                 window.rebuildWeeklyStatuses(false);
             });
         })();
     </script>
+        
     <!-- Автоматическое создание оранжевой PNG-иконки для экрана Домой на iPhone -->
     <script>
         (function() {
