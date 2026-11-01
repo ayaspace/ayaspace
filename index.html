@@ -1024,11 +1024,10 @@
                     <p class="text-[11px] text-white/75 font-body leading-relaxed">
                         Ставит отдельный будильник на Утренний намаз (Фаджр) строго по времени вашего выбранного города.
                     </p>
-                    <button onclick="exportOnlyFajrAlarmICS()" class="spring-interactive w-full py-3 px-4 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center justify-center gap-2 shadow">
+                    <button id="fajr-alarm-btn" onclick="exportOnlyFajrAlarmICS(this)" class="spring-interactive w-full py-3 px-4 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center justify-center gap-2 shadow">
                         <i data-lucide="alarm-clock" class="w-4 h-4"></i>
                         <span>Поставить будильник</span>
                     </button>
-                </div>
 
                 <!-- Плашка: 100% точные уведомления на месяц + мини-инструкция -->
                 <div class="p-4 rounded-2xl obsidian-matte border border-emeraldAccent/35 space-y-2.5">
