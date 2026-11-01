@@ -1137,79 +1137,232 @@
                 <div id="memorize-ayahs-container" class="space-y-3"></div>
             </div>
 
-            <!-- ПОДВКЛАДКА 2: АРАБСКИЙ С НУЛЯ (ВИДЕОУРОКИ + ОГЛАСОВКИ + 28 БУКВ С ОЗВУЧКОЙ) -->
+            <!-- ПОДВКЛАДКА 2: ПОЛНЫЙ ИНТЕРАКТИВНЫЙ КУРС «ЧТЕНИЕ КОРАНА С НУЛЯ (МУАЛЛИМ САНИ И ТАДЖВИД)» -->
             <div id="learning-panel-arabic" class="hidden space-y-4 blur-text-reveal">
-                <!-- Блок Видеоуроков -->
+
+                <!-- ВВЕДЕНИЕ: ЧТО НУЖНО ЗНАТЬ ПЕРЕД НАЧАЛОМ (3 ЗОЛОТЫХ ПРАВИЛА) -->
                 <div class="apple-glass-amber rounded-[26px] p-5 space-y-3.5">
                     <div class="flex items-center justify-between gap-2">
                         <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Видеокурс • Муаллим Сани</span>
-                            <h3 class="text-base font-bold text-white">Уроки чтения Корана с нуля</h3>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Пошаговая программа • Муаллим Сани</span>
+                            <h3 class="text-base font-bold text-white">Как научиться читать Коран с нуля</h3>
                         </div>
-                        <span class="px-2.5 py-1 rounded-full bg-black/40 border border-white/15 text-[10px] text-amberGlow font-bold">Таджвид</span>
+                        <span class="px-2.5 py-1 rounded-full bg-black/40 border border-white/15 text-[10px] text-amberGlow font-bold shrink-0">Живой звук</span>
                     </div>
-
-                    <!-- Встроенный видеоплеер YouTube -->
-                    <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-white/15 shadow-xl">
-                        <iframe id="arabic-lesson-iframe" class="w-full h-full" src="https://www.youtube.com/embed/videoseries?list=PL6087525729F2126C" title="Уроки чтения Корана с нуля" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-
-                    <!-- Быстрое переключение уроков -->
-                    <div class="grid grid-cols-2 gap-2 pt-1 text-xs">
-                        <button onclick="loadArabicVideoLesson('https://www.youtube.com/embed/videoseries?list=PL6087525729F2126C', this)" class="arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-amberCore text-white font-bold text-left truncate">
-                            ▶ Курс 1: Муаллим Сани (Все уроки)
-                        </button>
-                        <button onclick="loadArabicVideoLesson('https://www.youtube.com/embed/videoseries?list=PL3956280E9281726E', this)" class="arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-black/45 border border-white/12 text-white/80 font-semibold text-left truncate">
-                            ▶ Курс 2: Правила Таджвида
-                        </button>
-                    </div>
-                    <p class="text-[11px] text-orange-100/75 font-body">
-                        💡 Если видео с YouTube не грузится у вашего оператора без VPN — ниже вся программа курса (огласовки и 28 букв с озвучкой) работает <strong>прямо внутри приложения без VPN</strong>!
+                    <p class="text-xs text-white/85 font-body leading-relaxed">
+                        Научиться читать Священный Коран на арабском языке гораздо проще, чем кажется: в арабском языке <strong>как пишется — так и читается</strong>. Чтобы начать читать уже сегодня, запомните <strong>3 главных правила</strong>:
                     </p>
-                </div>
-
-                <!-- Шаг 1: Огласовки (Харакаты — как читать буквы) -->
-                <div class="apple-glass rounded-[26px] p-5 space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldAccent">Урок 1 • Основа чтения</span>
-                        <h3 class="text-base font-bold text-white">Огласовки (Харакаты)</h3>
-                        <p class="text-xs text-white/65 font-body">В арабском языке гласные звуки пишутся черточками над или под буквой:</p>
-                    </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
-                            <p class="arabic-text text-3xl text-amberGlow">بَ</p>
-                            <p class="text-xs font-bold text-white">Фатха (Ба)</p>
-                            <p class="text-[10.5px] text-white/60">Черточка сверху дает звук «А / Э»</p>
+                    <div class="space-y-2 text-xs font-body">
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/12 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">1</span>
+                            <div>
+                                <p class="font-bold text-white">Читаем и пишем справа налево (←)</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Все слова, строчки и страницы в Коране идут справа налево. Заглавных (больших) букв в арабском нет.</p>
+                            </div>
                         </div>
-                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
-                            <p class="arabic-text text-3xl text-emeraldAccent">بِ</p>
-                            <p class="text-xs font-bold text-white">Кясра (Би)</p>
-                            <p class="text-[10.5px] text-white/60">Черточка снизу дает звук «И»</p>
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/12 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">2</span>
+                            <div>
+                                <p class="font-bold text-white">Все 28 букв алфавита — согласные</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Сама буква дает только согласный звук (например, «Б», «М», «С»). А гласные звуки («А», «И», «У») дают маленькие значки над или под буквой — <strong>огласовки (харакаты)</strong>.</p>
+                            </div>
                         </div>
-                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
-                            <p class="arabic-text text-3xl text-sapphireAccent">بُ</p>
-                            <p class="text-xs font-bold text-white">Дамма (Бу)</p>
-                            <p class="text-[10.5px] text-white/60">Запятая сверху дает звук «У»</p>
-                        </div>
-                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
-                            <p class="arabic-text text-3xl text-white">بْ</p>
-                            <p class="text-xs font-bold text-white">Сукун (Б)</p>
-                            <p class="text-[10.5px] text-white/60">Кружок сверху — буква без гласной</p>
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/12 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">3</span>
+                            <div>
+                                <p class="font-bold text-white">Твердые и мягкие буквы (Махрадж)</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">У каждой буквы есть своя точная точка выхода звука во рту или гортани (Махрадж). Мягкие буквы с черточкой сверху читаются мягко (через «Э/Я»), а <strong>7 твердых букв</strong> (`خ ص ض غ ط ق ظ`) — глубоко и твердо (через «А/О»).</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Шаг 2: Все 28 букв Арабского алфавита с озвучкой и Махраджем -->
+                <!-- УРОК 1: ОГЛАСОВКИ (ХАРАКАТЫ) С ЖИВЫМ ГОЛОСОМ ЧТЕЦА -->
                 <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
                     <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 2 • Нажмите на букву для озвучки</span>
-                        <h3 class="text-base font-bold text-white">Арабский алфавит (28 букв + Махрадж)</h3>
-                        <p class="text-xs text-white/65 font-body">Нажмите на любую карточку, чтобы услышать произношение буквы:</p>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldAccent">Урок 1 • Как буквы получают гласный звук</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">6 главных значков чтения (Харакаты)</h3>
+                        <p class="text-xs text-white/65 font-body mt-0.5">Нажмите на любую карточку, чтобы услышать живой пример чтеца Корана:</p>
                     </div>
-                    <div id="arabic-alphabet-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <!-- Фатха -->
+                        <div onclick="playRealQuranWordAudio('002_002_002', 'Фатха — звук «А / Э»', 'Пример: لَا رَيْبَ (Ля райба)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-amberGlow/50">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-amberGlow">1. Фатха (Звук «А / Э»)</span>
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amberGlow"></i>
+                                </div>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Косая черточка <strong>НАД</strong> буквой. С мягкими буквами звучит мягко («Бя/Бэ»), с твердыми — «Ба/Бо».</p>
+                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
+                                <span class="arabic-text text-3xl text-amberGlow">بَ</span>
+                            </div>
+                        </div>
+
+                        <!-- Кясра -->
+                        <div onclick="playRealQuranWordAudio('001_001_001', 'Кясра — звук «И»', 'Пример: بِسْمِ (Бисми)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-emeraldAccent/50">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-emeraldAccent">2. Кясра (Звук «И»)</span>
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-emeraldAccent"></i>
+                                </div>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Косая черточка <strong>ПОД</strong> буквой. Всегда дает чистый гласный звук «И» (например: «Би», «Ми»).</p>
+                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
+                                <span class="arabic-text text-3xl text-emeraldAccent">بِ</span>
+                            </div>
+                        </div>
+
+                        <!-- Дамма -->
+                        <div onclick="playRealQuranWordAudio('112_001_001', 'Дамма — звук «У»', 'Пример: قُلْ (Куль)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-sapphireAccent/50">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-sapphireAccent">3. Дамма (Звук «У»)</span>
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-sapphireAccent"></i>
+                                </div>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Петелька (похожая на запятую) <strong>НАД</strong> буквой. Губы округляются, дает звук «У» («Бу», «Ку»).</p>
+                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
+                                <span class="arabic-text text-3xl text-sapphireAccent">بُ</span>
+                            </div>
+                        </div>
+
+                        <!-- Сукун -->
+                        <div onclick="playRealQuranWordAudio('001_002_001', 'Сукун — отсутствие гласной', 'Пример: الْحَمْدُ (Аль-хамду)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-white/40">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-white">4. Сукун (Остановка)</span>
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-white/80"></i>
+                                </div>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Маленький кружок <strong>НАД</strong> буквой. Означает, что после согласной нет гласного звука (читается слитно: «Аб», «Аль»).</p>
+                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
+                                <span class="arabic-text text-3xl text-white">بْ</span>
+                            </div>
+                        </div>
+
+                        <!-- Шадда -->
+                        <div onclick="playRealQuranWordAudio('001_002_003', 'Шадда — удвоение буквы', 'Пример: رَبِّ (Рабби)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-amberGlow/50">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-amberGlow">5. Шадда (Удвоение «ББ»)</span>
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amberGlow"></i>
+                                </div>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Значок «w» над буквой. Буква произносится с нажимом в 2 раза дольше (например: «Раб-би», «Ин-на»).</p>
+                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
+                                <span class="arabic-text text-3xl text-amberGlow">بَّ</span>
+                            </div>
+                        </div>
+
+                        <!-- Танвин -->
+                        <div onclick="playRealQuranWordAudio('112_001_004', 'Танвин — окончание «-ун / -ан / -ин»', 'Пример: أَحَدٌ (Ахадун)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-emeraldAccent/50">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-emeraldAccent">6. Танвин («-ан / -ин / -ун»)</span>
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-emeraldAccent"></i>
+                                </div>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Двойная черточка или двойная петелька в конце слова. Добавляет на конце звук «Н»: «-ан», «-ин», «-ун».</p>
+                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
+                                <span class="arabic-text text-3xl text-emeraldAccent">بٌ</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- УРОК 2: КАК БУКВЫ СОЕДИНЯЮТСЯ В СЛОВА -->
+                <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 2 • Секрет соединения букв</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">Как узнать букву в начале, середине и конце слова</h3>
+                        <p class="text-xs text-white/70 font-body mt-1 leading-relaxed">
+                            В арабском языке буквы в слове пишутся слитно (держатся за руки). При соединении у буквы убирается «хвостик», но <strong>главная часть буквы и количество точек (1, 2 или 3 точки сверху/снизу) ВСЕГДА остаются неизменными!</strong>
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
+                            <span class="text-[10px] text-white/50 block">Отдельно</span>
+                            <p class="arabic-text text-3xl text-white my-1">ب</p>
+                            <span class="text-[10px] text-amberGlow">Полная</span>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
+                            <span class="text-[10px] text-white/50 block">В начале</span>
+                            <p class="arabic-text text-3xl text-amberGlow my-1">بـ</p>
+                            <span class="text-[10px] text-white/70">Рука влево</span>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
+                            <span class="text-[10px] text-white/50 block">В середине</span>
+                            <p class="arabic-text text-3xl text-emeraldAccent my-1">ـبـ</p>
+                            <span class="text-[10px] text-white/70">Обе руки</span>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
+                            <span class="text-[10px] text-white/50 block">В конце</span>
+                            <p class="arabic-text text-3xl text-sapphireAccent my-1">ـب</p>
+                            <span class="text-[10px] text-white/70">С хвостиком</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-amberCore/15 border border-amberGlow/35 text-xs font-body space-y-1">
+                        <p class="font-bold text-amberGlow">⚠️ Важное правило «6 гордых букв»:</p>
+                        <p class="text-white/85 leading-relaxed">
+                            Всего 6 букв алфавита — <span class="arabic-text text-lg text-white px-1 font-bold">ا د ذ ر ز و</span> (Алиф, Даль, Заль, Ра, За, Вав) — соединяются с предыдущей буквой справа, но <strong>никогда не дают руку следующей букве слева</strong> (после них в слове всегда маленький разрыв).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- УРОК 3: ПОЛНЫЙ АРАБСКИЙ АЛФАВИТ (28 БУКВ С ЖИВОЙ СТУДИЙНОЙ ОЗВУЧКОЙ ЧТЕЦА КОРАНА!) -->
+                <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 3 • Живое произношение чтеца Корана (без робота!)</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">Все 28 букв: формы в слове, Махрадж и пример из Корана</h3>
+                        <p class="text-xs text-white/65 font-body mt-0.5">Нажмите на любую букву — прозвучит настоящее студийное чтение коранического слова на эту букву:</p>
+                    </div>
+                    <div id="arabic-alphabet-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                </div>
+
+                <!-- УРОК 4: ПЕРВАЯ ПРАКТИКА ЧТЕНИЯ СЛОВ КОРАНА ПО БУКВАМ -->
+                <div class="apple-glass-amber rounded-[26px] p-5 space-y-3.5">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Урок 4 • Практика чтения с первой секунды</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">Прочитайте свои первые слова из Корана</h3>
+                        <p class="text-xs text-white/80 font-body mt-0.5">Соедините буквы с огласовками справа налево и нажмите на карточку, чтобы проверить себя с чтецом:</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                        <div onclick="playRealQuranWordAudio('001_001_001', 'Практика: بِسْمِ (Бисми)', 'Ба (с кясрой БИ) + Син (с сукуном С) + Мим (с кясрой МИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                            <div>
+                                <p class="font-bold text-amberGlow text-sm">1. БИ + С + МИ = Бисми</p>
+                                <p class="text-[11px] text-white/70 mt-0.5">бِ (би) + сْ (с) + мِ (ми) — «С именем»</p>
+                            </div>
+                            <span class="arabic-text text-3xl text-white">بِسْمِ</span>
+                        </div>
+                        <div onclick="playRealQuranWordAudio('001_002_003', 'Практика: رَبِّ (Рабби)', 'Ра (с фатхой РА) + удвоенная Ба (с шаддой и кясрой ББИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                            <div>
+                                <p class="font-bold text-emeraldAccent text-sm">2. РА + ББИ = Рабби</p>
+                                <p class="text-[11px] text-white/70 mt-0.5">рَ (ра) + бِّ (бби с шаддой) — «Господу»</p>
+                            </div>
+                            <span class="arabic-text text-3xl text-white">رَبِّ</span>
+                        </div>
+                        <div onclick="playRealQuranWordAudio('001_004_001', 'Практика: مَالِكِ (Малики)', 'Мим (с долгой А — МА) + Лям (с кясрой ЛИ) + Кяф (с кясрой КИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                            <div>
+                                <p class="font-bold text-sapphireAccent text-sm">3. МА + ЛИ + КИ = Малики</p>
+                                <p class="text-[11px] text-white/70 mt-0.5">мَا (ма) + лِ (ли) + كِ (ки) — «Властелину»</p>
+                            </div>
+                            <span class="arabic-text text-3xl text-white">مَالِكِ</span>
+                        </div>
+                        <div onclick="playRealQuranWordAudio('112_001_004', 'Практика: أَحَدٌ (Ахадун)', 'Алиф (А) + гортанная Ха (ХА) + Даль с танвином (ДУН)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                            <div>
+                                <p class="font-bold text-amberGlow text-sm">4. А + ХА + ДУН = Ахадун</p>
+                                <p class="text-[11px] text-white/70 mt-0.5">أَ (а) + حَ (ха) + دٌ (дун) — «Единый»</p>
+                            </div>
+                            <span class="arabic-text text-3xl text-white">أَحَدٌ</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </section>
         
         <!-- ВКЛАДКА 4: РАЗДЕЛ «СТАТУС» -->
         <section id="tab-status" class="tab-view hidden space-y-4">
@@ -3407,38 +3560,53 @@
             }
         }
         // =========================================================================
-        // МОДУЛЬ ОБУЧЕНИЯ: АРАБСКИЙ АЛФАВИТ С НУЛЯ (28 БУКВ + ОЗВУЧКА + ВИДЕО)
+        // МОДУЛЬ ОБУЧЕНИЯ: 28 БУКВ С НАСТОЯЩИМ СТУДИЙНЫМ АУДИО ЧТЕЦА КОРАНА (БЕЗ РОБОТА!)
         // =========================================================================
         const ARABIC_ALPHABET_28 = [
-            { letter: "ا", name: "Алиф", sound: "а / и / у", tip: "Долгий гласный или гортанная смычка" },
-            { letter: "ب", name: "Ба", sound: "бَ", tip: "Произносится смыканием губ (как русская Б)" },
-            { letter: "ت", name: "Та", sound: "тَ", tip: "Мягкая Т (кончик языка у верхних резцов)" },
-            { letter: "ث", name: "Са", sound: "ثَ", tip: "Межзубная С (кончик языка между зубами)" },
-            { letter: "ج", name: "Джим", sound: "джَ", tip: "Мягкая слитная ДЖ" },
-            { letter: "ح", name: "Ха", sound: "حَ", tip: "Чистый гортанный выдох из середины горла" },
-            { letter: "خ", name: "Ха (тв.)", sound: "خَ", tip: "Твердая хрипящая Х (верхняя часть горла)" },
-            { letter: "د", name: "Даль", sound: "дَ", tip: "Мягкая Д у корней верхних зубов" },
-            { letter: "ذ", name: "Заль", sound: "ذَ", tip: "Межзубная З (кончик языка между зубами)" },
-            { letter: "ر", name: "Ра", sound: "рَ", tip: "Четкая вибрирующая Р" },
-            { letter: "ز", name: "За", sound: "зَ", tip: "Чистая звонкая З" },
-            { letter: "س", name: "Син", sound: "сَ", tip: "Мягкая свистящая С" },
-            { letter: "ش", name: "Шин", sound: "шَ", tip: "Мягкая Ш" },
-            { letter: "ص", name: "Сад", sound: "صَ", tip: "Твердая густая С (с поднятием задней спинки языка)" },
-            { letter: "ض", name: "Дад", sound: "ضَ", tip: "Твердая густая Д (боковой край языка к коренным зубам)" },
-            { letter: "ط", name: "Та (тв.)", sound: "طَ", tip: "Твердая глубокая Т (читается с гласной А как О)" },
-            { letter: "ظ", name: "За (тв.)", sound: "ظَ", tip: "Твердая межзубная З" },
-            { letter: "ع", name: "Айн", sound: "عَ", tip: "Глубокий гортанный звук из сжатой середины горла" },
-            { letter: "غ", name: "Гайн", sound: "غَ", tip: "Мягкая гортанная Г (как французская R)" },
-            { letter: "ف", name: "Фа", sound: "фَ", tip: "Верхние резцы касаются внутренней стороны нижней губы" },
-            { letter: "ق", name: "Каф", sound: "قَ", tip: "Глубокая гортанная К (корень языка к мягкому нёбу)" },
-            { letter: "ك", name: "Кяф", sound: "كَ", tip: "Мягкая К (как в слове «книга»)" },
-            { letter: "ل", name: "Лям", sound: "لَ", tip: "Мягкая Л" },
-            { letter: "م", name: "Мим", sound: "مَ", tip: "Губная М" },
-            { letter: "ن", name: "Нун", sound: "نَ", tip: "Носовая мягкая Н" },
-            { letter: "ه", name: "Ха (лёгк.)", sound: "هَ", tip: "Лёгкий теплый выдох из глубины груди" },
-            { letter: "و", name: "Вав", sound: "وَ", tip: "Округление губ (как англ. W)" },
-            { letter: "ي", name: "Йа", sound: "يَ", tip: "Мягкая Й" }
+            { letter: "ا", forms: "ـا / ا", name: "Алиф", type: "Мягкая", makhraj: "Из глубины гортани (Хамза) или тянет гласную А", exampleAr: "أَحَدٌ", exampleTr: "Ахадун (112:1)", wbw: "112_001_004" },
+            { letter: "ب", forms: "ـب / ـبـ / بـ", name: "Ба", type: "Мягкая", makhraj: "Плотно смыкаются обе губы (звонкая Б)", exampleAr: "بِسْمِ", exampleTr: "Бисми (1:1)", wbw: "001_001_001" },
+            { letter: "ت", forms: "ـت / ـتـ / تـ", name: "Та", type: "Мягкая", makhraj: "Кончик языка касается основания верхних передних зубов", exampleAr: "تَبَّتْ", exampleTr: "Таббат (111:1)", wbw: "111_001_001" },
+            { letter: "ث", forms: "ـث / ـثـ / ثـ", name: "Са (межзуб.)", type: "Мягкая", makhraj: "Кончик языка слегка выступает между верхними и нижними зубами", exampleAr: "ثُمَّ", exampleTr: "Сумма (102:4)", wbw: "102_004_001" },
+            { letter: "ج", forms: "ـج / ـجـ / جـ", name: "Джим", type: "Мягкая", makhraj: "Середина языка прижимается к середине верхнего нёба (слитная ДЖ)", exampleAr: "جَاءَ", exampleTr: "Джа'а (110:1)", wbw: "110_001_002" },
+            { letter: "ح", forms: "ـح / ـحـ / حـ", name: "Ха (гортан.)", type: "Мягкая", makhraj: "Из средней части гортани — чистый шипящий выдох (как когда греем руки дыханием)", exampleAr: "الْحَمْدُ", exampleTr: "Аль-хамду (1:2)", wbw: "001_002_001" },
+            { letter: "خ", forms: "ـخ / ـخـ / خـ", name: "Ха (твердая)", type: "Твердая", makhraj: "Верхняя часть гортани у корня языка (твердая хрипящая Х, с фатхой читается ХО)", exampleAr: "خَلَقَ", exampleTr: "Халяка (113:2)", wbw: "113_002_004" },
+            { letter: "د", forms: "ـد / د", name: "Даль", type: "Мягкая", makhraj: "Кончик языка у основания верхних резцов (звонкая Д)", exampleAr: "دِينِ", exampleTr: "Дини (109:6)", wbw: "109_006_004" },
+            { letter: "ذ", forms: "ـذ / ذ", name: "Заль (межзуб.)", type: "Мягкая", makhraj: "Кончик языка между зубами — звонкая межзубная З", exampleAr: "ذَٰلِكَ", exampleTr: "Заликя (2:2)", wbw: "002_002_001" },
+            { letter: "ر", forms: "ـر / ر", name: "Ра", type: "Твердая/Мягк.", makhraj: "Кончик языка вибрирует у переднего края верхнего нёба", exampleAr: "رَبِّ", exampleTr: "Рабби (1:2)", wbw: "001_002_003" },
+            { letter: "ز", forms: "ـز / ز", name: "За", type: "Мягкая", makhraj: "Кончик языка у нижних передних зубов (чистая звонкая свистящая З)", exampleAr: "زُلْزِلَتِ", exampleTr: "Зульзиляти (99:1)", wbw: "099_001_002" },
+            { letter: "س", forms: "ـس / ـسـ / سـ", name: "Син", type: "Мягкая", makhraj: "Кончик языка у нижних резцов (мягкая свистящая С)", exampleAr: "سَلَامٌ", exampleTr: "Салямун (97:5)", wbw: "097_005_001" },
+            { letter: "ش", forms: "ـش / ـشـ / شـ", name: "Шин", type: "Мягкая", makhraj: "Середина языка поднимается к нёбу (мягкая комфортная Ш)", exampleAr: "شَرِّ", exampleTr: "Шарри (113:2)", wbw: "113_002_002" },
+            { letter: "ص", forms: "ـص / ـصـ / صـ", name: "Сад (твердая)", type: "Твердая", makhraj: "Твердая густая С (задняя часть языка поднимается к нёбу, с фатхой звучит СО)", exampleAr: "الصَّمَدُ", exampleTr: "Ас-Самад (112:2)", wbw: "112_002_002" },
+            { letter: "ض", forms: "ـض / ـضـ / ضـ", name: "Дад (твердая)", type: "Твердая", makhraj: "Боковой край языка прижимается к верхним коренным зубам (густая твердая Д)", exampleAr: "وَلَا الضَّالِّينَ", exampleTr: "Ва ляд-даллин (1:7)", wbw: "001_007_009" },
+            { letter: "ط", forms: "ـط / ـطـ / طـ", name: "Та (твердая)", type: "Твердая", makhraj: "Кончик и спинка языка плотно прижимаются к верхнему нёбу (твердая ТО)", exampleAr: "طَيْرًا", exampleTr: "Тайран (105:3)", wbw: "105_003_003" },
+            { letter: "ظ", forms: "ـظ / ـظـ / ظـ", name: "За (твердая)", type: "Твердая", makhraj: "Кончик языка между зубами + задняя спинка языка поднята (твердая межзубная ЗО)", exampleAr: "ظَهْرَكَ", exampleTr: "Захрак (94:3)", wbw: "094_003_003" },
+            { letter: "ع", forms: "ـع / ـعـ / عـ", name: "Айн", type: "Мягкая", makhraj: "Из средней части гортани путем сжатия надгортанника (глубокий гортанный звук)", exampleAr: "عَبْدُهُ", exampleTr: "Алак (96:2)", wbw: "096_002_004" },
+            { letter: "غ", forms: "ـغ / ـغـ / غـ", name: "Гайн", type: "Твердая", makhraj: "Верхняя часть гортани (мягкая гортанная вибрирующая Г, как при полоскании горла)", exampleAr: "غَيْرِ", exampleTr: "Гайри (1:7)", wbw: "001_007_005" },
+            { letter: "ف", forms: "ـف / ـفـ / فـ", name: "Фа", type: "Мягкая", makhraj: "Края верхних передних зубов касаются внутренней стороны нижней губы", exampleAr: "فِي", exampleTr: "Фи (105:2)", wbw: "105_002_004" },
+            { letter: "ق", forms: "ـق / ـقـ / قـ", name: "Каф (твердая)", type: "Твердая", makhraj: "Самый корень языка ударяется о мягкое нёбо (глубокая твердая КЪ / КО)", exampleAr: "قُلْ", exampleTr: "Куль (112:1)", wbw: "112_001_001" },
+            { letter: "ك", forms: "ـك / ـكـ / كـ", name: "Кяф (мягкая)", type: "Мягкая", makhraj: "Задняя часть языка чуть ближе ко рту, чем у Каф (мягкая К с легким выдохом)", exampleAr: "كُفُوًا", exampleTr: "Куфуван (112:4)", wbw: "112_004_004" },
+            { letter: "ل", forms: "ـل / ـلـ / لـ", name: "Лям", type: "Мягкая", makhraj: "Передний край языка касается десен верхних передних зубов (мягкая Л)", exampleAr: "لَمْ", exampleTr: "Лям (112:3)", wbw: "112_003_001" },
+            { letter: "م", forms: "ـم / ـمـ / مـ", name: "Мим", type: "Мягкая", makhraj: "Мягкое смыкание губ с легким звуком из носовой полости (М)", exampleAr: "مَالِكِ", exampleTr: "Малики (1:4)", wbw: "001_004_001" },
+            { letter: "ن", forms: "ـن / ـنـ / نـ", name: "Нун", type: "Мягкая", makhraj: "Кончик языка у десен верхних зубов + назализация (гнусавость Гунна)", exampleAr: "نَعْبُدُ", exampleTr: "На'буду (1:5)", wbw: "001_005_002" },
+            { letter: "ه", forms: "ـه / ـهـ / هـ", name: "Ха (лёгкая)", type: "Мягкая", makhraj: "Из самой нижней части гортани у груди — легкий воздушный выдох (английская H)", exampleAr: "هُوَ", exampleTr: "Хува (112:1)", wbw: "112_001_002" },
+            { letter: "و", forms: "ـو / و", name: "Вав", type: "Мягкая", makhraj: "Вытягивание и округление губ вперед без касания зубов (как английская W)", exampleAr: "وَلَمْ", exampleTr: "Ва лям (112:3)", wbw: "112_003_003" },
+            { letter: "ي", forms: "ـي / ـيـ / يـ", name: "Йа", type: "Мягкая", makhraj: "Середина языка поднимается к нёбу (мягкая Й или долгая гласная И)", exampleAr: "يَوْمِ", exampleTr: "Йауми (1:4)", wbw: "001_004_002" }
         ];
+
+        // Воспроизведение настоящего студийного голоса чтеца Корана с официального CDN Quran.com
+        function playRealQuranWordAudio(wbwCode, titleText, subtitleText) {
+            playTactileClick(200, 0.02);
+            isLuhaidanMarathonMode = false;
+            isContinuousMode = false;
+            const audioUrl = `https://audio.qurancdn.com/wbw/${wbwCode}.mp3`;
+            showDynamicIsland(titleText, subtitleText);
+            globalAudio.onended = () => {
+                updateIslandPlayState(false);
+                scheduleHideDynamicIsland(1000);
+            };
+            globalAudio.src = audioUrl;
+            globalAudio.play().catch(() => {});
+        }
 
         function switchLearningSubTab(sub) {
             const pSurahs = document.getElementById('learning-panel-surahs');
@@ -3452,6 +3620,50 @@
                 bArabic.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
                 bSurahs.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
                 renderArabicAlphabetGrid();
+            } else {
+                pArabic.classList.add('hidden');
+                pSurahs.classList.remove('hidden');
+                bSurahs.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
+                bArabic.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
+            }
+            lucide.createIcons();
+        }
+
+        function renderArabicAlphabetGrid() {
+            const grid = document.getElementById('arabic-alphabet-grid');
+            if (!grid || grid.children.length > 0) return;
+
+            ARABIC_ALPHABET_28.forEach((item, idx) => {
+                const isHeavy = item.type === "Твердая";
+                const card = document.createElement('div');
+                card.className = "spring-interactive obsidian-matte rounded-2xl p-4 space-y-2.5 cursor-pointer hover:border-amberGlow/50";
+                card.onclick = () => playRealQuranWordAudio(item.wbw, `Буква «${item.name}» (${item.letter})`, `Пример в Коране: ${item.exampleAr} — ${item.exampleTr}`);
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-white">${idx + 1}. Буква «${item.name}»</span>
+                                <span class="px-2 py-0.5 rounded-md text-[9.5px] font-bold ${isHeavy ? 'bg-amberCore/25 text-amberGlow border border-amberGlow/35' : 'bg-emeraldAccent/15 text-emeraldAccent border border-emeraldAccent/30'}">${item.type}</span>
+                            </div>
+                            <p class="text-[11px] text-white/50 mt-1">Формы в слове: <span class="arabic-text text-sm text-white/90 px-1">${item.forms}</span></p>
+                        </div>
+                        <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/12 flex items-center justify-center shrink-0">
+                            <span class="arabic-text text-4xl text-amberGlow">${item.letter}</span>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-white/75 font-body leading-relaxed"><strong>Махрадж (произношение):</strong> ${item.makhraj}</p>
+                    <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-2 text-xs">
+                        <span class="text-orange-100/90 font-medium flex items-center gap-1.5">
+                            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amberGlow shrink-0"></i>
+                            <span>Слушать пример: <strong>${item.exampleTr}</strong></span>
+                        </span>
+                        <span class="arabic-text text-xl text-emeraldAccent">${item.exampleAr}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
             } else {
                 pArabic.classList.add('hidden');
                 pSurahs.classList.remove('hidden');
