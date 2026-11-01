@@ -2628,8 +2628,34 @@
             localStorage.setItem('aya_notif_eid', document.getElementById('toggle-notif-eid').checked);
         }
 
+        let preparedIcsDataUri = null;
+        let preparedIcsBlobUrl = null;
+        let preparedIcsFileName = "ayaspace-namaz.ics";
+
         async function exportOnlyFajrAlarmICS() {
             await exportPrayersToICS(true);
+        }
+
+        function triggerInstantCalendarOpen() {
+            if (!preparedIcsDataUri && !preparedIcsBlobUrl) return;
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            if (isIOS) {
+                // Создаем настоящую ссылку <a> и кликаем синхронно в момент касания пальца — iOS PWA не сбрасывает окно!
+                const a = document.createElement('a');
+                a.href = preparedIcsDataUri;
+                a.setAttribute('download', preparedIcsFileName);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                const a = document.createElement('a');
+                a.href = preparedIcsBlobUrl;
+                a.download = preparedIcsFileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
         }
 
         async function exportPrayersToICS(onlyFajr = false) {
@@ -2640,10 +2666,13 @@
             const activeCity = localStorage.getItem('aya_city') || prayerState.city;
             const activeSchool = localStorage.getItem('aya_school') || prayerState.school;
 
-            // Передаем точные углы ДУМ РФ (18° и 17°) напрямую по широте/долготе выбранного города, чтобы в Казани и других регионах было их точное местное время
+            // Точные углы ДУМ РФ (18° и 17°) строго по координатам выбранного города
             const tuneSettings = "18,null,null,null,null,17";
 
-            if (btn && !onlyFajr) btn.innerHTML = `<span>Подготовка календаря для г. ${activeCity}...</span>`;
+            if (btn && !onlyFajr) {
+                btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i><span>Загрузка расписания (${activeCity})...</span>`;
+                lucide.createIcons();
+            }
 
             try {
                 const now = new Date();
@@ -2661,8 +2690,11 @@
                 const todayTs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
                 const dtStamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 
+                // Только латиница и цифры в техническом UID (чтобы Календарь iOS не закрывался!)
+                const safeLocationId = `${Math.round(activeLat * 100)}_${Math.round(activeLng * 100)}`;
+
                 const prayersToExport = onlyFajr
-                    ? [{ key: 'Fajr', title: '⏰ Будильник: Утренний намаз (Фаджр)' }]
+                    ? [{ key: 'Fajr', title: 'Утренний намаз (Фаджр)' }]
                     : [
                         { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
                         { key: 'Dhuhr', title: 'Обеденный намаз (Зухр)' },
@@ -2703,7 +2735,7 @@
 
                         icsLines.push(
                             "BEGIN:VEVENT",
-                            `UID:ayaspace-${activeCity}-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
+                            `UID:ayaspace-${safeLocationId}-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
                             `DTSTAMP:${dtStamp}`,
                             `DTSTART:${dtStart}`,
                             `DTEND:${dtEnd}`,
@@ -2727,19 +2759,34 @@
                 icsLines.push("END:VCALENDAR");
                 const icsContent = icsLines.join("\r\n");
 
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                if (isIOS) {
-                    window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
+                preparedIcsFileName = "ayaspace-namaz.ics";
+                preparedIcsDataUri = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
+                const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+                preparedIcsBlobUrl = URL.createObjectURL(blob);
+
+                // Если приложение открыто как иконка с экрана Домой на iPhone (standalone),
+                // даем прямое синхронное нажатие, чтобы iOS не закрывал окно Календаря!
+                const isStandaloneIOS = window.navigator.standalone === true;
+                if (isStandaloneIOS && btn && !onlyFajr) {
+                    btn.onclick = () => {
+                        triggerInstantCalendarOpen();
+                        setTimeout(() => {
+                            btn.onclick = () => exportPrayersToICS(false);
+                            btn.innerHTML = oldHtml;
+                            lucide.createIcons();
+                        }, 2500);
+                    };
+                    btn.innerHTML = `<i data-lucide="calendar-plus" class="w-4 h-4"></i><span>Расписание готово! Нажмите ещё раз, чтобы открыть Календарь</span>`;
+                    lucide.createIcons();
                 } else {
-                    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = `ayaspace-namaz-${activeCity}.ics`;
-                    a.click();
+                    triggerInstantCalendarOpen();
+                    if (btn && !onlyFajr) {
+                        btn.innerHTML = oldHtml;
+                        lucide.createIcons();
+                    }
                 }
             } catch (err) {
                 alert("Ошибка загрузки месячного расписания. Проверьте интернет.");
-            } finally {
                 if (btn && !onlyFajr) {
                     btn.innerHTML = oldHtml;
                     lucide.createIcons();
