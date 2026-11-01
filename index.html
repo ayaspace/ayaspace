@@ -2707,18 +2707,11 @@
 
         function openJumuahStatusCards() { switchTab('status'); filterStatuses('jumuah'); }
 
-        async function exportPrayersToICS(onlyFajr = false, customBtn = null, fromOnboarding = false) {
-            const btn = customBtn || document.getElementById(onlyFajr ? 'fajr-alarm-btn' : 'export-ics-btn');
-            const oldHtml = btn ? btn.innerHTML : '';
+        let preloadedIcsBlob = null;
+        let preloadedIcsKey = "";
 
-            // Если человек нажал кнопку уже внутри ярлыка на экране Домой, подсказываем открыть через Safari
-            if (window.navigator.standalone === true) {
-                alert(`На iPhone добавить расписание для г. ${prayerState.city} в Календарь можно только из браузера Safari.\n\nНажмите внизу «Скопировать ссылку (для Safari)», вставьте её в Safari и нажмите кнопку добавления уведомлений.`);
-                return;
-            }
-
-            if (btn) btn.innerHTML = `<span>Подготовка расписания (${prayerState.city})...</span>`;
-
+        // Фоновая предзагрузка расписания (чтобы при нажатии кнопки не было задержки интернета и iOS не блокировала окно)
+        async function preloadCalendarForCurrentCity(onlyFajr = false) {
             try {
                 const now = new Date();
                 const y1 = now.getFullYear(), m1 = now.getMonth() + 1;
@@ -2730,8 +2723,6 @@
                 const activeCity = localStorage.getItem('aya_city') || prayerState.city;
                 const activeMethod = localStorage.getItem('aya_method') || prayerState.method;
                 const activeSchool = localStorage.getItem('aya_school') || prayerState.school;
-
-                // Если стоит метод 14 (ДУМ РФ), используем метод 3 (те же углы 18° и 17°, но считает строго по долготе Казани и любого выбранного города!)
                 const calcMethod = String(activeMethod) === '14' ? '3' : activeMethod;
 
                 const url1 = `https://api.aladhan.com/v1/calendar/${y1}/${m1}?latitude=${activeLat}&longitude=${activeLng}&method=${calcMethod}&school=${activeSchool}`;
@@ -2785,7 +2776,7 @@
                             `DTSTAMP:${dtStamp}`,
                             `DTSTART:${dtStart}`,
                             `DTEND:${dtEnd}`,
-                            `SUMMARY:🕋 ${p.title}`,
+                            `SUMMARY:🕋 ${p.title} (${cleanTime})`,
                             `DESCRIPTION:Время намаза (${activeCity}) — AyaSpace`,
                             "BEGIN:VALARM",
                             "TRIGGER:-PT10M",
@@ -2803,30 +2794,62 @@
                 }
 
                 icsLines.push("END:VCALENDAR");
-                const icsContent = icsLines.join("\r\n");
+                const icsText = icsLines.join("\r\n");
+                preloadedIcsBlob = new Blob([icsText], { type: "text/calendar;charset=utf-8" });
+                preloadedIcsKey = `${activeLat}_${activeLng}_${onlyFajr}`;
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
 
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                if (isIOS) {
-                    window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
-                } else {
-                    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = `ayaspace-namaz-month-${activeCity}.ics`;
-                    a.click();
-                }
+        // Автоматически готовим календарь в фоне при входе
+        setTimeout(() => preloadCalendarForCurrentCity(false), 500);
 
-                // Если нажали из окна первого входа (Шаг 2), автоматически переключаем карточку на Шаг 3 (инструкцию добавления на экран Домой), не убирая блюр!
-                if (fromOnboarding) {
-                    setTimeout(() => goToOnboardingStep(3), 1200);
+        async function exportPrayersToICS(onlyFajr = false, customBtn = null, fromOnboarding = false) {
+            const btn = customBtn || document.getElementById(onlyFajr ? 'fajr-alarm-btn' : 'export-ics-btn');
+            const oldHtml = btn ? btn.innerHTML : '';
+            const activeLat = parseFloat(localStorage.getItem('aya_lat')) || prayerState.lat;
+            const activeLng = parseFloat(localStorage.getItem('aya_lng')) || prayerState.lng;
+            const activeCity = localStorage.getItem('aya_city') || prayerState.city;
+            const targetKey = `${activeLat}_${activeLng}_${onlyFajr}`;
+
+            // Если человек только что сменил город или нажал на Фаджр — подгружаем за 0.4 сек и просим нажать для мгновенного открытия
+            if (!preloadedIcsBlob || preloadedIcsKey !== targetKey) {
+                if (btn) btn.innerHTML = `<span>Подготовка расписания (${activeCity})...</span>`;
+                const ok = await preloadCalendarForCurrentCity(onlyFajr);
+                if (!ok) {
+                    alert("Ошибка загрузки расписания. Проверьте интернет.");
+                    if (btn) btn.innerHTML = oldHtml;
+                    return;
                 }
-            } catch (err) {
-                alert("Ошибка загрузки месячного расписания. Проверьте интернет.");
-            } finally {
                 if (btn) {
+                    btn.innerHTML = `<span>✓ Расписание готово! Нажмите, чтобы открыть Календарь</span>`;
+                }
+                return;
+            }
+
+            // Мгновенное открытие без задержки сети (работает и на старых iOS 15-18, и на новой iOS 27, и на Android!)
+            const blobUrl = URL.createObjectURL(preloadedIcsBlob);
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            if (isIOS) {
+                // На всех версиях iOS прямой переход на Blob-URL с типом text/calendar открывает системный Календарь ("155 событий")
+                window.location.assign(blobUrl);
+            } else {
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = `ayaspace-namaz-${activeCity}.ics`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
+            if (btn) {
+                setTimeout(() => {
                     btn.innerHTML = oldHtml;
                     lucide.createIcons();
-                }
+                }, 1500);
             }
         }
     </script>
