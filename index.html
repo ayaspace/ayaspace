@@ -6,7 +6,7 @@
     <title>AyaSpace</title>
 
     <!-- PWA / iOS Home Screen Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="no">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="AyaSpace">
     <meta name="theme-color" content="#0A0A0C">
@@ -2583,7 +2583,7 @@
             return y + lineHeight;
         }
 
-        // 6. УВЕДОМЛЕНИЯ И ТОЧНОЕ РАСПИСАНИЕ НАМАЗОВ НА 31 ДЕНЬ ВПЕРЕД (.ICS) СТРОГО ПО КООРДИНАТАМ ВАШЕГО ГОРОДА
+       // 6. УВЕДОМЛЕНИЯ И ТОЧНОЕ РАСПИСАНИЕ НАМАЗОВ НА 31 ДЕНЬ ВПЕРЕД (.ICS) СТРОГО ПО КООРДИНАТАМ ВАШЕГО ГОРОДА
         function checkFridayOrHolidayBanner() {
             if (new Date().getDay() === 5) document.getElementById('special-day-banner').classList.remove('hidden');
         }
@@ -2627,226 +2627,145 @@
             localStorage.setItem('aya_notif_eid', document.getElementById('toggle-notif-eid').checked);
         }
 
+        let cachedIcsData = null;
+
         async function exportOnlyFajrAlarmICS() {
-    await exportPrayersToICS(true);
-}
+            await exportPrayersToICS(true);
+        }
 
-// Смещение часового пояса города (в мс) на заданный момент
-function getTzOffsetMs(utcMs, tz) {
-    const dtf = new Intl.DateTimeFormat('en-US', {
-        timeZone: tz, hourCycle: 'h23',
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
-    const p = {};
-    dtf.formatToParts(new Date(utcMs)).forEach(x => { p[x.type] = x.value; });
-    const asUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
-    return asUtc - utcMs;
-}
-
-// Местное время города -> точный момент (UTC, мс)
-function zonedTimeToUtcMs(y, m, d, hh, mm, tz) {
-    const fallback = new Date(y, m - 1, d, hh, mm, 0).getTime();
-    if (!tz) return fallback;
-    try {
-        const guess = Date.UTC(y, m - 1, d, hh, mm, 0);
-        const off1 = getTzOffsetMs(guess, tz);
-        let utc = guess - off1;
-        const off2 = getTzOffsetMs(utc, tz);
-        if (off2 !== off1) utc = guess - off2;
-        return utc;
-    } catch (e) { return fallback; }
-}
-
-function toIcsUtc(ms) {
-    return new Date(ms).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-}
-
-function icsEscape(t) {
-    return String(t).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
-}
-
-// Время намазов на конкретную дату — тем же запросом, что и главный экран
-async function fetchTimingsForDate(dateObj, lat, lng, retries = 2) {
-    const dd = String(dateObj.getDate()).padStart(2, '0');
-    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const yyyy = dateObj.getFullYear();
-    const url = `https://api.aladhan.com/v1/timings/${dd}-${mm}-${yyyy}?latitude=${lat}&longitude=${lng}&method=${prayerState.method}&school=${prayerState.school}`;
-    for (let attempt = 0; attempt <= retries; attempt++) {
-        try {
-            const res = await fetch(url);
-            const data = await res.json();
-            if (data.code === 200 && data.data && data.data.timings) {
-                return {
-                    dd, mm, yyyy,
-                    timings: data.data.timings,
-                    tz: data.data.meta ? data.data.meta.timezone : null
-                };
+        async function exportPrayersToICS(onlyFajr = false) {
+            const btn = document.getElementById(onlyFajr ? 'fajr-alarm-btn' : 'export-ics-btn');
+            if (btn && !btn.dataset.origHtml) {
+                btn.dataset.origHtml = btn.innerHTML;
             }
-        } catch (e) {}
-        await new Promise(r => setTimeout(r, 400 * (attempt + 1)));
-    }
-    throw new Error('Не удалось получить время за ' + dd + '.' + mm + '.' + yyyy);
-}
 
-let isExportingICS = false;
-let icsReady = null; // { key, content, fileName }
+            const activeLat = parseFloat(localStorage.getItem('aya_lat')) || prayerState.lat;
+            const activeLng = parseFloat(localStorage.getItem('aya_lng')) || prayerState.lng;
+            const activeCity = localStorage.getItem('aya_city') || prayerState.city;
+            const activeMethod = localStorage.getItem('aya_method') || prayerState.method;
+            const activeSchool = localStorage.getItem('aya_school') || prayerState.school;
+            const cacheKey = `${activeLat}_${activeLng}_${activeMethod}_${activeSchool}_${onlyFajr}`;
 
-function deliverICS(content, fileName) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
-
-    // Если открыто с ярлыка на экране "Домой" (standalone), открываем через Blob-URL нашего домена, чтобы не вылетало пустое окно "data"
-    if (window.navigator.standalone === true) {
-        const blobUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        return;
-    }
-
-    if (isIOS) {
-        window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(content);
-    } else {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = fileName;
-        a.click();
-    }
-}
-
-async function exportPrayersToICS(onlyFajr = false, btnEl = null) {
-    const btn = btnEl || document.getElementById(onlyFajr ? 'fajr-alarm-btn' : 'export-ics-btn');
-    if (btn && !btn.dataset.origHtml) {
-        btn.dataset.origHtml = btn.innerHTML;
-        btn.dataset.origClass = btn.className;
-    }
-    const resetBtn = () => {
-        if (!btn) return;
-        btn.innerHTML = btn.dataset.origHtml;
-        btn.className = btn.dataset.origClass;
-        btn.disabled = false;
-        lucide.createIcons();
-    };
-
-    if (isExportingICS) return;
-
-    const lat = parseFloat(prayerState.lat);
-    const lng = parseFloat(prayerState.lng);
-    const city = prayerState.city;
-    const todayIso = getDateIso(0);
-    const key = [lat, lng, prayerState.method, prayerState.school, onlyFajr, todayIso].join('|');
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    // Шаг 2: файл уже готов — открываем календарь сразу в момент нажатия!
-    if (icsReady && icsReady.key === key) {
-        deliverICS(icsReady.content, icsReady.fileName);
-        resetBtn();
-        return;
-    }
-
-    // Шаг 1: загружаем время 31 дня и собираем файл
-    isExportingICS = true;
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = `<span>Загрузка времени: 0 / 31...</span>`;
-    }
-
-    try {
-        const citySlug = `${lat.toFixed(2)}_${lng.toFixed(2)}`;
-        const now = new Date();
-        const dtStamp = toIcsUtc(now.getTime());
-
-        const days = [];
-        for (let i = 0; i < 31; i++) {
-            days.push(new Date(now.getFullYear(), now.getMonth(), now.getDate() + i));
-        }
-        const results = [];
-        for (let i = 0; i < days.length; i += 6) {
-            const chunk = days.slice(i, i + 6);
-            const part = await Promise.all(chunk.map(d => fetchTimingsForDate(d, lat, lng)));
-            results.push(...part);
-            if (btn) btn.innerHTML = `<span>Загрузка времени: ${Math.min(i + 6, 31)} / 31...</span>`;
-        }
-
-        const prayersToExport = onlyFajr
-            ? [{ key: 'Fajr', title: 'Утренний намаз (Фаджр)' }]
-            : [
-                { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
-                { key: 'Dhuhr', title: 'Обеденный намаз (Зухр)' },
-                { key: 'Asr', title: 'Послеобеденный намаз (Аср)' },
-                { key: 'Maghrib', title: 'Вечерний намаз (Магриб)' },
-                { key: 'Isha', title: 'Ночной намаз (Иша)' }
-            ];
-
-        const icsLines = [
-            "BEGIN:VCALENDAR",
-            "VERSION:2.0",
-            "PRODID:-//AyaSpace//Prayer Calendar//RU",
-            "CALSCALE:GREGORIAN",
-            "METHOD:PUBLISH",
-            `X-WR-CALNAME:${icsEscape('Намаз — ' + city)}`
-        ];
-
-        results.forEach(day => {
-            prayersToExport.forEach(p => {
-                const raw = String(day.timings[p.key]).split(' ')[0];
-                const [ph, pm] = raw.split(':').map(Number);
-                const cleanTime = `${String(ph).padStart(2, '0')}:${String(pm).padStart(2, '0')}`;
-
-                const startMs = zonedTimeToUtcMs(+day.yyyy, +day.mm, +day.dd, ph, pm, day.tz);
-                const endMs = startMs + 15 * 60000;
-                const summary = icsEscape(`${p.title} — ${city} (${cleanTime})`);
-
-                icsLines.push(
-                    "BEGIN:VEVENT",
-                    `UID:ayaspace-${p.key}-${day.yyyy}${day.mm}${day.dd}-${citySlug}@ayaspace.app`,
-                    `DTSTAMP:${dtStamp}`,
-                    `DTSTART:${toIcsUtc(startMs)}`,
-                    `DTEND:${toIcsUtc(endMs)}`,
-                    `SUMMARY:${summary}`,
-                    `DESCRIPTION:${icsEscape('Время по городу: ' + city + ', ' + cleanTime)}`,
-                    "BEGIN:VALARM",
-                    "TRIGGER:-PT10M",
-                    "ACTION:DISPLAY",
-                    `DESCRIPTION:${summary}`,
-                    "END:VALARM",
-                    "BEGIN:VALARM",
-                    "TRIGGER:PT0M",
-                    "ACTION:DISPLAY",
-                    `DESCRIPTION:${summary}`,
-                    "END:VALARM",
-                    "END:VEVENT"
-                );
-            });
-        });
-
-        icsLines.push("END:VCALENDAR");
-        const content = icsLines.join("\r\n");
-        const fileName = `ayaspace-namaz-${city}.ics`;
-        icsReady = { key, content, fileName };
-
-        if (isIOS) {
-            if (btn) {
-                btn.disabled = false;
-                btn.className = "spring-interactive w-full py-3 px-4 rounded-xl bg-white text-obsidian font-bold text-xs flex items-center justify-center gap-2 shadow-lg";
-                btn.innerHTML = `<span>✓ Готово! Нажмите ещё раз — откроется календарь</span>`;
+            // Если расписание уже подготовлено (второе нажатие на iPhone) — открываем мгновенно синхронно с нажатием пальца!
+            if (cachedIcsData && cachedIcsData.key === cacheKey) {
+                const icsContent = cachedIcsData.content;
+                cachedIcsData = null;
+                if (btn && btn.dataset.origHtml) {
+                    btn.innerHTML = btn.dataset.origHtml;
+                    lucide.createIcons();
+                }
+                window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
+                return;
             }
-        } else {
-            deliverICS(content, fileName);
-            resetBtn();
+
+            if (btn) btn.innerHTML = `<span>Подготовка календаря (${activeCity})...</span>`;
+
+            try {
+                const now = new Date();
+                const y1 = now.getFullYear(), m1 = now.getMonth() + 1;
+                const nextM = new Date(y1, m1, 1);
+                const y2 = nextM.getFullYear(), m2 = nextM.getMonth() + 1;
+
+                // Если стоит метод 14 (ДУМ РФ), используем метод 3 (те же углы 18° и 17°, но считает строго по координатам Казани и любого выбранного города, а не Москвы!)
+                const calcMethod = String(activeMethod) === '14' ? '3' : activeMethod;
+
+                const url1 = `https://api.aladhan.com/v1/calendar/${y1}/${m1}?latitude=${activeLat}&longitude=${activeLng}&method=${calcMethod}&school=${activeSchool}`;
+                const url2 = `https://api.aladhan.com/v1/calendar/${y2}/${m2}?latitude=${activeLat}&longitude=${activeLng}&method=${calcMethod}&school=${activeSchool}`;
+
+                const [res1, res2] = await Promise.all([fetch(url1), fetch(url2)]);
+                const [data1, data2] = await Promise.all([res1.json(), res2.json()]);
+
+                const allDays = [...(data1.data || []), ...(data2.data || [])];
+                const todayTs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+                const dtStamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+                const prayersToExport = onlyFajr
+                    ? [{ key: 'Fajr', title: 'Утренний намаз (Фаджр)' }]
+                    : [
+                        { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
+                        { key: 'Dhuhr', title: 'Обеденный намаз (Зухр)' },
+                        { key: 'Asr', title: 'Послеобеденный намаз (Аср)' },
+                        { key: 'Maghrib', title: 'Вечерний намаз (Магриб)' },
+                        { key: 'Isha', title: 'Ночной намаз (Иша)' }
+                    ];
+
+                let icsLines = [
+                    "BEGIN:VCALENDAR",
+                    "VERSION:2.0",
+                    "PRODID:-//AyaSpace//Official Prayer Calendar 31 Days//RU",
+                    "CALSCALE:GREGORIAN",
+                    "METHOD:PUBLISH",
+                    `X-WR-CALNAME:Намаз — ${activeCity}`
+                ];
+
+                let exportedDays = 0;
+
+                for (const dayEntry of allDays) {
+                    if (exportedDays >= 31) break;
+                    const [dd, mm, yyyy] = dayEntry.date.gregorian.date.split('-');
+                    const entryTs = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10)).getTime();
+                    if (entryTs < todayTs) continue;
+
+                    exportedDays++;
+                    prayersToExport.forEach(p => {
+                        const cleanTime = dayEntry.timings[p.key].split(' ')[0];
+                        const [ph, pm] = cleanTime.split(':');
+                        const dtStart = `${yyyy}${mm}${dd}T${ph}${pm}00`;
+                        const endObj = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10), parseInt(ph, 10), parseInt(pm, 10) + 15);
+                        const dtEnd = `${yyyy}${mm}${dd}T${String(endObj.getHours()).padStart(2, '0')}${String(endObj.getMinutes()).padStart(2, '0')}00`;
+
+                        icsLines.push(
+                            "BEGIN:VEVENT",
+                            `UID:ayaspace-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
+                            `DTSTAMP:${dtStamp}`,
+                            `DTSTART:${dtStart}`,
+                            `DTEND:${dtEnd}`,
+                            `SUMMARY:🕋 ${p.title} (${cleanTime})`,
+                            `DESCRIPTION:Время намаза (${activeCity}) — AyaSpace`,
+                            "BEGIN:VALARM",
+                            "TRIGGER:-PT10M",
+                            "ACTION:DISPLAY",
+                            `DESCRIPTION:Через 10 минут ${p.title}`,
+                            "END:VALARM",
+                            "BEGIN:VALARM",
+                            "TRIGGER:PT0M",
+                            "ACTION:DISPLAY",
+                            `DESCRIPTION:Наступило время: ${p.title}`,
+                            "END:VALARM",
+                            "END:VEVENT"
+                        );
+                    });
+                }
+
+                icsLines.push("END:VCALENDAR");
+                const icsContent = icsLines.join("\r\n");
+
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    // Сохраняем готовый календарь в память и просим второе касание, чтобы iPhone открыл Календарь мгновенно без блокировки
+                    cachedIcsData = { key: cacheKey, content: icsContent };
+                    if (btn) {
+                        btn.innerHTML = `<span>✓ Готово! Нажмите ещё раз — откроется Календарь</span>`;
+                    }
+                } else {
+                    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `ayaspace-namaz-month-${activeCity}.ics`;
+                    a.click();
+                    if (btn && btn.dataset.origHtml) {
+                        btn.innerHTML = btn.dataset.origHtml;
+                        lucide.createIcons();
+                    }
+                }
+            } catch (err) {
+                alert("Ошибка загрузки месячного расписания. Проверьте интернет.");
+                if (btn && btn.dataset.origHtml) {
+                    btn.innerHTML = btn.dataset.origHtml;
+                    lucide.createIcons();
+                }
+            }
         }
-    } catch (err) {
-        resetBtn();
-        alert("Ошибка загрузки месячного расписания. Проверьте интернет и попробуйте ещё раз.");
-    } finally {
-        isExportingICS = false;
-    }
-}
     </script>
 </body>
 </html>
-```
