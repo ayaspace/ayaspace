@@ -1071,57 +1071,146 @@
             <div id="surah-reader-container" class="hidden space-y-3"></div>
         </section>
 
-        <!-- ВКЛАДКА 3: ЗАУЧИВАНИЕ СУР (ВСЕ 114 СУР) -->
+      <!-- ВКЛАДКА 3: ОБУЧЕНИЕ (ЗАУЧИВАНИЕ СУР + АРАБСКИЙ С НУЛЯ И ВИДЕОУРОКИ) -->
         <section id="tab-memorize" class="tab-view hidden space-y-4">
-            <div class="apple-glass rounded-[26px] p-5 space-y-4">
-                <div class="flex items-center justify-between gap-3 blur-text-reveal">
+            <!-- Переключатель внутри вкладки Обучение -->
+            <div class="apple-glass rounded-[26px] p-4 space-y-3">
+                <div class="flex items-center justify-between gap-2 px-1">
                     <div>
-                        <h2 class="text-lg font-bold glass-text-title">Заучивание сур</h2>
-                        <p class="text-xs text-white/60 font-body">Все 114 сур • Скрытие слов + аудио-проверка вашего чтения</p>
+                        <h2 class="text-lg font-bold glass-text-title">Обучение</h2>
+                        <p class="text-xs text-white/60 font-body">Заучивание сур Корана и чтение с нуля (Таджвид)</p>
                     </div>
-                    <div class="px-3.5 py-1.5 rounded-2xl bg-white/8 border border-white/15 text-right shrink-0">
-                        <span id="trainer-total-badge" class="text-base font-bold text-amberGlow tabular-nums">0</span>
-                        <span class="text-[10px] text-white/60 block">выучено аятов</span>
+                    <div class="px-3 py-1.5 rounded-2xl bg-white/8 border border-white/15 text-right shrink-0">
+                        <span id="trainer-total-badge" class="text-sm font-bold text-amberGlow tabular-nums">0</span>
+                        <span class="text-[9.5px] text-white/60 block">выучено аятов</span>
                     </div>
                 </div>
-                <div>
-                    <label class="text-xs text-white/70 block mb-1.5 font-medium">Выберите суру для практики (1–114):</label>
-                    <select id="memorize-surah-select" onchange="loadMemorizeSurah(this.value)" class="w-full px-4 py-3 rounded-2xl bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-amberGlow">
-                        <option value="1">1. Аль-Фатиха (Открывающая)</option>
-                        <option value="114" selected>114. Ан-Нас (Люди)</option>
-                        <option value="113">113. Аль-Фаляк (Рассвет)</option>
-                        <option value="112">112. Аль-Ихляс (Очищение веры)</option>
-                        <option value="111">111. Аль-Масад (Пальмовые волокна)</option>
-                        <option value="110">110. Ан-Наср (Помощь)</option>
-                        <option value="109">109. Аль-Кафирун (Неверующие)</option>
-                        <option value="108">108. Аль-Каусар (Изобилие)</option>
-                        <option value="107">107. Аль-Маун (Мелочь)</option>
-                        <option value="106">106. Курайш (Курайшиты)</option>
-                        <option value="105">105. Аль-Филь (Слон)</option>
-                        <option value="103">103. Аль-Аср (Предвечернее время)</option>
-                        <option value="97">97. Аль-Кадр (Предопределение)</option>
-                        <option value="94">94. Аш-Шарх (Раскрытие)</option>
-                        <option value="93">93. Ад-Духа (Утро)</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-3 gap-1.5 p-1.5 rounded-2xl bg-black/45 border border-white/10">
-                    <button onclick="setMemorizeMode('read')" id="mode-btn-read" class="spring-interactive py-2 px-2 rounded-xl text-xs font-bold bg-amberCore text-white shadow">Чтение</button>
-                    <button onclick="setMemorizeMode('half')" id="mode-btn-half" class="spring-interactive py-2 px-2 rounded-xl text-xs font-semibold text-white/70 hover:text-white">Скрыть 50%</button>
-                    <button onclick="setMemorizeMode('full')" id="mode-btn-full" class="spring-interactive py-2 px-2 rounded-xl text-xs font-semibold text-white/70 hover:text-white">Полное скрытие</button>
-                </div>
-                <div class="flex items-center justify-between pt-1 text-xs">
-                    <span class="text-white/75 flex items-center gap-1.5"><i data-lucide="repeat" class="w-4 h-4 text-amberGlow"></i> Повтор аята по кругу:</span>
-                    <div class="flex gap-1.5">
-                        <button onclick="setLoopTarget(1)" id="loop-btn-1" class="spring-interactive px-3 py-1 rounded-xl bg-white/10 border border-white/15">1x</button>
-                        <button onclick="setLoopTarget(3)" id="loop-btn-3" class="spring-interactive px-3 py-1 rounded-xl bg-amberCore text-white font-bold">3x</button>
-                        <button onclick="setLoopTarget(5)" id="loop-btn-5" class="spring-interactive px-3 py-1 rounded-xl bg-white/10 border border-white/15">5x</button>
-                        <button onclick="setLoopTarget(10)" id="loop-btn-10" class="spring-interactive px-3 py-1 rounded-xl bg-white/10 border border-white/15">10x</button>
-                    </div>
+
+                <div class="grid grid-cols-2 gap-1.5 p-1.5 rounded-2xl obsidian-matte">
+                    <button onclick="switchLearningSubTab('surahs')" id="learn-sub-surahs" class="spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5">
+                        <i data-lucide="mic" class="w-3.5 h-3.5"></i> Заучивание сур
+                    </button>
+                    <button onclick="switchLearningSubTab('arabic')" id="learn-sub-arabic" class="spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5">
+                        <i data-lucide="graduation-cap" class="w-4 h-4"></i> Арабский с нуля
+                    </button>
                 </div>
             </div>
-            <div id="memorize-ayahs-container" class="space-y-3"></div>
-        </section>
 
+            <!-- ПОДВКЛАДКА 1: ЗАУЧИВАНИЕ СУР -->
+            <div id="learning-panel-surahs" class="space-y-4">
+                <div class="apple-glass rounded-[26px] p-5 space-y-4">
+                    <div>
+                        <label class="text-xs text-white/70 block mb-1.5 font-medium">Выберите суру для практики (1–114):</label>
+                        <select id="memorize-surah-select" onchange="loadMemorizeSurah(this.value)" class="w-full px-4 py-3 rounded-2xl bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-amberGlow">
+                            <option value="1">1. Аль-Фатиха (Открывающая)</option>
+                            <option value="114" selected>114. Ан-Нас (Люди)</option>
+                            <option value="113">113. Аль-Фаляк (Рассвет)</option>
+                            <option value="112">112. Аль-Ихляс (Очищение веры)</option>
+                            <option value="111">111. Аль-Масад (Пальмовые волокна)</option>
+                            <option value="110">110. Ан-Наср (Помощь)</option>
+                            <option value="109">109. Аль-Кафирун (Неверующие)</option>
+                            <option value="108">108. Аль-Каусар (Изобилие)</option>
+                            <option value="107">107. Аль-Маун (Мелочь)</option>
+                            <option value="106">106. Курайш (Курайшиты)</option>
+                            <option value="105">105. Аль-Филь (Слон)</option>
+                            <option value="103">103. Аль-Аср (Предвечернее время)</option>
+                            <option value="97">97. Аль-Кадр (Предопределение)</option>
+                            <option value="94">94. Аш-Шарх (Раскрытие)</option>
+                            <option value="93">93. Ад-Духа (Утро)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1.5 p-1.5 rounded-2xl bg-black/45 border border-white/10">
+                        <button onclick="setMemorizeMode('read')" id="mode-btn-read" class="spring-interactive py-2 px-2 rounded-xl text-xs font-bold bg-amberCore text-white shadow">Чтение</button>
+                        <button onclick="setMemorizeMode('half')" id="mode-btn-half" class="spring-interactive py-2 px-2 rounded-xl text-xs font-semibold text-white/70 hover:text-white">Скрыть 50%</button>
+                        <button onclick="setMemorizeMode('full')" id="mode-btn-full" class="spring-interactive py-2 px-2 rounded-xl text-xs font-semibold text-white/70 hover:text-white">Полное скрытие</button>
+                    </div>
+                    <div class="flex items-center justify-between pt-1 text-xs">
+                        <span class="text-white/75 flex items-center gap-1.5"><i data-lucide="repeat" class="w-4 h-4 text-amberGlow"></i> Повтор аята по кругу:</span>
+                        <div class="flex gap-1.5">
+                            <button onclick="setLoopTarget(1)" id="loop-btn-1" class="spring-interactive px-3 py-1 rounded-xl bg-white/10 border border-white/15">1x</button>
+                            <button onclick="setLoopTarget(3)" id="loop-btn-3" class="spring-interactive px-3 py-1 rounded-xl bg-amberCore text-white font-bold">3x</button>
+                            <button onclick="setLoopTarget(5)" id="loop-btn-5" class="spring-interactive px-3 py-1 rounded-xl bg-white/10 border border-white/15">5x</button>
+                            <button onclick="setLoopTarget(10)" id="loop-btn-10" class="spring-interactive px-3 py-1 rounded-xl bg-white/10 border border-white/15">10x</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="memorize-ayahs-container" class="space-y-3"></div>
+            </div>
+
+            <!-- ПОДВКЛАДКА 2: АРАБСКИЙ С НУЛЯ (ВИДЕОУРОКИ + ОГЛАСОВКИ + 28 БУКВ С ОЗВУЧКОЙ) -->
+            <div id="learning-panel-arabic" class="hidden space-y-4 blur-text-reveal">
+                <!-- Блок Видеоуроков -->
+                <div class="apple-glass-amber rounded-[26px] p-5 space-y-3.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Видеокурс • Муаллим Сани</span>
+                            <h3 class="text-base font-bold text-white">Уроки чтения Корана с нуля</h3>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-black/40 border border-white/15 text-[10px] text-amberGlow font-bold">Таджвид</span>
+                    </div>
+
+                    <!-- Встроенный видеоплеер YouTube -->
+                    <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-white/15 shadow-xl">
+                        <iframe id="arabic-lesson-iframe" class="w-full h-full" src="https://www.youtube.com/embed/videoseries?list=PL6087525729F2126C" title="Уроки чтения Корана с нуля" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+
+                    <!-- Быстрое переключение уроков -->
+                    <div class="grid grid-cols-2 gap-2 pt-1 text-xs">
+                        <button onclick="loadArabicVideoLesson('https://www.youtube.com/embed/videoseries?list=PL6087525729F2126C', this)" class="arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-amberCore text-white font-bold text-left truncate">
+                            ▶ Курс 1: Муаллим Сани (Все уроки)
+                        </button>
+                        <button onclick="loadArabicVideoLesson('https://www.youtube.com/embed/videoseries?list=PL3956280E9281726E', this)" class="arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-black/45 border border-white/12 text-white/80 font-semibold text-left truncate">
+                            ▶ Курс 2: Правила Таджвида
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-orange-100/75 font-body">
+                        💡 Если видео с YouTube не грузится у вашего оператора без VPN — ниже вся программа курса (огласовки и 28 букв с озвучкой) работает <strong>прямо внутри приложения без VPN</strong>!
+                    </p>
+                </div>
+
+                <!-- Шаг 1: Огласовки (Харакаты — как читать буквы) -->
+                <div class="apple-glass rounded-[26px] p-5 space-y-3">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldAccent">Урок 1 • Основа чтения</span>
+                        <h3 class="text-base font-bold text-white">Огласовки (Харакаты)</h3>
+                        <p class="text-xs text-white/65 font-body">В арабском языке гласные звуки пишутся черточками над или под буквой:</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
+                            <p class="arabic-text text-3xl text-amberGlow">بَ</p>
+                            <p class="text-xs font-bold text-white">Фатха (Ба)</p>
+                            <p class="text-[10.5px] text-white/60">Черточка сверху дает звук «А / Э»</p>
+                        </div>
+                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
+                            <p class="arabic-text text-3xl text-emeraldAccent">بِ</p>
+                            <p class="text-xs font-bold text-white">Кясра (Би)</p>
+                            <p class="text-[10.5px] text-white/60">Черточка снизу дает звук «И»</p>
+                        </div>
+                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
+                            <p class="arabic-text text-3xl text-sapphireAccent">بُ</p>
+                            <p class="text-xs font-bold text-white">Дамма (Бу)</p>
+                            <p class="text-[10.5px] text-white/60">Запятая сверху дает звук «У»</p>
+                        </div>
+                        <div class="obsidian-matte rounded-2xl p-3 space-y-1">
+                            <p class="arabic-text text-3xl text-white">بْ</p>
+                            <p class="text-xs font-bold text-white">Сукун (Б)</p>
+                            <p class="text-[10.5px] text-white/60">Кружок сверху — буква без гласной</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шаг 2: Все 28 букв Арабского алфавита с озвучкой и Махраджем -->
+                <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 2 • Нажмите на букву для озвучки</span>
+                        <h3 class="text-base font-bold text-white">Арабский алфавит (28 букв + Махрадж)</h3>
+                        <p class="text-xs text-white/65 font-body">Нажмите на любую карточку, чтобы услышать произношение буквы:</p>
+                    </div>
+                    <div id="arabic-alphabet-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+                </div>
+            </div>
+        </section>
+        
         <!-- ВКЛАДКА 4: РАЗДЕЛ «СТАТУС» -->
         <section id="tab-status" class="tab-view hidden space-y-4">
             <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
@@ -1459,8 +1548,8 @@
             <span class="text-[11px] font-semibold">Коран</span>
         </button>
         <button onclick="switchTab('memorize')" id="nav-memorize" class="spring-interactive flex-1 py-2.5 rounded-full flex flex-col items-center justify-center gap-0.5 text-white/65 hover:text-white">
-            <i data-lucide="mic" class="w-4 h-4"></i>
-            <span class="text-[11px] font-semibold">Заучивание</span>
+            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+            <span class="text-[11px] font-semibold">Обучение</span>
         </button>
         <button onclick="switchTab('status')" id="nav-status" class="spring-interactive flex-1 py-2.5 rounded-full flex flex-col items-center justify-center gap-0.5 text-white/65 hover:text-white">
             <i data-lucide="image" class="w-4 h-4"></i>
@@ -3316,6 +3405,104 @@
                     lucide.createIcons();
                 }, 1500);
             }
+        }
+        // =========================================================================
+        // МОДУЛЬ ОБУЧЕНИЯ: АРАБСКИЙ АЛФАВИТ С НУЛЯ (28 БУКВ + ОЗВУЧКА + ВИДЕО)
+        // =========================================================================
+        const ARABIC_ALPHABET_28 = [
+            { letter: "ا", name: "Алиф", sound: "а / и / у", tip: "Долгий гласный или гортанная смычка" },
+            { letter: "ب", name: "Ба", sound: "бَ", tip: "Произносится смыканием губ (как русская Б)" },
+            { letter: "ت", name: "Та", sound: "тَ", tip: "Мягкая Т (кончик языка у верхних резцов)" },
+            { letter: "ث", name: "Са", sound: "ثَ", tip: "Межзубная С (кончик языка между зубами)" },
+            { letter: "ج", name: "Джим", sound: "джَ", tip: "Мягкая слитная ДЖ" },
+            { letter: "ح", name: "Ха", sound: "حَ", tip: "Чистый гортанный выдох из середины горла" },
+            { letter: "خ", name: "Ха (тв.)", sound: "خَ", tip: "Твердая хрипящая Х (верхняя часть горла)" },
+            { letter: "د", name: "Даль", sound: "дَ", tip: "Мягкая Д у корней верхних зубов" },
+            { letter: "ذ", name: "Заль", sound: "ذَ", tip: "Межзубная З (кончик языка между зубами)" },
+            { letter: "ر", name: "Ра", sound: "рَ", tip: "Четкая вибрирующая Р" },
+            { letter: "ز", name: "За", sound: "зَ", tip: "Чистая звонкая З" },
+            { letter: "س", name: "Син", sound: "сَ", tip: "Мягкая свистящая С" },
+            { letter: "ش", name: "Шин", sound: "шَ", tip: "Мягкая Ш" },
+            { letter: "ص", name: "Сад", sound: "صَ", tip: "Твердая густая С (с поднятием задней спинки языка)" },
+            { letter: "ض", name: "Дад", sound: "ضَ", tip: "Твердая густая Д (боковой край языка к коренным зубам)" },
+            { letter: "ط", name: "Та (тв.)", sound: "طَ", tip: "Твердая глубокая Т (читается с гласной А как О)" },
+            { letter: "ظ", name: "За (тв.)", sound: "ظَ", tip: "Твердая межзубная З" },
+            { letter: "ع", name: "Айн", sound: "عَ", tip: "Глубокий гортанный звук из сжатой середины горла" },
+            { letter: "غ", name: "Гайн", sound: "غَ", tip: "Мягкая гортанная Г (как французская R)" },
+            { letter: "ف", name: "Фа", sound: "фَ", tip: "Верхние резцы касаются внутренней стороны нижней губы" },
+            { letter: "ق", name: "Каф", sound: "قَ", tip: "Глубокая гортанная К (корень языка к мягкому нёбу)" },
+            { letter: "ك", name: "Кяф", sound: "كَ", tip: "Мягкая К (как в слове «книга»)" },
+            { letter: "ل", name: "Лям", sound: "لَ", tip: "Мягкая Л" },
+            { letter: "م", name: "Мим", sound: "مَ", tip: "Губная М" },
+            { letter: "ن", name: "Нун", sound: "نَ", tip: "Носовая мягкая Н" },
+            { letter: "ه", name: "Ха (лёгк.)", sound: "هَ", tip: "Лёгкий теплый выдох из глубины груди" },
+            { letter: "و", name: "Вав", sound: "وَ", tip: "Округление губ (как англ. W)" },
+            { letter: "ي", name: "Йа", sound: "يَ", tip: "Мягкая Й" }
+        ];
+
+        function switchLearningSubTab(sub) {
+            const pSurahs = document.getElementById('learning-panel-surahs');
+            const pArabic = document.getElementById('learning-panel-arabic');
+            const bSurahs = document.getElementById('learn-sub-surahs');
+            const bArabic = document.getElementById('learn-sub-arabic');
+
+            if (sub === 'arabic') {
+                pSurahs.classList.add('hidden');
+                pArabic.classList.remove('hidden');
+                bArabic.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
+                bSurahs.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
+                renderArabicAlphabetGrid();
+            } else {
+                pArabic.classList.add('hidden');
+                pSurahs.classList.remove('hidden');
+                bSurahs.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
+                bArabic.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
+            }
+            lucide.createIcons();
+        }
+
+        function loadArabicVideoLesson(embedUrl, btnEl) {
+            const iframe = document.getElementById('arabic-lesson-iframe');
+            if (iframe) iframe.src = embedUrl;
+            document.querySelectorAll('.arabic-vid-btn').forEach(b => {
+                b.className = "arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-black/45 border border-white/12 text-white/80 font-semibold text-left truncate";
+            });
+            if (btnEl) {
+                btnEl.className = "arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-amberCore text-white font-bold text-left truncate";
+            }
+        }
+
+        function speakArabicLetter(arabicChar) {
+            playTactileClick(210, 0.02);
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(arabicChar);
+                utter.lang = 'ar-SA';
+                utter.rate = 0.75;
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        function renderArabicAlphabetGrid() {
+            const grid = document.getElementById('arabic-alphabet-grid');
+            if (!grid || grid.children.length > 0) return;
+
+            ARABIC_ALPHABET_28.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = "spring-interactive obsidian-matte rounded-2xl p-3 text-center space-y-1 cursor-pointer hover:border-amberGlow/50";
+                card.onclick = () => speakArabicLetter(item.sound);
+                card.innerHTML = `
+                    <div class="flex items-center justify-between text-[10px] text-white/40 px-1">
+                        <span>#${idx + 1}</span>
+                        <i data-lucide="volume-2" class="w-3 h-3 text-amberGlow"></i>
+                    </div>
+                    <p class="arabic-text text-4xl text-amberGlow py-1">${item.letter}</p>
+                    <p class="text-xs font-bold text-white">${item.name}</p>
+                    <p class="text-[10px] text-white/60 font-body leading-snug">${item.tip}</p>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
         }
     </script>
 </body>
