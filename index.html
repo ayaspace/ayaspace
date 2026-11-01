@@ -37,7 +37,7 @@
         })();
     </script>
 
-    <!-- Tailwind CSS & Lucide Icons (через быстрый jsDelivr без блокировок в РФ) -->
+    <!-- Tailwind CSS & Lucide Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 
@@ -83,7 +83,7 @@
         body, button, input, select, textarea {
             background-color: #0A0A0C;
             color: rgba(255, 255, 255, 0.94);
-            font-family: ui-rounded, 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Montserrat', sans-serif;
+            font-family: ui-rounded, 'SF Pro Rounded', '-apple-system', BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Montserrat', sans-serif;
             letter-spacing: -0.018em;
             -webkit-font-smoothing: antialiased;
         }
@@ -97,7 +97,7 @@
         }
 
         h1, h2, h3, h4, #countdown-timer, .font-bold {
-            font-family: ui-rounded, 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Montserrat', sans-serif;
+            font-family: ui-rounded, 'SF Pro Rounded', '-apple-system', BlinkMacSystemFont, 'SF Pro Display', 'Montserrat', sans-serif;
             font-weight: 800;
             letter-spacing: -0.03em;
         }
@@ -115,64 +115,97 @@
                 linear-gradient(165deg, #140602 0%, #090607 52%, #120502 100%);
         }
 
-        /* Настоящий Apple Liquid Glass с сильным размытием фона */
-        .apple-glass, .obsidian-matte {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.04) 50%, rgba(14, 14, 18, 0.58) 100%);
-            backdrop-filter: blur(40px) saturate(210%) contrast(108%);
-            -webkit-backdrop-filter: blur(40px) saturate(210%) contrast(108%);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow:
-                inset 0 1.5px 1px rgba(255, 255, 255, 0.42),
-                inset 0 -1px 1px rgba(255, 255, 255, 0.08),
-                0 18px 42px rgba(0, 0, 0, 0.55);
+        /* Живые фактуры поверхностей с разной глубиной (без шаблонных одинаковых рамок) */
+        .apple-glass {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.03) 55%, rgba(12, 12, 15, 0.65) 100%);
+            backdrop-filter: blur(38px) saturate(200%) contrast(106%);
+            -webkit-backdrop-filter: blur(38px) saturate(200%) contrast(106%);
+            border-top: 1px solid rgba(255, 255, 255, 0.24);
+            border-left: 1px solid rgba(255, 255, 255, 0.14);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.52);
+        }
+
+        .obsidian-matte {
+            background: linear-gradient(160deg, rgba(28, 25, 24, 0.72) 0%, rgba(11, 11, 14, 0.88) 100%);
+            backdrop-filter: blur(34px) saturate(180%);
+            -webkit-backdrop-filter: blur(34px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 12px 28px rgba(0, 0, 0, 0.48);
         }
 
         .apple-glass-amber {
-            background: linear-gradient(140deg, rgba(255, 130, 50, 0.28) 0%, rgba(210, 75, 15, 0.12) 52%, rgba(16, 14, 18, 0.62) 100%);
-            backdrop-filter: blur(42px) saturate(220%);
-            -webkit-backdrop-filter: blur(42px) saturate(220%);
-            border: 1px solid rgba(255, 185, 135, 0.35);
+            background: linear-gradient(138deg, rgba(255, 130, 50, 0.25) 0%, rgba(200, 70, 12, 0.10) 54%, rgba(14, 12, 16, 0.72) 100%);
+            backdrop-filter: blur(42px) saturate(215%);
+            -webkit-backdrop-filter: blur(42px) saturate(215%);
+            border-top: 1px solid rgba(255, 195, 150, 0.42);
+            border-left: 1px solid rgba(255, 175, 120, 0.24);
+            border-right: 1px solid rgba(255, 155, 95, 0.14);
+            border-bottom: 1px solid rgba(255, 130, 70, 0.10);
             box-shadow:
-                inset 0 1.5px 1.5px rgba(255, 255, 255, 0.48),
-                inset 0 0 38px rgba(255, 122, 41, 0.16),
-                0 20px 46px rgba(0, 0, 0, 0.6);
+                inset 0 1px 1px rgba(255, 255, 255, 0.35),
+                0 18px 42px rgba(0, 0, 0, 0.58);
         }
 
         .glass-text-hero {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 215, 190, 0.76) 100%);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 218, 192, 0.78) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 14px rgba(255, 122, 41, 0.28));
+            filter: drop-shadow(0 2px 12px rgba(255, 122, 41, 0.24));
         }
 
         .glass-text-title {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 224, 204, 0.80) 100%);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 224, 204, 0.82) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .spring-interactive {
-            transition: transform 0.38s var(--apple-smooth), background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.32s var(--apple-smooth), background-color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
             will-change: transform;
         }
-        .spring-interactive:active { transform: scale(0.96); }
+        .spring-interactive:active { transform: scale(0.965); }
+
+        /* Мягкое всплытие текста и блоков снизу с легким блюром */
+        @keyframes blurRiseIn {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 10px, 0) scale(0.992);
+                filter: blur(6px);
+            }
+            65% {
+                filter: blur(1px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+                filter: blur(0px);
+            }
+        }
 
         .tab-view {
-            animation: appleViewEnter 0.46s var(--apple-smooth) forwards;
-            will-change: transform, opacity;
-        }
-        @keyframes appleViewEnter {
-            0% { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.99); }
-            100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+            animation: blurRiseIn 0.44s var(--apple-smooth) forwards;
+            will-change: transform, opacity, filter;
         }
 
-        .prayer-row-muted { opacity: 0.45; transition: opacity 0.35s var(--apple-smooth), transform 0.35s var(--apple-smooth); }
-        .prayer-row-muted:hover { opacity: 0.85; }
+        .blur-text-reveal {
+            animation: blurRiseIn 0.48s var(--apple-smooth) both;
+        }
+        .delay-1 { animation-delay: 0.04s; }
+        .delay-2 { animation-delay: 0.08s; }
+        .delay-3 { animation-delay: 0.12s; }
+
+        .prayer-row-muted {
+            opacity: 0.56;
+            transition: opacity 0.3s var(--apple-smooth), transform 0.3s var(--apple-smooth), background-color 0.25s ease;
+        }
+        .prayer-row-muted:hover { opacity: 0.88; }
         .prayer-row-active {
             opacity: 1;
-            background: linear-gradient(135deg, rgba(255, 122, 41, 0.22) 0%, rgba(16, 185, 129, 0.12) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.55);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 10px 28px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(132deg, rgba(255, 122, 41, 0.20) 0%, rgba(16, 185, 129, 0.11) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.52);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 10px 26px rgba(0, 0, 0, 0.45);
         }
 
         /* Dynamic Island Плеер */
@@ -197,7 +230,7 @@
             -webkit-backdrop-filter: blur(32px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.45);
             box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.55);
-            border-radius: 24px;
+            border-radius: 22px;
             padding: 11px 14px;
             cursor: pointer;
             transform: translate3d(-50%, -180%, 0) scale(0.9);
@@ -238,6 +271,7 @@
             color: #FF9E5E !important; filter: blur(0);
             background: rgba(230, 92, 25, 0.22); border: 1px solid rgba(255, 122, 41, 0.35);
             border-radius: 8px; padding: 0 8px; display: inline-block;
+            animation: blurRiseIn 0.32s var(--apple-smooth) forwards;
         }
 
         .status-photo-exposure {
@@ -254,10 +288,10 @@
 </head>
 <body class="selection:bg-amberCore selection:text-white">
 
-    <!-- Глубокий хаотичный янтарно-коньячный градиент -->
+    <!-- Глубокий янтарно-коньячный градиент -->
     <div class="afterglow-stage"></div>
 
-    <!-- Компактная плашка пуш-уведомления iOS (выезжает сверху через 2.5 сек) -->
+    <!-- Компактная плашка пуш-уведомления iOS -->
     <div id="ios-push-banner" onclick="openInstallSettingsGuide()">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-[12px] flex items-center justify-center shrink-0 shadow-md"
@@ -283,8 +317,46 @@
         </div>
     </div>
 
-    <!-- ВСТРОЕННЫЕ ДАННЫЕ: ФОТО ПРИРОДЫ, ЦИТАТЫ, ХАЛЯЛЬ-БАЗА, ПОСЛОВНЫЙ НАМАЗ, СУННА И СПИСОК ГОРОДОВ -->
+    <!-- ВСТРОЕННЫЕ ДАННЫЕ: 114 СУР, РУССКИЕ ДАТЫ, ПОЛНЫЕ СУРЫ ДЛЯ НАМАЗА, ПОСЛОВНЫЙ СМЫСЛ, Е-ДОБАВКИ, ГОРОДА -->
     <script>
+        const SURAH_NAMES_RU = {
+            1: "Аль-Фатиха (Открывающая)", 2: "Аль-Бакара (Корова)", 3: "Али Имран (Семейство Имрана)", 4: "Ан-Ниса (Женщины)",
+            5: "Аль-Маида (Трапеза)", 6: "Аль-Анам (Скот)", 7: "Аль-Араф (Ограды)", 8: "Аль-Анфаль (Трофеи)",
+            9: "Ат-Тауба (Покаяние)", 10: "Юнус (Иона)", 11: "Худ (Худ)", 12: "Юсуф (Иосиф)",
+            13: "Ар-Раад (Гром)", 14: "Ибрахим (Авраам)", 15: "Аль-Хиджр (Хиджр)", 16: "Ан-Нахль (Пчёлы)",
+            17: "Аль-Исра (Ночной перенос)", 18: "Аль-Кахф (Пещера)", 19: "Марьям (Мария)", 20: "Та Ха (Та Ха)",
+            21: "Аль-Анбия (Пророки)", 22: "Аль-Хадж (Паломничество)", 23: "Аль-Муминун (Верующие)", 24: "Ан-Нур (Свет)",
+            25: "Аль-Фуркан (Различение)", 26: "Аш-Шуара (Поэты)", 27: "Ан-Намль (Муравьи)", 28: "Аль-Касас (Рассказ)",
+            29: "Аль-Анкабут (Паук)", 30: "Ар-Рум (Римляне)", 31: "Лукман (Лукман)", 32: "Ас-Саджда (Земной поклон)",
+            33: "Аль-Ахзаб (Союзники)", 34: "Саба (Сава)", 35: "Фатыр (Творец)", 36: "Йа Син (Ясин)",
+            37: "Ас-Саффат (Выстроившиеся в ряды)", 38: "Сад (Сад)", 39: "Аз-Зумар (Толпы)", 40: "Гафир (Прощающий)",
+            41: "Фуссылят (Разъяснены)", 42: "Аш-Шура (Совет)", 43: "Аз-Зухруф (Украшения)", 44: "Ад-Духан (Дым)",
+            45: "Аль-Джасия (Коленопреклонённые)", 46: "Аль-Ахкаф (Барханы)", 47: "Мухаммад (Мухаммад)", 48: "Аль-Фатх (Победа)",
+            49: "Аль-Худжурат (Комнаты)", 50: "Каф (Каф)", 51: "Аз-Зарият (Рассеивающие прах)", 52: "Ат-Тур (Гора)",
+            53: "Ан-Наджм (Звезда)", 54: "Аль-Камар (Месяц)", 55: "Ар-Рахман (Милостивый)", 56: "Аль-Вакиа (Событие)",
+            57: "Аль-Хадид (Железо)", 58: "Аль-Муджадиля (Препирающаяся)", 59: "Аль-Хашр (Сбор)", 60: "Аль-Мумтахана (Испытуемая)",
+            61: "Ас-Сафф (Ряды)", 62: "Аль-Джумуа (Собрание)", 63: "Аль-Мунафикун (Лицемеры)", 64: "Ат-Тагабун (Взаимное обделение)",
+            65: "Ат-Таляк (Развод)", 66: "Ат-Тахрим (Запрещение)", 67: "Аль-Мульк (Власть)", 68: "Аль-Калям (Письменная трость)",
+            69: "Аль-Хакка (Неминуемое)", 70: "Аль-Мааридж (Ступени)", 71: "Нух (Ной)", 72: "Аль-Джинн (Джинны)",
+            73: "Аль-Муззаммиль (Закутавшийся)", 74: "Аль-Муддассир (Завернувшийся)", 75: "Аль-Кияма (Воскресение)", 76: "Аль-Инсан (Человек)",
+            77: "Аль-Мурсалят (Посылаемые)", 78: "Ан-Наба (Весть)", 79: "Ан-Назиат (Исторгающие)", 80: "Абаса (Нахмурился)",
+            81: "Ат-Таквир (Скручивание)", 82: "Аль-Инфитар (Раскалывание)", 83: "Аль-Мутаффифин (Обвешивающие)", 84: "Аль-Иншикак (Разверзнется)",
+            85: "Аль-Бурудж (Созвездия Зодиака)", 86: "Ат-Тарик (Ночной путник)", 87: "Аль-Аля (Всевышний)", 88: "Аль-Гашия (Покрывающее)",
+            89: "Аль-Фаджр (Заря)", 90: "Аль-Баляд (Город)", 91: "Аш-Шамс (Солнце)", 92: "Аль-Лейль (Ночь)",
+            93: "Ад-Духа (Утро)", 94: "Аш-Шарх (Раскрытие)", 95: "Ат-Тин (Смоковница)", 96: "Аль-Аляк (Сгусток крови)",
+            97: "Аль-Кадр (Предопределение)", 98: "Аль-Баййина (Ясное знамение)", 99: "Аз-Зальзаля (Сотрясение)", 100: "Аль-Адият (Скачущие)",
+            101: "Аль-Кариа (Великое бедствие)", 102: "Ат-Такасур (Страсть к приумножению)", 103: "Аль-Аср (Предвечернее время)", 104: "Аль-Хумаза (Хулитель)",
+            105: "Аль-Филь (Слон)", 106: "Курайш (Курайшиты)", 107: "Аль-Маун (Мелочь)", 108: "Аль-Каусар (Изобилие)",
+            109: "Аль-Кафирун (Неверующие)", 110: "Ан-Наср (Помощь)", 111: "Аль-Масад (Пальмовые волокна)", 112: "Аль-Ихляс (Очищение веры)",
+            113: "Аль-Фаляк (Рассвет)", 114: "Ан-Нас (Люди)"
+        };
+
+        const HIJRI_MONTHS_RU = {
+            1: "Мухаррам", 2: "Сафар", 3: "Раби аль-авваль", 4: "Раби ас-сани",
+            5: "Джумада аль-уля", 6: "Джумада ас-сания", 7: "Раджаб", 8: "Шаабан",
+            9: "Рамадан", 10: "Шавваль", 11: "Зуль-каада", 12: "Зуль-хиджа"
+        };
+
         const REAL_NATURE_PHOTOS = [
             "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Desert_Sand_Dunes_near_sunset.jpg/1280px-Desert_Sand_Dunes_near_sunset.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Clear_Desert_Night_Sky_%28Unsplash%29.jpg/1280px-Clear_Desert_Night_Sky_%28Unsplash%29.jpg",
@@ -362,6 +434,7 @@
             { code: "СЫЧУГ", name: "Сычужный фермент (в сырах)", status: "doubt", origin: "Желудок телят или микробиальный синтез", proof: "Микробиальный пепсин — 100% Халяль. Животный сычуг без убоя по шариату — сомнителен/запретен." }
         ];
 
+        // ПОЛНЫЙ ПОСЛОВНЫЙ СМЫСЛ НАМАЗА (с завершением «Амин» в Аль-Фатихе и Салаватом в Ат-Тахияте)
         const WORD_BY_WORD_NAMAZ = {
             fatiha: {
                 words: [
@@ -370,14 +443,15 @@
                     { ar: "الْحَمْدُ", tr: "Аль-хамду", ru: "Вся хвала" }, { ar: "لِلَّهِ", tr: "ли-Лляхи", ru: "Аллаху" },
                     { ar: "رَبِّ", tr: "Рабби", ru: "Господу" }, { ar: "الْعَالَمِينَ", tr: "аль-'алямин", ru: "миров" },
                     { ar: "مَالِكِ", tr: "Малики", ru: "Властелину" }, { ar: "يَوْمِ", tr: "йауми", ru: "Дня" },
-                    { ar: "الدِّينِ", tr: "ад-дин", ru: "Суда" }, { ar: "إِيَّاكَ", tr: "Иййака", ru: "Только Тебе" },
+                    { ar: "الدِّينِ", tr: "ад-дин", ru: "Суда (Воздаяния)" }, { ar: "إِيَّاكَ", tr: "Иййака", ru: "Только Тебе" },
                     { ar: "نَعْبُدُ", tr: "на'буду", ru: "поклоняемся" }, { ar: "وَإِيَّاكَ", tr: "ва иййака", ru: "и только Тебя" },
                     { ar: "نَسْتَعِينُ", tr: "наста'ин", ru: "просим о помощи" }, { ar: "اهْدِنَا", tr: "Ихдина", ru: "Веди нас" },
                     { ar: "الصِّرَاطَ", tr: "ас-сырата", ru: "путем" }, { ar: "الْمُسْتَقِيمَ", tr: "аль-мустакым", ru: "прямым" },
                     { ar: "صِرَاطَ", tr: "Сырата", ru: "путем" }, { ar: "الَّذِينَ", tr: "аллязина", ru: "тех, которых" },
                     { ar: "أَنْعَمْتَ", tr: "ан'амта", ru: "Ты облагодетельствовал" }, { ar: "عَلَيْهِمْ", tr: "'алейхим", ru: "на них" },
                     { ar: "غَيْرِ", tr: "гайри", ru: "не (путем)" }, { ar: "الْمَغْضُوبِ", tr: "аль-магдуби", ru: "тех, кто под гневом" },
-                    { ar: "وَلَا الضَّالِّينَ", tr: "ва ляд-даллин", ru: "и не заблудших" }
+                    { ar: "عَلَيْهِمْ", tr: "'алейхим", ru: "на них" }, { ar: "وَلَا الضَّالِّينَ", tr: "ва ляд-даллин", ru: "и не заблудших" },
+                    { ar: "آمِينَ", tr: "Амин", ru: "О Аллах, прими мольбу!" }
                 ]
             },
             tahiyyat: {
@@ -389,7 +463,8 @@
                     { ar: "السَّلَامُ عَلَيْنَا", tr: "Ас-саляму 'алейна", ru: "Мир нам" }, { ar: "وَعَلَىٰ عِبَادِ اللَّهِ", tr: "ва 'аля 'ибадиЛляхи", ru: "и рабам Аллаха" },
                     { ar: "الصَّالِحِينَ", tr: "ас-салихин", ru: "праведным" }, { ar: "أَشْهَدُ أَنْ لَا إِلَٰهَ", tr: "Ашхаду ан ля иляха", ru: "Свидетельствую, что нет божества" },
                     { ar: "إِلَّا اللَّهُ", tr: "илля-Ллаху", ru: "кроме Аллаха" }, { ar: "وَأَشْهَدُ أَنَّ مُحَمَّدًا", tr: "ва ашхаду анна Мухаммадан", ru: "и что Мухаммад" },
-                    { ar: "عَبْدُهُ وَرَسُولُهُ", tr: "'абдуху ва расулюх", ru: "Его раб и Посланник" }
+                    { ar: "عَبْدُهُ وَرَسُولُهُ", tr: "'абдуху ва расулюх", ru: "Его раб и Посланник" },
+                    { ar: "اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ", tr: "Аллахумма салли 'аля Мухаммад", ru: "О Аллах, благослови Мухаммада (Салават)" }
                 ]
             },
             adhkar: {
@@ -399,7 +474,8 @@
                     { ar: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ", tr: "Сами'а-Ллаху лиман хамидах", ru: "Услышал Аллах того, кто воздал Ему хвалу" },
                     { ar: "رَبَّنَا وَلَكَ الْحَمْدُ", tr: "Раббана ва лякаль-хамд", ru: "Господь наш, Тебе хвала" },
                     { ar: "سُبْحَانَ رَبِّيَ الْأَعْلَىٰ", tr: "Субхана Раббияль-А'ля", ru: "Пречист Господь мой Всевышний (в суджуде)" },
-                    { ar: "رَبِّ اغْفِرْ لِي", tr: "Рабби-гфир ли", ru: "Господи, прости меня" }
+                    { ar: "رَبِّ اغْفِرْ لِي", tr: "Рабби-гфир ли", ru: "Господи, прости меня" },
+                    { ar: "السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ", tr: "Ас-саляму 'алейкум ва рахматуЛлах", ru: "Мир вам и милость Аллаха (Таслим)" }
                 ]
             }
         };
@@ -424,18 +500,49 @@
             108: ["Инна а’тайнакяль-каусар", "Фа-салли ли-Раббикя ванхар", "Инна шани’акя хуваль-абтар"],
             109: ["Куль йа аййухаль-кяфирун", "Ля а’буду ма та’будун", "Ва ля антум ‘абидуна ма а’буд", "Ва ля ана ‘абидун ма ‘абадтум", "Ва ля антум ‘абидуна ма а’буд", "Лякум динукум ва лийа дин"],
             110: ["Иза джа’а насруллахи валь-фатх", "Ва ра’айтан-наса йадхулюна фи динилляхи афваджа", "Фа-саббих би-хамди Раббикя вастагфирх, иннаху кяна тавваба"],
-            111: ["Таббат йада Аби Ляхабин ва табб", "Ма агна ‘анху маолюху ва ма кясаб", "Сайасля наран зата ляхаб", "Вамра’атуху хаммаляталь-хатаб", "Фи джидиха хаблюн мин масад"],
+            111: ["Таббат йада Аби Ляхабин ва табб", "Ма агна ‘анху малюху ва ма кясаб", "Сайасля наран зата ляхаб", "Вамра’атуху хаммаляталь-хатаб", "Фи джидиха хаблюн мин масад"],
             112: ["Куль хува Ллаху Ахад", "Аллаху с-Самад", "Лям йалид ва лям йуляд", "Ва лям йакул-ляху куфуван ахад"],
             113: ["Куль а’узу би-Раббиль-фаляк", "Мин шарри ма халяк", "Ва мин шарри гасикын иза вакаб", "Ва мин шаррин-наффасати филь-’укад", "Ва мин шарри хасидин иза хасад"],
             114: ["Куль а’узу би-Раббин-нас", "Маликин-нас", "Иляхин-нас", "Мин шарриль-васвасиль-ханнас", "Аллязи йувасвису фи судурин-нас", "Миналь-джиннати ван-нас"]
         };
 
+        // ПОЛНЫЕ ТЕКСТЫ СУР ДЛЯ ПОДСКАЗКИ ПЕРЕД НАМАЗОМ (БЕЗ СОКРАЩЕНИЙ!)
         const PRAYER_SURAH_SUGGESTIONS = {
-            Fajr: { s1: "Сура Аль-Кадр (97)", s2: "Сура Аль-Ихляс (112)", text1: "Инна анзальнаху фи лейлятиль-кадр...", text2: "Куль хува Ллаху Ахад, Аллаху с-Самад..." },
-            Dhuhr: { s1: "Сура Аль-Аср (103)", s2: "Сура Аль-Каусар (108)", text1: "Валь-'аср. Инналь-инсана ляфи хуср...", text2: "Инна а'тайнакяль-каусар. Фа-салли ли-Раббикя ванхар..." },
-            Asr: { s1: "Сура Курайш (106)", s2: "Сура Аль-Ихляс (112)", text1: "Ли-иляфи курайш. Иляфихим рихляташ-шитаи вас-сайф...", text2: "Куль хува Ллаху Ахад, Аллаху с-Самад..." },
-            Maghrib: { s1: "Сура Аль-Кафирун (109)", s2: "Сура Аль-Ихляс (112)", text1: "Куль йа аййухаль-кяфирун. Ля а'буду ма та'будун...", text2: "Куль хува Ллаху Ахад, Аллаху с-Самад..." },
-            Isha: { s1: "Сура Аш-Шарх (94)", s2: "Сура Аль-Фаляк (113)", text1: "Алям нашрах ляка садрак. Ва вада'на 'анка визрак...", text2: "Куль а'узу би-Раббиль-фаляк. Мин шарри ма халяк..." }
+            Fajr: {
+                s1: "Сура Аль-Кадр (97)", s2: "Сура Аль-Ихляс (112)",
+                arab1: "إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ ﴿١﴾ وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ ﴿٢﴾ لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ ﴿٣﴾ تَنَزَّلُ الْمَلَائِكَةُ وَالرُّوحُ فِيهَا بِإِذْنِ رَبِّهِم مِّن كُلِّ أَمْرٍ ﴿٤﴾ سَلَامٌ هِيَ حَتَّىٰ مَطْلَعِ الْفَجْرِ ﴿٥﴾",
+                text1: "1. Инна анзальнаху фи лейлятиль-кадр.\n2. Ва ма адрака ма лейлятуль-кадр.\n3. Лейлятуль-кадри хайрун мин альфи шахр.\n4. Таназзалюль-маляикату вар-руху фиха би-изни Раббихим мин кулли амр.\n5. Салямун хийа хатта матля’иль-фаджр.",
+                arab2: "قُلْ هُوَ اللَّهُ أَحَدٌ ﴿١﴾ اللَّهُ الصَّمَدُ ﴿٢﴾ لَمْ يَلِدْ وَلَمْ يُولَدْ ﴿٣﴾ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ﴿٤﴾",
+                text2: "1. Куль хува Ллаху Ахад.\n2. Аллаху с-Самад.\n3. Лям йалид ва лям йуляд.\n4. Ва лям йакул-ляху куфуван ахад."
+            },
+            Dhuhr: {
+                s1: "Сура Аль-Аср (103)", s2: "Сура Аль-Каусар (108)",
+                arab1: "وَالْعَصْرِ ﴿١﴾ إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ﴿٢﴾ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ ﴿٣﴾",
+                text1: "1. Валь-’аср.\n2. Инналь-инсана ляфи хуср.\n3. Илляль-лязина аману ва ‘амилюс-салихати ва тавасау биль-хаккы ва тавасау бис-сабр.",
+                arab2: "إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ ﴿١﴾ فَصَلِّ لِرَبِّكَ وَانْحَرْ ﴿٢﴾ إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ ﴿٣﴾",
+                text2: "1. Инна а’тайнакяль-каусар.\n2. Фа-салли ли-Раббикя ванхар.\n3. Инна шани’акя хуваль-абтар."
+            },
+            Asr: {
+                s1: "Сура Курайш (106)", s2: "Сура Аль-Ихляс (112)",
+                arab1: "لِإِيلَافِ قُرَيْشٍ ﴿١﴾ إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ ﴿٢﴾ فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ ﴿٣﴾ الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ ﴿٤﴾",
+                text1: "1. Ли-иляфи курайш.\n2. Иляфихим рихляташ-шитаи вас-сайф.\n3. Фаль-йа’буду Рабба хазаль-бейт.\n4. Аллязи ат’амахум мин джу’ин ва аманахум мин хауф.",
+                arab2: "قُلْ هُوَ اللَّهُ أَحَدٌ ﴿١﴾ اللَّهُ الصَّمَدُ ﴿٢﴾ لَمْ يَلِدْ وَلَمْ يُولَدْ ﴿٣﴾ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ﴿٤﴾",
+                text2: "1. Куль хува Ллаху Ахад.\n2. Аллаху с-Самад.\n3. Лям йалид ва лям йуляд.\n4. Ва лям йакул-ляху куфуван ахад."
+            },
+            Maghrib: {
+                s1: "Сура Аль-Кафирун (109)", s2: "Сура Аль-Ихляс (112)",
+                arab1: "قُلْ يَا أَيُّهَا الْكَافِرُونَ ﴿١﴾ لَا أَعْبُدُ مَا تَعْبُدُونَ ﴿٢﴾ وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ ﴿٣﴾ وَلَا أَنَا عَابِدٌ مَّا عَبَدتُّم ﴿٤﴾ وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ ﴿٥﴾ لَكُمْ دِينُكُمْ وَلِيَ دِينِ ﴿٦﴾",
+                text1: "1. Куль йа аййухаль-кяфирун.\n2. Ля а’буду ма та’будун.\n3. Ва ля антум ‘абидуна ма а’буд.\n4. Ва ля ана ‘абидун ма ‘абадтум.\n5. Ва ля антум ‘абидуна ма а’буд.\n6. Лякум динукум ва лийа дин.",
+                arab2: "قُلْ هُوَ اللَّهُ أَحَدٌ ﴿١﴾ اللَّهُ الصَّمَدُ ﴿٢﴾ لَمْ يَلِدْ وَلَمْ يُولَدْ ﴿٣﴾ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ﴿٤﴾",
+                text2: "1. Куль хува Ллаху Ахад.\n2. Аллаху с-Самад.\n3. Лям йалид ва лям йуляд.\n4. Ва лям йакул-ляху куфуван ахад."
+            },
+            Isha: {
+                s1: "Сура Аш-Шарх (94)", s2: "Сура Аль-Фаляк (113)",
+                arab1: "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ﴿١﴾ وَوَضَعْنَا عَنكَ وِزْرَكَ ﴿٢﴾ الَّذِي أَنقَضَ ظَهْرَكَ ﴿٣﴾ وَرَفَعْنَا لَكَ ذِكْرَكَ ﴿٤﴾ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ﴿٥﴾ إِنَّ مَعَ الْعُسْرِ يُسْرًا ﴿٦﴾ فَإِذَا فَرَغْتَ فَانصَبْ ﴿٧﴾ وَإِلَىٰ رَبِّكَ فَارْغَب ﴿٨﴾",
+                text1: "1. Алям нашрах ляка садрак.\n2. Ва вада’на ‘анка визрак.\n3. Аллязи анкада захрак.\n4. Ва рафа’на ляка зикрак.\n5. Фа-инна ма’аль-’усри йусра.\n6. Инна ма’аль-’усри йусра.\n7. Фа-иза фарагта фансаб.\n8. Ва иля Раббика фаргаб.",
+                arab2: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ﴿١﴾ مِن شَرِّ مَا خَلَقَ ﴿٢﴾ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ﴿٣﴾ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ﴿٤﴾ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ ﴿٥﴾",
+                text2: "1. Куль а’узу би-Раббиль-фаляк.\n2. Мин шарри ма халяк.\n3. Ва мин шарри гасикын иза вакаб.\n4. Ва мин шаррин-наффасати филь-’укад.\n5. Ва мин шарри хасидин иза хасад."
+            }
         };
 
         const QUICK_CITIES = [
@@ -473,7 +580,7 @@
 
     <!-- Праздничное / Пятничное уведомление -->
     <div id="special-day-banner" class="hidden relative z-40 max-w-xl mx-auto px-4 pb-2">
-        <div class="apple-glass-amber rounded-2xl p-3.5 flex items-center justify-between gap-3">
+        <div class="apple-glass-amber rounded-[22px] p-3.5 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">
                 <div class="w-9 h-9 rounded-xl bg-amberCore text-white flex items-center justify-center shrink-0">
                     <i data-lucide="sparkles" class="w-4 h-4"></i>
@@ -491,7 +598,7 @@
     </div>
 
     <!-- Dynamic Island Аудио-Плеер -->
-    <div id="dynamic-island" class="island-hidden fixed left-1/2 z-50 w-[94%] max-w-md obsidian-matte rounded-[28px] px-4 py-3">
+    <div id="dynamic-island" class="island-hidden fixed left-1/2 z-50 w-[94%] max-w-md obsidian-matte rounded-[26px] px-4 py-3">
         <div class="flex items-center justify-between gap-3">
             <div id="island-wave-box" class="flex items-center gap-1 h-6 px-2 py-1 rounded-full bg-white/5 border border-white/10 shrink-0">
                 <span class="wave-bar bg-sapphireAccent" style="animation-delay: 0.0s"></span>
@@ -500,8 +607,8 @@
                 <span class="wave-bar bg-emeraldAccent" style="animation-delay: 0.15s"></span>
             </div>
             <div class="min-w-0 flex-1">
-                <p id="island-title" class="text-xs font-bold text-white truncate">Сура Аль-Фатиха — Аят 1</p>
-                <p id="island-subtitle" class="text-[10px] text-orange-200/70 truncate">Мишари Рашид аль-Афаси</p>
+                <p id="island-title" class="text-xs font-bold text-white truncate">Чтец: Мишари Рашид аль-Афаси</p>
+                <p id="island-subtitle" class="text-[10px] text-orange-200/70 truncate">Сура Аль-Фатиха — Аят 1</p>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
                 <button onclick="toggleIslandPlayPause()" id="island-play-btn" class="spring-interactive w-8 h-8 rounded-full bg-amberCore text-white flex items-center justify-center shadow"><i data-lucide="pause" class="w-3.5 h-3.5"></i></button>
@@ -516,7 +623,7 @@
         </div>
     </div>
 
-    <!-- ШАПКА ПРИЛОЖЕНИЯ AYASPACE -->
+    <!-- ШАПКА ПРИЛОЖЕНИЯ AYASPACE (Кнопка Настроек w-12 h-12 — симметрична логотипу слева) -->
     <header class="relative z-10 w-full max-w-xl mx-auto px-4 pt-2 pb-2 flex items-center justify-between gap-2">
         <div class="flex items-center gap-3.5 min-w-0">
             <div class="w-12 h-12 rounded-2xl flex items-center justify-center relative border border-white/25 shadow-lg shrink-0"
@@ -534,104 +641,104 @@
         </div>
 
         <div class="flex items-center gap-2 shrink-0">
-            <button onclick="switchTab('settings')" class="spring-interactive apple-glass px-3.5 py-2.5 rounded-2xl flex items-center gap-2 text-xs font-semibold hover:border-white/35">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amberGlow"></i>
+            <button onclick="switchTab('settings')" class="spring-interactive apple-glass h-12 px-4 rounded-2xl flex items-center gap-2 text-xs font-semibold hover:border-white/35">
+                <i data-lucide="map-pin" class="w-4 h-4 text-amberGlow"></i>
                 <span id="current-city-badge" class="max-w-[95px] truncate">Москва</span>
             </button>
-            <button onclick="switchTab('settings')" title="Настройки" class="spring-interactive apple-glass w-10 h-10 rounded-2xl flex items-center justify-center text-white hover:border-amberGlow/50">
-                <i data-lucide="settings" class="w-4 h-4 text-amberGlow"></i>
+            <button onclick="switchTab('settings')" title="Настройки" class="spring-interactive apple-glass w-12 h-12 rounded-2xl flex items-center justify-center text-white hover:border-amberGlow/50">
+                <i data-lucide="settings" class="w-5 h-5 text-amberGlow"></i>
             </button>
         </div>
     </header>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР ВКЛАДОК -->
-    <main class="relative z-10 max-w-xl mx-auto px-4 pt-2 space-y-5">
+    <main class="relative z-10 max-w-xl mx-auto px-4 pt-1.5 space-y-4">
 
-        <!-- ВКЛАДКА 1: НАМАЗ + РЕЖИМ МУСАФИРА + ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ ВНИЗУ -->
-        <section id="tab-prayer" class="tab-view space-y-5">
-            <div class="apple-glass-amber rounded-[32px] p-6 relative overflow-hidden">
-                <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-amberGlow/20 blur-3xl pointer-events-none"></div>
-                <div class="flex justify-between items-start gap-3">
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-white/15 text-xs">
+        <!-- ВКЛАДКА 1: НАМАЗ + РЕЖИМ МУСАФИРА + ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ -->
+        <section id="tab-prayer" class="tab-view space-y-4">
+            <!-- Компактная плашка следующего намаза -->
+            <div class="apple-glass-amber rounded-[26px] px-5 py-4 relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-36 h-36 rounded-full bg-amberGlow/20 blur-3xl pointer-events-none"></div>
+                <div class="flex justify-between items-center gap-3">
+                    <div class="blur-text-reveal">
+                        <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-black/40 border border-white/15 text-[11px]">
                             <span class="w-2 h-2 rounded-full bg-emeraldAccent animate-pulse"></span>
                             <span class="text-white/75">Далее:</span>
                             <strong id="next-prayer-name" class="text-white font-bold">Обеденный (Зухр)</strong>
                         </div>
-                        <div id="countdown-timer" class="glass-text-hero text-5xl sm:text-6xl font-bold tracking-tight mt-3.5 tabular-nums">00:00:00</div>
-                        <p id="gregorian-date" class="text-xs text-white/75 font-body mt-2"></p>
+                        <div id="countdown-timer" class="glass-text-hero text-4xl sm:text-5xl font-bold tracking-tight mt-1.5 tabular-nums leading-none">00:00:00</div>
+                        <p id="gregorian-date" class="text-[11.5px] text-white/75 font-body mt-1.5"></p>
                     </div>
-                    <button onclick="detectGeolocation()" title="Определить мою геолокацию" class="spring-interactive apple-glass p-3 rounded-2xl hover:bg-white/15 shrink-0">
-                        <i data-lucide="navigation" class="w-5 h-5 text-amberGlow"></i>
+                    <button onclick="detectGeolocation()" title="Определить мою геолокацию" class="spring-interactive apple-glass w-11 h-11 rounded-2xl flex items-center justify-center hover:bg-white/15 shrink-0">
+                        <i data-lucide="navigation" class="w-4 h-4 text-amberGlow"></i>
                     </button>
                 </div>
-                <div class="mt-5 pt-4 border-t border-white/15 flex flex-wrap items-center justify-between text-[11px] text-white/80 gap-2">
+                <div class="mt-3 pt-2.5 border-t border-white/12 flex flex-wrap items-center justify-between text-[11px] text-white/80 gap-2 blur-text-reveal delay-1">
                     <span id="last-third-night-badge" class="flex items-center gap-1.5 text-orange-200 font-medium">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amberGlow"></i> Начало последней трети ночи: --:--
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amberGlow"></i> Последняя треть ночи: --:--
                     </span>
-                    <span id="musafir-status-pill" class="px-2.5 py-1 rounded-xl bg-black/35 border border-white/10 text-white/75">Режим: Дома (Мукым)</span>
+                    <span id="musafir-status-pill" class="px-2.5 py-0.5 rounded-lg bg-black/35 border border-white/10 text-white/75 text-[10.5px]">Режим: Дома (Мукым)</span>
                 </div>
             </div>
 
             <!-- Расписание намазов -->
-            <div class="apple-glass rounded-[32px] p-5 space-y-4">
-                <div class="flex items-center justify-between gap-3">
+            <div class="apple-glass rounded-[28px] p-4 sm:p-5 space-y-3.5 blur-text-reveal delay-1">
+                <div class="flex items-center justify-between gap-3 px-0.5">
                     <div>
-                        <h2 class="font-bold text-base glass-text-title">Расписание намазов</h2>
-                        <p class="text-xs text-white/55 font-body">Выделен текущий намаз и свободные окна для дел</p>
+                        <h2 class="font-bold text-[15px] glass-text-title">Расписание намазов</h2>
+                        <p class="text-[11px] text-white/50 font-body">Текущий намаз и свободные окна между молитвами</p>
                     </div>
-                    <span id="completed-prayers-count" class="shrink-0 whitespace-nowrap text-xs font-bold px-3.5 py-1.5 rounded-full bg-emeraldAccent/15 border border-emeraldAccent/35 text-emeraldAccent tabular-nums">0 / 5</span>
+                    <span id="completed-prayers-count" class="shrink-0 whitespace-nowrap text-xs font-bold px-3 py-1 rounded-full bg-emeraldAccent/15 border border-emeraldAccent/35 text-emeraldAccent tabular-nums">0 / 5</span>
                 </div>
                 <div id="prayer-list" class="space-y-2"></div>
             </div>
 
-            <!-- Режим Путника (Мусафир) -->
-            <div class="obsidian-matte rounded-[30px] p-5 space-y-3.5">
+            <!-- Режим Путника (Мусафир) — компактная плашка с другой геометрией -->
+            <div class="obsidian-matte rounded-[22px] px-4 py-3.5 space-y-3 blur-text-reveal delay-2">
                 <div class="flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-sapphireAccent/20 border border-sapphireAccent/35 text-sapphireAccent flex items-center justify-center shrink-0">
-                            <i data-lucide="plane" class="w-5 h-5"></i>
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-9 h-9 rounded-xl bg-sapphireAccent/18 border border-sapphireAccent/30 text-sapphireAccent flex items-center justify-center shrink-0">
+                            <i data-lucide="plane" class="w-4 h-4"></i>
                         </div>
-                        <div>
-                            <h3 class="text-sm font-bold glass-text-title">Режим Мусафира (Я в пути)</h3>
-                            <p id="musafir-distance-label" class="text-[11px] text-white/60 font-body">Сокращение 4-ракаатных намазов до 2 ракаатов при поездке > 85 км</p>
+                        <div class="min-w-0">
+                            <h3 class="text-[13.5px] font-bold glass-text-title truncate">Режим Мусафира (Я в пути)</h3>
+                            <p id="musafir-distance-label" class="text-[11px] text-white/55 font-body truncate">Сокращение 4-ракаатных намазов до 2 ракаатов (> 85 км)</p>
                         </div>
                     </div>
-                    <button onclick="toggleMusafirMode()" id="musafir-toggle-btn" class="spring-interactive px-3.5 py-2 rounded-2xl text-xs font-semibold border border-white/15 bg-white/10 text-white shrink-0">Включить</button>
+                    <button onclick="toggleMusafirMode()" id="musafir-toggle-btn" class="spring-interactive px-3 py-1.5 rounded-xl text-xs font-semibold border border-white/15 bg-white/8 text-white shrink-0">Включить</button>
                 </div>
-                <div id="musafir-details-box" class="hidden p-3.5 rounded-2xl bg-sapphireAccent/10 border border-sapphireAccent/30 text-xs space-y-1.5 text-white/85 font-body">
-                    <p class="font-bold text-sapphireAccent flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4"></i> Активен режим сокращения намазов (Каср):</p>
-                    <p>• <strong>Обеденный (Зухр), Послеобеденный (Аср) и Ночной (Иша)</strong> сокращаются с 4 до <strong>2 обязательных ракаатов</strong>.</p>
-                    <p>• <strong>Утренний (2 ракаата) и Вечерний (3 ракаата)</strong> читаются полностью.</p>
-                    <p class="text-[11px] text-white/60 pt-1 border-t border-white/10"><strong>Довод:</strong> Коран (4:101) и хадис Ибн Умара в Сахих аль-Бухари (1080).</p>
+                <div id="musafir-details-box" class="hidden p-3 rounded-xl bg-sapphireAccent/10 border border-sapphireAccent/25 text-xs space-y-1 text-white/85 font-body">
+                    <p class="font-bold text-sapphireAccent flex items-center gap-1.5"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Активен режим сокращения намазов (Каср):</p>
+                    <p>• <strong>Зухр, Аср и Иша</strong> сокращаются с 4 до <strong>2 обязательных ракаатов</strong>.</p>
+                    <p>• <strong>Фаджр (2 ракаата) и Магриб (3 ракаата)</strong> читаются полностью.</p>
                 </div>
             </div>
 
             <!-- ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ -->
-            <div id="main-tools-anchor" class="pt-2 space-y-4">
-                <div class="px-1">
-                    <h2 class="text-base font-bold glass-text-title">Полезные инструменты</h2>
-                    <p class="text-xs text-white/60 font-body">Компас Киблы 360°, проверка Е-добавок Халяль, пословный намаз и Сунна</p>
+            <div id="main-tools-anchor" class="pt-1 space-y-3.5 blur-text-reveal delay-3">
+                <div class="px-1 flex items-baseline justify-between">
+                    <h2 class="text-[15px] font-bold glass-text-title">Полезные инструменты</h2>
+                    <span class="text-[11px] text-white/45 font-body">Кибла • Халяль • Смысл • Сунна</span>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1.5 rounded-2xl obsidian-matte">
-                    <button onclick="openToolSection('qibla')" id="tool-tab-qibla" class="spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 rounded-[20px] obsidian-matte">
+                    <button onclick="openToolSection('qibla')" id="tool-tab-qibla" class="spring-interactive py-2.5 px-3 rounded-[14px] text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5">
                         <i data-lucide="compass" class="w-3.5 h-3.5"></i> Кибла 360°
                     </button>
-                    <button onclick="openToolSection('halal')" id="tool-tab-halal" class="spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5">
+                    <button onclick="openToolSection('halal')" id="tool-tab-halal" class="spring-interactive py-2.5 px-3 rounded-[14px] text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5">
                         <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Е-Добавки
                     </button>
-                    <button onclick="openToolSection('khushu')" id="tool-tab-khushu" class="spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5">
+                    <button onclick="openToolSection('khushu')" id="tool-tab-khushu" class="spring-interactive py-2.5 px-3 rounded-[14px] text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5">
                         <i data-lucide="book-open-check" class="w-3.5 h-3.5"></i> Смысл намаза
                     </button>
-                    <button onclick="openToolSection('emergency')" id="tool-tab-emergency" class="spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5">
+                    <button onclick="openToolSection('emergency')" id="tool-tab-emergency" class="spring-interactive py-2.5 px-3 rounded-[14px] text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5">
                         <i data-lucide="life-buoy" class="w-3.5 h-3.5"></i> Помощник
                     </button>
                 </div>
 
                 <!-- Модуль 1: Живой Компас Киблы 360° + Makkah Live -->
-                <div id="tool-panel-qibla">
-                    <div class="relative rounded-[34px] overflow-hidden border border-white/20 shadow-2xl min-h-[520px] flex flex-col justify-between p-6 select-none"
+                <div id="tool-panel-qibla" class="blur-text-reveal">
+                    <div class="relative rounded-[30px] overflow-hidden border border-white/18 shadow-2xl min-h-[490px] flex flex-col justify-between p-5 sm:p-6 select-none"
                          style="background: radial-gradient(circle at 50% 45%, rgba(45, 32, 22, 0.85) 0%, rgba(10, 10, 12, 0.96) 80%);">
                         <svg class="absolute inset-0 w-full h-full opacity-15 pointer-events-none" viewBox="0 0 400 400">
                             <g stroke="#FF9E5E" stroke-width="0.7" fill="none">
@@ -642,130 +749,130 @@
                         </svg>
                         <div class="relative z-10 flex items-start justify-between">
                             <div>
-                                <h2 class="text-3xl font-bold text-white tracking-tight">Кибла</h2>
-                                <p id="qibla-header-meta" class="text-base font-medium text-white/85 mt-1 tabular-nums">176° S • 3 822 km</p>
+                                <h2 class="text-2xl font-bold text-white tracking-tight">Кибла</h2>
+                                <p id="qibla-header-meta" class="text-sm font-medium text-white/80 mt-0.5 tabular-nums">176° S • 3 822 km</p>
                             </div>
                             <button onclick="enableIOSCompass()" id="activate-compass-btn" class="spring-interactive px-3.5 py-2 rounded-full bg-white/12 hover:bg-white/20 border border-white/20 text-xs font-bold text-amberGlow flex items-center gap-1.5 backdrop-blur-md">
                                 <i data-lucide="compass" class="w-4 h-4"></i> Включить гироскоп
                             </button>
                         </div>
-                        <div class="relative z-10 my-auto flex flex-col items-center justify-center py-5">
-                            <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+                        <div class="relative z-10 my-auto flex flex-col items-center justify-center py-4">
+                            <div class="relative w-60 h-60 sm:w-68 sm:h-68 flex items-center justify-center">
                                 <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20">
                                     <div id="qibla-beam-cone" class="w-10 h-28 -mt-28 transition-colors duration-500"
                                          style="background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.05) 100%); clip-path: polygon(15% 0%, 85% 0%, 58% 100%, 42% 100%);"></div>
                                     <div id="qibla-center-ring" class="w-6 h-6 rounded-full border-[3px] border-white bg-obsidian shadow-lg"></div>
                                 </div>
-                                <div id="qibla-compass-dial" class="relative w-full h-full rounded-full border-[4px] border-white shadow-[0_0_35px_rgba(0,0,0,0.6)] flex items-center justify-center">
-                                    <span class="absolute top-3.5 left-1/2 -translate-x-1/2 font-bold text-sm tracking-widest text-white/85">N</span>
-                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-sm tracking-widest text-white/85">E</span>
-                                    <span class="absolute bottom-3.5 left-1/2 -translate-x-1/2 font-bold text-sm tracking-widest text-white/85">S</span>
-                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-sm tracking-widest text-white/85">W</span>
+                                <div id="qibla-compass-dial" class="relative w-full h-full rounded-full border-[3.5px] border-white shadow-[0_0_35px_rgba(0,0,0,0.6)] flex items-center justify-center">
+                                    <span class="absolute top-3.5 left-1/2 -translate-x-1/2 font-bold text-xs tracking-widest text-white/85">N</span>
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-xs tracking-widest text-white/85">E</span>
+                                    <span class="absolute bottom-3.5 left-1/2 -translate-x-1/2 font-bold text-xs tracking-widest text-white/85">S</span>
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-xs tracking-widest text-white/85">W</span>
                                     <div id="qibla-kaaba-orbit" class="absolute inset-0 pointer-events-none" style="transform: rotate(176deg);">
-                                        <div class="absolute -top-9 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                                            <div class="w-7 h-7 rounded-lg bg-obsidian border-2 border-amberGlow shadow-lg flex flex-col items-center justify-center">
-                                                <div class="w-full h-1 bg-amberGlow mb-1"></div>
+                                        <div class="absolute -top-8 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                                            <div class="w-6 h-6 rounded-md bg-obsidian border-2 border-amberGlow shadow-lg flex flex-col items-center justify-center">
+                                                <div class="w-full h-1 bg-amberGlow mb-0.5"></div>
                                             </div>
                                             <div class="w-0.5 h-2 bg-amberGlow"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-56 mt-6">
+                            <div class="w-52 mt-5">
                                 <input id="manual-heading-slider" type="range" min="0" max="360" value="0" oninput="onManualCompassSlide(this.value)" class="island-slider w-full cursor-pointer">
                             </div>
-                            <p id="qibla-instruction-text" class="text-center font-bold text-lg text-white mt-4 max-w-[250px] leading-snug">Поверните телефон в сторону киблы</p>
-                            <p class="text-[11px] text-white/55 mt-1 text-center">Совместите значок Каабы на ободе со светящимся лучом сверху</p>
+                            <p id="qibla-instruction-text" class="text-center font-bold text-base text-white mt-3.5 max-w-[250px] leading-snug">Поверните телефон в сторону киблы</p>
+                            <p class="text-[11px] text-white/50 mt-0.5 text-center">Совместите значок Каабы со светящимся лучом сверху</p>
                         </div>
                         <div class="relative z-10 flex items-center justify-between pt-2">
-                            <button onclick="detectGeolocationForQibla()" title="Обновить GPS" class="spring-interactive w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white"><i data-lucide="locate-fixed" class="w-5 h-5"></i></button>
-                            <button onclick="openMakkahLiveModal()" class="spring-interactive px-6 py-2.5 rounded-full bg-white/12 hover:bg-white/20 border border-white/25 text-xs font-bold tracking-widest uppercase text-white backdrop-blur-md">MAKKAH LIVE</button>
-                            <button onclick="resetCompassNorth()" title="Навести на Киблу" class="spring-interactive w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                            <button onclick="detectGeolocationForQibla()" title="Обновить GPS" class="spring-interactive w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white"><i data-lucide="locate-fixed" class="w-4 h-4"></i></button>
+                            <button onclick="openMakkahLiveModal()" class="spring-interactive px-5 py-2 rounded-full bg-white/12 hover:bg-white/20 border border-white/25 text-xs font-bold tracking-widest uppercase text-white backdrop-blur-md">MAKKAH LIVE</button>
+                            <button onclick="resetCompassNorth()" title="Навести на Киблу" class="spring-interactive w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Модуль 2: Халяль Е-Добавки -->
-                <div id="tool-panel-halal" class="hidden space-y-4">
-                    <div class="apple-glass rounded-[30px] p-5 space-y-3.5">
+                <div id="tool-panel-halal" class="hidden space-y-3.5 blur-text-reveal">
+                    <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
                         <div>
-                            <h2 class="text-lg font-bold glass-text-title">Халяль-проверка Е-добавок и состава</h2>
-                            <p class="text-xs text-white/65 font-body">Мгновенная проверка без интернета с шариатским доводом.</p>
+                            <h2 class="text-base font-bold glass-text-title">Халяль-проверка Е-добавок и состава</h2>
+                            <p class="text-xs text-white/60 font-body">Мгновенная проверка без интернета с шариатским доводом</p>
                         </div>
                         <div class="relative">
                             <i data-lucide="search" class="w-4 h-4 text-amberGlow absolute left-4 top-3.5"></i>
                             <input id="halal-search-input" type="text" oninput="renderHalalAdditives(this.value)" placeholder="Введите код (E120, E471, E441) или слово (желатин, сычуг)..." 
-                                class="w-full pl-11 pr-4 py-3 rounded-2xl bg-black/50 border border-white/15 text-sm text-white placeholder-white/40 focus:outline-none focus:border-amberGlow">
+                                class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-black/50 border border-white/15 text-sm text-white placeholder-white/40 focus:outline-none focus:border-amberGlow">
                         </div>
                         <div class="flex flex-wrap gap-1.5 text-[11px]">
-                            <button onclick="document.getElementById('halal-search-input').value='E120'; renderHalalAdditives('E120')" class="px-2.5 py-1 rounded-xl bg-white/8 hover:bg-white/15 text-white/80">E120 Кармин</button>
-                            <button onclick="document.getElementById('halal-search-input').value='E441'; renderHalalAdditives('E441')" class="px-2.5 py-1 rounded-xl bg-white/8 hover:bg-white/15 text-white/80">E441 Желатин</button>
-                            <button onclick="document.getElementById('halal-search-input').value='E471'; renderHalalAdditives('E471')" class="px-2.5 py-1 rounded-xl bg-white/8 hover:bg-white/15 text-white/80">E471 Эмульгатор</button>
-                            <button onclick="document.getElementById('halal-search-input').value='СЫЧУГ'; renderHalalAdditives('СЫЧУГ')" class="px-2.5 py-1 rounded-xl bg-white/8 hover:bg-white/15 text-white/80">Сычуг</button>
-                            <button onclick="document.getElementById('halal-search-input').value=''; renderHalalAdditives('')" class="px-2.5 py-1 rounded-xl bg-amberCore/25 text-amberGlow">Все</button>
+                            <button onclick="document.getElementById('halal-search-input').value='E120'; renderHalalAdditives('E120')" class="px-2.5 py-1 rounded-lg bg-white/8 hover:bg-white/15 text-white/80">E120 Кармин</button>
+                            <button onclick="document.getElementById('halal-search-input').value='E441'; renderHalalAdditives('E441')" class="px-2.5 py-1 rounded-lg bg-white/8 hover:bg-white/15 text-white/80">E441 Желатин</button>
+                            <button onclick="document.getElementById('halal-search-input').value='E471'; renderHalalAdditives('E471')" class="px-2.5 py-1 rounded-lg bg-white/8 hover:bg-white/15 text-white/80">E471 Эмульгатор</button>
+                            <button onclick="document.getElementById('halal-search-input').value='СЫЧУГ'; renderHalalAdditives('СЫЧУГ')" class="px-2.5 py-1 rounded-lg bg-white/8 hover:bg-white/15 text-white/80">Сычуг</button>
+                            <button onclick="document.getElementById('halal-search-input').value=''; renderHalalAdditives('')" class="px-2.5 py-1 rounded-lg bg-amberCore/25 text-amberGlow">Все</button>
                         </div>
                     </div>
-                    <div id="halal-results-list" class="space-y-3"></div>
+                    <div id="halal-results-list" class="space-y-2.5"></div>
                 </div>
 
                 <!-- Модуль 3: Пословный смысл намаза -->
-                <div id="tool-panel-khushu" class="hidden space-y-4">
-                    <div class="apple-glass rounded-[30px] p-5 space-y-4">
+                <div id="tool-panel-khushu" class="hidden space-y-4 blur-text-reveal">
+                    <div class="apple-glass rounded-[26px] p-5 space-y-4">
                         <div>
-                            <h2 class="text-lg font-bold glass-text-title">Осознанный намаз (Пословный смысл)</h2>
-                            <p class="text-xs text-white/65 font-body">Понимайте каждое слово, которое произносите перед Всевышним</p>
+                            <h2 class="text-base font-bold glass-text-title">Осознанный намаз (Пословный смысл)</h2>
+                            <p class="text-xs text-white/60 font-body">Понимайте каждое слово, которое произносите перед Всевышним</p>
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="renderKhushuSection('fatiha')" id="khushu-btn-fatiha" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-bold bg-amberCore text-white">Аль-Фатиха</button>
-                            <button onclick="renderKhushuSection('tahiyyat')" id="khushu-btn-tahiyyat" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold bg-white/10 text-white/75">Ат-Тахият</button>
-                            <button onclick="renderKhushuSection('adhkar')" id="khushu-btn-adhkar" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold bg-white/10 text-white/75">Поклоны</button>
+                        <div class="flex gap-1.5 p-1 rounded-2xl bg-black/40 border border-white/10">
+                            <button onclick="renderKhushuSection('fatiha')" id="khushu-btn-fatiha" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-bold bg-amberCore text-white shadow">Аль-Фатиха</button>
+                            <button onclick="renderKhushuSection('tahiyyat')" id="khushu-btn-tahiyyat" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold text-white/70">Ат-Тахият</button>
+                            <button onclick="renderKhushuSection('adhkar')" id="khushu-btn-adhkar" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold text-white/70">Поклоны</button>
                         </div>
-                        <div id="khushu-words-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2"></div>
+                        <div id="khushu-words-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1"></div>
                     </div>
                 </div>
 
                 <!-- Модуль 4: Помощник в намазе и по Сунне -->
-                <div id="tool-panel-emergency" class="hidden space-y-3.5"></div>
+                <div id="tool-panel-emergency" class="hidden space-y-3 blur-text-reveal"></div>
             </div>
         </section>
 
         <!-- ВКЛАДКА 2: СВЯЩЕННЫЙ КОРАН -->
         <section id="tab-quran" class="tab-view hidden space-y-4">
-            <div class="apple-glass rounded-[30px] p-5">
+            <div class="apple-glass rounded-[26px] p-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
+                    <div class="blur-text-reveal">
                         <h2 class="text-lg font-bold glass-text-title">Священный Коран</h2>
-                        <p class="text-xs text-white/65 font-body">Оригинал (Усмани) • Кириллическая транскрипция • Перевод Э. Кулиева</p>
+                        <p class="text-xs text-white/60 font-body">Оригинал (Усмани) • Кириллическая транскрипция • Перевод Э. Кулиева</p>
                     </div>
-                    <button id="back-to-surahs-btn" onclick="showSurahList()" class="spring-interactive hidden self-start sm:self-auto px-4 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold flex items-center gap-1.5">
+                    <button id="back-to-surahs-btn" onclick="showSurahList()" class="spring-interactive hidden self-start sm:self-auto px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold flex items-center gap-1.5">
                         <i data-lucide="arrow-left" class="w-4 h-4 text-amberGlow"></i> Все 114 сур
                     </button>
                 </div>
-                <div id="surah-search-box" class="relative mt-4">
-                    <i data-lucide="search" class="w-4 h-4 text-white/45 absolute left-4 top-3.5"></i>
+                <div id="surah-search-box" class="relative mt-3.5">
+                    <i data-lucide="search" class="w-4 h-4 text-white/45 absolute left-4 top-3"></i>
                     <input id="surah-search-input" type="text" oninput="filterSurahs()" placeholder="Поиск суры по номеру или названию (1–114)..." 
-                        class="w-full pl-11 pr-4 py-3 rounded-2xl bg-black/40 border border-white/14 text-sm text-white placeholder-white/40 focus:outline-none focus:border-amberGlow transition">
+                        class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-black/45 border border-white/14 text-sm text-white placeholder-white/40 focus:outline-none focus:border-amberGlow transition">
                 </div>
             </div>
-            <div id="surah-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-            <div id="surah-reader-container" class="hidden space-y-3.5"></div>
+            <div id="surah-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+            <div id="surah-reader-container" class="hidden space-y-3"></div>
         </section>
 
-        <!-- ВКЛАДКА 3: ЗАУЧИВАНИЕ СУР -->
+        <!-- ВКЛАДКА 3: ЗАУЧИВАНИЕ СУР (ВСЕ 114 СУР) -->
         <section id="tab-memorize" class="tab-view hidden space-y-4">
-            <div class="apple-glass rounded-[30px] p-5 space-y-4">
-                <div class="flex items-center justify-between gap-3">
+            <div class="apple-glass rounded-[26px] p-5 space-y-4">
+                <div class="flex items-center justify-between gap-3 blur-text-reveal">
                     <div>
                         <h2 class="text-lg font-bold glass-text-title">Заучивание сур</h2>
-                        <p class="text-xs text-white/65 font-body">Скрытие слов + аудио-сравнение вашего произношения с чтецом</p>
+                        <p class="text-xs text-white/60 font-body">Все 114 сур • Скрытие слов + аудио-проверка вашего чтения</p>
                     </div>
-                    <div class="px-3.5 py-2 rounded-2xl bg-white/8 border border-white/15 text-right shrink-0">
+                    <div class="px-3.5 py-1.5 rounded-2xl bg-white/8 border border-white/15 text-right shrink-0">
                         <span id="trainer-total-badge" class="text-base font-bold text-amberGlow tabular-nums">0</span>
-                        <span class="text-[10px] text-white/65 block">выучено аятов</span>
+                        <span class="text-[10px] text-white/60 block">выучено аятов</span>
                     </div>
                 </div>
                 <div>
-                    <label class="text-xs text-white/70 block mb-1.5 font-medium">Выберите суру для практики:</label>
+                    <label class="text-xs text-white/70 block mb-1.5 font-medium">Выберите суру для практики (1–114):</label>
                     <select id="memorize-surah-select" onchange="loadMemorizeSurah(this.value)" class="w-full px-4 py-3 rounded-2xl bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-amberGlow">
                         <option value="1">1. Аль-Фатиха (Открывающая)</option>
                         <option value="114" selected>114. Ан-Нас (Люди)</option>
@@ -799,18 +906,18 @@
                     </div>
                 </div>
             </div>
-            <div id="memorize-ayahs-container" class="space-y-3.5"></div>
+            <div id="memorize-ayahs-container" class="space-y-3"></div>
         </section>
 
         <!-- ВКЛАДКА 4: РАЗДЕЛ «СТАТУС» -->
         <section id="tab-status" class="tab-view hidden space-y-4">
-            <div class="apple-glass rounded-[30px] p-5 space-y-3.5">
-                <div class="flex items-center justify-between gap-3">
+            <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
+                <div class="flex items-center justify-between gap-3 blur-text-reveal">
                     <div>
                         <h2 class="text-lg font-bold glass-text-title">Статус</h2>
-                        <p class="text-xs text-white/65 font-body mt-0.5">Аяты, хадисы и напоминания • Прямая отправка чистого фото в WhatsApp</p>
+                        <p class="text-xs text-white/60 font-body mt-0.5">Аяты, хадисы и напоминания • Прямая отправка чистого фото в WhatsApp</p>
                     </div>
-                    <button onclick="rebuildWeeklyStatuses(true)" class="spring-interactive px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-amberGlow shrink-0">
+                    <button onclick="rebuildWeeklyStatuses(true)" class="spring-interactive px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-amberGlow shrink-0">
                         🔄 Обновить
                     </button>
                 </div>
@@ -821,19 +928,19 @@
                     <button onclick="filterStatuses('eid')" id="status-filter-eid" class="spring-interactive px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-white/75 hover:text-white">Праздники (Курбан / Ураза)</button>
                 </div>
 
-                <div class="p-3 rounded-2xl bg-amberCore/15 border border-amberGlow/35 text-[11px] text-orange-100/90 flex items-center gap-2.5 font-body">
+                <div class="p-3 rounded-xl bg-amberCore/15 border border-amberGlow/30 text-[11px] text-orange-100/90 flex items-center gap-2.5 font-body">
                     <span class="text-base shrink-0">⚠️</span>
                     <span>Если фоновые фотографии долго прогружаются у вашего оператора связи, пожалуйста, включите <strong>VPN</strong>.</span>
                 </div>
             </div>
 
-            <div id="status-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5"></div>
+            <div id="status-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
         </section>
 
         <!-- ВКЛАДКА 5: НАСТРОЙКИ -->
         <section id="tab-settings" class="tab-view hidden space-y-4">
             <!-- Блок №1: Инструкция установки ярлыка на рабочий стол -->
-            <div id="settings-install-guide-card" class="apple-glass-amber rounded-[30px] p-5 space-y-4 border-2 border-amberGlow/60 shadow-2xl">
+            <div id="settings-install-guide-card" class="apple-glass-amber rounded-[26px] p-5 space-y-4 border border-amberGlow/50 shadow-2xl">
                 <div class="flex items-center gap-3">
                     <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border border-white/30"
                          style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 50%, #9E3304 100%);">
@@ -844,29 +951,29 @@
                         <h2 class="text-base font-bold text-white mt-1">Как добавить ярлык на рабочий стол</h2>
                     </div>
                 </div>
-                <div class="space-y-3 text-xs font-body">
-                    <div class="p-4 rounded-2xl bg-black/50 border border-white/15 space-y-2">
+                <div class="space-y-2.5 text-xs font-body">
+                    <div class="p-3.5 rounded-2xl bg-black/45 border border-white/12 space-y-1.5">
                         <p class="font-bold text-amberGlow text-sm">🍎 Для владельцев iPhone (iOS):</p>
                         <p class="text-white/90 leading-relaxed">
-                            <strong>1. Если вы открыли сайт через Google, Яндекс, WhatsApp или Telegram:</strong> на iPhone добавить ярлык можно только через <strong>Safari</strong>. Нажмите на <strong>три точки (⋯)</strong>, выберите <strong>«Поделиться»</strong> и откройте сайт в <strong>Safari</strong> (или скопируйте ссылку кнопкой ниже).
+                            <strong>1. Откройте сайт в Safari:</strong> нажмите на <strong>три точки (⋯)</strong> и откройте ссылку в браузере <strong>Safari</strong> (или скопируйте ссылку кнопкой ниже).
                         </p>
                         <p class="text-white/90 leading-relaxed pt-1.5 border-t border-white/10">
                             <strong>2. В самом Safari:</strong> нажмите внизу по центру значок <strong>«Поделиться» (↑)</strong> и выберите <strong>«На экран "Домой"»</strong> → <strong>«Добавить»</strong>.
                         </p>
                     </div>
-                    <div class="p-4 rounded-2xl bg-black/50 border border-white/15 space-y-1">
+                    <div class="p-3.5 rounded-2xl bg-black/45 border border-white/12 space-y-1">
                         <p class="font-bold text-emeraldAccent text-sm">🤖 Для владельцев Android:</p>
                         <p class="text-white/90 leading-relaxed">Нажмите на <strong>три точки (⋮)</strong> в углу браузера и выберите <strong>«Добавить на главный экран»</strong>.</p>
                     </div>
                 </div>
-                <button onclick="copyLinkForSafari(this)" class="spring-interactive w-full py-3 px-4 rounded-2xl bg-white text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
+                <button onclick="copyLinkForSafari(this)" class="spring-interactive w-full py-3 px-4 rounded-xl bg-white text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
                     <i data-lucide="copy" class="w-4 h-4"></i>
                     <span>Скопировать ссылку (для Safari)</span>
                 </button>
             </div>
 
-            <!-- Блок №2: Уведомления о намазе и праздниках -->
-            <div class="apple-glass-amber rounded-[30px] p-5 space-y-4">
+            <!-- Блок №2: Уведомления о намазе, Будильник на Фаджр и Календарь на 31 день -->
+            <div class="apple-glass-amber rounded-[26px] p-5 space-y-4">
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <h2 class="text-base font-bold glass-text-title">Уведомления о намазе и праздниках</h2>
@@ -875,55 +982,85 @@
                     <span id="notif-permission-badge" class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-white/10 border border-white/20 text-white shrink-0">Проверка...</span>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2.5">
-                    <button onclick="requestAppNotificationPermission()" class="spring-interactive flex-1 py-3 px-4 rounded-2xl bg-amberCore text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg">
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <button onclick="requestAppNotificationPermission()" class="spring-interactive flex-1 py-3 px-4 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg">
                         <i data-lucide="bell-ring" class="w-4 h-4"></i>
                         <span>Разрешить уведомления</span>
                     </button>
-                    <button onclick="sendTestHolidayNotification()" class="spring-interactive py-3 px-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs flex items-center justify-center gap-2">
+                    <button onclick="sendTestHolidayNotification()" class="spring-interactive py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs flex items-center justify-center gap-2">
                         <i data-lucide="sparkles" class="w-4 h-4 text-amberGlow"></i>
                         <span>Тест уведомления Джума</span>
                     </button>
                 </div>
 
                 <div class="p-3.5 rounded-2xl bg-black/40 border border-white/10 space-y-2.5 text-xs">
-                    <label class="flex items-center justify-between cursor-pointer">
+                    <label class="flex items-center justify-between cursor-pointer gap-2">
                         <span>Уведомлять о 5 обязательных намазах</span>
-                        <input type="checkbox" id="toggle-notif-prayers" checked onchange="saveNotificationPrefs()" class="accent-amberCore w-4 h-4">
+                        <input type="checkbox" id="toggle-notif-prayers" checked onchange="saveNotificationPrefs()" class="accent-amberCore w-4 h-4 shrink-0">
                     </label>
-                    <label class="flex items-center justify-between cursor-pointer">
+                    <label class="flex items-center justify-between cursor-pointer gap-2">
                         <span>Напоминание о суре «Аль-Кахф» и открытке в Пятницу</span>
-                        <input type="checkbox" id="toggle-notif-jumuah" checked onchange="saveNotificationPrefs()" class="accent-amberCore w-4 h-4">
+                        <input type="checkbox" id="toggle-notif-jumuah" checked onchange="saveNotificationPrefs()" class="accent-amberCore w-4 h-4 shrink-0">
                     </label>
-                    <label class="flex items-center justify-between cursor-pointer">
+                    <label class="flex items-center justify-between cursor-pointer gap-2">
                         <span>Поздравления в праздники Ураза-байрам и Курбан-байрам</span>
-                        <input type="checkbox" id="toggle-notif-eid" checked onchange="saveNotificationPrefs()" class="accent-amberCore w-4 h-4">
+                        <input type="checkbox" id="toggle-notif-eid" checked onchange="saveNotificationPrefs()" class="accent-amberCore w-4 h-4 shrink-0">
+                    </label>
+                    <label class="flex items-center justify-between cursor-pointer gap-2 pt-2 border-t border-white/10">
+                        <span class="font-bold text-amberGlow">Поставить будильник</span>
+                        <input type="checkbox" id="toggle-notif-fajr-alarm" checked onchange="exportOnlyFajrAlarmICS()" class="accent-amberCore w-4 h-4 shrink-0">
                     </label>
                 </div>
 
+                <!-- Плашка: Будильник на Утренний намаз (Фаджр) -->
+                <div class="p-4 rounded-2xl obsidian-matte border border-amberGlow/45 space-y-2.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 text-amberGlow text-xs font-bold">
+                            <i data-lucide="alarm-clock" class="w-4 h-4"></i>
+                            <span>Добавить будильник на утренний намаз</span>
+                        </div>
+                        <span id="fajr-city-time-pill" class="px-2.5 py-0.5 rounded-lg bg-amberCore/25 text-amberGlow font-mono font-bold text-xs tabular-nums">Фаджр</span>
+                    </div>
+                    <p class="text-[11px] text-white/75 font-body leading-relaxed">
+                        Ставит отдельный будильник на Утренний намаз (Фаджр) строго по времени вашего выбранного города.
+                    </p>
+                    <button onclick="exportOnlyFajrAlarmICS()" class="spring-interactive w-full py-3 px-4 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center justify-center gap-2 shadow">
+                        <i data-lucide="alarm-clock" class="w-4 h-4"></i>
+                        <span>Поставить будильник</span>
+                    </button>
+                </div>
+
+                <!-- Плашка: 100% точные уведомления на месяц + мини-инструкция -->
                 <div class="p-4 rounded-2xl obsidian-matte border border-emeraldAccent/35 space-y-2.5">
                     <div class="flex items-center gap-2 text-emeraldAccent text-xs font-bold">
                         <i data-lucide="calendar-check-2" class="w-4 h-4"></i>
-                        <span>100% точные будильники намазов на МЕСЯЦ вперёд (31 день)</span>
+                        <span>100% точные уведомления намазов на МЕСЯЦ вперёд (31 день)</span>
                     </div>
                     <p class="text-[11px] text-white/70 font-body leading-relaxed">
-                        Загружает официальное астрономическое время намазов вашего города на каждый из 31 дня вперед и ставит будильники в Календарь телефона (за 10 минут и в минуту наступления намаза).
+                        Загружает официальное астрономическое время намазов вашего города на каждый из 31 дня вперед и ставит уведомления в Календарь телефона (за 10 минут и в минуту наступления намаза).
                     </p>
+                    <div class="p-3 rounded-xl bg-black/45 border border-white/10 text-[11px] text-white/85 space-y-1 font-body">
+                        <p class="font-bold text-emeraldAccent">💡 Как добавить и легко управлять на iPhone:</p>
+                        <p>1. Нажмите зеленую кнопку ниже — откроется окно <strong>«155 событий»</strong>.</p>
+                        <p>2. В самом низу окна нажмите <strong>«Календарь» → «Новый календарь»</strong> и назовите его <em>«Намаз»</em>.</p>
+                        <p>3. Нажмите галочку <strong>«✓»</strong> сверху.</p>
+                        <p class="text-white/55 pt-1 border-t border-white/10"><em>Как удалить при смене города: откройте Календарь → внизу «Календари» → нажмите «i» возле «Намаз» → «Удалить календарь».</em></p>
+                    </div>
                     <button id="export-ics-btn" onclick="exportPrayersToICS()" class="spring-interactive w-full py-3 px-4 rounded-xl bg-emeraldAccent text-obsidian font-bold text-xs flex items-center justify-center gap-2 shadow">
                         <i data-lucide="download" class="w-4 h-4"></i>
-                        <span>Добавить будильники намазов на МЕСЯЦ (iPhone / Android)</span>
+                        <span>Добавить уведомления намазов на МЕСЯЦ (iPhone / Android)</span>
                     </button>
                 </div>
             </div>
 
             <!-- Блок №3: Единый умный выбор города и метода -->
-            <div class="apple-glass rounded-[30px] p-5 space-y-4 text-xs">
+            <div class="apple-glass rounded-[26px] p-5 space-y-4 text-xs">
                 <div class="flex items-center justify-between gap-2">
                     <div>
                         <h3 class="font-bold text-base glass-text-title">Город и расчет намаза</h3>
                         <p class="text-[11px] text-white/60 font-body">Нажмите на город — он сохранится мгновенно</p>
                     </div>
-                    <button onclick="detectGeolocation()" class="spring-interactive px-3 py-2 rounded-2xl bg-amberCore/20 border border-amberGlow/40 text-amberGlow font-bold flex items-center gap-1.5 shrink-0">
+                    <button onclick="detectGeolocation()" class="spring-interactive px-3 py-2 rounded-xl bg-amberCore/20 border border-amberGlow/40 text-amberGlow font-bold flex items-center gap-1.5 shrink-0">
                         <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Авто-GPS
                     </button>
                 </div>
@@ -980,7 +1117,7 @@
 
     <!-- МОДАЛЬНОЕ ОКНО ПРЯМОГО ЭФИРА MAKKAH LIVE -->
     <div id="makkah-live-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-2xl flex items-center justify-center p-4">
-        <div class="obsidian-matte w-full max-w-lg rounded-[32px] p-5 space-y-4">
+        <div class="obsidian-matte w-full max-w-lg rounded-[28px] p-5 space-y-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
@@ -994,24 +1131,24 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО БЫСТРОГО ПОВТОРЕНИЯ СУР ПЕРЕД НАМАЗОМ -->
+    <!-- МОДАЛЬНОЕ ОКНО ПОЛНОГО ПОВТОРЕНИЯ СУР ПЕРЕД НАМАЗОМ -->
     <div id="surah-hint-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-xl flex items-center justify-center p-4">
-        <div class="obsidian-matte w-full max-w-md rounded-[32px] p-6 space-y-4">
-            <div class="flex items-center justify-between">
+        <div class="obsidian-matte w-full max-w-md rounded-[28px] p-5 sm:p-6 space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between shrink-0">
                 <div>
                     <span class="text-[10px] uppercase tracking-widest text-amberGlow font-bold">Подсказка перед намазом</span>
                     <h3 id="surah-hint-title" class="font-bold text-base text-white mt-0.5">Суры для текущего намаза</h3>
                 </div>
                 <button onclick="closeSurahHintModal()" class="spring-interactive p-2 rounded-full bg-white/10 text-white/70 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
-            <div id="surah-hint-body" class="space-y-3 max-h-[65vh] overflow-y-auto text-xs"></div>
-            <button onclick="closeSurahHintModal()" class="spring-interactive w-full py-3 rounded-2xl bg-amberCore text-white font-bold text-xs">Повторил, приступаю к намазу</button>
+            <div id="surah-hint-body" class="space-y-3 overflow-y-auto pr-1 text-xs flex-1"></div>
+            <button onclick="closeSurahHintModal()" class="spring-interactive w-full py-3 rounded-2xl bg-amberCore text-white font-bold text-xs shrink-0 shadow">Повторил, приступаю к намазу</button>
         </div>
     </div>
 
     <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА И ОТПРАВКИ ЧИСТОГО ФОТО В WHATSAPP -->
     <div id="status-modal" class="fixed inset-0 z-50 hidden bg-black/92 backdrop-blur-2xl flex flex-col items-center justify-center p-4">
-        <div class="relative w-full max-w-[345px] aspect-[9/16] rounded-[32px] overflow-hidden shadow-2xl border border-white/20 flex flex-col justify-between bg-black">
+        <div class="relative w-full max-w-[345px] aspect-[9/16] rounded-[30px] overflow-hidden shadow-2xl border border-white/20 flex flex-col justify-between bg-black">
             <img id="modal-status-img" src="" alt="Status" class="absolute inset-0 w-full h-full object-cover status-photo-exposure">
             <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-black/52 to-black/85"></div>
 
@@ -1021,7 +1158,7 @@
                 </button>
             </div>
 
-            <div class="relative z-10 px-8 text-center my-auto space-y-3">
+            <div class="relative z-10 px-8 text-center my-auto space-y-3 blur-text-reveal">
                 <p id="modal-status-arabic" class="arabic-text text-[21px] text-white/95 font-normal tracking-wide leading-relaxed drop-shadow"></p>
                 <p id="modal-status-russian" class="font-serifOld italic text-[16px] text-white/90 leading-relaxed tracking-wide"></p>
                 <p id="modal-status-source" class="text-[9.5px] uppercase tracking-[0.24em] text-orange-200/65 font-sans pt-1.5"></p>
@@ -1095,8 +1232,55 @@
         let targetQiblaBearing = 176;
         let isAlignedVibrated = false;
 
+        // ВСТРОЕННЫЙ ГЕНЕРАТОР МЯГКОГО ТАКТИЛЬНОГО ЗВУКА iOS (Web Audio API)
+        let uiAudioCtx = null;
+        function playTactileClick(freq = 165, duration = 0.018) {
+            try {
+                if (navigator.vibrate) navigator.vibrate(7);
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                if (!uiAudioCtx) uiAudioCtx = new AudioCtx();
+                if (uiAudioCtx.state === 'suspended') uiAudioCtx.resume();
+
+                const osc = uiAudioCtx.createOscillator();
+                const gain = uiAudioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, uiAudioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(48, uiAudioCtx.currentTime + duration);
+
+                gain.gain.setValueAtTime(0.045, uiAudioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, uiAudioCtx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(uiAudioCtx.destination);
+                osc.start();
+                osc.stop(uiAudioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+
+            // Мягкий тактильный отклик на все интерактивные кнопки
+            document.addEventListener('pointerdown', e => {
+                if (e.target.closest('button, select, input[type="checkbox"], .spring-interactive')) {
+                    playTactileClick(170, 0.016);
+                }
+            }, { passive: true });
+
+            // Полный список всех 114 сур в разделе «Заучивание сур»
+            const sel = document.getElementById('memorize-surah-select');
+            if (sel) {
+                const existing = new Set(Array.from(sel.options).map(o => parseInt(o.value, 10)));
+                for (let sNum = 1; sNum <= 114; sNum++) {
+                    if (!existing.has(sNum)) {
+                        const opt = document.createElement('option');
+                        opt.value = sNum;
+                        opt.textContent = `${sNum}. ${SURAH_NAMES_RU[sNum]}`;
+                        sel.appendChild(opt);
+                    }
+                }
+            }
 
             const isInstalled = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
             const installCard = document.getElementById('settings-install-guide-card');
@@ -1137,10 +1321,10 @@
             navigator.clipboard.writeText(window.location.href).then(() => {
                 const oldHtml = btn.innerHTML;
                 btn.innerHTML = `<span>✓ Ссылка скопирована! Вставьте её в Safari</span>`;
-                btn.className = "spring-interactive w-full py-3 px-4 rounded-2xl bg-emeraldAccent text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg";
+                btn.className = "spring-interactive w-full py-3 px-4 rounded-xl bg-emeraldAccent text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg";
                 setTimeout(() => {
                     btn.innerHTML = oldHtml;
-                    btn.className = "spring-interactive w-full py-3 px-4 rounded-2xl bg-white text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg";
+                    btn.className = "spring-interactive w-full py-3 px-4 rounded-xl bg-white text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg";
                     lucide.createIcons();
                 }, 3500);
             });
@@ -1188,10 +1372,10 @@
                 const btn = document.getElementById(`tool-tab-${k}`);
                 if (k === sectionKey) {
                     panel.classList.remove('hidden');
-                    btn.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
+                    btn.className = "spring-interactive py-2.5 px-3 rounded-[14px] text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
                 } else {
                     panel.classList.add('hidden');
-                    btn.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
+                    btn.className = "spring-interactive py-2.5 px-3 rounded-[14px] text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
                 }
             });
             if (sectionKey === 'qibla') updateQiblaCompassCalculations();
@@ -1248,7 +1432,7 @@
             }, 380);
         }
 
-        function selectAndSaveCityInstantly(lat, lng, cityName) {
+        async function selectAndSaveCityInstantly(lat, lng, cityName) {
             prayerState.lat = parseFloat(lat);
             prayerState.lng = parseFloat(lng);
             prayerState.city = cityName;
@@ -1264,7 +1448,8 @@
             if (input) input.value = '';
 
             renderQuickCities('');
-            initPrayerTab();
+            await initPrayerTab();
+            syncSettingsUI();
         }
 
         function instantSaveMethodAndSchool() {
@@ -1297,6 +1482,10 @@
             if (cityLabel) cityLabel.textContent = `${prayerState.city} (${prayerState.lat}, ${prayerState.lng})`;
             const homeLabel = document.getElementById('home-city-label');
             if (homeLabel) homeLabel.textContent = prayerState.homeCity;
+            const fajrPill = document.getElementById('fajr-city-time-pill');
+            if (fajrPill && prayerState.timings) {
+                fajrPill.textContent = `${prayerState.city} • ${prayerState.timings.Fajr.split(' ')[0]}`;
+            }
             const methodSelect = document.getElementById('settings-method');
             if (methodSelect) methodSelect.value = prayerState.method;
             const schoolSelect = document.getElementById('settings-school');
@@ -1417,21 +1606,21 @@
             const distLabel = document.getElementById('musafir-distance-label');
 
             distLabel.textContent = distKm > 5
-                ? `Расстояние от домашнего города (${prayerState.homeCity}): ${distKm} км`
-                : `Домашний город: ${prayerState.homeCity} • Сокращение намазов при поездке > 85 км`;
+                ? `Расстояние от дома (${prayerState.homeCity}): ${distKm} км`
+                : `Дом: ${prayerState.homeCity} • Сокращение намазов при поездке > 85 км`;
 
             if (active) {
                 btn.textContent = "Активен";
-                btn.className = "spring-interactive px-3.5 py-2 rounded-2xl text-xs font-bold bg-sapphireAccent text-white shadow shrink-0";
+                btn.className = "spring-interactive px-3 py-1.5 rounded-xl text-xs font-bold bg-sapphireAccent text-white shadow shrink-0";
                 box.classList.remove('hidden');
-                pill.textContent = "Режим: Путник (Мусафир • 2 ракаата)";
-                pill.className = "px-2.5 py-1 rounded-xl bg-sapphireAccent/25 border border-sapphireAccent/40 text-blue-200 font-bold";
+                pill.textContent = "Режим: Путник (2 ракаата)";
+                pill.className = "px-2.5 py-0.5 rounded-lg bg-sapphireAccent/25 border border-sapphireAccent/40 text-blue-200 font-bold text-[10.5px]";
             } else {
                 btn.textContent = "Включить";
-                btn.className = "spring-interactive px-3.5 py-2 rounded-2xl text-xs font-semibold border border-white/15 bg-white/10 text-white shrink-0";
+                btn.className = "spring-interactive px-3 py-1.5 rounded-xl text-xs font-semibold border border-white/15 bg-white/8 text-white shrink-0";
                 box.classList.add('hidden');
                 pill.textContent = "Режим: Дома (Мукым)";
-                pill.className = "px-2.5 py-1 rounded-xl bg-black/35 border border-white/10 text-white/75";
+                pill.className = "px-2.5 py-0.5 rounded-lg bg-black/35 border border-white/10 text-white/75 text-[10.5px]";
             }
             lucide.createIcons();
         }
@@ -1463,12 +1652,15 @@
                 if (data.code === 200) {
                     prayerState.timings = data.data.timings;
                     const hijri = data.data.date.hijri;
-                    const greg = data.data.date.readable;
-                    document.getElementById('hijri-header').textContent = `${hijri.day} ${hijri.month.en} ${hijri.year} г.Х.`;
-                    document.getElementById('gregorian-date').textContent = `${prayerState.city} • ${greg}`;
+                    const hijriMonthRu = HIJRI_MONTHS_RU[hijri.month.number] || hijri.month.en;
+                    const ruDate = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+                    document.getElementById('hijri-header').textContent = `${hijri.day} ${hijriMonthRu} ${hijri.year} г.Х.`;
+                    document.getElementById('gregorian-date').textContent = `${prayerState.city} • ${ruDate}`;
                     calculateLastThirdOfNight();
                     renderPrayerList();
                     updateCountdown();
+                    syncSettingsUI();
                 }
             } catch (err) {
                 console.error("Ошибка загрузки времени намаза:", err);
@@ -1557,23 +1749,23 @@
                 const suggestion = PRAYER_SURAH_SUGGESTIONS[item.key];
 
                 const row = document.createElement('div');
-                row.className = `rounded-2xl p-3.5 ${isCurrent ? 'prayer-row-active' : 'prayer-row-muted bg-black/30 border border-white/10'}`;
+                row.className = `rounded-[20px] p-3.5 ${isCurrent ? 'prayer-row-active' : 'prayer-row-muted bg-black/28 border border-white/8'}`;
                 row.innerHTML = `
                     <div class="flex items-center justify-between gap-2 cursor-pointer" onclick="${item.obligatory ? `togglePrayerDone('${item.key}')` : ''}">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${isCurrent ? 'bg-emeraldAccent text-obsidian shadow' : 'bg-white/10 text-amberGlow'}">
+                            <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isCurrent ? 'bg-emeraldAccent text-obsidian shadow' : 'bg-white/8 text-amberGlow'}">
                                 <i data-lucide="${item.icon}" class="w-4 h-4"></i>
                             </div>
                             <div class="min-w-0">
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <p class="font-bold text-sm text-white truncate">${item.name}</p>
+                                    <p class="font-bold text-[13.5px] text-white truncate">${item.name}</p>
                                     ${isCurrent ? '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-emeraldAccent text-obsidian shrink-0">Текущий</span>' : ''}
                                 </div>
-                                <p class="text-[11px] text-white/65 font-body truncate">${rakaatBadge} • Окно: ${windowDuration}</p>
+                                <p class="text-[11px] text-white/60 font-body truncate">${rakaatBadge} • Окно: ${windowDuration}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2.5 shrink-0">
-                            <span class="font-mono font-bold text-base text-white tabular-nums">${timeClean}</span>
+                            <span class="font-mono font-bold text-[15px] text-white tabular-nums">${timeClean}</span>
                             ${item.obligatory ? `
                                 <div class="w-6 h-6 rounded-full border flex items-center justify-center transition ${isDone ? 'bg-emeraldAccent border-emeraldAccent text-obsidian' : 'border-white/25 bg-white/5'}">
                                     ${isDone ? '<i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>' : ''}
@@ -1584,7 +1776,7 @@
                     ${isCurrent && suggestion ? `
                         <div onclick="openSurahHintModal('${item.key}', '${item.name}')" class="mt-3 pt-2.5 border-t border-white/15 flex items-center justify-between gap-2 text-[11px] text-orange-100/90 cursor-pointer hover:text-white">
                             <span class="truncate"><strong>Суры на намаз:</strong> 1-й — ${suggestion.s1}, 2-й — ${suggestion.s2}</span>
-                            <span class="px-2 py-0.5 rounded-lg bg-white/15 text-[10px] font-bold shrink-0">Повторить</span>
+                            <span class="px-2.5 py-0.5 rounded-lg bg-white/15 text-[10px] font-bold shrink-0">Повторить</span>
                         </div>
                     ` : ''}
                 `;
@@ -1595,20 +1787,23 @@
             lucide.createIcons();
         }
 
+        // ОТКРЫТИЕ ПОЛНЫХ СУР ПЕРЕД НАМАЗОМ (ВСЕ АЯТЫ ЦЕЛИКОМ)
         function openSurahHintModal(prayerKey, prayerTitle) {
             const sug = PRAYER_SURAH_SUGGESTIONS[prayerKey];
             if (!sug) return;
             document.getElementById('surah-hint-title').textContent = prayerTitle;
             document.getElementById('surah-hint-body').innerHTML = `
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
-                    <span class="text-[10px] uppercase tracking-wider text-amberGlow font-bold">1-й ракаат (после Аль-Фатихи):</span>
+                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-2 blur-text-reveal">
+                    <span class="text-[10px] uppercase tracking-wider text-amberGlow font-bold block">1-й ракаат (после Аль-Фатихи):</span>
                     <h4 class="font-bold text-sm text-white">${sug.s1}</h4>
-                    <p class="text-xs text-orange-100/90 italic font-body">${sug.text1}</p>
+                    <p class="arabic-text text-xl text-right text-amberGlow bg-black/35 p-3 rounded-xl border border-white/8 leading-loose">${sug.arab1}</p>
+                    <p class="text-xs text-orange-100/95 italic font-body whitespace-pre-line leading-relaxed">${sug.text1}</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
-                    <span class="text-[10px] uppercase tracking-wider text-emeraldAccent font-bold">2-й ракаат (после Аль-Фатихи):</span>
+                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-2 blur-text-reveal delay-1">
+                    <span class="text-[10px] uppercase tracking-wider text-emeraldAccent font-bold block">2-й ракаат (после Аль-Фатихи):</span>
                     <h4 class="font-bold text-sm text-white">${sug.s2}</h4>
-                    <p class="text-xs text-orange-100/90 italic font-body">${sug.text2}</p>
+                    <p class="arabic-text text-xl text-right text-amberGlow bg-black/35 p-3 rounded-xl border border-white/8 leading-loose">${sug.arab2}</p>
+                    <p class="text-xs text-orange-100/95 italic font-body whitespace-pre-line leading-relaxed">${sug.text2}</p>
                 </div>
             `;
             document.getElementById('surah-hint-modal').classList.remove('hidden');
@@ -1724,18 +1919,19 @@
             const container = document.getElementById('surah-list-container');
             container.innerHTML = '';
             surahs.forEach(s => {
+                const ruName = SURAH_NAMES_RU[s.number] || s.englishName;
                 const card = document.createElement('div');
-                card.className = "spring-interactive apple-glass rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-amberGlow/40";
-                card.onclick = () => openSurahReader(s.number, s.englishName, s.name);
+                card.className = "spring-interactive apple-glass rounded-[20px] p-3.5 flex items-center justify-between cursor-pointer hover:border-amberGlow/40";
+                card.onclick = () => openSurahReader(s.number, ruName, s.name);
                 card.innerHTML = `
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amberDeep to-amberGlow text-white font-bold text-xs flex items-center justify-center shadow">${s.number}</div>
-                        <div>
-                            <h4 class="font-bold text-sm text-white">${s.englishName}</h4>
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amberDeep to-amberGlow text-white font-bold text-xs flex items-center justify-center shadow shrink-0">${s.number}</div>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-[13.5px] text-white truncate">${ruName}</h4>
                             <p class="text-[11px] text-white/50 font-body">${s.numberOfAyahs} аятов • ${s.revelationType === 'Meccan' ? 'Мекканская' : 'Мединская'}</p>
                         </div>
                     </div>
-                    <span class="arabic-text text-xl text-amberGlow">${s.name}</span>
+                    <span class="arabic-text text-xl text-amberGlow shrink-0">${s.name}</span>
                 `;
                 container.appendChild(card);
             });
@@ -1743,7 +1939,10 @@
 
         function filterSurahs() {
             const q = document.getElementById('surah-search-input').value.toLowerCase().trim();
-            renderSurahList(allSurahs.filter(s => String(s.number).includes(q) || s.englishName.toLowerCase().includes(q) || s.name.includes(q)));
+            renderSurahList(allSurahs.filter(s => {
+                const ruName = (SURAH_NAMES_RU[s.number] || '').toLowerCase();
+                return String(s.number).includes(q) || ruName.includes(q) || s.englishName.toLowerCase().includes(q) || s.name.includes(q);
+            }));
         }
 
         async function openSurahReader(surahNumber, engName, arabName) {
@@ -1784,17 +1983,17 @@
             const reader = document.getElementById('surah-reader-container');
             const showBasmalaHeader = surahNumber !== 1 && surahNumber !== 9;
             reader.innerHTML = `
-                <div class="apple-glass-amber rounded-[30px] p-6 text-center space-y-2.5">
+                <div class="apple-glass-amber rounded-[26px] p-5 text-center space-y-2 blur-text-reveal">
                     <p class="arabic-text text-3xl text-amberGlow">${arabName}</p>
                     <h3 class="font-bold text-base glass-text-title">Сура ${surahNumber}. ${engName}</h3>
                     ${showBasmalaHeader ? `
-                        <div class="pt-3 border-t border-white/15">
+                        <div class="pt-2.5 border-t border-white/15">
                             <p class="arabic-text text-2xl text-white/95">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
                             <p class="text-[11px] text-orange-200/75 italic mt-0.5">Бисмилляхи р-Рахмани р-Рахим</p>
                         </div>
                     ` : ''}
-                    <div class="pt-2">
-                        <button onclick="playContinuousSurah()" class="spring-interactive inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amberDeep to-amberGlow text-white text-xs font-bold shadow-lg">
+                    <div class="pt-1.5">
+                        <button onclick="playContinuousSurah()" class="spring-interactive inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amberDeep to-amberGlow text-white text-xs font-bold shadow-lg">
                             <i data-lucide="play" class="w-4 h-4"></i> Слушать всю суру
                         </button>
                     </div>
@@ -1804,16 +2003,16 @@
             currentSurahAyahs.forEach((ayah, index) => {
                 const card = document.createElement('div');
                 card.id = `quran-ayah-${index}`;
-                card.className = "apple-glass rounded-[28px] p-5 space-y-3.5 transition";
+                card.className = "apple-glass rounded-[24px] p-4 sm:p-5 space-y-3 transition blur-text-reveal";
                 card.innerHTML = `
-                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
                         <span class="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-amberGlow font-bold text-xs">Аят ${ayah.numberInSurah}</span>
                         <button onclick="playSingleAyah(${index})" class="spring-interactive flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amberCore/25 hover:bg-amberCore border border-amberGlow/40 text-white text-xs font-bold">
                             <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Слушать
                         </button>
                     </div>
                     <p class="arabic-text text-2xl sm:text-3xl text-right text-white leading-loose">${ayah.arabic}</p>
-                    <div class="p-3 rounded-2xl bg-black/35 border border-white/8">
+                    <div class="p-3 rounded-xl bg-black/35 border border-white/8">
                         <span class="text-[10px] uppercase tracking-wider text-amberGlow font-bold block mb-0.5">Произношение:</span>
                         <p class="text-xs text-orange-100/90 italic font-body leading-relaxed">${ayah.cyrillic}</p>
                     </div>
@@ -1838,7 +2037,7 @@
             if (index < 0 || index >= currentSurahAyahs.length) { stopIslandAudio(false); return; }
             currentPlayingIndex = index;
             const item = currentSurahAyahs[index];
-            showDynamicIsland(`Сура ${item.surahName} — Аят ${item.numberInSurah}`, "Мишари Рашид аль-Афаси");
+            showDynamicIsland("Чтец: Мишари Рашид аль-Афаси", `${item.surahName} — Аят ${item.numberInSurah}`);
             globalAudio.src = item.audio;
             globalAudio.play();
             const el = document.getElementById(`quran-ayah-${index}`);
@@ -1849,7 +2048,7 @@
             };
         }
 
-        // 3. ЗАУЧИВАНИЕ СУР + АУДИО-СРАВНЕНИЕ
+        // 3. ЗАУЧИВАНИЕ СУР + ИСПРАВЛЕННОЕ АУДИО-СРАВНЕНИЕ НА iPHONE (БЕЗ СЛОВА «ЭТАЛОН»)
         async function loadMemorizeSurah(surahNum) {
             const num = parseInt(surahNum, 10);
             trainerState.surahNumber = num;
@@ -1862,12 +2061,12 @@
                 if (data.code === 200) {
                     const arab = data.data[0].ayahs, rus = data.data[1].ayahs, aud = data.data[2].ayahs, tr = data.data[3].ayahs;
                     const verifiedCyr = VERIFIED_CYRILLIC_TRANSCRIPTIONS[num];
-                    const engName = data.data[0].englishName;
+                    const ruName = SURAH_NAMES_RU[num] || data.data[0].englishName;
 
                     trainerState.ayahs = arab.map((a, i) => ({
                         key: `${num}:${a.numberInSurah}`,
                         number: a.numberInSurah,
-                        surahName: engName,
+                        surahName: ruName,
                         arabic: cleanBasmalaFromFirstAyah(a.text, num, a.numberInSurah),
                         cyrillic: verifiedCyr && verifiedCyr[i] ? verifiedCyr[i] : convertLatinTranslitToCyrillic(tr[i].text),
                         russian: rus[i].text,
@@ -1916,7 +2115,7 @@
                 }).join(' ');
 
                 const card = document.createElement('div');
-                card.className = `apple-glass rounded-[28px] p-5 space-y-3.5 border ${isLearned ? 'border-emeraldAccent/50' : 'border-white/14'}`;
+                card.className = `apple-glass rounded-[24px] p-4 sm:p-5 space-y-3 border blur-text-reveal ${isLearned ? 'border-emeraldAccent/50' : 'border-white/14'}`;
                 card.innerHTML = `
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xs font-bold px-3 py-1 rounded-full bg-white/10 text-amberGlow">Аят ${ayah.number}</span>
@@ -1933,8 +2132,8 @@
                             </button>
                         </div>
                     </div>
-                    <div class="arabic-text text-2xl sm:text-3xl text-right text-white py-2 leading-loose">${wordsHtml}</div>
-                    <div class="p-3 rounded-2xl bg-black/35 border border-white/8">
+                    <div class="arabic-text text-2xl sm:text-3xl text-right text-white py-1.5 leading-loose">${wordsHtml}</div>
+                    <div class="p-3 rounded-xl bg-black/35 border border-white/8">
                         <span class="text-[10px] uppercase tracking-wider text-amberGlow font-bold block mb-0.5">Произношение:</span>
                         <p class="text-xs text-orange-100/90 italic font-body">${ayah.cyrillic}</p>
                     </div>
@@ -1946,7 +2145,10 @@
             updateMemorizedCounter();
         }
 
-        window.revealWord = function(el) { el.className = 'word-revealed arabic-text'; };
+        window.revealWord = function(el) {
+            playTactileClick(210, 0.02);
+            el.className = 'word-revealed arabic-text';
+        };
 
         async function toggleVoiceRecording(idx) {
             const btn = document.getElementById(`voice-rec-btn-${idx}`);
@@ -1955,33 +2157,39 @@
             if (mediaRecorder && mediaRecorder.state === 'recording') { mediaRecorder.stop(); return; }
 
             try {
+                stopIslandAudio(false);
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 recordedChunks = [];
-                mediaRecorder = new MediaRecorder(stream);
+                const mimeType = ['audio/mp4', 'audio/aac', 'audio/webm'].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
+                mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+
                 btn.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span><span>Стоп</span>`;
                 btn.className = "spring-interactive px-3 py-1.5 rounded-xl bg-red-500/30 border border-red-400 text-white text-xs font-bold flex items-center gap-1.5";
-                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+                mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
                 mediaRecorder.onstop = () => {
                     stream.getTracks().forEach(t => t.stop());
-                    const userAudioUrl = URL.createObjectURL(new Blob(recordedChunks, { type: 'audio/webm' }));
+                    const userAudioUrl = URL.createObjectURL(new Blob(recordedChunks, { type: mediaRecorder.mimeType || mimeType || 'audio/mp4' }));
                     btn.innerHTML = `<i data-lucide="volume-2" class="w-3.5 h-3.5"></i><span>Сравнение...</span>`;
                     lucide.createIcons();
-                    showDynamicIsland(`Эталон: ${ayah.surahName} — Аят ${ayah.number}`, "Сначала чтец, затем ваша запись");
+
+                    showDynamicIsland(`Чтец: Мишари Рашид аль-Афаси`, `${ayah.surahName} — Аят ${ayah.number}`);
+                    globalAudio.onended = null;
                     globalAudio.src = ayah.audio;
                     globalAudio.play();
                     globalAudio.onended = () => {
                         showDynamicIsland(`Ваша запись: Аят ${ayah.number}`, "Самопроверка произношения");
-                        globalAudio.src = userAudioUrl;
-                        globalAudio.play();
                         globalAudio.onended = () => {
                             btn.innerHTML = `<i data-lucide="mic" class="w-3.5 h-3.5"></i><span>Проверить себя</span>`;
                             btn.className = "spring-interactive px-3 py-1.5 rounded-xl bg-sapphireAccent/25 border border-sapphireAccent/40 text-blue-200 text-xs font-bold flex items-center gap-1";
                             lucide.createIcons();
                             updateIslandPlayState(false);
                         };
+                        globalAudio.src = userAudioUrl;
+                        globalAudio.load();
+                        globalAudio.play();
                     };
                 };
-                mediaRecorder.start();
+                mediaRecorder.start(200);
             } catch (err) { alert("Разрешите доступ к микрофону для самопроверки."); }
         }
 
@@ -1992,14 +2200,14 @@
             trainerState.currentLoopCount = 1;
             const statusSpan = document.getElementById(`trainer-loop-status-${idx}`);
             statusSpan.textContent = `${trainerState.currentLoopCount}/${trainerState.loopTarget}`;
-            showDynamicIsland(`Заучивание: ${ayah.surahName} — Аят ${ayah.number}`, `Цикл ${trainerState.currentLoopCount} из ${trainerState.loopTarget}`);
+            showDynamicIsland("Чтец: Мишари Рашид аль-Афаси", `${ayah.surahName} — Аят ${ayah.number} (Цикл ${trainerState.currentLoopCount}/${trainerState.loopTarget})`);
             globalAudio.src = ayah.audio;
             globalAudio.play();
             globalAudio.onended = () => {
                 if (trainerState.currentLoopCount < trainerState.loopTarget) {
                     trainerState.currentLoopCount++;
                     statusSpan.textContent = `${trainerState.currentLoopCount}/${trainerState.loopTarget}`;
-                    document.getElementById('island-subtitle').textContent = `Цикл ${trainerState.currentLoopCount} из ${trainerState.loopTarget}`;
+                    document.getElementById('island-subtitle').textContent = `${ayah.surahName} — Аят ${ayah.number} (Цикл ${trainerState.currentLoopCount}/${trainerState.loopTarget})`;
                     globalAudio.currentTime = 0;
                     globalAudio.play();
                 } else {
@@ -2036,22 +2244,22 @@
             }
 
             filtered.forEach(item => {
-                let badgeHtml = `<span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-amberCore/25 text-amberGlow border border-amberGlow/40 shrink-0">Сомнительно</span>`;
-                if (item.status === 'halal') badgeHtml = `<span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-emeraldAccent/20 text-emeraldAccent border border-emeraldAccent/40 shrink-0">Халяль</span>`;
-                if (item.status === 'haram') badgeHtml = `<span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-red-500/20 text-red-400 border border-red-500/40 shrink-0">Харам</span>`;
+                let badgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amberCore/25 text-amberGlow border border-amberGlow/40 shrink-0">Сомнительно</span>`;
+                if (item.status === 'halal') badgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emeraldAccent/20 text-emeraldAccent border border-emeraldAccent/40 shrink-0">Халяль</span>`;
+                if (item.status === 'haram') badgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-red-500/20 text-red-400 border border-red-500/40 shrink-0">Харам</span>`;
 
                 const card = document.createElement('div');
-                card.className = "apple-glass rounded-[26px] p-4 space-y-2.5";
+                card.className = "apple-glass rounded-[22px] p-4 space-y-2 blur-text-reveal";
                 card.innerHTML = `
                     <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2.5 min-w-0">
-                            <span class="px-2.5 py-1 rounded-xl bg-white/10 font-mono font-bold text-xs text-white shrink-0">${item.code}</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-white/10 font-mono font-bold text-xs text-white shrink-0">${item.code}</span>
                             <h4 class="font-bold text-sm text-white truncate">${item.name}</h4>
                         </div>
                         ${badgeHtml}
                     </div>
                     <p class="text-xs text-white/70 font-body"><strong>Происхождение:</strong> ${item.origin}</p>
-                    <div class="p-3 rounded-2xl bg-black/40 border border-white/8 text-xs text-orange-100/90 font-body leading-relaxed">
+                    <div class="p-3 rounded-xl bg-black/40 border border-white/8 text-xs text-orange-100/90 font-body leading-relaxed">
                         <strong class="text-amberGlow block mb-0.5">Шариатский довод:</strong>${item.proof}
                     </div>
                 `;
@@ -2090,18 +2298,21 @@
             dial.style.transform = `rotate(${-headingDeg}deg)`;
             let diff = Math.abs(((targetQiblaBearing - headingDeg + 540) % 360) - 180);
             if (diff <= 8) {
-                dial.className = "relative w-full h-full rounded-full border-[4px] border-emeraldAccent shadow-[0_0_45px_rgba(16,185,129,0.55)] flex items-center justify-center";
+                dial.className = "relative w-full h-full rounded-full border-[3.5px] border-emeraldAccent shadow-[0_0_45px_rgba(16,185,129,0.55)] flex items-center justify-center";
                 centerRing.className = "w-6 h-6 rounded-full border-[3px] border-emeraldAccent bg-obsidian shadow-lg";
                 cone.style.background = "linear-gradient(180deg, rgba(16,185,129,0.65) 0%, rgba(16,185,129,0.05) 100%)";
                 instruction.textContent = "Вы направлены в сторону Киблы";
-                instruction.className = "text-center font-bold text-lg text-emeraldAccent mt-4 max-w-[260px] leading-snug";
-                if (!isAlignedVibrated && navigator.vibrate) { navigator.vibrate(45); isAlignedVibrated = true; }
+                instruction.className = "text-center font-bold text-base text-emeraldAccent mt-3.5 max-w-[260px] leading-snug";
+                if (!isAlignedVibrated) {
+                    playTactileClick(240, 0.03);
+                    isAlignedVibrated = true;
+                }
             } else {
-                dial.className = "relative w-full h-full rounded-full border-[4px] border-white shadow-[0_0_35px_rgba(0,0,0,0.6)] flex items-center justify-center";
+                dial.className = "relative w-full h-full rounded-full border-[3.5px] border-white shadow-[0_0_35px_rgba(0,0,0,0.6)] flex items-center justify-center";
                 centerRing.className = "w-6 h-6 rounded-full border-[3px] border-white bg-obsidian shadow-lg";
                 cone.style.background = "linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.05) 100%)";
                 instruction.textContent = "Поверните телефон в сторону киблы";
-                instruction.className = "text-center font-bold text-lg text-white mt-4 max-w-[250px] leading-snug";
+                instruction.className = "text-center font-bold text-base text-white mt-3.5 max-w-[250px] leading-snug";
                 isAlignedVibrated = false;
             }
         }
@@ -2161,14 +2372,14 @@
             ['fatiha', 'tahiyyat', 'adhkar'].forEach(k => {
                 document.getElementById(`khushu-btn-${k}`).className = k === key
                     ? "spring-interactive flex-1 py-2 rounded-xl text-xs font-bold bg-amberCore text-white shadow"
-                    : "spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold bg-white/10 text-white/75";
+                    : "spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold text-white/70";
             });
             const container = document.getElementById('khushu-words-container');
             container.innerHTML = '';
             WORD_BY_WORD_NAMAZ[key].words.forEach(w => {
                 const item = document.createElement('div');
-                item.className = "obsidian-matte rounded-2xl p-3.5 text-center space-y-1";
-                item.innerHTML = `<p class="arabic-text text-2xl text-amberGlow">${w.ar}</p><p class="text-xs font-bold text-white">${w.tr}</p><p class="text-[11px] text-white/70 font-body leading-snug">${w.ru}</p>`;
+                item.className = "obsidian-matte rounded-[18px] p-3 text-center space-y-1 blur-text-reveal";
+                item.innerHTML = `<p class="arabic-text text-2xl text-amberGlow">${w.ar}</p><p class="text-xs font-bold text-white">${w.tr}</p><p class="text-[11px] text-white/65 font-body leading-snug">${w.ru}</p>`;
                 container.appendChild(item);
             });
         }
@@ -2178,13 +2389,13 @@
             container.innerHTML = '';
             SUNNAH_EMERGENCY_CARDS.forEach(c => {
                 const card = document.createElement('div');
-                card.className = "apple-glass rounded-[28px] p-5 space-y-3";
+                card.className = "apple-glass rounded-[24px] p-5 space-y-3 blur-text-reveal";
                 card.innerHTML = `
                     <div class="flex items-center justify-between gap-2">
-                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-amberCore/25 text-amberGlow border border-amberGlow/35">${c.badge}</span>
-                        <span class="text-[11px] text-white/55">${c.source}</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amberCore/25 text-amberGlow border border-amberGlow/35">${c.badge}</span>
+                        <span class="text-[11px] text-white/50">${c.source}</span>
                     </div>
-                    <h3 class="font-bold text-base text-white">${c.title}</h3>
+                    <h3 class="font-bold text-[15px] text-white">${c.title}</h3>
                     <p class="arabic-text text-2xl text-right text-amberGlow bg-black/30 p-3.5 rounded-2xl border border-white/8">${c.arabic}</p>
                     <p class="text-xs text-orange-100/90 italic font-body"><strong>Произношение:</strong> ${c.translit}</p>
                     <p class="text-xs text-white/85 font-body leading-relaxed whitespace-pre-line">${c.russian}</p>
@@ -2240,7 +2451,7 @@
 
             items.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "spring-interactive relative aspect-[9/16] rounded-[26px] overflow-hidden cursor-pointer group shadow-xl border border-white/20 bg-black";
+                card.className = "spring-interactive relative aspect-[9/16] rounded-[22px] overflow-hidden cursor-pointer group shadow-xl border border-white/18 bg-black blur-text-reveal";
                 card.onclick = () => openStatusModal(item);
 
                 let rusFontClass = "font-serifOld italic font-normal";
@@ -2250,7 +2461,7 @@
                 card.innerHTML = `
                     <img src="${item.image}" alt="Nature" loading="lazy" class="absolute inset-0 w-full h-full object-cover status-photo-exposure">
                     <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/48 to-black/82"></div>
-                    <div class="relative z-10 h-full px-5 py-6 flex flex-col justify-center items-center text-center space-y-2">
+                    <div class="relative z-10 h-full px-4 py-5 flex flex-col justify-center items-center text-center space-y-2">
                         <p class="arabic-text text-[13.5px] sm:text-[15px] text-white/95 font-normal leading-relaxed drop-shadow">${item.arabic}</p>
                         <p class="${rusFontClass} text-[10.5px] sm:text-[11.5px] text-white/90 leading-relaxed">${item.russian}</p>
                         <span class="text-[7px] uppercase tracking-[0.22em] text-orange-200/60 font-sans pt-1">${item.source}</span>
@@ -2373,7 +2584,7 @@
             return y + lineHeight;
         }
 
-        // 6. УВЕДОМЛЕНИЯ И ОФИЦИАЛЬНОЕ РАСПИСАНИЕ НАМАЗОВ НА 31 ДЕНЬ ВПЕРЕД (.ICS)
+        // 6. УВЕДОМЛЕНИЯ И ТОЧНОЕ РАСПИСАНИЕ НАМАЗОВ НА 31 ДЕНЬ ВПЕРЕД (.ICS) СТРОГО ПО КООРДИНАТАМ ВАШЕГО ГОРОДА
         function checkFridayOrHolidayBanner() {
             if (new Date().getDay() === 5) document.getElementById('special-day-banner').classList.remove('hidden');
         }
@@ -2395,7 +2606,7 @@
 
         async function requestAppNotificationPermission() {
             if (!('Notification' in window)) {
-                alert("Нажмите зеленую кнопку «Добавить будильники намазов на МЕСЯЦ» ниже.");
+                alert("Нажмите зеленую кнопку «Добавить уведомления намазов на МЕСЯЦ» ниже.");
                 return;
             }
             const perm = await Notification.requestPermission();
@@ -2417,10 +2628,22 @@
             localStorage.setItem('aya_notif_eid', document.getElementById('toggle-notif-eid').checked);
         }
 
-        async function exportPrayersToICS() {
+        async function exportOnlyFajrAlarmICS() {
+            await exportPrayersToICS(true);
+        }
+
+        async function exportPrayersToICS(onlyFajr = false) {
             const btn = document.getElementById('export-ics-btn');
-            const oldHtml = btn.innerHTML;
-            btn.innerHTML = `<span>Подготовка календаря на 31 день...</span>`;
+            const oldHtml = btn ? btn.innerHTML : '';
+            const activeLat = parseFloat(localStorage.getItem('aya_lat')) || prayerState.lat;
+            const activeLng = parseFloat(localStorage.getItem('aya_lng')) || prayerState.lng;
+            const activeCity = localStorage.getItem('aya_city') || prayerState.city;
+            const activeSchool = localStorage.getItem('aya_school') || prayerState.school;
+
+            // Передаем точные углы ДУМ РФ (18° и 17°) напрямую по широте/долготе выбранного города, чтобы в Казани и других регионах было их точное местное время
+            const tuneSettings = "18,null,null,null,null,17";
+
+            if (btn && !onlyFajr) btn.innerHTML = `<span>Подготовка календаря для г. ${activeCity}...</span>`;
 
             try {
                 const now = new Date();
@@ -2428,8 +2651,8 @@
                 const nextM = new Date(y1, m1, 1);
                 const y2 = nextM.getFullYear(), m2 = nextM.getMonth() + 1;
 
-                const url1 = `https://api.aladhan.com/v1/calendar/${y1}/${m1}?latitude=${prayerState.lat}&longitude=${prayerState.lng}&method=${prayerState.method}&school=${prayerState.school}`;
-                const url2 = `https://api.aladhan.com/v1/calendar/${y2}/${m2}?latitude=${prayerState.lat}&longitude=${prayerState.lng}&method=${prayerState.method}&school=${prayerState.school}`;
+                const url1 = `https://api.aladhan.com/v1/calendar/${y1}/${m1}?latitude=${activeLat}&longitude=${activeLng}&method=99&methodSettings=${tuneSettings}&school=${activeSchool}`;
+                const url2 = `https://api.aladhan.com/v1/calendar/${y2}/${m2}?latitude=${activeLat}&longitude=${activeLng}&method=99&methodSettings=${tuneSettings}&school=${activeSchool}`;
 
                 const [res1, res2] = await Promise.all([fetch(url1), fetch(url2)]);
                 const [data1, data2] = await Promise.all([res1.json(), res2.json()]);
@@ -2438,13 +2661,15 @@
                 const todayTs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
                 const dtStamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 
-                const prayersToExport = [
-                    { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
-                    { key: 'Dhuhr', title: 'Обеденный намаз (Зухр)' },
-                    { key: 'Asr', title: 'Послеобеденный намаз (Аср)' },
-                    { key: 'Maghrib', title: 'Вечерний намаз (Магриб)' },
-                    { key: 'Isha', title: 'Ночной намаз (Иша)' }
-                ];
+                const prayersToExport = onlyFajr
+                    ? [{ key: 'Fajr', title: '⏰ Будильник: Утренний намаз (Фаджр)' }]
+                    : [
+                        { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
+                        { key: 'Dhuhr', title: 'Обеденный намаз (Зухр)' },
+                        { key: 'Asr', title: 'Послеобеденный намаз (Аср)' },
+                        { key: 'Maghrib', title: 'Вечерний намаз (Магриб)' },
+                        { key: 'Isha', title: 'Ночной намаз (Иша)' }
+                    ];
 
                 let icsLines = [
                     "BEGIN:VCALENDAR",
@@ -2452,7 +2677,7 @@
                     "PRODID:-//AyaSpace//Official Prayer Calendar 31 Days//RU",
                     "CALSCALE:GREGORIAN",
                     "METHOD:PUBLISH",
-                    `X-WR-CALNAME:Намаз — ${prayerState.city}`
+                    `X-WR-CALNAME:Намаз — ${activeCity}`
                 ];
 
                 let exportedDays = 0;
@@ -2463,9 +2688,14 @@
                     const entryTs = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10)).getTime();
                     if (entryTs < todayTs) continue;
 
+                    const isToday = entryTs === todayTs;
                     exportedDays++;
+
                     prayersToExport.forEach(p => {
-                        const cleanTime = dayEntry.timings[p.key].split(' ')[0];
+                        const rawTiming = (isToday && prayerState.timings && prayerState.timings[p.key])
+                            ? prayerState.timings[p.key]
+                            : dayEntry.timings[p.key];
+                        const cleanTime = rawTiming.split(' ')[0];
                         const [ph, pm] = cleanTime.split(':');
                         const dtStart = `${yyyy}${mm}${dd}T${ph}${pm}00`;
                         const endObj = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10), parseInt(ph, 10), parseInt(pm, 10) + 15);
@@ -2473,21 +2703,21 @@
 
                         icsLines.push(
                             "BEGIN:VEVENT",
-                            `UID:ayaspace-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
+                            `UID:ayaspace-${activeCity}-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
                             `DTSTAMP:${dtStamp}`,
                             `DTSTART:${dtStart}`,
                             `DTEND:${dtEnd}`,
-                            `SUMMARY:🕋 ${p.title}`,
-                            `DESCRIPTION:Время намаза (${prayerState.city}) — AyaSpace`,
+                            `SUMMARY:🕋 ${p.title} (${cleanTime})`,
+                            `DESCRIPTION:Время намаза (${activeCity}) — AyaSpace`,
                             "BEGIN:VALARM",
                             "TRIGGER:-PT10M",
                             "ACTION:DISPLAY",
-                            `DESCRIPTION:Через 10 минут ${p.title}`,
+                            `DESCRIPTION:Через 10 минут ${p.title} (${activeCity})`,
                             "END:VALARM",
                             "BEGIN:VALARM",
                             "TRIGGER:PT0M",
                             "ACTION:DISPLAY",
-                            `DESCRIPTION:Наступило время: ${p.title}`,
+                            `DESCRIPTION:Наступило время: ${p.title} (${activeCity})`,
                             "END:VALARM",
                             "END:VEVENT"
                         );
@@ -2504,17 +2734,19 @@
                     const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
                     const a = document.createElement('a');
                     a.href = URL.createObjectURL(blob);
-                    a.download = `ayaspace-namaz-month-${prayerState.city}.ics`;
+                    a.download = `ayaspace-namaz-${activeCity}.ics`;
                     a.click();
                 }
             } catch (err) {
                 alert("Ошибка загрузки месячного расписания. Проверьте интернет.");
             } finally {
-                btn.innerHTML = oldHtml;
-                lucide.createIcons();
+                if (btn && !onlyFajr) {
+                    btn.innerHTML = oldHtml;
+                    lucide.createIcons();
+                }
             }
         }
     </script>
 </body>
 </html>
-            
+```
