@@ -2689,20 +2689,77 @@ async function fetchTimingsForDate(dateObj, lat, lng, retries = 2) {
     throw new Error('Не удалось получить время за ' + dd + '.' + mm + '.' + yyyy);
 }
 
-async function exportPrayersToICS(onlyFajr = false) {
-    const btn = document.getElementById('export-ics-btn');
-    const oldHtml = btn ? btn.innerHTML : '';
-    if (btn && !onlyFajr) btn.innerHTML = `<span>Загрузка времени: 0 / 31...</span>`;
+let isExportingICS = false;
+let icsReady = null; // { key, content, fileName }
+
+function deliverICS(content, fileName) {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
+
+    // Если открыто с ярлыка на экране "Домой" (standalone), открываем через Blob-URL нашего домена, чтобы не вылетало пустое окно "data"
+    if (window.navigator.standalone === true) {
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+    }
+
+    if (isIOS) {
+        window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(content);
+    } else {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName;
+        a.click();
+    }
+}
+
+async function exportPrayersToICS(onlyFajr = false, btnEl = null) {
+    const btn = btnEl || document.getElementById(onlyFajr ? 'fajr-alarm-btn' : 'export-ics-btn');
+    if (btn && !btn.dataset.origHtml) {
+        btn.dataset.origHtml = btn.innerHTML;
+        btn.dataset.origClass = btn.className;
+    }
+    const resetBtn = () => {
+        if (!btn) return;
+        btn.innerHTML = btn.dataset.origHtml;
+        btn.className = btn.dataset.origClass;
+        btn.disabled = false;
+        lucide.createIcons();
+    };
+
+    if (isExportingICS) return;
+
+    const lat = parseFloat(prayerState.lat);
+    const lng = parseFloat(prayerState.lng);
+    const city = prayerState.city;
+    const todayIso = getDateIso(0);
+    const key = [lat, lng, prayerState.method, prayerState.school, onlyFajr, todayIso].join('|');
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    // Шаг 2: файл уже готов — открываем календарь сразу в момент нажатия!
+    if (icsReady && icsReady.key === key) {
+        deliverICS(icsReady.content, icsReady.fileName);
+        resetBtn();
+        return;
+    }
+
+    // Шаг 1: загружаем время 31 дня и собираем файл
+    isExportingICS = true;
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span>Загрузка времени: 0 / 31...</span>`;
+    }
 
     try {
-        const lat = parseFloat(prayerState.lat);
-        const lng = parseFloat(prayerState.lng);
-        const city = prayerState.city;
         const citySlug = `${lat.toFixed(2)}_${lng.toFixed(2)}`;
         const now = new Date();
         const dtStamp = toIcsUtc(now.getTime());
 
-        // 31 день вперёд, запросы пачками по 6 (чтобы не упереться в лимиты API)
         const days = [];
         for (let i = 0; i < 31; i++) {
             days.push(new Date(now.getFullYear(), now.getMonth(), now.getDate() + i));
@@ -2712,9 +2769,7 @@ async function exportPrayersToICS(onlyFajr = false) {
             const chunk = days.slice(i, i + 6);
             const part = await Promise.all(chunk.map(d => fetchTimingsForDate(d, lat, lng)));
             results.push(...part);
-            if (btn && !onlyFajr) {
-                btn.innerHTML = `<span>Загрузка времени: ${Math.min(i + 6, 31)} / 31...</span>`;
-            }
+            if (btn) btn.innerHTML = `<span>Загрузка времени: ${Math.min(i + 6, 31)} / 31...</span>`;
         }
 
         const prayersToExport = onlyFajr
@@ -2770,25 +2825,25 @@ async function exportPrayersToICS(onlyFajr = false) {
         });
 
         icsLines.push("END:VCALENDAR");
-        const icsContent = icsLines.join("\r\n");
+        const content = icsLines.join("\r\n");
+        const fileName = `ayaspace-namaz-${city}.ics`;
+        icsReady = { key, content, fileName };
 
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         if (isIOS) {
-            window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
+            if (btn) {
+                btn.disabled = false;
+                btn.className = "spring-interactive w-full py-3 px-4 rounded-xl bg-white text-obsidian font-bold text-xs flex items-center justify-center gap-2 shadow-lg";
+                btn.innerHTML = `<span>✓ Готово! Нажмите ещё раз — откроется календарь</span>`;
+            }
         } else {
-            const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `ayaspace-namaz-${city}.ics`;
-            a.click();
+            deliverICS(content, fileName);
+            resetBtn();
         }
     } catch (err) {
+        resetBtn();
         alert("Ошибка загрузки месячного расписания. Проверьте интернет и попробуйте ещё раз.");
     } finally {
-        if (btn && !onlyFajr) {
-            btn.innerHTML = oldHtml;
-            lucide.createIcons();
-        }
+        isExportingICS = false;
     }
 }
     </script>
