@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AyaSpace</title>
 
+    <!-- Отключаем жесткое кэширование, чтобы обновления с GitHub прилетали сразу -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <!-- PWA / iOS Home Screen Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -73,9 +78,10 @@
     <style>
         :root {
             --apple-smooth: cubic-bezier(0.22, 1, 0.36, 1);
-            --apple-spring: cubic-bezier(0.32, 0.72, 0, 1);
-            --safe-top: max(env(safe-area-inset-top, 48px), 52px);
-            --safe-bottom: max(env(safe-area-inset-bottom, 20px), 24px);
+            --apple-spring: cubic-bezier(0.34, 1.45, 0.64, 1);
+            --apple-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+            --safe-top: max(env(safe-area-inset-top, 24px), 28px);
+            --safe-bottom: max(env(safe-area-inset-bottom, 24px), 28px);
         }
 
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -88,12 +94,13 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* Подняли весь контент выше и сделали большой запас снизу, чтобы меню ничего не перекрывало */
         body {
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
             padding-top: var(--safe-top);
-            padding-bottom: calc(var(--safe-bottom) + 96px);
+            padding-bottom: calc(var(--safe-bottom) + 128px);
         }
 
         h1, h2, h3, h4, #countdown-timer, .font-bold {
@@ -102,7 +109,6 @@
             letter-spacing: -0.03em;
         }
 
-        /* Чистый глубокий фон без геометрических фигур */
         .afterglow-stage {
             position: fixed;
             inset: 0;
@@ -128,10 +134,10 @@
         }
 
         .obsidian-matte {
-            background: linear-gradient(160deg, rgba(28, 25, 24, 0.72) 0%, rgba(11, 11, 14, 0.88) 100%);
+            background: linear-gradient(160deg, rgba(28, 25, 24, 0.76) 0%, rgba(11, 11, 14, 0.90) 100%);
             backdrop-filter: blur(34px) saturate(180%);
             -webkit-backdrop-filter: blur(34px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.11);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 12px 28px rgba(0, 0, 0, 0.48);
         }
 
@@ -161,13 +167,13 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* Фирменный Apple Smooth Bounce для кнопок и карточек */
         .spring-interactive {
-            transition: transform 0.32s var(--apple-smooth), background-color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+            transition: transform 0.38s var(--apple-spring), background-color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
             will-change: transform;
         }
-        .spring-interactive:active { transform: scale(0.965); }
+        .spring-interactive:active { transform: scale(0.95); }
 
-        /* Анимация Apple: плавное всплытие снизу с легким блюром (Fade Blur In) */
         @keyframes blurRiseIn {
             0% {
                 opacity: 0;
@@ -175,7 +181,7 @@
                 filter: blur(8px);
             }
             65% {
-                filter: blur(1.5px);
+                filter: blur(1px);
             }
             100% {
                 opacity: 1;
@@ -187,7 +193,7 @@
         @keyframes appleSheetSlideUp {
             0% {
                 opacity: 0;
-                transform: translate3d(0, 48px, 0) scale(0.96);
+                transform: translate3d(0, 52px, 0) scale(0.95);
                 filter: blur(12px);
             }
             100% {
@@ -198,16 +204,16 @@
         }
 
         .apple-sheet-enter {
-            animation: appleSheetSlideUp 0.62s var(--apple-spring) forwards;
+            animation: appleSheetSlideUp 0.64s var(--apple-spring) forwards;
         }
 
         .tab-view {
-            animation: blurRiseIn 0.44s var(--apple-smooth) forwards;
+            animation: blurRiseIn 0.46s var(--apple-smooth) forwards;
             will-change: transform, opacity, filter;
         }
 
         .blur-text-reveal {
-            animation: blurRiseIn 0.48s var(--apple-smooth) both;
+            animation: blurRiseIn 0.5s var(--apple-smooth) both;
         }
         .delay-1 { animation-delay: 0.05s; }
         .delay-2 { animation-delay: 0.10s; }
@@ -227,12 +233,68 @@
 
         /* Dynamic Island Плеер */
         #dynamic-island {
-            top: calc(var(--safe-top) + 6px);
-            transition: transform 0.5s var(--apple-smooth), opacity 0.4s var(--apple-smooth);
+            top: calc(var(--safe-top) + 4px);
+            transition: transform 0.52s var(--apple-spring), opacity 0.4s var(--apple-smooth);
             will-change: transform, opacity;
         }
         #dynamic-island.island-hidden { opacity: 0; transform: translate3d(-50%, -150%, 0) scale(0.85); pointer-events: none; }
         #dynamic-island.island-visible { opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); pointer-events: auto; }
+
+        /* Верхнее уведомление о добавлении на экран Домой (с кнопкой закрытия, висит 9 сек) */
+        #ios-push-banner {
+            position: fixed;
+            top: calc(var(--safe-top) + 4px);
+            left: 50%;
+            z-index: 65;
+            width: 93%;
+            max-width: 400px;
+            background: linear-gradient(115deg, rgba(85, 75, 70, 0.88) 0%, rgba(235, 195, 145, 0.95) 52%, rgba(110, 95, 85, 0.90) 100%);
+            backdrop-filter: blur(32px) saturate(200%);
+            -webkit-backdrop-filter: blur(32px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.48);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.55);
+            border-radius: 22px;
+            padding: 11px 13px;
+            transform: translate3d(-50%, -180%, 0) scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.65s var(--apple-spring), opacity 0.4s ease;
+        }
+        #ios-push-banner.ios-push-visible { transform: translate3d(-50%, 0, 0) scale(1); opacity: 1; pointer-events: auto; }
+
+        /* Всплывающая подсказка со стрелочкой на кнопку Настроек (появляется после ухода первого баннера) */
+        #settings-coach-tip {
+            position: fixed;
+            top: calc(var(--safe-top) + 60px);
+            right: max(16px, calc(50vw - 280px));
+            z-index: 60;
+            width: 270px;
+            transform: translate3d(0, -14px, 0) scale(0.92);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.55s var(--apple-spring), opacity 0.35s ease;
+        }
+        #settings-coach-tip.coach-visible {
+            transform: translate3d(0, 0, 0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Индикатор Pull-to-Refresh сверху */
+        #pull-refresh-indicator {
+            position: fixed;
+            top: 12px;
+            left: 50%;
+            transform: translate3d(-50%, -80px, 0);
+            z-index: 90;
+            transition: transform 0.35s var(--apple-spring), opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #pull-refresh-indicator.pull-active {
+            transform: translate3d(-50%, calc(var(--safe-top) + 4px), 0);
+            opacity: 1;
+        }
 
         @keyframes soundWave { 0%, 100% { height: 5px; } 50% { height: 17px; } }
         .wave-bar { width: 3px; border-radius: 999px; animation: soundWave 0.9s ease-in-out infinite; }
@@ -273,6 +335,11 @@
         }
         .group:hover .status-photo-exposure { transform: scale(1.04); filter: brightness(0.50) contrast(1.08); }
 
+        /* Стили аккордеона вопросов и ответов (FAQ) */
+        details.faq-item summary { list-style: none; }
+        details.faq-item summary::-webkit-details-marker { display: none; }
+        details.faq-item[open] .faq-chevron { transform: rotate(180deg); color: #FF7A29; }
+
         #qibla-compass-dial { transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: #0A0A0C; }
@@ -284,12 +351,65 @@
     <!-- Чистый янтарно-коньячный градиент -->
     <div class="afterglow-stage"></div>
 
+    <!-- Индикатор Pull-to-Refresh (свайп вниз для обновления версии приложения) -->
+    <div id="pull-refresh-indicator" class="obsidian-matte px-4 py-2 rounded-full flex items-center gap-2 text-xs font-bold text-amberGlow shadow-2xl border border-amberGlow/40">
+        <i data-lucide="refresh-cw" class="w-4 h-4 animate-spin"></i>
+        <span>Обновление AyaSpace...</span>
+    </div>
+
+    <!-- 1. ВЕРХНЕЕ УВЕДОМЛЕНИЕ О ЯРЛЫКЕ НА ДОМОЙ (с крестиком закрытия, висит 9 секунд) -->
+    <div id="ios-push-banner">
+        <div class="flex items-center gap-3">
+            <div onclick="openInstallSettingsGuide()" class="w-10 h-10 rounded-[12px] flex items-center justify-center shrink-0 shadow-md cursor-pointer"
+                 style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 55%, #9E3304 100%); border: 1px solid rgba(255,255,255,0.35);">
+                <svg viewBox="0 0 100 100" class="w-6 h-6" fill="none">
+                    <path fill="#FFFFFF" d="M 50 6 C 52 9.5, 52 12, 50 15 C 48 12, 48 9.5, 50 6 Z"/>
+                    <path fill="#FFFFFF" d="M 50 14 C 33 25, 18 41, 18 59 C 18 77, 33 89, 52 89 C 64 89, 73 82, 77 72 C 70 78, 59 80, 49 76 C 35 70, 30 55, 36 42 C 41 30, 55 25, 68 32 C 73 35, 77 39, 79 44 C 76 31, 63 22, 50 14 Z"/>
+                    <path fill="#FFFFFF" d="M 61 45 Q 61 56 72 56 Q 61 56 61 67 Q 61 56 50 56 Q 61 56 61 45 Z"/>
+                </svg>
+            </div>
+            <div onclick="openInstallSettingsGuide()" class="min-w-0 flex-1 cursor-pointer">
+                <div class="flex items-center justify-between">
+                    <span class="text-[13px] font-bold text-[#141210] tracking-tight leading-none">AyaSpace</span>
+                    <span class="text-[10.5px] font-medium text-[#141210]/60 leading-none">сейчас</span>
+                </div>
+                <p class="text-[11.5px] font-bold text-[#181412]/90 leading-snug mt-1 truncate">
+                    Добавьте ярлык приложения на Домой
+                </p>
+                <p class="text-[10.5px] font-medium text-[#181412]/75 leading-tight truncate">
+                    Нажмите, чтобы открыть инструкцию
+                </p>
+            </div>
+            <button onclick="dismissPushBanner(event)" title="Убрать" class="w-7 h-7 rounded-full bg-black/15 hover:bg-black/25 text-[#141210] flex items-center justify-center shrink-0">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. ПОДСКАЗКА СО СТРЕЛОЧКОЙ НА НАСТРОЙКИ (появляется через 1 сек после ухода баннера, если еще не заходили в Настройки) -->
+    <div id="settings-coach-tip" class="apple-glass-amber rounded-2xl p-3.5 shadow-2xl border border-amberGlow/60">
+        <!-- Стрелочка вверх на иконку шестеренки -->
+        <div class="absolute -top-2 right-4 w-4 h-4 rotate-45 bg-[#5A240B] border-l border-t border-amberGlow/60"></div>
+        <div class="flex items-start justify-between gap-2">
+            <div onclick="switchTab('settings'); hideSettingsCoachTip();" class="cursor-pointer space-y-1">
+                <p class="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span>👆 Вот тут Настройки</span>
+                </p>
+                <p class="text-[11px] text-orange-100/90 font-body leading-snug">
+                    Здесь можно сменить город, мазхаб, поставить будильник на Фаджр и прочитать ответы на важные вопросы.
+                </p>
+            </div>
+            <button onclick="hideSettingsCoachTip()" class="p-1 text-white/60 hover:text-white shrink-0">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- ========================================================================= -->
-    <!-- ПОЛНОЭКРАННЫЙ ЭКРАН ПЕРВОГО ВХОДА (ONBOARDING С РАЗМЫТИЕМ И 3 ШАГАМИ)      -->
+    <!-- ПОЛНОЭКРАННЫЙ ЭКРАН ПЕРВОГО ВХОДА (ONBOARDING С РАЗМЫТИЕМ И ПОДНЯТЫЙ ВЫШЕ) -->
     <!-- ========================================================================= -->
-    <div id="onboarding-overlay" class="fixed inset-0 z-[100] hidden bg-black/65 backdrop-blur-2xl flex flex-col justify-end sm:justify-center items-center p-4 transition-opacity duration-500">
-        <div id="onboarding-card" class="apple-sheet-enter obsidian-matte w-full max-w-md rounded-[32px] p-6 border border-white/20 shadow-2xl space-y-5 mb-2 sm:mb-0">
-            <!-- Шапка карточки приветствия -->
+    <div id="onboarding-overlay" class="fixed inset-0 z-[100] hidden bg-black/70 backdrop-blur-2xl flex flex-col justify-center items-center p-4 pb-12 transition-opacity duration-500">
+        <div id="onboarding-card" class="apple-sheet-enter obsidian-matte w-full max-w-md rounded-[30px] p-5 sm:p-6 border border-white/20 shadow-2xl space-y-4 max-h-[86vh] overflow-y-auto">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-11 h-11 rounded-2xl flex items-center justify-center border border-white/25 shadow-lg shrink-0"
@@ -308,24 +428,24 @@
             </div>
 
             <!-- ШАГ 1: ВЫБОР ГОРОДА -->
-            <div id="onb-step-1" class="space-y-3.5 blur-text-reveal">
+            <div id="onb-step-1" class="space-y-3 blur-text-reveal">
                 <p class="text-xs text-white/75 font-body leading-relaxed">
                     Для начала впишите или выберите ваш город, чтобы время намазов и Кибла рассчитывались с точностью до минуты:
                 </p>
                 <div class="relative">
                     <i data-lucide="search" class="w-4 h-4 text-amberGlow absolute left-3.5 top-3"></i>
-                    <input id="onb-city-input" type="text" oninput="onOnboardingCitySearch(this.value)" placeholder="Введите ваш город или село..."
+                    <input id="onb-city-input" type="text" oninput="onOnboardingCitySearch(this.value)" placeholder="Введите ваш город или село (напр. Альметьевск)..."
                         class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-black/60 border border-white/15 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amberGlow">
                 </div>
-                <div id="onb-city-results" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pt-1"></div>
+                <div id="onb-city-results" class="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pt-1"></div>
                 <button onclick="detectGeoForOnboarding()" class="spring-interactive w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-semibold text-amberGlow flex items-center justify-center gap-2">
                     <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Определить автоматически по GPS
                 </button>
             </div>
 
             <!-- ШАГ 2: ДОБАВЛЕНИЕ УВЕДОМЛЕНИЙ НАМАЗОВ В КАЛЕНДАРЬ ПО ИМЕНИ ГОРОДА -->
-            <div id="onb-step-2" class="hidden space-y-4 blur-text-reveal">
-                <div class="p-3.5 rounded-2xl bg-emeraldAccent/12 border border-emeraldAccent/35 flex items-center justify-between">
+            <div id="onb-step-2" class="hidden space-y-3.5 blur-text-reveal">
+                <div class="p-3 rounded-2xl bg-emeraldAccent/12 border border-emeraldAccent/35 flex items-center justify-between">
                     <div>
                         <span class="text-[10px] uppercase tracking-wider text-white/60 block">Выбранный город:</span>
                         <strong id="onb-chosen-city-name" class="text-sm font-bold text-emeraldAccent">Казань</strong>
@@ -334,7 +454,7 @@
                 </div>
 
                 <p class="text-xs text-white/85 font-body leading-relaxed">
-                    Добавьте точные уведомления всех 5 намазов для города <strong id="onb-chosen-city-inline" class="text-amberGlow">Казань</strong> в Календарь телефона. Они будут приходить за 10 минут и в минуту наступления намаза даже без интернета.
+                    Добавьте точные уведомления всех 5 намазов для города <strong id="onb-chosen-city-inline" class="text-amberGlow">Казань</strong> в Календарь телефона. Они будут приходить за 10 минут и в минуту наступления намаза.
                 </p>
 
                 <button id="onb-export-ics-btn" onclick="exportPrayersToICS(false, this, true)" class="spring-interactive w-full py-3.5 px-4 rounded-2xl bg-emeraldAccent text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
@@ -348,17 +468,17 @@
             </div>
 
             <!-- ШАГ 3: ИНСТРУКЦИЯ ДОБАВЛЕНИЯ НА ЭКРАН «ДОМОЙ» -->
-            <div id="onb-step-3" class="hidden space-y-3.5 blur-text-reveal">
+            <div id="onb-step-3" class="hidden space-y-3 blur-text-reveal">
                 <p class="text-xs text-white/80 font-body leading-relaxed">
                     Добавьте ярлык <strong>AyaSpace</strong> на главный экран телефона, чтобы открывать приложение в одно касание:
                 </p>
-                <div class="p-3.5 rounded-2xl bg-black/50 border border-white/12 space-y-1.5 text-xs font-body">
+                <div class="p-3 rounded-2xl bg-black/50 border border-white/12 space-y-1 text-xs font-body">
                     <p class="font-bold text-amberGlow">🍎 На iPhone (в Safari):</p>
                     <p class="text-white/85 leading-relaxed">
-                        Нажмите внизу по центру кнопку <strong>«Поделиться» (↑)</strong>, прокрутите вниз и выберите <strong>«На экран "Домой"»</strong> → <strong>«Добавить»</strong>.
+                        Нажмите внизу кнопку <strong>«Поделиться» (↑)</strong>, прокрутите вниз и выберите <strong>«На экран "Домой"»</strong> → <strong>«Добавить»</strong>.
                     </p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-black/50 border border-white/12 space-y-1 text-xs font-body">
+                <div class="p-3 rounded-2xl bg-black/50 border border-white/12 space-y-1 text-xs font-body">
                     <p class="font-bold text-emeraldAccent">🤖 На Android:</p>
                     <p class="text-white/85 leading-relaxed">
                         Нажмите на <strong>три точки (⋮)</strong> в углу браузера и выберите <strong>«Добавить на гл. экран»</strong>.
@@ -373,7 +493,7 @@
         </div>
     </div>
 
-    <!-- ВСТРОЕННЫЕ ДАННЫЕ: 114 СУР, РУССКИЕ ДАТЫ, ПОЛНЫЕ СУРЫ ДЛЯ НАМАЗА, ПОСЛОВНЫЙ СМЫСЛ, Е-ДОБАВКИ, ГОРОДА -->
+    <!-- ВСТРОЕННЫЕ ДАННЫЕ: 114 СУР, РУССКИЕ ДАТЫ, ПОЛНЫЙ АТ-ТАХИЯТ ДО КОНЦА, Е-ДОБАВКИ, ГОРОДА -->
     <script>
         const SURAH_NAMES_RU = {
             1: "Аль-Фатиха (Открывающая)", 2: "Аль-Бакара (Корова)", 3: "Али Имран (Семейство Имрана)", 4: "Ан-Ниса (Женщины)",
@@ -490,6 +610,7 @@
             { code: "СЫЧУГ", name: "Сычужный фермент (в сырах)", status: "doubt", origin: "Желудок телят или микробиальный синтез", proof: "Микробиальный пепсин — 100% Халяль. Животный сычуг без убоя по шариату — сомнителен/запретен." }
         ];
 
+        // ПОЛНЫЙ ПОСЛОВНЫЙ СМЫСЛ НАМАЗА (Включая ПОЛНЫЙ Ат-Тахият, Салават Ибрахимия и дуа перед салямом до самого конца!)
         const WORD_BY_WORD_NAMAZ = {
             fatiha: {
                 words: [
@@ -511,15 +632,29 @@
             },
             tahiyyat: {
                 words: [
-                    { ar: "التَّحِيَّاتُ", tr: "Ат-тахиййату", ru: "Все приветствия" }, { ar: "لِلَّهِ", tr: "ли-Лляхи", ru: "Аллаху" },
-                    { ar: "وَالصَّلَوَاتُ", tr: "вас-салявату", ru: "и молитвы" }, { ar: "وَالطَّيِّبَاتُ", tr: "ват-таййибату", ru: "и благие дела" },
-                    { ar: "السَّلَامُ عَلَيْكَ", tr: "Ас-саляму 'алейка", ru: "Мир тебе" }, { ar: "أَيُّهَا النَّبِيُّ", tr: "аййухан-Набиййу", ru: "о Пророк" },
-                    { ar: "وَرَحْمَةُ اللَّهِ", tr: "ва рахматуЛлахи", ru: "и милость Аллаха" }, { ar: "وَبَرَكَاتُهُ", tr: "ва баракатух", ru: "и Его благословения" },
-                    { ar: "السَّلَامُ عَلَيْنَا", tr: "Ас-саляму 'алейна", ru: "Мир нам" }, { ar: "وَعَلَىٰ عِبَادِ اللَّهِ", tr: "ва 'аля 'ибадиЛляхи", ru: "и рабам Аллаха" },
-                    { ar: "الصَّالِحِينَ", tr: "ас-салихин", ru: "праведным" }, { ar: "أَشْهَدُ أَنْ لَا إِلَٰهَ", tr: "Ашхаду ан ля иляха", ru: "Свидетельствую, что нет божества" },
-                    { ar: "إِلَّا اللَّهُ", tr: "илля-Ллаху", ru: "кроме Аллаха" }, { ar: "وَأَشْهَدُ أَنَّ مُحَمَّدًا", tr: "ва ашхаду анна Мухаммадан", ru: "и что Мухаммад" },
+                    { ar: "التَّحِيَّاتُ لِلَّهِ", tr: "Ат-тахиййату ли-Лляхи", ru: "Все приветствия Аллаху" },
+                    { ar: "وَالصَّلَوَاتُ وَالطَّيِّبَاتُ", tr: "вас-салявату ват-таййибату", ru: "молитвы и благие дела" },
+                    { ar: "السَّلَامُ عَلَيْكَ", tr: "Ас-саляму 'алейка", ru: "Мир тебе" },
+                    { ar: "أَيُّهَا النَّبِيُّ", tr: "аййухан-Набиййу", ru: "о Пророк" },
+                    { ar: "وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ", tr: "ва рахматуЛлахи ва баракатух", ru: "милость Аллаха и Его благословения" },
+                    { ar: "السَّلَامُ عَلَيْنَا", tr: "Ас-саляму 'алейна", ru: "Мир нам" },
+                    { ar: "وَعَلَىٰ عِبَادِ اللَّهِ الصَّالِحِينَ", tr: "ва 'аля 'ибадиЛляхи с-салихин", ru: "и праведным рабам Аллаха" },
+                    { ar: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ", tr: "Ашхаду ан ля иляха илля-Ллах", ru: "Свидетельствую, что нет божества, кроме Аллаха" },
+                    { ar: "وَأَشْهَدُ أَنَّ مُحَمَّدًا", tr: "ва ашхаду анна Мухаммадан", ru: "и свидетельствую, что Мухаммад" },
                     { ar: "عَبْدُهُ وَرَسُولُهُ", tr: "'абдуху ва расулюх", ru: "Его раб и Посланник" },
-                    { ar: "اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ", tr: "Аллахумма салли 'аля Мухаммад", ru: "О Аллах, благослови Мухаммада (Салават)" }
+                    { ar: "اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ", tr: "Аллахумма салли 'аля Мухаммадин", ru: "О Аллах, благослови Мухаммада" },
+                    { ar: "وَعَلَىٰ آلِ مُحَمَّدٍ", tr: "ва 'аля али Мухаммад", ru: "и семейство Мухаммада" },
+                    { ar: "كَمَا صَلَّيْتَ عَلَىٰ إِبْرَاهِيمَ", tr: "кяма саллейта 'аля Ибрахима", ru: "как Ты благословил Ибрахима" },
+                    { ar: "وَعَلَىٰ آلِ إِبْرَاهِيمَ", tr: "ва 'аля али Ибрахим", ru: "и семейство Ибрахима" },
+                    { ar: "إِنَّكَ حَمِيدٌ مَجِيدٌ", tr: "иннакя Хамидун Маджид", ru: "Воистину, Ты — Достохвальный, Славный" },
+                    { ar: "اللَّهُمَّ بَارِكْ عَلَىٰ مُحَمَّدٍ", tr: "Аллахумма барик 'аля Мухаммадин", ru: "О Аллах, ниспошли благодать Мухаммаду" },
+                    { ar: "وَعَلَىٰ آلِ مُحَمَّدٍ", tr: "ва 'аля али Мухаммад", ru: "и семейству Мухаммада" },
+                    { ar: "كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيمَ", tr: "кяма баракта 'аля Ибрахима", ru: "как Ты ниспослал благодать Ибрахиму" },
+                    { ar: "وَعَلَىٰ آلِ إِبْرَاهِيمَ", tr: "ва 'аля али Ибрахим", ru: "и семейству Ибрахима" },
+                    { ar: "إِنَّكَ حَمِيدٌ مَجِيدٌ", tr: "иннакя Хамидун Маджид", ru: "Воистину, Ты — Достохвальный, Славный" },
+                    { ar: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", tr: "Раббана атина фид-дунья хасанатан", ru: "Господь наш, одари нас добром в этом мире" },
+                    { ar: "وَفِي الْآخِرَةِ حَسَنَةً", tr: "ва филь-ахирати хасанатан", ru: "и добром в Последней жизни" },
+                    { ar: "وَقِنَا عَذَابَ النَّارِ", tr: "ва кына 'азабан-нар", ru: "и защити нас от мучений в Огне!" }
                 ]
             },
             adhkar: {
@@ -607,6 +742,7 @@
             { name: "Уфа", lat: 54.7388, lng: 55.9721 },
             { name: "Дербент", lat: 42.0578, lng: 48.2888 },
             { name: "Хасавюрт", lat: 43.2505, lng: 46.5877 },
+            { name: "Альметьевск", lat: 54.9014, lng: 52.2971 },
             { name: "Назрань / Магас", lat: 43.1625, lng: 44.8122 },
             { name: "Нальчик", lat: 43.4853, lng: 43.6071 },
             { name: "Черкесск", lat: 44.2269, lng: 42.0468 },
@@ -651,7 +787,7 @@
         </div>
     </div>
 
-    <!-- Dynamic Island Аудио-Плеер (скрывается автоматически через 1 секунду после завершения) -->
+    <!-- Dynamic Island Аудио-Плеер -->
     <div id="dynamic-island" class="island-hidden fixed left-1/2 z-50 w-[94%] max-w-md obsidian-matte rounded-[26px] px-4 py-3">
         <div class="flex items-center justify-between gap-3">
             <div id="island-wave-box" class="flex items-center gap-1 h-6 px-2 py-1 rounded-full bg-white/5 border border-white/10 shrink-0">
@@ -661,8 +797,8 @@
                 <span class="wave-bar bg-emeraldAccent" style="animation-delay: 0.15s"></span>
             </div>
             <div class="min-w-0 flex-1">
-                <p id="island-title" class="text-xs font-bold text-white truncate">Чтец: Мишари Рашид аль-Афаси</p>
-                <p id="island-subtitle" class="text-[10px] text-orange-200/70 truncate">Сура Аль-Фатиха — Аят 1</p>
+                <p id="island-title" class="text-xs font-bold text-white truncate">Чтец: Мухаммад аль-Люхайдан</p>
+                <p id="island-subtitle" class="text-[10px] text-orange-200/70 truncate">Сура Аль-Фатиха</p>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
                 <button onclick="toggleIslandPlayPause()" id="island-play-btn" class="spring-interactive w-8 h-8 rounded-full bg-amberCore text-white flex items-center justify-center shadow"><i data-lucide="pause" class="w-3.5 h-3.5"></i></button>
@@ -671,14 +807,14 @@
             </div>
         </div>
         <div class="mt-2.5 flex items-center gap-2.5">
-            <span id="island-current-time" class="text-[10px] font-mono text-white/70 w-9 text-right">00:00</span>
+            <span id="island-current-time" class="text-[10px] font-mono text-white/70 w-10 text-right">00:00</span>
             <input id="island-seek-slider" type="range" min="0" max="100" value="0" step="0.1" oninput="seekIslandAudio(this.value)" class="island-slider flex-1 cursor-pointer">
-            <span id="island-duration-time" class="text-[10px] font-mono text-white/70 w-9">00:00</span>
+            <span id="island-duration-time" class="text-[10px] font-mono text-white/70 w-10">00:00</span>
         </div>
     </div>
 
     <!-- ШАПКА ПРИЛОЖЕНИЯ AYASPACE -->
-    <header class="relative z-10 w-full max-w-xl mx-auto px-4 pt-2 pb-2 flex items-center justify-between gap-2">
+    <header class="relative z-10 w-full max-w-xl mx-auto px-4 pt-1 pb-2 flex items-center justify-between gap-2">
         <div class="flex items-center gap-3.5 min-w-0">
             <div class="w-12 h-12 rounded-2xl flex items-center justify-center relative border border-white/25 shadow-lg shrink-0"
                  style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 50%, #9E3304 100%); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 8px 20px rgba(230,92,25,0.35);">
@@ -706,10 +842,10 @@
     </header>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР ВКЛАДОК -->
-    <main class="relative z-10 max-w-xl mx-auto px-4 pt-1.5 space-y-4">
+    <main class="relative z-10 max-w-xl mx-auto px-4 pt-1 space-y-4">
 
         <!-- ВКЛАДКА 1: НАМАЗ + РЕЖИМ МУСАФИРА + ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ -->
-        <section id="tab-prayer" class="tab-view space-y-4">
+        <section id="tab-prayer" class="tab-view space-y-3.5">
             <!-- Компактная плашка следующего намаза -->
             <div class="apple-glass-amber rounded-[26px] px-5 py-4 relative overflow-hidden">
                 <div class="absolute -right-10 -top-10 w-36 h-36 rounded-full bg-amberGlow/20 blur-3xl pointer-events-none"></div>
@@ -736,7 +872,7 @@
             </div>
 
             <!-- Расписание намазов -->
-            <div class="apple-glass rounded-[28px] p-4 sm:p-5 space-y-3.5 blur-text-reveal delay-1">
+            <div class="apple-glass rounded-[28px] p-4 sm:p-5 space-y-3 blur-text-reveal delay-1">
                 <div class="flex items-center justify-between gap-3 px-0.5">
                     <div>
                         <h2 class="font-bold text-[15px] glass-text-title">Расписание намазов</h2>
@@ -747,7 +883,7 @@
                 <div id="prayer-list" class="space-y-2"></div>
             </div>
 
-            <!-- Режим Путника (Мусафир) -->
+            <!-- Режим Путника (Мусафир) — исправлено выключение в 1 клик! -->
             <div class="obsidian-matte rounded-[22px] px-4 py-3.5 space-y-3 blur-text-reveal delay-2">
                 <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
@@ -759,7 +895,7 @@
                             <p id="musafir-distance-label" class="text-[11px] text-white/55 font-body truncate">Сокращение 4-ракаатных намазов до 2 ракаатов (> 85 км)</p>
                         </div>
                     </div>
-                    <button onclick="toggleMusafirMode()" id="musafir-toggle-btn" class="spring-interactive px-3 py-1.5 rounded-xl text-xs font-semibold border border-white/15 bg-white/8 text-white shrink-0">Включить</button>
+                    <button onclick="toggleMusafirMode()" id="musafir-toggle-btn" class="spring-interactive px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/15 bg-white/8 text-white shrink-0">Включить</button>
                 </div>
                 <div id="musafir-details-box" class="hidden p-3 rounded-xl bg-sapphireAccent/10 border border-sapphireAccent/25 text-xs space-y-1 text-white/85 font-body">
                     <p class="font-bold text-sapphireAccent flex items-center gap-1.5"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Активен режим сокращения намазов (Каср):</p>
@@ -790,9 +926,9 @@
                     </button>
                 </div>
 
-                <!-- Модуль 1: Живой Компас Киблы 360° (ЧИСТЫЙ ФОН БЕЗ ГЕОМЕТРИЧЕСКИХ ФИГУР!) -->
+                <!-- Модуль 1: Живой Компас Киблы 360° (ЧИСТЫЙ ФОН) -->
                 <div id="tool-panel-qibla" class="blur-text-reveal">
-                    <div class="relative rounded-[30px] overflow-hidden border border-white/18 shadow-2xl min-h-[480px] flex flex-col justify-between p-5 sm:p-6 select-none"
+                    <div class="relative rounded-[30px] overflow-hidden border border-white/18 shadow-2xl min-h-[470px] flex flex-col justify-between p-5 sm:p-6 select-none"
                          style="background: radial-gradient(circle at 50% 45%, rgba(42, 28, 18, 0.82) 0%, rgba(10, 10, 12, 0.96) 80%);">
                         <div class="relative z-10 flex items-start justify-between">
                             <div>
@@ -862,7 +998,7 @@
                     <div id="halal-results-list" class="space-y-2.5"></div>
                 </div>
 
-                <!-- Модуль 3: Пословный смысл намаза -->
+                <!-- Модуль 3: Пословный смысл намаза (с полным Ат-Тахиятом и Салаватом) -->
                 <div id="tool-panel-khushu" class="hidden space-y-4 blur-text-reveal">
                     <div class="apple-glass rounded-[26px] p-5 space-y-4">
                         <div>
@@ -871,7 +1007,7 @@
                         </div>
                         <div class="flex gap-1.5 p-1 rounded-2xl bg-black/40 border border-white/10">
                             <button onclick="renderKhushuSection('fatiha')" id="khushu-btn-fatiha" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-bold bg-amberCore text-white shadow">Аль-Фатиха</button>
-                            <button onclick="renderKhushuSection('tahiyyat')" id="khushu-btn-tahiyyat" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold text-white/70">Ат-Тахият</button>
+                            <button onclick="renderKhushuSection('tahiyyat')" id="khushu-btn-tahiyyat" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold text-white/70">Ат-Тахият + Салават</button>
                             <button onclick="renderKhushuSection('adhkar')" id="khushu-btn-adhkar" class="spring-interactive flex-1 py-2 rounded-xl text-xs font-semibold text-white/70">Поклоны</button>
                         </div>
                         <div id="khushu-words-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1"></div>
@@ -883,13 +1019,43 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА 2: СВЯЩЕННЫЙ КОРАН -->
-        <section id="tab-quran" class="tab-view hidden space-y-4">
+        <!-- ВКЛАДКА 2: СВЯЩЕННЫЙ КОРАН (ЧТЕНИЕ ШЕЙХА МУХАММАДА АЛЬ-ЛЮХАЙДАНА + ФОНОВЫЙ ПЛЕЕР НА 5–10 ЧАСОВ) -->
+        <section id="tab-quran" class="tab-view hidden space-y-3.5">
+            <!-- НОВАЯ ПЛАШКА: ФОНОВОЕ ЧТЕНИЕ КОРАНА НОН-СТОП (5–10 ЧАСОВ, МУХАММАД АЛЬ-ЛЮХАЙДАН) -->
+            <div class="apple-glass-amber rounded-[26px] p-4 sm:p-5 space-y-3 blur-text-reveal">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-11 h-11 rounded-2xl bg-amberCore text-white flex items-center justify-center shadow-lg shrink-0">
+                            <i data-lucide="headphones" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-200 block">Фоновый режим • 5–10 часов подряд</span>
+                            <h3 class="text-sm sm:text-base font-bold text-white truncate">Коран нон-стоп • Мухаммад аль-Люхайдан</h3>
+                            <p id="bg-quran-status" class="text-[11px] text-white/75 font-body truncate">Непрерывное чтение сур подряд (работает в фоне и на блокировке)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
+                    <button onclick="startLuhaidanMarathon(1)" id="bg-luhaidan-btn-1" class="spring-interactive py-2.5 px-3 rounded-xl bg-white text-obsidian font-bold text-xs flex items-center justify-center gap-1.5 shadow">
+                        <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                        <span>Включить (5–10 ч)</span>
+                    </button>
+                    <button onclick="startLuhaidanMarathon(2)" class="spring-interactive py-2.5 px-3 rounded-xl bg-black/40 hover:bg-black/60 border border-white/15 text-white font-semibold text-xs flex items-center justify-center gap-1.5">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amberGlow"></i>
+                        <span>С суры Аль-Бакара</span>
+                    </button>
+                    <button onclick="startLuhaidanMarathon(36)" class="spring-interactive col-span-2 sm:col-span-1 py-2.5 px-3 rounded-xl bg-black/40 hover:bg-black/60 border border-white/15 text-white font-semibold text-xs flex items-center justify-center gap-1.5">
+                        <i data-lucide="moon" class="w-3.5 h-3.5 text-emeraldAccent"></i>
+                        <span>Йа Син • Аль-Мульк</span>
+                    </button>
+                </div>
+            </div>
+
             <div class="apple-glass rounded-[26px] p-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div class="blur-text-reveal">
                         <h2 class="text-lg font-bold glass-text-title">Священный Коран</h2>
-                        <p class="text-xs text-white/60 font-body">Оригинал (Усмани) • Кириллическая транскрипция • Перевод Э. Кулиева</p>
+                        <p class="text-xs text-white/60 font-body">Чтец: Мухаммад аль-Люхайдан • Транскрипция • Перевод Э. Кулиева</p>
                     </div>
                     <button id="back-to-surahs-btn" onclick="showSurahList()" class="spring-interactive hidden self-start sm:self-auto px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold flex items-center gap-1.5">
                         <i data-lucide="arrow-left" class="w-4 h-4 text-amberGlow"></i> Все 114 сур
@@ -984,14 +1150,14 @@
             <div id="status-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
         </section>
 
-        <!-- ВКЛАДКА 5: НАСТРОЙКИ -->
+        <!-- ВКЛАДКА 5: НАСТРОЙКИ + FAQ (ВОПРОСЫ И ОТВЕТЫ) + TELEGRAM КОНТАКТ @aitral -->
         <section id="tab-settings" class="tab-view hidden space-y-4">
             <!-- Блок №1: Единый умный выбор города и метода -->
             <div class="apple-glass rounded-[26px] p-5 space-y-4 text-xs">
                 <div class="flex items-center justify-between gap-2">
                     <div>
                         <h3 class="font-bold text-base glass-text-title">Город и расчет намаза</h3>
-                        <p class="text-[11px] text-white/60 font-body">Нажмите на город — он сохранится мгновенно</p>
+                        <p class="text-[11px] text-white/60 font-body">Нажмите на город — время намазов и календаря обновится сразу</p>
                     </div>
                     <button onclick="detectGeolocation()" class="spring-interactive px-3 py-2 rounded-xl bg-amberCore/20 border border-amberGlow/40 text-amberGlow font-bold flex items-center gap-1.5 shrink-0">
                         <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Авто-GPS
@@ -1012,7 +1178,7 @@
                 <div class="space-y-2.5">
                     <div class="relative">
                         <i data-lucide="search" class="w-4 h-4 text-amberGlow absolute left-3.5 top-3"></i>
-                        <input id="unified-city-input" type="text" oninput="onUnifiedCityInput(this.value)" placeholder="Введите любой город или село мира..." 
+                        <input id="unified-city-input" type="text" oninput="onUnifiedCityInput(this.value)" placeholder="Введите любой город или село (напр. Альметьевск)..." 
                             class="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-black/55 border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-amberGlow">
                         <button onclick="document.getElementById('unified-city-input').value=''; onUnifiedCityInput('');" class="absolute right-3 top-2.5 text-white/40 hover:text-white">✕</button>
                     </div>
@@ -1023,7 +1189,7 @@
                     <div>
                         <label class="block font-semibold text-white/75 mb-1.5">Метод расчета:</label>
                         <select id="settings-method" onchange="instantSaveMethodAndSchool()" class="w-full p-3 rounded-2xl bg-black/60 border border-white/15 text-white focus:outline-none focus:border-amberGlow">
-                            <option value="14">ДУМ РФ (Россия)</option>
+                            <option value="14">ДУМ РФ (Россия / Татарстан / Кавказ)</option>
                             <option value="3">MWL (Всемирная лига)</option>
                             <option value="4">Мекка (Умм аль-Кура)</option>
                             <option value="13">Турция (Diyanet)</option>
@@ -1045,10 +1211,10 @@
             <div class="apple-glass-amber rounded-[26px] p-5 space-y-4">
                 <div>
                     <h2 class="text-base font-bold glass-text-title">Уведомления намазов и Будильник</h2>
-                    <p class="text-xs text-white/75 font-body mt-0.5">Точное расписание на 31 день вперед по вашему городу</p>
+                    <p class="text-xs text-white/75 font-body mt-0.5">Точное расписание на 31 день вперед по вашему городу (с напоминанием о продлении)</p>
                 </div>
 
-          <!-- Плашка: Будильник на Утренний намаз (Фаджр) -->
+                <!-- Плашка: Будильник на Утренний намаз (Фаджр) -->
                 <div class="p-4 rounded-2xl obsidian-matte border border-amberGlow/45 space-y-2.5">
                     <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2 text-amberGlow text-xs font-bold">
@@ -1058,7 +1224,7 @@
                         <span id="fajr-city-time-pill" class="px-2.5 py-0.5 rounded-lg bg-amberCore/25 text-amberGlow font-mono font-bold text-xs tabular-nums">Фаджр</span>
                     </div>
                     <p class="text-[11px] text-white/75 font-body leading-relaxed">
-                        Ставит отдельный будильник на Утренний намаз (Фаджр) на 31 день вперед строго по времени вашего выбранного города.
+                        Ставит отдельное уведомление-будильник на Утренний намаз (Фаджр) на 31 день вперед строго по времени вашего города.
                     </p>
                     <button id="fajr-alarm-btn" onclick="exportPrayersToICS(true, this, false)" class="spring-interactive w-full py-3 px-4 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center justify-center gap-2 shadow">
                         <i data-lucide="alarm-clock" class="w-4 h-4"></i>
@@ -1073,14 +1239,13 @@
                         <span>100% точные уведомления намазов на МЕСЯЦ вперёд (31 день)</span>
                     </div>
                     <p class="text-[11px] text-white/70 font-body leading-relaxed">
-                        Загружает официальное астрономическое время намазов вашего города на каждый из 31 дня вперед и ставит уведомления в Календарь телефона (за 10 минут и в минуту наступления намаза).
+                        Загружает точное время намазов вашего города на 31 день вперед (с эмодзи полумесяца 🌙) и ставит уведомления в Календарь телефона (за 10 минут и в минуту наступления намаза).
                     </p>
                     <div class="p-3 rounded-xl bg-black/45 border border-white/10 text-[11px] text-white/85 space-y-1 font-body">
-                        <p class="font-bold text-emeraldAccent">💡 Как добавить и легко управлять на iPhone:</p>
-                        <p>1. Нажмите зеленую кнопку ниже — откроется окно <strong>«155 событий»</strong>.</p>
-                        <p>2. В самом низу окна нажмите <strong>«Календарь» → «Новый календарь»</strong> и назовите его <em>«Намаз»</em>.</p>
-                        <p>3. Нажмите галочку <strong>«✓»</strong> сверху.</p>
-                        <p class="text-white/55 pt-1 border-t border-white/10"><em>Как удалить при смене города: откройте Календарь → внизу «Календари» → нажмите «i» возле «Намаз» → «Удалить календарь».</em></p>
+                        <p class="font-bold text-emeraldAccent">💡 Как добавить в Safari на iPhone:</p>
+                        <p>1. Нажмите зеленую кнопку ниже — откроется окно <strong>«156 событий»</strong>.</p>
+                        <p>2. Внизу окна нажмите <strong>«Календарь» → «Новый календарь»</strong> и назовите его <em>«Намаз»</em>.</p>
+                        <p>3. Нажмите галочку <strong>«✓» (Добавить все)</strong> сверху.</p>
                     </div>
                     <button id="export-ics-btn" onclick="exportPrayersToICS(false, this, false)" class="spring-interactive w-full py-3 px-4 rounded-xl bg-emeraldAccent text-obsidian font-bold text-xs flex items-center justify-center gap-2 shadow">
                         <i data-lucide="download" class="w-4 h-4"></i>
@@ -1089,31 +1254,36 @@
                 </div>
 
                 <button onclick="reopenOnboardingWizard()" class="spring-interactive w-full py-2.5 px-4 rounded-xl bg-white/8 hover:bg-white/15 border border-white/12 text-white/75 text-xs font-semibold flex items-center justify-center gap-2">
-                    <i data-lucide="Sparkles" class="w-3.5 h-3.5 text-amberGlow"></i>
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amberGlow"></i>
                     <span>Открыть экран первоначальной настройки</span>
                 </button>
             </div>
 
             <!-- Блок №3: Инструкция установки ярлыка на рабочий стол -->
-            <div id="settings-install-guide-card" class="apple-glass rounded-[26px] p-5 space-y-4 border border-white/15">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-white/30"
-                         style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 50%, #9E3304 100%);">
-                        <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
+            <div id="settings-install-guide-card" class="apple-glass rounded-[26px] p-5 space-y-3.5 border border-white/15">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-white/30"
+                             style="background: linear-gradient(135deg, #FF8533 0%, #E65C19 50%, #9E3304 100%);">
+                            <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-white">Ярлык на экран «Домой» и Обновление</h2>
+                            <p class="text-[11px] text-white/55">Быстрый запуск и обновление до новой версии</p>
+                        </div>
                     </div>
-                    <div>
-                        <h2 class="text-sm font-bold text-white">Как добавить ярлык на рабочий стол</h2>
-                        <p class="text-[11px] text-white/55">Быстрый запуск приложения с главного экрана</p>
-                    </div>
+                    <button onclick="forceUpdateAppVersion()" class="spring-interactive px-3 py-1.5 rounded-xl bg-amberCore/20 border border-amberGlow/40 text-amberGlow font-bold text-[11px] shrink-0">
+                        🔄 Обновить код
+                    </button>
                 </div>
-                <div class="space-y-2.5 text-xs font-body">
-                    <div class="p-3.5 rounded-2xl bg-black/45 border border-white/12 space-y-1">
+                <div class="space-y-2 text-xs font-body">
+                    <div class="p-3 rounded-2xl bg-black/45 border border-white/12 space-y-1">
                         <p class="font-bold text-amberGlow">🍎 На iPhone (Safari):</p>
                         <p class="text-white/85 leading-relaxed">
                             Нажмите внизу значок <strong>«Поделиться» (↑)</strong> и выберите <strong>«На экран "Домой"»</strong> → <strong>«Добавить»</strong>.
                         </p>
                     </div>
-                    <div class="p-3.5 rounded-2xl bg-black/45 border border-white/12 space-y-1">
+                    <div class="p-3 rounded-2xl bg-black/45 border border-white/12 space-y-1">
                         <p class="font-bold text-emeraldAccent">🤖 На Android:</p>
                         <p class="text-white/85 leading-relaxed">Нажмите на <strong>три точки (⋮)</strong> в углу браузера и выберите <strong>«Добавить на главный экран»</strong>.</p>
                     </div>
@@ -1123,6 +1293,94 @@
                     <span>Скопировать ссылку (для Safari)</span>
                 </button>
             </div>
+
+            <!-- Блок №4: ЧАСТЫЕ ВОПРОСЫ И ОТВЕТЫ (FAQ С ОТКРЫВАЮЩИМИСЯ СТРЕЛОЧКАМИ) -->
+            <div class="apple-glass rounded-[26px] p-5 space-y-3">
+                <div class="pb-1">
+                    <h2 class="text-base font-bold glass-text-title">Частые вопросы и ответы (Помощь)</h2>
+                    <p class="text-[11px] text-white/55 font-body">Нажмите на вопрос, чтобы открыть подробный ответ</p>
+                </div>
+
+                <!-- Вопрос 1 -->
+                <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
+                    <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
+                        <span>1. Что делать, если уведомления не приходят или не открывается окно Календаря?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
+                    </summary>
+                    <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
+                        <p>• На iPhone система безопасности Apple разрешает добавлять расписание в Календарь <strong>только тогда, когда сайт открыт в браузере Safari</strong> (а не внутри ярлыка с рабочего стола и не внутри встроенного браузера Telegram/WhatsApp).</p>
+                        <p>• Если вы нажали зеленую кнопку внутри ярлыка на экране «Домой» и окно Календаря не открылось — нажмите кнопку <strong>«Скопировать ссылку (для Safari)»</strong> выше, вставьте её в обычный браузер <strong>Safari</strong> и нажмите зеленую кнопку там. Откроется окно «156 событий» — нажмите «Добавить все».</p>
+                        <p>• Также проверьте на iPhone: <strong>Настройки → Уведомления → Календарь → Предстоящие события (Допуск уведомлений: Вкл)</strong>.</p>
+                    </div>
+                </details>
+
+                <!-- Вопрос 2 -->
+                <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
+                    <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
+                        <span>2. Почему в виджете Календаря написано «04:45 – 05:00» или «11:27 – 11:42»?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
+                    </summary>
+                    <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
+                        <p>• <strong>Первая цифра (например, 04:45 или 11:27)</strong> — это точная минута наступления намаза (азана) в вашем городе.</p>
+                        <p>• А вторая цифра (через 5–15 минут) нужна только для того, чтобы Календарь iPhone мог нарисовать аккуратную компактную полоску события и не закрашивал весь ваш день сплошной линией.</p>
+                        <p>• <strong>Само шариатское время намаза длится полноценно:</strong> Утренний намаз (Фаджр) — до Восхода (Шурук), Обеденный (Зухр) — до Асра, Послеобеденный (Аср) — до Магриба, Вечерний (Магриб) — до Иша, а Ночной (Иша) — до рассвета.</p>
+                    </div>
+                </details>
+
+                <!-- Вопрос 3 -->
+                <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
+                    <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
+                        <span>3. Как удалить старое расписание из Календаря (например, при переезде в другой город)?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
+                    </summary>
+                    <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
+                        <p>1. Откройте стандартное приложение <strong>«Календарь»</strong> на iPhone.</p>
+                        <p>2. Нажмите в самом низу по центру кнопку <strong>«Календари»</strong>.</p>
+                        <p>3. Нажмите на значок <strong>«i»</strong> в кружочке напротив календаря с намазами (или создайте новый пустой календарь кнопкой «Добавить календарь» внизу слева, если этот календарь единственный).</p>
+                        <p>4. Прокрутите в самый низ и нажмите красную кнопку <strong>«Удалить календарь»</strong> — все события удалятся за 1 секунду.</p>
+                    </div>
+                </details>
+
+                <!-- Вопрос 4 -->
+                <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
+                    <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
+                        <span>4. Что делать, когда пройдет 31 день (месяц)? Как продлить уведомления?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
+                    </summary>
+                    <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
+                        <p>• Вам не нужно считать дни вручную! На <strong>30-й день в 19:00</strong> мы автоматически добавили в ваш Календарь специальное напоминание: <em>«🌙 Продлите расписание намазов в AyaSpace на следующий месяц»</em>.</p>
+                        <p>• Когда вы увидите это напоминание, просто откройте AyaSpace в Safari и один раз нажмите зеленую кнопку — расписание обновится еще на 31 день вперед!</p>
+                    </div>
+                </details>
+
+                <!-- Вопрос 5 -->
+                <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
+                    <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
+                        <span>5. Как обновить приложение на экране «Домой», если вышла новая версия?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
+                    </summary>
+                    <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
+                        <p>• Просто <strong>потяните экран сверху вниз (свайп вниз)</strong> на главной странице приложения, либо нажмите кнопку <strong>«🔄 Обновить код»</strong> чуть выше в этом разделе. Приложение само очистит старый кэш и загрузит свежую версию без удаления ярлыка!</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Блок №5: СВЯЗЬ С РАЗРАБОТЧИКОМ / TELEGRAM @aitral -->
+            <a href="https://t.me/aitral" target="_blank" rel="noopener noreferrer" class="spring-interactive block apple-glass-amber rounded-[24px] p-4 border border-amberGlow/50 shadow-xl">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3.5 min-w-0">
+                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amberCore to-amberDeep text-white flex items-center justify-center shadow-md shrink-0 border border-white/25">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Связь, идеи и поддержка проекта</span>
+                            <h3 class="text-sm font-bold text-white truncate">Telegram разработчика: <span class="text-amberGlow underline">@aitral</span></h3>
+                            <p class="text-[11px] text-white/75 font-body truncate">Нажмите, чтобы написать в Telegram</p>
+                        </div>
+                    </div>
+                    <i data-lucide="external-link" class="w-4 h-4 text-amberGlow shrink-0"></i>
+                </div>
+            </a>
         </section>
 
     </main>
@@ -1230,10 +1488,16 @@
         let onbSearchDebounceTimer = null;
         let globalAudio = new Audio();
         let islandHideTimer = null;
+        let pushBannerTimer = null;
+        let coachTipTimer = null;
+        let hasVisitedSettings = false;
+
         let allSurahs = [];
         let currentSurahAyahs = [];
         let currentPlayingIndex = -1;
         let isContinuousMode = false;
+        let isLuhaidanMarathonMode = false;
+        let currentMarathonSurah = 1;
 
         let trainerState = { surahNumber: 114, ayahs: [], mode: 'read', loopTarget: 3, currentLoopCount: 0 };
         let mediaRecorder = null;
@@ -1244,6 +1508,12 @@
         let currentCompassHeading = 0;
         let targetQiblaBearing = 176;
         let isAlignedVibrated = false;
+
+        // Прямая ссылка на сервер аудио шейха Мухаммада аль-Люхайдана (001.mp3 - 114.mp3)
+        function getLuhaidanSurahAudioUrl(surahNum) {
+            const padded = String(surahNum).padStart(3, '0');
+            return `https://server8.mp3quran.net/lhdan/${padded}.mp3`;
+        }
 
         // ВСТРОЕННЫЙ ГЕНЕРАТОР МЯГКОГО ТАКТИЛЬНОГО ЗВУКА iOS (Web Audio API)
         let uiAudioCtx = null;
@@ -1273,9 +1543,10 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            initPullToRefresh();
 
             document.addEventListener('pointerdown', e => {
-                if (e.target.closest('button, select, input[type="checkbox"], .spring-interactive')) {
+                if (e.target.closest('button, select, summary, input[type="checkbox"], .spring-interactive')) {
                     playTactileClick(170, 0.016);
                 }
             }, { passive: true });
@@ -1294,10 +1565,11 @@
                 }
             }
 
-            // Показываем размытый экран приветствия (Onboarding), если человек зашел впервые
             const isOnboarded = localStorage.getItem('aya_onboarding_done') === 'true';
             if (!isOnboarded) {
                 openOnboardingWizard();
+            } else {
+                scheduleTopPushAndSettingsCoach();
             }
 
             rebuildWeeklyStatuses(false);
@@ -1312,6 +1584,106 @@
             renderQuickCities('');
             updateQiblaCompassCalculations();
         });
+
+        // =========================================================================
+        // PULL-TO-REFRESH (СВАЙП СВЕРХУ ВНИЗ ДЛЯ ОБНОВЛЕНИЯ КОДА С GITHUB)
+        // =========================================================================
+        function initPullToRefresh() {
+            let touchStartY = 0;
+            let isPulling = false;
+            const indicator = document.getElementById('pull-refresh-indicator');
+
+            window.addEventListener('touchstart', e => {
+                if (window.scrollY <= 0 && e.touches.length === 1) {
+                    touchStartY = e.touches[0].clientY;
+                    isPulling = true;
+                } else {
+                    isPulling = false;
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchmove', e => {
+                if (!isPulling) return;
+                const diffY = e.touches[0].clientY - touchStartY;
+                if (diffY > 85 && window.scrollY <= 0) {
+                    indicator.classList.add('pull-active');
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchend', () => {
+                if (indicator.classList.contains('pull-active')) {
+                    playTactileClick(220, 0.03);
+                    forceUpdateAppVersion();
+                }
+                isPulling = false;
+            }, { passive: true });
+        }
+
+        async function forceUpdateAppVersion() {
+            const indicator = document.getElementById('pull-refresh-indicator');
+            if (indicator) indicator.classList.add('pull-active');
+            try {
+                if ('caches' in window) {
+                    const keys = await caches.keys();
+                    await Promise.all(keys.map(k => caches.delete(k)));
+                }
+            } catch (e) {}
+            const cleanUrl = window.location.origin + window.location.pathname + '?v=' + Date.now();
+            window.location.replace(cleanUrl);
+        }
+
+        // =========================================================================
+        // УВЕДОМЛЕНИЕ О ЯРЛЫКЕ НА 9 СЕКУНД + СТРЕЛОЧКА НА НАСТРОЙКИ ЧЕРЕЗ 10 СЕК
+        // =========================================================================
+        function scheduleTopPushAndSettingsCoach() {
+            const isInstalled = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+            const pushEl = document.getElementById('ios-push-banner');
+
+            setTimeout(() => {
+                if (!isInstalled && pushEl) {
+                    pushEl.classList.add('ios-push-visible');
+                    // Висит ровно 9 секунд по умолчанию, затем уходит и через 1 сек показывает стрелочку на Настройки
+                    pushBannerTimer = setTimeout(() => {
+                        pushEl.classList.remove('ios-push-visible');
+                        coachTipTimer = setTimeout(() => {
+                            if (!hasVisitedSettings) showSettingsCoachTip();
+                        }, 1000);
+                    }, 9000);
+                } else {
+                    coachTipTimer = setTimeout(() => {
+                        if (!hasVisitedSettings) showSettingsCoachTip();
+                    }, 5000);
+                }
+            }, 4500);
+        }
+
+        function dismissPushBanner(e) {
+            if (e) e.stopPropagation();
+            clearTimeout(pushBannerTimer);
+            const pushEl = document.getElementById('ios-push-banner');
+            if (pushEl) pushEl.classList.remove('ios-push-visible');
+            // Если человек закрыл баннер сам, через 1.5 сек мягко покажем ему, где Настройки (если он еще туда не заходил)
+            coachTipTimer = setTimeout(() => {
+                if (!hasVisitedSettings) showSettingsCoachTip();
+            }, 1500);
+        }
+
+        function showSettingsCoachTip() {
+            const tip = document.getElementById('settings-coach-tip');
+            if (!tip || hasVisitedSettings) return;
+            tip.classList.add('coach-visible');
+            setTimeout(() => hideSettingsCoachTip(), 9000);
+        }
+
+        function hideSettingsCoachTip() {
+            const tip = document.getElementById('settings-coach-tip');
+            if (tip) tip.classList.remove('coach-visible');
+        }
+
+        function openInstallSettingsGuide() {
+            dismissPushBanner();
+            switchTab('settings');
+        }
 
         // =========================================================================
         // ЛОГИКА РАЗМЫТОГО ЭКРАНА ПЕРВОГО ВХОДА (ONBOARDING В 3 ШАГА)
@@ -1399,7 +1771,7 @@
         }
 
         async function pickOnboardingCity(lat, lng, cityName) {
-            await selectAndSaveCityInstantly(lat, lng, cityName);
+            await selectAndSaveCityInstantly(lat, lng, cityName, true);
             goToOnboardingStep(2);
         }
 
@@ -1408,7 +1780,7 @@
             navigator.geolocation.getCurrentPosition(async pos => {
                 const lat = parseFloat(pos.coords.latitude.toFixed(4));
                 const lng = parseFloat(pos.coords.longitude.toFixed(4));
-                await selectAndSaveCityInstantly(lat, lng, "Моя геопозиция");
+                await selectAndSaveCityInstantly(lat, lng, "Моя геопозиция", true);
                 goToOnboardingStep(2);
             });
         }
@@ -1421,6 +1793,7 @@
                 setTimeout(() => {
                     overlay.classList.add('hidden');
                     overlay.style.opacity = '1';
+                    scheduleTopPushAndSettingsCoach();
                 }, 400);
             }
         }
@@ -1439,6 +1812,10 @@
         }
 
         function switchTab(tabName) {
+            if (tabName === 'settings') {
+                hasVisitedSettings = true;
+                hideSettingsCoachTip();
+            }
             const tabs = ['prayer', 'quran', 'memorize', 'status', 'settings'];
             tabs.forEach(t => {
                 const section = document.getElementById(`tab-${t}`);
@@ -1539,7 +1916,7 @@
             }, 380);
         }
 
-        async function selectAndSaveCityInstantly(lat, lng, cityName) {
+        async function selectAndSaveCityInstantly(lat, lng, cityName, makeHomeToo = false) {
             prayerState.lat = parseFloat(lat);
             prayerState.lng = parseFloat(lng);
             prayerState.city = cityName;
@@ -1548,6 +1925,15 @@
             localStorage.setItem('aya_lat', prayerState.lat);
             localStorage.setItem('aya_lng', prayerState.lng);
             localStorage.setItem('aya_city', prayerState.city);
+
+            if (makeHomeToo || !localStorage.getItem('aya_home_SetManual')) {
+                prayerState.homeLat = prayerState.lat;
+                prayerState.homeLng = prayerState.lng;
+                prayerState.homeCity = cityName;
+                localStorage.setItem('aya_home_lat', prayerState.homeLat);
+                localStorage.setItem('aya_home_lng', prayerState.homeLng);
+                localStorage.setItem('aya_home_city', prayerState.homeCity);
+            }
 
             const label = document.getElementById('settings-selected-city-label');
             if (label) label.textContent = `✓ ${cityName} (Сохранено)`;
@@ -1565,8 +1951,7 @@
             prayerState.school = document.getElementById('settings-school').value;
             localStorage.setItem('aya_method', prayerState.method);
             localStorage.setItem('aya_school', prayerState.school);
-            initPrayerTab();
-            preloadCalendarForCurrentCity(false);
+            initPrayerTab().then(() => preloadCalendarForCurrentCity(false));
         }
 
         function setInstantHomeCity() {
@@ -1576,6 +1961,7 @@
             localStorage.setItem('aya_home_lat', prayerState.homeLat);
             localStorage.setItem('aya_home_lng', prayerState.homeLng);
             localStorage.setItem('aya_home_city', prayerState.homeCity);
+            localStorage.setItem('aya_home_SetManual', 'true');
             document.getElementById('home-city-label').textContent = prayerState.homeCity;
             const btn = document.getElementById('make-home-btn');
             if (btn) {
@@ -1612,7 +1998,7 @@
                 localStorage.setItem('aya_city', prayerState.city);
                 syncSettingsUI();
                 renderQuickCities('');
-                initPrayerTab();
+                initPrayerTab().then(() => preloadCalendarForCurrentCity(false));
             }, () => switchTab('settings'));
         }
 
@@ -1648,8 +2034,10 @@
         }
 
         function formatSeconds(sec) {
-            const m = Math.floor(sec / 60);
+            const hrs = Math.floor(sec / 3600);
+            const m = Math.floor((sec % 3600) / 60);
             const s = Math.floor(sec % 60);
+            if (hrs > 0) return `${hrs}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
             return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }
 
@@ -1690,6 +2078,7 @@
         function stopIslandAudio(hideIsland = false) {
             clearTimeout(islandHideTimer);
             isContinuousMode = false;
+            isLuhaidanMarathonMode = false;
             globalAudio.pause();
             globalAudio.currentTime = 0;
             document.getElementById('island-seek-slider').value = 0;
@@ -1702,7 +2091,48 @@
             }
         }
 
-        // 1. ВРЕМЯ НАМАЗА И РЕЖИМ МУСАФИРА
+        // =========================================================================
+        // ФОНОВЫЙ КОРАН НОН-СТОП НА 5–10 ЧАСОВ ПОДРЯД (ШЕЙХ МУХАММАД АЛЬ-ЛЮХАЙДАН)
+        // =========================================================================
+        function startLuhaidanMarathon(startSurahNum = 1) {
+            isLuhaidanMarathonMode = true;
+            isContinuousMode = false;
+            currentMarathonSurah = startSurahNum;
+            playCurrentMarathonSurah();
+        }
+
+        function playCurrentMarathonSurah() {
+            if (!isLuhaidanMarathonMode) return;
+            const sNum = currentMarathonSurah;
+            const ruTitle = SURAH_NAMES_RU[sNum] || `Сура ${sNum}`;
+            const statusEl = document.getElementById('bg-quran-status');
+            if (statusEl) statusEl.textContent = `Сейчас играет: ${sNum}. ${ruTitle} (автопереход до 10 ч)`;
+
+            showDynamicIsland("Мухаммад аль-Люхайдан (Фон 5–10 ч)", `Сура ${sNum}. ${ruTitle} • Непрерывный поток`);
+            globalAudio.onended = null;
+            globalAudio.src = getLuhaidanSurahAudioUrl(sNum);
+            globalAudio.play().catch(() => {});
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: `Сура ${sNum}. ${ruTitle}`,
+                    artist: "Мухаммад аль-Люхайдан",
+                    album: "AyaSpace • Священный Коран"
+                });
+            }
+
+            globalAudio.onended = () => {
+                if (isLuhaidanMarathonMode) {
+                    currentMarathonSurah = currentMarathonSurah < 114 ? currentMarathonSurah + 1 : 1;
+                    playCurrentMarathonSurah();
+                } else {
+                    updateIslandPlayState(false);
+                    scheduleHideDynamicIsland(1000);
+                }
+            };
+        }
+
+        // 1. ВРЕМЯ НАМАЗА И ИСПРАВЛЕННЫЙ РЕЖИМ МУСАФИРА (ВЫКЛЮЧАЕТСЯ СРАЗУ В 1 КЛИК!)
         function getDateIso(offsetDays = 0) {
             const d = new Date();
             d.setDate(d.getDate() - offsetDays);
@@ -1718,31 +2148,29 @@
         }
 
         function isMusafirActive() {
-            const distKm = calculateHaversineKm(prayerState.homeLat, prayerState.homeLng, prayerState.lat, prayerState.lng);
-            return prayerState.manualMusafir || distKm >= 85;
+            return prayerState.manualMusafir === true;
         }
 
         function updateMusafirUI() {
-            const distKm = calculateHaversineKm(prayerState.homeLat, prayerState.homeLng, prayerState.lat, prayerState.lng);
             const active = isMusafirActive();
             const btn = document.getElementById('musafir-toggle-btn');
             const box = document.getElementById('musafir-details-box');
             const pill = document.getElementById('musafir-status-pill');
             const distLabel = document.getElementById('musafir-distance-label');
 
-            distLabel.textContent = distKm > 5
-                ? `Расстояние от дома (${prayerState.homeCity}): ${distKm} км`
-                : `Дом: ${prayerState.homeCity} • Сокращение намазов при поездке > 85 км`;
+            distLabel.textContent = active
+                ? `Включено сокращение 4-ракаатных намазов до 2 ракаатов (Каср)`
+                : `Сокращение 4-ракаатных намазов до 2 ракаатов в поездке (> 85 км)`;
 
             if (active) {
-                btn.textContent = "Активен";
-                btn.className = "spring-interactive px-3 py-1.5 rounded-xl text-xs font-bold bg-sapphireAccent text-white shadow shrink-0";
+                btn.textContent = "Выключить";
+                btn.className = "spring-interactive px-3.5 py-1.5 rounded-xl text-xs font-bold bg-sapphireAccent text-white shadow shrink-0";
                 box.classList.remove('hidden');
                 pill.textContent = "Режим: Путник (2 ракаата)";
                 pill.className = "px-2.5 py-0.5 rounded-lg bg-sapphireAccent/25 border border-sapphireAccent/40 text-blue-200 font-bold text-[10.5px]";
             } else {
                 btn.textContent = "Включить";
-                btn.className = "spring-interactive px-3 py-1.5 rounded-xl text-xs font-semibold border border-white/15 bg-white/8 text-white shrink-0";
+                btn.className = "spring-interactive px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/15 bg-white/8 text-white shrink-0";
                 box.classList.add('hidden');
                 pill.textContent = "Режим: Дома (Мукым)";
                 pill.className = "px-2.5 py-0.5 rounded-lg bg-black/35 border border-white/10 text-white/75 text-[10.5px]";
@@ -1982,7 +2410,7 @@
             document.getElementById('countdown-timer').textContent = `${hrs}:${mins}:${secs}`;
         }
 
-        // 2. СВЯЩЕННЫЙ КОРАН
+        // 2. СВЯЩЕННЫЙ КОРАН (ЧТЕНИЕ ЦЕЛЫХ СУР ШЕЙХА МУХАММАДА АЛЬ-ЛЮХАЙДАНА)
         function convertLatinTranslitToCyrillic(latin) {
             if (!latin) return "";
             let s = latin
@@ -2076,6 +2504,7 @@
                     const verifiedCyr = VERIFIED_CYRILLIC_TRANSCRIPTIONS[surahNumber];
 
                     currentSurahAyahs = arabicEd.map((a, idx) => ({
+                        surahNumber: surahNumber,
                         numberInSurah: a.numberInSurah,
                         arabic: cleanBasmalaFromFirstAyah(a.text, surahNumber, a.numberInSurah),
                         russian: russianEd[idx].text,
@@ -2103,9 +2532,9 @@
                             <p class="text-[11px] text-orange-200/75 italic mt-0.5">Бисмилляхи р-Рахмани р-Рахим</p>
                         </div>
                     ` : ''}
-                    <div class="pt-1.5">
-                        <button onclick="playContinuousSurah()" class="spring-interactive inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amberDeep to-amberGlow text-white text-xs font-bold shadow-lg">
-                            <i data-lucide="play" class="w-4 h-4"></i> Слушать всю суру
+                    <div class="pt-2 flex flex-wrap justify-center gap-2">
+                        <button onclick="playSurahByLuhaidan(${surahNumber}, '${engName}')" class="spring-interactive inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amberDeep to-amberGlow text-white text-xs font-bold shadow-lg">
+                            <i data-lucide="play" class="w-4 h-4"></i> Слушать суру (Мухаммад аль-Люхайдан)
                         </button>
                     </div>
                 </div>
@@ -2119,7 +2548,7 @@
                     <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
                         <span class="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-amberGlow font-bold text-xs">Аят ${ayah.numberInSurah}</span>
                         <button onclick="playSingleAyah(${index})" class="spring-interactive flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amberCore/25 hover:bg-amberCore border border-amberGlow/40 text-white text-xs font-bold">
-                            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Слушать
+                            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Слушать аят
                         </button>
                     </div>
                     <p class="arabic-text text-2xl sm:text-3xl text-right text-white leading-loose">${ayah.arabic}</p>
@@ -2134,6 +2563,18 @@
             lucide.createIcons();
         }
 
+        function playSurahByLuhaidan(surahNum, surahName) {
+            isLuhaidanMarathonMode = false;
+            isContinuousMode = false;
+            showDynamicIsland("Чтец: Мухаммад аль-Люхайдан", `Сура ${surahNum}. ${surahName}`);
+            globalAudio.onended = () => {
+                updateIslandPlayState(false);
+                scheduleHideDynamicIsland(1000);
+            };
+            globalAudio.src = getLuhaidanSurahAudioUrl(surahNum);
+            globalAudio.play().catch(() => {});
+        }
+
         function showSurahList() {
             document.getElementById('surah-reader-container').classList.add('hidden');
             document.getElementById('back-to-surahs-btn').classList.add('hidden');
@@ -2141,14 +2582,17 @@
             document.getElementById('surah-search-box').classList.remove('hidden');
         }
 
-        function playSingleAyah(index) { isContinuousMode = false; startAyahAudio(index); }
-        function playContinuousSurah() { if (currentSurahAyahs.length) { isContinuousMode = true; startAyahAudio(0); } }
+        function playSingleAyah(index) {
+            isLuhaidanMarathonMode = false;
+            isContinuousMode = false;
+            startAyahAudio(index);
+        }
 
         function startAyahAudio(index) {
             if (index < 0 || index >= currentSurahAyahs.length) { stopIslandAudio(true); return; }
             currentPlayingIndex = index;
             const item = currentSurahAyahs[index];
-            showDynamicIsland("Чтец: Мишари Рашид аль-Афаси", `${item.surahName} — Аят ${item.numberInSurah}`);
+            showDynamicIsland(`${item.surahName} — Аят ${item.numberInSurah}`, "Поаятное прослушивание");
             globalAudio.src = item.audio;
             globalAudio.play();
             const el = document.getElementById(`quran-ayah-${index}`);
@@ -2287,7 +2731,7 @@
                     btn.innerHTML = `<i data-lucide="volume-2" class="w-3.5 h-3.5"></i><span>Сравнение...</span>`;
                     lucide.createIcons();
 
-                    showDynamicIsland(`Чтец: Мишари Рашид аль-Афаси`, `${ayah.surahName} — Аят ${ayah.number}`);
+                    showDynamicIsland(`Чтец: ${ayah.surahName}`, `Аят ${ayah.number}`);
                     globalAudio.onended = null;
                     globalAudio.src = ayah.audio;
                     globalAudio.play();
@@ -2298,7 +2742,6 @@
                             btn.className = "spring-interactive px-3 py-1.5 rounded-xl bg-sapphireAccent/25 border border-sapphireAccent/40 text-blue-200 text-xs font-bold flex items-center gap-1";
                             lucide.createIcons();
                             updateIslandPlayState(false);
-                            // Автоматически убираем островок спустя ровно 1 секунду после окончания записи!
                             scheduleHideDynamicIsland(1000);
                         };
                         globalAudio.src = userAudioUrl;
@@ -2314,17 +2757,18 @@
             const ayah = trainerState.ayahs[idx];
             if (!ayah) return;
             isContinuousMode = false;
+            isLuhaidanMarathonMode = false;
             trainerState.currentLoopCount = 1;
             const statusSpan = document.getElementById(`trainer-loop-status-${idx}`);
             statusSpan.textContent = `${trainerState.currentLoopCount}/${trainerState.loopTarget}`;
-            showDynamicIsland("Чтец: Мишари Рашид аль-Афаси", `${ayah.surahName} — Аят ${ayah.number} (Цикл ${trainerState.currentLoopCount}/${trainerState.loopTarget})`);
+            showDynamicIsland(`${ayah.surahName} — Аят ${ayah.number}`, `Повтор ${trainerState.currentLoopCount} из ${trainerState.loopTarget}`);
             globalAudio.src = ayah.audio;
             globalAudio.play();
             globalAudio.onended = () => {
                 if (trainerState.currentLoopCount < trainerState.loopTarget) {
                     trainerState.currentLoopCount++;
                     statusSpan.textContent = `${trainerState.currentLoopCount}/${trainerState.loopTarget}`;
-                    document.getElementById('island-subtitle').textContent = `${ayah.surahName} — Аят ${ayah.number} (Цикл ${trainerState.currentLoopCount}/${trainerState.loopTarget})`;
+                    document.getElementById('island-subtitle').textContent = `Повтор ${trainerState.currentLoopCount} из ${trainerState.loopTarget}`;
                     globalAudio.currentTime = 0;
                     globalAudio.play();
                 } else {
@@ -2702,7 +3146,7 @@
             return y + lineHeight;
         }
 
-        // 6. ТОЧНЫЙ ЭКСПОРТ КАЛЕНДАРЯ НА 31 ДЕНЬ ВПЕРЕД (.ICS) СТРОГО ПО КООРДИНАТАМ ВАШЕГО ГОРОДА
+        // 6. ТОЧНЫЙ ЭКСПОРТ КАЛЕНДАРЯ НА 31 ДЕНЬ ВПЕРЕД (.ICS) С ЭМОДЗИ ПОЛУМЕСЯЦА 🌙 И НАПОМИНАНИЕМ О ПРОДЛЕНИИ
         function checkFridayOrHolidayBanner() {
             if (new Date().getDay() === 5) document.getElementById('special-day-banner').classList.remove('hidden');
         }
@@ -2712,7 +3156,6 @@
         let preloadedIcsBlob = null;
         let preloadedIcsKey = "";
 
-        // Фоновая предзагрузка расписания (чтобы при нажатии кнопки не было задержки интернета и iOS не блокировала окно)
         async function preloadCalendarForCurrentCity(onlyFajr = false) {
             try {
                 const now = new Date();
@@ -2757,6 +3200,7 @@
                 ];
 
                 let exportedDays = 0;
+                let lastExportedDateParts = null;
 
                 for (const dayEntry of allDays) {
                     if (exportedDays >= 31) break;
@@ -2765,6 +3209,8 @@
                     if (entryTs < todayTs) continue;
 
                     exportedDays++;
+                    lastExportedDateParts = { dd, mm, yyyy };
+
                     prayersToExport.forEach(p => {
                         const cleanTime = dayEntry.timings[p.key].split(' ')[0];
                         const [ph, pm] = cleanTime.split(':');
@@ -2778,21 +3224,41 @@
                             `DTSTAMP:${dtStamp}`,
                             `DTSTART:${dtStart}`,
                             `DTEND:${dtEnd}`,
-                            `SUMMARY:🕋 ${p.title} (${cleanTime})`,
-                            `DESCRIPTION:Время намаза (${activeCity}) — AyaSpace`,
+                            `SUMMARY:🌙 ${p.title} (${cleanTime})`,
+                            `DESCRIPTION:Начало времени намаза в ${cleanTime} (г. ${activeCity}) — AyaSpace`,
                             "BEGIN:VALARM",
                             "TRIGGER:-PT10M",
                             "ACTION:DISPLAY",
-                            `DESCRIPTION:Через 10 минут ${p.title}`,
+                            `DESCRIPTION:🌙 Через 10 минут ${p.title} (${cleanTime})`,
                             "END:VALARM",
                             "BEGIN:VALARM",
                             "TRIGGER:PT0M",
                             "ACTION:DISPLAY",
-                            `DESCRIPTION:Наступило время: ${p.title}`,
+                            `DESCRIPTION:🌙 Наступило время: ${p.title} (${cleanTime})`,
                             "END:VALARM",
                             "END:VEVENT"
                         );
                     });
+                }
+
+                // Специальное автоматическое напоминание на 30-й/31-й день в 19:30, чтобы человек не забыл продлить расписание на новый месяц!
+                if (lastExportedDateParts) {
+                    const { dd, mm, yyyy } = lastExportedDateParts;
+                    icsLines.push(
+                        "BEGIN:VEVENT",
+                        `UID:ayaspace-renew-reminder-${yyyy}${mm}${dd}@ayaspace.app`,
+                        `DTSTAMP:${dtStamp}`,
+                        `DTSTART:${yyyy}${mm}${dd}T193000`,
+                        `DTEND:${yyyy}${mm}${dd}T200000`,
+                        "SUMMARY:🌙 Продлите расписание намазов в AyaSpace на новый месяц",
+                        "DESCRIPTION:Откройте приложение AyaSpace в Safari и нажмите зеленую кнопку в Настройках, чтобы загрузить точное время намазов еще на 31 день вперед.",
+                        "BEGIN:VALARM",
+                        "TRIGGER:PT0M",
+                        "ACTION:DISPLAY",
+                        "DESCRIPTION:🌙 Расписание намазов на месяц завершается! Откройте AyaSpace, чтобы обновить на следующий месяц.",
+                        "END:VALARM",
+                        "END:VEVENT"
+                    );
                 }
 
                 icsLines.push("END:VCALENDAR");
@@ -2805,7 +3271,7 @@
             }
         }
 
-        // Автоматически готовим календарь в фоне при входе
+        // Фоновая предзагрузка расписания при старте
         setTimeout(() => preloadCalendarForCurrentCity(false), 500);
 
         async function exportPrayersToICS(onlyFajr = false, customBtn = null, fromOnboarding = false) {
@@ -2816,7 +3282,6 @@
             const activeCity = localStorage.getItem('aya_city') || prayerState.city;
             const targetKey = `${activeLat}_${activeLng}_${onlyFajr}`;
 
-            // Если человек только что сменил город или нажал на Фаджр — подгружаем за 0.4 сек и просим нажать для мгновенного открытия
             if (!preloadedIcsBlob || preloadedIcsKey !== targetKey) {
                 if (btn) btn.innerHTML = `<span>Подготовка расписания (${activeCity})...</span>`;
                 const ok = await preloadCalendarForCurrentCity(onlyFajr);
@@ -2831,12 +3296,10 @@
                 return;
             }
 
-            // Мгновенное открытие без задержки сети (работает и на старых iOS 15-18, и на новой iOS 27, и на Android!)
             const blobUrl = URL.createObjectURL(preloadedIcsBlob);
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
             if (isIOS) {
-                // На всех версиях iOS прямой переход на Blob-URL с типом text/calendar открывает системный Календарь ("155 событий")
                 window.location.assign(blobUrl);
             } else {
                 const a = document.createElement('a');
@@ -2857,3 +3320,4 @@
     </script>
 </body>
 </html>
+                    
