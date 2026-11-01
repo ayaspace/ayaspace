@@ -2628,50 +2628,50 @@
             localStorage.setItem('aya_notif_eid', document.getElementById('toggle-notif-eid').checked);
         }
 
-        let preparedIcsDataUri = null;
-        let preparedIcsBlobUrl = null;
-        let preparedIcsFileName = "ayaspace-namaz.ics";
+        let readyIcsContent = null;
 
         async function exportOnlyFajrAlarmICS() {
             await exportPrayersToICS(true);
         }
 
-        function triggerInstantCalendarOpen() {
-            if (!preparedIcsDataUri && !preparedIcsBlobUrl) return;
+        function openCalendarSheetNow(icsText, cityName) {
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
             if (isIOS) {
-                // Создаем настоящую ссылку <a> и кликаем синхронно в момент касания пальца — iOS PWA не сбрасывает окно!
-                const a = document.createElement('a');
-                a.href = preparedIcsDataUri;
-                a.setAttribute('download', preparedIcsFileName);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                // Точно такой же метод, который у вас открывал окно «155 событий», БЕЗ атрибута download!
+                window.location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsText);
             } else {
+                const blob = new Blob([icsText], { type: "text/calendar;charset=utf-8" });
                 const a = document.createElement('a');
-                a.href = preparedIcsBlobUrl;
-                a.download = preparedIcsFileName;
-                document.body.appendChild(a);
+                a.href = URL.createObjectURL(blob);
+                a.download = `ayaspace-namaz.ics`;
                 a.click();
-                document.body.removeChild(a);
             }
         }
 
         async function exportPrayersToICS(onlyFajr = false) {
             const btn = document.getElementById('export-ics-btn');
             const oldHtml = btn ? btn.innerHTML : '';
+
+            // Если расписание уже скачано и пользователь нажал второй раз — открываем мгновенно без единого запроса в сеть!
+            if (readyIcsContent && !onlyFajr) {
+                const contentToOpen = readyIcsContent;
+                readyIcsContent = null;
+                if (btn) {
+                    btn.innerHTML = `<i data-lucide="download" class="w-4 h-4"></i><span>Добавить уведомления намазов на МЕСЯЦ (iPhone / Android)</span>`;
+                    lucide.createIcons();
+                }
+                openCalendarSheetNow(contentToOpen, prayerState.city);
+                return;
+            }
+
             const activeLat = parseFloat(localStorage.getItem('aya_lat')) || prayerState.lat;
             const activeLng = parseFloat(localStorage.getItem('aya_lng')) || prayerState.lng;
             const activeCity = localStorage.getItem('aya_city') || prayerState.city;
             const activeSchool = localStorage.getItem('aya_school') || prayerState.school;
 
-            // Точные углы ДУМ РФ (18° и 17°) строго по координатам выбранного города
-            const tuneSettings = "18,null,null,null,null,17";
-
+            // Используем стандартный метод 3 (MWL), который поддерживается всеми серверами и считает строго по долготе Казани и любого города!
             if (btn && !onlyFajr) {
-                btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i><span>Загрузка расписания (${activeCity})...</span>`;
-                lucide.createIcons();
+                btn.innerHTML = `<span>Подготовка календаря на 31 день...</span>`;
             }
 
             try {
@@ -2680,8 +2680,8 @@
                 const nextM = new Date(y1, m1, 1);
                 const y2 = nextM.getFullYear(), m2 = nextM.getMonth() + 1;
 
-                const url1 = `https://api.aladhan.com/v1/calendar/${y1}/${m1}?latitude=${activeLat}&longitude=${activeLng}&method=99&methodSettings=${tuneSettings}&school=${activeSchool}`;
-                const url2 = `https://api.aladhan.com/v1/calendar/${y2}/${m2}?latitude=${activeLat}&longitude=${activeLng}&method=99&methodSettings=${tuneSettings}&school=${activeSchool}`;
+                const url1 = `https://api.aladhan.com/v1/calendar/${y1}/${m1}?latitude=${activeLat}&longitude=${activeLng}&method=3&school=${activeSchool}`;
+                const url2 = `https://api.aladhan.com/v1/calendar/${y2}/${m2}?latitude=${activeLat}&longitude=${activeLng}&method=3&school=${activeSchool}`;
 
                 const [res1, res2] = await Promise.all([fetch(url1), fetch(url2)]);
                 const [data1, data2] = await Promise.all([res1.json(), res2.json()]);
@@ -2689,9 +2689,6 @@
                 const allDays = [...(data1.data || []), ...(data2.data || [])];
                 const todayTs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
                 const dtStamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-
-                // Только латиница и цифры в техническом UID (чтобы Календарь iOS не закрывался!)
-                const safeLocationId = `${Math.round(activeLat * 100)}_${Math.round(activeLng * 100)}`;
 
                 const prayersToExport = onlyFajr
                     ? [{ key: 'Fajr', title: 'Утренний намаз (Фаджр)' }]
@@ -2720,14 +2717,9 @@
                     const entryTs = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10)).getTime();
                     if (entryTs < todayTs) continue;
 
-                    const isToday = entryTs === todayTs;
                     exportedDays++;
-
                     prayersToExport.forEach(p => {
-                        const rawTiming = (isToday && prayerState.timings && prayerState.timings[p.key])
-                            ? prayerState.timings[p.key]
-                            : dayEntry.timings[p.key];
-                        const cleanTime = rawTiming.split(' ')[0];
+                        const cleanTime = dayEntry.timings[p.key].split(' ')[0];
                         const [ph, pm] = cleanTime.split(':');
                         const dtStart = `${yyyy}${mm}${dd}T${ph}${pm}00`;
                         const endObj = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10), parseInt(ph, 10), parseInt(pm, 10) + 15);
@@ -2735,7 +2727,7 @@
 
                         icsLines.push(
                             "BEGIN:VEVENT",
-                            `UID:ayaspace-${safeLocationId}-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
+                            `UID:ayaspace-${p.key}-${yyyy}${mm}${dd}@ayaspace.app`,
                             `DTSTAMP:${dtStamp}`,
                             `DTSTART:${dtStart}`,
                             `DTEND:${dtEnd}`,
@@ -2744,12 +2736,12 @@
                             "BEGIN:VALARM",
                             "TRIGGER:-PT10M",
                             "ACTION:DISPLAY",
-                            `DESCRIPTION:Через 10 минут ${p.title} (${activeCity})`,
+                            `DESCRIPTION:Через 10 минут ${p.title}`,
                             "END:VALARM",
                             "BEGIN:VALARM",
                             "TRIGGER:PT0M",
                             "ACTION:DISPLAY",
-                            `DESCRIPTION:Наступило время: ${p.title} (${activeCity})`,
+                            `DESCRIPTION:Наступило время: ${p.title}`,
                             "END:VALARM",
                             "END:VEVENT"
                         );
@@ -2759,27 +2751,12 @@
                 icsLines.push("END:VCALENDAR");
                 const icsContent = icsLines.join("\r\n");
 
-                preparedIcsFileName = "ayaspace-namaz.ics";
-                preparedIcsDataUri = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsContent);
-                const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-                preparedIcsBlobUrl = URL.createObjectURL(blob);
-
-                // Если приложение открыто как иконка с экрана Домой на iPhone (standalone),
-                // даем прямое синхронное нажатие, чтобы iOS не закрывал окно Календаря!
-                const isStandaloneIOS = window.navigator.standalone === true;
-                if (isStandaloneIOS && btn && !onlyFajr) {
-                    btn.onclick = () => {
-                        triggerInstantCalendarOpen();
-                        setTimeout(() => {
-                            btn.onclick = () => exportPrayersToICS(false);
-                            btn.innerHTML = oldHtml;
-                            lucide.createIcons();
-                        }, 2500);
-                    };
-                    btn.innerHTML = `<i data-lucide="calendar-plus" class="w-4 h-4"></i><span>Расписание готово! Нажмите ещё раз, чтобы открыть Календарь</span>`;
-                    lucide.createIcons();
+                if (window.navigator.standalone === true && !onlyFajr && btn) {
+                    // Для ярлыка на экране Домой: сохраняем готовый текст и просим нажать 1 раз, чтобы открыть окно без блокировки
+                    readyIcsContent = icsContent;
+                    btn.innerHTML = `<span>📅 Расписание готово! Нажмите ещё раз, чтобы открыть</span>`;
                 } else {
-                    triggerInstantCalendarOpen();
+                    openCalendarSheetNow(icsContent, activeCity);
                     if (btn && !onlyFajr) {
                         btn.innerHTML = oldHtml;
                         lucide.createIcons();
