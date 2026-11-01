@@ -1557,6 +1557,7 @@
             renderQuickCities('');
             await initPrayerTab();
             syncSettingsUI();
+            preloadCalendarForCurrentCity(false);
         }
 
         function instantSaveMethodAndSchool() {
@@ -1565,6 +1566,7 @@
             localStorage.setItem('aya_method', prayerState.method);
             localStorage.setItem('aya_school', prayerState.school);
             initPrayerTab();
+            preloadCalendarForCurrentCity(false);
         }
 
         function setInstantHomeCity() {
