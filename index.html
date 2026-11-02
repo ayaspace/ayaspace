@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AyaSpace</title>
 
-    <!-- Отключаем жесткое кэширование, чтобы обновления с GitHub прилетали сразу -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -78,9 +77,8 @@
     <style>
         :root {
             --apple-smooth: cubic-bezier(0.22, 1, 0.36, 1);
-            --apple-spring: cubic-bezier(0.34, 1.45, 0.64, 1);
-            --apple-sheet: cubic-bezier(0.32, 0.72, 0, 1);
-            --safe-top: max(env(safe-area-inset-top, 24px), 28px);
+            --apple-spring: cubic-bezier(0.34, 1.48, 0.64, 1);
+            --safe-top: max(env(safe-area-inset-top, 22px), 26px);
             --safe-bottom: max(env(safe-area-inset-bottom, 24px), 28px);
         }
 
@@ -94,7 +92,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Подняли весь контент выше и сделали большой запас снизу, чтобы меню ничего не перекрывало */
         body {
             overflow-x: hidden;
             min-height: 100vh;
@@ -167,17 +164,17 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Фирменный Apple Smooth Bounce для кнопок и карточек */
+        /* Упругая анимация Apple Smooth Bounce */
         .spring-interactive {
-            transition: transform 0.38s var(--apple-spring), background-color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+            transition: transform 0.42s var(--apple-spring), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.3s ease;
             will-change: transform;
         }
-        .spring-interactive:active { transform: scale(0.95); }
+        .spring-interactive:active { transform: scale(0.94); }
 
         @keyframes blurRiseIn {
             0% {
                 opacity: 0;
-                transform: translate3d(0, 14px, 0) scale(0.985);
+                transform: translate3d(0, 14px, 0) scale(0.982);
                 filter: blur(8px);
             }
             65% {
@@ -193,7 +190,7 @@
         @keyframes appleSheetSlideUp {
             0% {
                 opacity: 0;
-                transform: translate3d(0, 52px, 0) scale(0.95);
+                transform: translate3d(0, 56px, 0) scale(0.94);
                 filter: blur(12px);
             }
             100% {
@@ -203,18 +200,15 @@
             }
         }
 
-        .apple-sheet-enter {
-            animation: appleSheetSlideUp 0.64s var(--apple-spring) forwards;
+        @keyframes qiblaSuccessPulse {
+            0%, 100% { box-shadow: 0 0 38px rgba(16, 185, 129, 0.52), inset 0 0 22px rgba(16, 185, 129, 0.25); }
+            50% { box-shadow: 0 0 65px rgba(16, 185, 129, 0.85), inset 0 0 35px rgba(16, 185, 129, 0.45); }
         }
+        .qibla-locked-glow { animation: qiblaSuccessPulse 1.8s ease-in-out infinite; }
 
-        .tab-view {
-            animation: blurRiseIn 0.46s var(--apple-smooth) forwards;
-            will-change: transform, opacity, filter;
-        }
-
-        .blur-text-reveal {
-            animation: blurRiseIn 0.5s var(--apple-smooth) both;
-        }
+        .apple-sheet-enter { animation: appleSheetSlideUp 0.66s var(--apple-spring) forwards; }
+        .tab-view { animation: blurRiseIn 0.46s var(--apple-smooth) forwards; will-change: transform, opacity, filter; }
+        .blur-text-reveal { animation: blurRiseIn 0.5s var(--apple-smooth) both; }
         .delay-1 { animation-delay: 0.05s; }
         .delay-2 { animation-delay: 0.10s; }
         .delay-3 { animation-delay: 0.15s; }
@@ -231,7 +225,6 @@
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 10px 26px rgba(0, 0, 0, 0.45);
         }
 
-        /* Dynamic Island Плеер */
         #dynamic-island {
             top: calc(var(--safe-top) + 4px);
             transition: transform 0.52s var(--apple-spring), opacity 0.4s var(--apple-smooth);
@@ -240,7 +233,6 @@
         #dynamic-island.island-hidden { opacity: 0; transform: translate3d(-50%, -150%, 0) scale(0.85); pointer-events: none; }
         #dynamic-island.island-visible { opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); pointer-events: auto; }
 
-        /* Верхнее уведомление о добавлении на экран Домой (с кнопкой закрытия, висит 9 сек) */
         #ios-push-banner {
             position: fixed;
             top: calc(var(--safe-top) + 4px);
@@ -262,7 +254,6 @@
         }
         #ios-push-banner.ios-push-visible { transform: translate3d(-50%, 0, 0) scale(1); opacity: 1; pointer-events: auto; }
 
-        /* Всплывающая подсказка со стрелочкой на кнопку Настроек (появляется после ухода первого баннера) */
         #settings-coach-tip {
             position: fixed;
             top: calc(var(--safe-top) + 60px);
@@ -280,7 +271,6 @@
             pointer-events: auto;
         }
 
-        /* Индикатор Pull-to-Refresh сверху */
         #pull-refresh-indicator {
             position: fixed;
             top: 12px;
@@ -335,7 +325,6 @@
         }
         .group:hover .status-photo-exposure { transform: scale(1.04); filter: brightness(0.50) contrast(1.08); }
 
-        /* Стили аккордеона вопросов и ответов (FAQ) */
         details.faq-item summary { list-style: none; }
         details.faq-item summary::-webkit-details-marker { display: none; }
         details.faq-item[open] .faq-chevron { transform: rotate(180deg); color: #FF7A29; }
@@ -351,13 +340,13 @@
     <!-- Чистый янтарно-коньячный градиент -->
     <div class="afterglow-stage"></div>
 
-    <!-- Индикатор Pull-to-Refresh (свайп вниз для обновления версии приложения) -->
+    <!-- Индикатор Pull-to-Refresh -->
     <div id="pull-refresh-indicator" class="obsidian-matte px-4 py-2 rounded-full flex items-center gap-2 text-xs font-bold text-amberGlow shadow-2xl border border-amberGlow/40">
         <i data-lucide="refresh-cw" class="w-4 h-4 animate-spin"></i>
         <span>Обновление AyaSpace...</span>
     </div>
 
-    <!-- 1. ВЕРХНЕЕ УВЕДОМЛЕНИЕ О ЯРЛЫКЕ НА ДОМОЙ (с крестиком закрытия, висит 9 секунд) -->
+    <!-- 1. ВЕРХНЕЕ УВЕДОМЛЕНИЕ О ЯРЛЫКЕ НА ДОМОЙ (висит 9 секунд, можно закрыть крестиком) -->
     <div id="ios-push-banner">
         <div class="flex items-center gap-3">
             <div onclick="openInstallSettingsGuide()" class="w-10 h-10 rounded-[12px] flex items-center justify-center shrink-0 shadow-md cursor-pointer"
@@ -386,9 +375,8 @@
         </div>
     </div>
 
-    <!-- 2. ПОДСКАЗКА СО СТРЕЛОЧКОЙ НА НАСТРОЙКИ (появляется через 1 сек после ухода баннера, если еще не заходили в Настройки) -->
+    <!-- 2. ПОДСКАЗКА СО СТРЕЛОЧКОЙ НА НАСТРОЙКИ -->
     <div id="settings-coach-tip" class="apple-glass-amber rounded-2xl p-3.5 shadow-2xl border border-amberGlow/60">
-        <!-- Стрелочка вверх на иконку шестеренки -->
         <div class="absolute -top-2 right-4 w-4 h-4 rotate-45 bg-[#5A240B] border-l border-t border-amberGlow/60"></div>
         <div class="flex items-start justify-between gap-2">
             <div onclick="switchTab('settings'); hideSettingsCoachTip();" class="cursor-pointer space-y-1">
@@ -396,7 +384,7 @@
                     <span>👆 Вот тут Настройки</span>
                 </p>
                 <p class="text-[11px] text-orange-100/90 font-body leading-snug">
-                    Здесь можно сменить город, мазхаб, поставить будильник на Фаджр и прочитать ответы на важные вопросы.
+                    Здесь можно изменить город, мазхаб, поставить будильник на Фаджр и прочитать ответы на частые вопросы.
                 </p>
             </div>
             <button onclick="hideSettingsCoachTip()" class="p-1 text-white/60 hover:text-white shrink-0">
@@ -406,7 +394,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- ПОЛНОЭКРАННЫЙ ЭКРАН ПЕРВОГО ВХОДА (ONBOARDING С РАЗМЫТИЕМ И ПОДНЯТЫЙ ВЫШЕ) -->
+    <!-- ПОЛНОЭКРАННЫЙ ЭКРАН ПЕРВОГО ВХОДА (ONBOARDING С РАЗМЫТИЕМ)                 -->
     <!-- ========================================================================= -->
     <div id="onboarding-overlay" class="fixed inset-0 z-[100] hidden bg-black/70 backdrop-blur-2xl flex flex-col justify-center items-center p-4 pb-12 transition-opacity duration-500">
         <div id="onboarding-card" class="apple-sheet-enter obsidian-matte w-full max-w-md rounded-[30px] p-5 sm:p-6 border border-white/20 shadow-2xl space-y-4 max-h-[86vh] overflow-y-auto">
@@ -443,7 +431,7 @@
                 </button>
             </div>
 
-            <!-- ШАГ 2: ДОБАВЛЕНИЕ УВЕДОМЛЕНИЙ НАМАЗОВ В КАЛЕНДАРЬ ПО ИМЕНИ ГОРОДА -->
+            <!-- ШАГ 2: ДОБАВЛЕНИЕ УВЕДОМЛЕНИЙ НАМАЗОВ В КАЛЕНДАРЬ -->
             <div id="onb-step-2" class="hidden space-y-3.5 blur-text-reveal">
                 <div class="p-3 rounded-2xl bg-emeraldAccent/12 border border-emeraldAccent/35 flex items-center justify-between">
                     <div>
@@ -493,7 +481,7 @@
         </div>
     </div>
 
-    <!-- ВСТРОЕННЫЕ ДАННЫЕ: 114 СУР, РУССКИЕ ДАТЫ, ПОЛНЫЙ АТ-ТАХИЯТ ДО КОНЦА, Е-ДОБАВКИ, ГОРОДА -->
+    <!-- ВСТРОЕННЫЕ ДАННЫЕ: 114 СУР, ПОЛНЫЙ АТ-ТАХИЯТ, АЛФАВИТ 28 БУКВ С ОЗВУЧКОЙ ЧТЕЦА, Е-ДОБАВКИ, ГОРОДА -->
     <script>
         const SURAH_NAMES_RU = {
             1: "Аль-Фатиха (Открывающая)", 2: "Аль-Бакара (Корова)", 3: "Али Имран (Семейство Имрана)", 4: "Ан-Ниса (Женщины)",
@@ -610,7 +598,6 @@
             { code: "СЫЧУГ", name: "Сычужный фермент (в сырах)", status: "doubt", origin: "Желудок телят или микробиальный синтез", proof: "Микробиальный пепсин — 100% Халяль. Животный сычуг без убоя по шариату — сомнителен/запретен." }
         ];
 
-        // ПОЛНЫЙ ПОСЛОВНЫЙ СМЫСЛ НАМАЗА (Включая ПОЛНЫЙ Ат-Тахият, Салават Ибрахимия и дуа перед салямом до самого конца!)
         const WORD_BY_WORD_NAMAZ = {
             fatiha: {
                 words: [
@@ -846,7 +833,6 @@
 
         <!-- ВКЛАДКА 1: НАМАЗ + РЕЖИМ МУСАФИРА + ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ -->
         <section id="tab-prayer" class="tab-view space-y-3.5">
-            <!-- Компактная плашка следующего намаза -->
             <div class="apple-glass-amber rounded-[26px] px-5 py-4 relative overflow-hidden">
                 <div class="absolute -right-10 -top-10 w-36 h-36 rounded-full bg-amberGlow/20 blur-3xl pointer-events-none"></div>
                 <div class="flex justify-between items-center gap-3">
@@ -883,7 +869,7 @@
                 <div id="prayer-list" class="space-y-2"></div>
             </div>
 
-            <!-- Режим Путника (Мусафир) — исправлено выключение в 1 клик! -->
+            <!-- Режим Путника (Мусафир) -->
             <div class="obsidian-matte rounded-[22px] px-4 py-3.5 space-y-3 blur-text-reveal delay-2">
                 <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
@@ -926,7 +912,7 @@
                     </button>
                 </div>
 
-                <!-- Модуль 1: Живой Компас Киблы 360° (ЧИСТЫЙ ФОН) -->
+                <!-- Модуль 1: Живой Компас Киблы 360° (ЧИСТЫЙ ФОН + ЗВУКОВОЙ И ВИБРО-ОТКЛИК APPLE ПРИ НАВЕДЕНИИ) -->
                 <div id="tool-panel-qibla" class="blur-text-reveal">
                     <div class="relative rounded-[30px] overflow-hidden border border-white/18 shadow-2xl min-h-[470px] flex flex-col justify-between p-5 sm:p-6 select-none"
                          style="background: radial-gradient(circle at 50% 45%, rgba(42, 28, 18, 0.82) 0%, rgba(10, 10, 12, 0.96) 80%);">
@@ -965,7 +951,7 @@
                                 <input id="manual-heading-slider" type="range" min="0" max="360" value="0" oninput="onManualCompassSlide(this.value)" class="island-slider w-full cursor-pointer">
                             </div>
                             <p id="qibla-instruction-text" class="text-center font-bold text-base text-white mt-3.5 max-w-[250px] leading-snug">Поверните телефон в сторону киблы</p>
-                            <p class="text-[11px] text-white/50 mt-0.5 text-center">Совместите значок Каабы со светящимся лучом сверху</p>
+                            <p class="text-[11px] text-white/50 mt-0.5 text-center">При точном наведении прозвучит сигнал и виброотклик</p>
                         </div>
                         <div class="relative z-10 flex items-center justify-between pt-2">
                             <button onclick="detectGeolocationForQibla()" title="Обновить GPS" class="spring-interactive w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white"><i data-lucide="locate-fixed" class="w-4 h-4"></i></button>
@@ -1019,9 +1005,8 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА 2: СВЯЩЕННЫЙ КОРАН (ЧТЕНИЕ ШЕЙХА МУХАММАДА АЛЬ-ЛЮХАЙДАНА + ФОНОВЫЙ ПЛЕЕР НА 5–10 ЧАСОВ) -->
+        <!-- ВКЛАДКА 2: СВЯЩЕННЫЙ КОРАН (МУХАММАД АЛЬ-ЛЮХАЙДАН + ФОНОВЫЙ ПЛЕЕР НА 5–10 ЧАСОВ) -->
         <section id="tab-quran" class="tab-view hidden space-y-3.5">
-            <!-- НОВАЯ ПЛАШКА: ФОНОВОЕ ЧТЕНИЕ КОРАНА НОН-СТОП (5–10 ЧАСОВ, МУХАММАД АЛЬ-ЛЮХАЙДАН) -->
             <div class="apple-glass-amber rounded-[26px] p-4 sm:p-5 space-y-3 blur-text-reveal">
                 <div class="flex items-start justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
@@ -1036,7 +1021,7 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-                    <button onclick="startLuhaidanMarathon(1)" id="bg-luhaidan-btn-1" class="spring-interactive py-2.5 px-3 rounded-xl bg-white text-obsidian font-bold text-xs flex items-center justify-center gap-1.5 shadow">
+                    <button onclick="startLuhaidanMarathon(1)" class="spring-interactive py-2.5 px-3 rounded-xl bg-white text-obsidian font-bold text-xs flex items-center justify-center gap-1.5 shadow">
                         <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
                         <span>Включить (5–10 ч)</span>
                     </button>
@@ -1071,14 +1056,13 @@
             <div id="surah-reader-container" class="hidden space-y-3"></div>
         </section>
 
-      <!-- ВКЛАДКА 3: ОБУЧЕНИЕ (ЗАУЧИВАНИЕ СУР + АРАБСКИЙ С НУЛЯ И ВИДЕОУРОКИ) -->
+        <!-- ВКЛАДКА 3: ОБУЧЕНИЕ (ЗАУЧИВАНИЕ 114 СУР + ПОШАГОВАЯ ШКОЛА АРАБСКОГО С НУЛЯ С ИНТЕРАКТИВНЫМ ВИДЕО-ПЛЕЕРОМ И СТУДИЙНЫМ ЗВУКОМ) -->
         <section id="tab-memorize" class="tab-view hidden space-y-4">
-            <!-- Переключатель внутри вкладки Обучение -->
             <div class="apple-glass rounded-[26px] p-4 space-y-3">
                 <div class="flex items-center justify-between gap-2 px-1">
                     <div>
                         <h2 class="text-lg font-bold glass-text-title">Обучение</h2>
-                        <p class="text-xs text-white/60 font-body">Заучивание сур Корана и чтение с нуля (Таджвид)</p>
+                        <p class="text-xs text-white/60 font-body">Заучивание сур и чтение Корана с нуля (Муаллим Сани)</p>
                     </div>
                     <div class="px-3 py-1.5 rounded-2xl bg-white/8 border border-white/15 text-right shrink-0">
                         <span id="trainer-total-badge" class="text-sm font-bold text-amberGlow tabular-nums">0</span>
@@ -1137,151 +1121,170 @@
                 <div id="memorize-ayahs-container" class="space-y-3"></div>
             </div>
 
-            <!-- ПОДВКЛАДКА 2: ПОЛНЫЙ ИНТЕРАКТИВНЫЙ КУРС «ЧТЕНИЕ КОРАНА С НУЛЯ (МУАЛЛИМ САНИ И ТАДЖВИД)» -->
+            <!-- ПОДВКЛАДКА 2: ШКОЛА АРАБСКОГО С НУЛЯ (ВСТРОЕННЫЙ АНИМИРОВАННЫЙ ВИДЕО-УЧИТЕЛЬ БЕЗ VPN + 5 УРОКОВ С ЖИВЫМ ЧТЕЦОМ) -->
             <div id="learning-panel-arabic" class="hidden space-y-4 blur-text-reveal">
 
-                <!-- ВВЕДЕНИЕ: ЧТО НУЖНО ЗНАТЬ ПЕРЕД НАЧАЛОМ (3 ЗОЛОТЫХ ПРАВИЛА) -->
+                <!-- ИНТЕРАКТИВНЫЙ ВИДЕО-ПЛЕЕР УРОКОВ (РАБОТАЕТ ВЕЗДЕ БЕЗ YOUTUBE И БЕЗ VPN!) -->
                 <div class="apple-glass-amber rounded-[26px] p-5 space-y-3.5">
                     <div class="flex items-center justify-between gap-2">
                         <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Пошаговая программа • Муаллим Сани</span>
-                            <h3 class="text-base font-bold text-white">Как научиться читать Коран с нуля</h3>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Интерактивный видеоурок • Без VPN</span>
+                            <h3 class="text-base font-bold text-white">Видео-доска: Чтение Корана с нуля</h3>
                         </div>
-                        <span class="px-2.5 py-1 rounded-full bg-black/40 border border-white/15 text-[10px] text-amberGlow font-bold shrink-0">Живой звук</span>
+                        <span id="lesson-player-badge" class="px-2.5 py-1 rounded-full bg-black/45 border border-white/15 text-[10px] text-emeraldAccent font-bold">Урок 1 из 4</span>
                     </div>
-                    <p class="text-xs text-white/85 font-body leading-relaxed">
-                        Научиться читать Священный Коран на арабском языке гораздо проще, чем кажется: в арабском языке <strong>как пишется — так и читается</strong>. Чтобы начать читать уже сегодня, запомните <strong>3 главных правила</strong>:
-                    </p>
+
+                    <!-- Экран интерактивного видеоурока -->
+                    <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-gradient-to-br from-[#140B06] via-[#0B0A0E] to-[#12161F] border border-white/20 shadow-2xl flex flex-col justify-between p-4 select-none">
+                        <div class="flex items-center justify-between text-[11px] text-white/60">
+                            <span id="vid-stage-step" class="font-bold text-amberGlow">Слайд 1 / 4</span>
+                            <span id="vid-stage-tag" class="px-2 py-0.5 rounded-md bg-white/10 text-white/80">Огласовки и буквы</span>
+                        </div>
+
+                        <div id="vid-stage-center" class="my-auto text-center space-y-2 py-2">
+                            <p id="vid-stage-arabic" class="arabic-text text-5xl sm:text-6xl text-amberGlow drop-shadow-lg transition-all duration-300">بِسْمِ</p>
+                            <p id="vid-stage-title" class="text-sm sm:text-base font-bold text-white">Нажмите «▶ Запустить видеоурок»</p>
+                            <p id="vid-stage-desc" class="text-xs text-white/75 max-w-xs mx-auto font-body leading-relaxed">Анимированный разбор букв, огласовок и чтения слов со студийным голосом чтеца Корана</p>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+                            <button onclick="toggleInteractiveVideoLesson()" id="vid-play-btn" class="spring-interactive px-4 py-2 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center gap-1.5 shadow-lg">
+                                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                                <span>Запустить видеоурок</span>
+                            </button>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="stepVideoSlide(-1)" class="spring-interactive w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                <button onclick="replayCurrentSlideAudio()" title="Повторить звук" class="spring-interactive w-8 h-8 rounded-lg bg-emeraldAccent/20 border border-emeraldAccent/40 text-emeraldAccent flex items-center justify-center"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                                <button onclick="stepVideoSlide(1)" class="spring-interactive w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Переключатель 4 серий видеоуроков -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px]">
+                        <button onclick="selectVideoLessonModule(0)" id="vid-mod-btn-0" class="spring-interactive py-2 px-2.5 rounded-xl bg-amberCore text-white font-bold truncate">1. Харакаты (А/И/У)</button>
+                        <button onclick="selectVideoLessonModule(1)" id="vid-mod-btn-1" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">2. Соединение букв</button>
+                        <button onclick="selectVideoLessonModule(2)" id="vid-mod-btn-2" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">3. Махрадж (Гортань)</button>
+                        <button onclick="selectVideoLessonModule(3)" id="vid-mod-btn-3" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">4. Чтение Аль-Фатихи</button>
+                    </div>
+                </div>
+
+                <!-- ШАГ 1: 3 ЗОЛОТЫХ ПРАВИЛА ДЛЯ НОВИЧКА -->
+                <div class="apple-glass rounded-[26px] p-5 space-y-3">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Введение • С чего начать</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">3 главных правила арабского чтения</h3>
+                    </div>
                     <div class="space-y-2 text-xs font-body">
-                        <div class="p-3 rounded-2xl bg-black/45 border border-white/12 flex items-start gap-3">
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/10 flex items-start gap-3">
                             <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">1</span>
                             <div>
-                                <p class="font-bold text-white">Читаем и пишем справа налево (←)</p>
-                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Все слова, строчки и страницы в Коране идут справа налево. Заглавных (больших) букв в арабском нет.</p>
+                                <p class="font-bold text-white">Читаем справа налево (←)</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">В Коране все буквы в слове и все слова в строке читаются справа налево. Заглавных букв в арабском нет.</p>
                             </div>
                         </div>
-                        <div class="p-3 rounded-2xl bg-black/45 border border-white/12 flex items-start gap-3">
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/10 flex items-start gap-3">
                             <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">2</span>
                             <div>
-                                <p class="font-bold text-white">Все 28 букв алфавита — согласные</p>
-                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Сама буква дает только согласный звук (например, «Б», «М», «С»). А гласные звуки («А», «И», «У») дают маленькие значки над или под буквой — <strong>огласовки (харакаты)</strong>.</p>
+                                <p class="font-bold text-white">Буквы — согласные, а значки сверху/снизу — гласные</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Сами 28 букв дают только согласный звук («Б», «М», «С»). Гласные звуки («А», «И», «У») дают черточки и петельки над или под буквой — <strong>огласовки (харакаты)</strong>.</p>
                             </div>
                         </div>
-                        <div class="p-3 rounded-2xl bg-black/45 border border-white/12 flex items-start gap-3">
+                        <div class="p-3 rounded-2xl bg-black/45 border border-white/10 flex items-start gap-3">
                             <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">3</span>
                             <div>
                                 <p class="font-bold text-white">Твердые и мягкие буквы (Махрадж)</p>
-                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">У каждой буквы есть своя точная точка выхода звука во рту или гортани (Махрадж). Мягкие буквы с черточкой сверху читаются мягко (через «Э/Я»), а <strong>7 твердых букв</strong> (`خ ص ض غ ط ق ظ`) — глубоко и твердо (через «А/О»).</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Мягкие буквы с черточкой сверху читаются мягко (ближе к «Э»), а <strong>7 твердых букв</strong> (`خ ص ض غ ط ق ظ`) — глубоко и объемно (с оттенком «О/А»).</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- УРОК 1: ОГЛАСОВКИ (ХАРАКАТЫ) С ЖИВЫМ ГОЛОСОМ ЧТЕЦА -->
+                <!-- ШАГ 2: 6 ОГЛАСОВОК (ХАРАКАТЫ) С ЖИВЫМ ГОЛОСОМ ЧТЕЦА -->
                 <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
                     <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldAccent">Урок 1 • Как буквы получают гласный звук</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">6 главных значков чтения (Харакаты)</h3>
-                        <p class="text-xs text-white/65 font-body mt-0.5">Нажмите на любую карточку, чтобы услышать живой пример чтеца Корана:</p>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldAccent">Урок 1 • Нажмите на карточку для прослушивания</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">6 огласовок (Харакатов) — как оживают буквы</h3>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <!-- Фатха -->
-                        <div onclick="playRealQuranWordAudio('002_002_002', 'Фатха — звук «А / Э»', 'Пример: لَا رَيْبَ (Ля райба)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-amberGlow/50">
+                        <div onclick="playRealQuranWordAudio('002_002_002', 'Фатха — гласный звук «А / Э»', 'Пример из Корана: لَا رَيْبَ (Ля райба)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-amberGlow/50">
                             <div class="space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs font-bold text-amberGlow">1. Фатха (Звук «А / Э»)</span>
                                     <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amberGlow"></i>
                                 </div>
-                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Косая черточка <strong>НАД</strong> буквой. С мягкими буквами звучит мягко («Бя/Бэ»), с твердыми — «Ба/Бо».</p>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Черточка <strong>НАД</strong> буквой. Дает звук «А» (или мягкое «Э»). Например: <strong>بَ (Ба)</strong>.</p>
                             </div>
-                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                                <span class="arabic-text text-3xl text-amberGlow">بَ</span>
-                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0"><span class="arabic-text text-3xl text-amberGlow">بَ</span></div>
                         </div>
 
-                        <!-- Кясра -->
-                        <div onclick="playRealQuranWordAudio('001_001_001', 'Кясра — звук «И»', 'Пример: بِسْمِ (Бисми)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-emeraldAccent/50">
+                        <div onclick="playRealQuranWordAudio('001_001_001', 'Кясра — гласный звук «И»', 'Пример из Корана: بِسْمِ (Бисми)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-emeraldAccent/50">
                             <div class="space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs font-bold text-emeraldAccent">2. Кясра (Звук «И»)</span>
                                     <i data-lucide="volume-2" class="w-3.5 h-3.5 text-emeraldAccent"></i>
                                 </div>
-                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Косая черточка <strong>ПОД</strong> буквой. Всегда дает чистый гласный звук «И» (например: «Би», «Ми»).</p>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Черточка <strong>ПОД</strong> буквой. Всегда дает чистый звук «И». Например: <strong>بِ (Би)</strong>.</p>
                             </div>
-                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                                <span class="arabic-text text-3xl text-emeraldAccent">بِ</span>
-                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0"><span class="arabic-text text-3xl text-emeraldAccent">بِ</span></div>
                         </div>
 
-                        <!-- Дамма -->
-                        <div onclick="playRealQuranWordAudio('112_001_001', 'Дамма — звук «У»', 'Пример: قُلْ (Куль)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-sapphireAccent/50">
+                        <div onclick="playRealQuranWordAudio('112_001_001', 'Дамма — гласный звук «У»', 'Пример из Корана: قُلْ (Куль)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-sapphireAccent/50">
                             <div class="space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs font-bold text-sapphireAccent">3. Дамма (Звук «У»)</span>
                                     <i data-lucide="volume-2" class="w-3.5 h-3.5 text-sapphireAccent"></i>
                                 </div>
-                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Петелька (похожая на запятую) <strong>НАД</strong> буквой. Губы округляются, дает звук «У» («Бу», «Ку»).</p>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Запятая-петелька <strong>НАД</strong> буквой. Округляем губы — звук «У»: <strong>بُ (Бу)</strong>.</p>
                             </div>
-                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                                <span class="arabic-text text-3xl text-sapphireAccent">بُ</span>
-                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0"><span class="arabic-text text-3xl text-sapphireAccent">بُ</span></div>
                         </div>
 
-                        <!-- Сукун -->
-                        <div onclick="playRealQuranWordAudio('001_002_001', 'Сукун — отсутствие гласной', 'Пример: الْحَمْدُ (Аль-хамду)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-white/40">
+                        <div onclick="playRealQuranWordAudio('001_002_001', 'Сукун — буква без гласной', 'Пример из Корана: الْحَمْدُ (Аль-хамду)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-white/40">
                             <div class="space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs font-bold text-white">4. Сукун (Остановка)</span>
                                     <i data-lucide="volume-2" class="w-3.5 h-3.5 text-white/80"></i>
                                 </div>
-                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Маленький кружок <strong>НАД</strong> буквой. Означает, что после согласной нет гласного звука (читается слитно: «Аб», «Аль»).</p>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Кружок <strong>НАД</strong> буквой — читается только согласный звук без гласной: <strong>أَبْ (Аб)</strong>.</p>
                             </div>
-                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                                <span class="arabic-text text-3xl text-white">بْ</span>
-                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0"><span class="arabic-text text-3xl text-white">بْ</span></div>
                         </div>
 
-                        <!-- Шадда -->
-                        <div onclick="playRealQuranWordAudio('001_002_003', 'Шадда — удвоение буквы', 'Пример: رَبِّ (Рабби)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-amberGlow/50">
+                        <div onclick="playRealQuranWordAudio('001_002_003', 'Шадда — удвоение буквы', 'Пример из Корана: رَبِّ (Раб-би)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-amberGlow/50">
                             <div class="space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs font-bold text-amberGlow">5. Шадда (Удвоение «ББ»)</span>
                                     <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amberGlow"></i>
                                 </div>
-                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Значок «w» над буквой. Буква произносится с нажимом в 2 раза дольше (например: «Раб-би», «Ин-на»).</p>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Значок «w» над буквой — буква удваивается с нажимом: <strong>رَبِّ (Раб-би)</strong>.</p>
                             </div>
-                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                                <span class="arabic-text text-3xl text-amberGlow">بَّ</span>
-                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0"><span class="arabic-text text-3xl text-amberGlow">بَّ</span></div>
                         </div>
 
-                        <!-- Танвин -->
-                        <div onclick="playRealQuranWordAudio('112_001_004', 'Танвин — окончание «-ун / -ан / -ин»', 'Пример: أَحَدٌ (Ахадун)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-emeraldAccent/50">
+                        <div onclick="playRealQuranWordAudio('112_001_004', 'Танвин — окончание «-ун / -ан / -ин»', 'Пример из Корана: أَحَدٌ (Ахадун)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-emeraldAccent/50">
                             <div class="space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs font-bold text-emeraldAccent">6. Танвин («-ан / -ин / -ун»)</span>
                                     <i data-lucide="volume-2" class="w-3.5 h-3.5 text-emeraldAccent"></i>
                                 </div>
-                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Двойная черточка или двойная петелька в конце слова. Добавляет на конце звук «Н»: «-ан», «-ин», «-ун».</p>
+                                <p class="text-[11px] text-white/75 font-body leading-relaxed">Двойная огласовка в конце слова добавляет звук «Н»: <strong>أَحَدٌ (Ахад-ун)</strong>.</p>
                             </div>
-                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                                <span class="arabic-text text-3xl text-emeraldAccent">بٌ</span>
-                            </div>
+                            <div class="w-14 h-14 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center shrink-0"><span class="arabic-text text-3xl text-emeraldAccent">بٌ</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- УРОК 2: КАК БУКВЫ СОЕДИНЯЮТСЯ В СЛОВА -->
+                <!-- ШАГ 3: КАК БУКВЫ СОЕДИНЯЮТСЯ В СЛОВА -->
                 <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
                     <div>
                         <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 2 • Секрет соединения букв</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">Как узнать букву в начале, середине и конце слова</h3>
+                        <h3 class="text-base font-bold text-white mt-0.5">4 формы буквы в слове и «6 гордых букв»</h3>
                         <p class="text-xs text-white/70 font-body mt-1 leading-relaxed">
-                            В арабском языке буквы в слове пишутся слитно (держатся за руки). При соединении у буквы убирается «хвостик», но <strong>главная часть буквы и количество точек (1, 2 или 3 точки сверху/снизу) ВСЕГДА остаются неизменными!</strong>
+                            В середине слова от буквы остается её «голова» и <strong>точки сверху или снизу</strong>. Именно по точкам вы всегда мгновенно узнаете любую букву!
                         </p>
                     </div>
-
                     <div class="grid grid-cols-4 gap-2 text-center text-xs">
                         <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
                             <span class="text-[10px] text-white/50 block">Отдельно</span>
@@ -1304,55 +1307,54 @@
                             <span class="text-[10px] text-white/70">С хвостиком</span>
                         </div>
                     </div>
-
                     <div class="p-3.5 rounded-2xl bg-amberCore/15 border border-amberGlow/35 text-xs font-body space-y-1">
-                        <p class="font-bold text-amberGlow">⚠️ Важное правило «6 гордых букв»:</p>
+                        <p class="font-bold text-amberGlow">⚠️ Запомните «6 гордых букв»:</p>
                         <p class="text-white/85 leading-relaxed">
-                            Всего 6 букв алфавита — <span class="arabic-text text-lg text-white px-1 font-bold">ا د ذ ر ز و</span> (Алиф, Даль, Заль, Ра, За, Вав) — соединяются с предыдущей буквой справа, но <strong>никогда не дают руку следующей букве слева</strong> (после них в слове всегда маленький разрыв).
+                            Буквы <span class="arabic-text text-lg text-white px-1 font-bold">ا د ذ ر ز و</span> (Алиф, Даль, Заль, Ра, За, Вав) соединяются справа, но <strong>никогда не соединяются со следующей буквой слева</strong>!
                         </p>
                     </div>
                 </div>
 
-                <!-- УРОК 3: ПОЛНЫЙ АРАБСКИЙ АЛФАВИТ (28 БУКВ С ЖИВОЙ СТУДИЙНОЙ ОЗВУЧКОЙ ЧТЕЦА КОРАНА!) -->
+                <!-- ШАГ 4: ПОЛНЫЙ АРАБСКИЙ АЛФАВИТ (28 БУКВ С ЖИВЫМ СТУДИЙНЫМ ЧТЕЦОМ КОРАНА) -->
                 <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
                     <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 3 • Живое произношение чтеца Корана (без робота!)</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">Все 28 букв: формы в слове, Махрадж и пример из Корана</h3>
-                        <p class="text-xs text-white/65 font-body mt-0.5">Нажмите на любую букву — прозвучит настоящее студийное чтение коранического слова на эту букву:</p>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 3 • Живое студийное аудио чтеца Корана</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">Все 28 букв: формы, Махрадж и звуковой пример</h3>
+                        <p class="text-xs text-white/65 font-body mt-0.5">Нажмите на любую карточку, чтобы услышать правильное произношение буквы в слове из Корана:</p>
                     </div>
                     <div id="arabic-alphabet-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
                 </div>
 
-                <!-- УРОК 4: ПЕРВАЯ ПРАКТИКА ЧТЕНИЯ СЛОВ КОРАНА ПО БУКВАМ -->
+                <!-- ШАГ 5: ПЕРВАЯ ПРАКТИКА ЧТЕНИЯ СЛОВ КОРАНА ПО СЛОГАМ -->
                 <div class="apple-glass-amber rounded-[26px] p-5 space-y-3.5">
                     <div>
                         <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Урок 4 • Практика чтения с первой секунды</span>
                         <h3 class="text-base font-bold text-white mt-0.5">Прочитайте свои первые слова из Корана</h3>
-                        <p class="text-xs text-white/80 font-body mt-0.5">Соедините буквы с огласовками справа налево и нажмите на карточку, чтобы проверить себя с чтецом:</p>
+                        <p class="text-xs text-white/80 font-body mt-0.5">Соедините буквы справа налево и нажмите на карточку для самопроверки с чтецом:</p>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                        <div onclick="playRealQuranWordAudio('001_001_001', 'Практика: بِسْمِ (Бисми)', 'Ба (с кясрой БИ) + Син (с сукуном С) + Мим (с кясрой МИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                        <div onclick="playRealQuranWordAudio('001_001_001', 'Практика: بِسْمِ (Бисми)', 'Ба (БИ) + Син (С) + Мим (МИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
                             <div>
                                 <p class="font-bold text-amberGlow text-sm">1. БИ + С + МИ = Бисми</p>
                                 <p class="text-[11px] text-white/70 mt-0.5">бِ (би) + сْ (с) + мِ (ми) — «С именем»</p>
                             </div>
                             <span class="arabic-text text-3xl text-white">بِسْمِ</span>
                         </div>
-                        <div onclick="playRealQuranWordAudio('001_002_003', 'Практика: رَبِّ (Рабби)', 'Ра (с фатхой РА) + удвоенная Ба (с шаддой и кясрой ББИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                        <div onclick="playRealQuranWordAudio('001_002_003', 'Практика: رَبِّ (Рабби)', 'Ра (РА) + удвоенная Ба (ББИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
                             <div>
                                 <p class="font-bold text-emeraldAccent text-sm">2. РА + ББИ = Рабби</p>
-                                <p class="text-[11px] text-white/70 mt-0.5">рَ (ра) + бِّ (бби с шаддой) — «Господу»</p>
+                                <p class="text-[11px] text-white/70 mt-0.5">рَ (ра) + бِّ (бби) — «Господу»</p>
                             </div>
                             <span class="arabic-text text-3xl text-white">رَبِّ</span>
                         </div>
-                        <div onclick="playRealQuranWordAudio('001_004_001', 'Практика: مَالِكِ (Малики)', 'Мим (с долгой А — МА) + Лям (с кясрой ЛИ) + Кяф (с кясрой КИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                        <div onclick="playRealQuranWordAudio('001_004_001', 'Практика: مَالِكِ (Малики)', 'Мим (МА) + Лям (ЛИ) + Кяф (КИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
                             <div>
                                 <p class="font-bold text-sapphireAccent text-sm">3. МА + ЛИ + КИ = Малики</p>
                                 <p class="text-[11px] text-white/70 mt-0.5">мَا (ма) + лِ (ли) + كِ (ки) — «Властелину»</p>
                             </div>
                             <span class="arabic-text text-3xl text-white">مَالِكِ</span>
                         </div>
-                        <div onclick="playRealQuranWordAudio('112_001_004', 'Практика: أَحَدٌ (Ахадун)', 'Алиф (А) + гортанная Ха (ХА) + Даль с танвином (ДУН)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
+                        <div onclick="playRealQuranWordAudio('112_001_004', 'Практика: أَحَدٌ (Ахадун)', 'Алиф (А) + Ха (ХА) + Даль (ДУН)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
                             <div>
                                 <p class="font-bold text-amberGlow text-sm">4. А + ХА + ДУН = Ахадун</p>
                                 <p class="text-[11px] text-white/70 mt-0.5">أَ (а) + حَ (ха) + دٌ (дун) — «Единый»</p>
@@ -1363,7 +1365,8 @@
                 </div>
 
             </div>
-        
+        </section>
+
         <!-- ВКЛАДКА 4: РАЗДЕЛ «СТАТУС» -->
         <section id="tab-status" class="tab-view hidden space-y-4">
             <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
@@ -1394,7 +1397,6 @@
 
         <!-- ВКЛАДКА 5: НАСТРОЙКИ + FAQ (ВОПРОСЫ И ОТВЕТЫ) + TELEGRAM КОНТАКТ @aitral -->
         <section id="tab-settings" class="tab-view hidden space-y-4">
-            <!-- Блок №1: Единый умный выбор города и метода -->
             <div class="apple-glass rounded-[26px] p-5 space-y-4 text-xs">
                 <div class="flex items-center justify-between gap-2">
                     <div>
@@ -1456,7 +1458,6 @@
                     <p class="text-xs text-white/75 font-body mt-0.5">Точное расписание на 31 день вперед по вашему городу (с напоминанием о продлении)</p>
                 </div>
 
-                <!-- Плашка: Будильник на Утренний намаз (Фаджр) -->
                 <div class="p-4 rounded-2xl obsidian-matte border border-amberGlow/45 space-y-2.5">
                     <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2 text-amberGlow text-xs font-bold">
@@ -1474,7 +1475,6 @@
                     </button>
                 </div>
 
-                <!-- Плашка: 100% точные уведомления на месяц + мини-инструкция -->
                 <div class="p-4 rounded-2xl obsidian-matte border border-emeraldAccent/35 space-y-2.5">
                     <div class="flex items-center gap-2 text-emeraldAccent text-xs font-bold">
                         <i data-lucide="calendar-check-2" class="w-4 h-4"></i>
@@ -1543,20 +1543,17 @@
                     <p class="text-[11px] text-white/55 font-body">Нажмите на вопрос, чтобы открыть подробный ответ</p>
                 </div>
 
-                <!-- Вопрос 1 -->
                 <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
                     <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
                         <span>1. Что делать, если уведомления не приходят или не открывается окно Календаря?</span>
                         <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
                     </summary>
                     <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
-                        <p>• На iPhone система безопасности Apple разрешает добавлять расписание в Календарь <strong>только тогда, когда сайт открыт в браузере Safari</strong> (а не внутри ярлыка с рабочего стола и не внутри встроенного браузера Telegram/WhatsApp).</p>
+                        <p>• На iPhone система безопасности Apple разрешает добавлять расписание в Календарь <strong>только когда сайт открыт в браузере Safari</strong>.</p>
                         <p>• Если вы нажали зеленую кнопку внутри ярлыка на экране «Домой» и окно Календаря не открылось — нажмите кнопку <strong>«Скопировать ссылку (для Safari)»</strong> выше, вставьте её в обычный браузер <strong>Safari</strong> и нажмите зеленую кнопку там. Откроется окно «156 событий» — нажмите «Добавить все».</p>
-                        <p>• Также проверьте на iPhone: <strong>Настройки → Уведомления → Календарь → Предстоящие события (Допуск уведомлений: Вкл)</strong>.</p>
                     </div>
                 </details>
 
-                <!-- Вопрос 2 -->
                 <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
                     <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
                         <span>2. Почему в виджете Календаря написано «04:45 – 05:00» или «11:27 – 11:42»?</span>
@@ -1564,45 +1561,41 @@
                     </summary>
                     <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
                         <p>• <strong>Первая цифра (например, 04:45 или 11:27)</strong> — это точная минута наступления намаза (азана) в вашем городе.</p>
-                        <p>• А вторая цифра (через 5–15 минут) нужна только для того, чтобы Календарь iPhone мог нарисовать аккуратную компактную полоску события и не закрашивал весь ваш день сплошной линией.</p>
+                        <p>• А вторая цифра нужна только для того, чтобы Календарь iPhone мог нарисовать аккуратную полоску события в виджете и не закрашивал весь ваш день сплошной линией.</p>
                         <p>• <strong>Само шариатское время намаза длится полноценно:</strong> Утренний намаз (Фаджр) — до Восхода (Шурук), Обеденный (Зухр) — до Асра, Послеобеденный (Аср) — до Магриба, Вечерний (Магриб) — до Иша, а Ночной (Иша) — до рассвета.</p>
                     </div>
                 </details>
 
-                <!-- Вопрос 3 -->
                 <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
                     <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
                         <span>3. Как удалить старое расписание из Календаря (например, при переезде в другой город)?</span>
                         <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
                     </summary>
                     <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
-                        <p>1. Откройте стандартное приложение <strong>«Календарь»</strong> на iPhone.</p>
+                        <p>1. Откройте приложение <strong>«Календарь»</strong> на iPhone.</p>
                         <p>2. Нажмите в самом низу по центру кнопку <strong>«Календари»</strong>.</p>
-                        <p>3. Нажмите на значок <strong>«i»</strong> в кружочке напротив календаря с намазами (или создайте новый пустой календарь кнопкой «Добавить календарь» внизу слева, если этот календарь единственный).</p>
-                        <p>4. Прокрутите в самый низ и нажмите красную кнопку <strong>«Удалить календарь»</strong> — все события удалятся за 1 секунду.</p>
+                        <p>3. Нажмите на значок <strong>«i»</strong> напротив календаря с намазами, прокрутите в самый низ и нажмите <strong>«Удалить календарь»</strong>.</p>
                     </div>
                 </details>
 
-                <!-- Вопрос 4 -->
                 <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
                     <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
                         <span>4. Что делать, когда пройдет 31 день (месяц)? Как продлить уведомления?</span>
                         <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
                     </summary>
                     <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
-                        <p>• Вам не нужно считать дни вручную! На <strong>30-й день в 19:00</strong> мы автоматически добавили в ваш Календарь специальное напоминание: <em>«🌙 Продлите расписание намазов в AyaSpace на следующий месяц»</em>.</p>
-                        <p>• Когда вы увидите это напоминание, просто откройте AyaSpace в Safari и один раз нажмите зеленую кнопку — расписание обновится еще на 31 день вперед!</p>
+                        <p>• На <strong>31-й день в 19:30</strong> Календарь сам пришлет вам автоматическое напоминание: <em>«🌙 Продлите расписание намазов в AyaSpace на новый месяц»</em>.</p>
+                        <p>• Просто откройте AyaSpace в Safari и один раз нажмите зеленую кнопку — расписание обновится еще на 31 день вперед!</p>
                     </div>
                 </details>
 
-                <!-- Вопрос 5 -->
                 <details class="faq-item group rounded-2xl bg-black/45 border border-white/12 overflow-hidden">
                     <summary class="flex items-center justify-between gap-3 p-3.5 cursor-pointer select-none text-xs font-bold text-white">
                         <span>5. Как обновить приложение на экране «Домой», если вышла новая версия?</span>
                         <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-white/60 transition-transform duration-300 shrink-0"></i>
                     </summary>
                     <div class="px-3.5 pb-3.5 pt-1 text-xs text-white/80 font-body space-y-1.5 border-t border-white/8 leading-relaxed">
-                        <p>• Просто <strong>потяните экран сверху вниз (свайп вниз)</strong> на главной странице приложения, либо нажмите кнопку <strong>«🔄 Обновить код»</strong> чуть выше в этом разделе. Приложение само очистит старый кэш и загрузит свежую версию без удаления ярлыка!</p>
+                        <p>• Просто <strong>потяните экран сверху вниз (свайп вниз)</strong> на главной странице приложения, либо нажмите кнопку <strong>«🔄 Обновить код»</strong> выше в Настройках.</p>
                     </div>
                 </details>
             </div>
@@ -1690,7 +1683,7 @@
         <canvas id="status-canvas" width="1080" height="1920" class="hidden"></canvas>
     </div>
 
-    <!-- НИЖНЕЕ ПЛАВАЮЩЕЕ МЕНЮ LIQUID GLASS -->
+    <!-- НИЖНЕЕ ПЛАВАЮЩЕЕ МЕНЮ LIQUID GLASS (С ВКЛАДКОЙ «ОБУЧЕНИЕ») -->
     <nav style="bottom: max(env(safe-area-inset-bottom, 14px), 14px);" class="fixed left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-md obsidian-matte rounded-full p-1.5 flex items-center justify-between">
         <button onclick="switchTab('prayer')" id="nav-prayer" class="spring-interactive flex-1 py-2.5 rounded-full flex flex-col items-center justify-center gap-0.5 bg-gradient-to-r from-amberDeep to-amberGlow text-white shadow-lg">
             <i data-lucide="clock-4" class="w-4 h-4"></i>
@@ -1751,35 +1744,63 @@
         let targetQiblaBearing = 176;
         let isAlignedVibrated = false;
 
-        // Прямая ссылка на сервер аудио шейха Мухаммада аль-Люхайдана (001.mp3 - 114.mp3)
         function getLuhaidanSurahAudioUrl(surahNum) {
             const padded = String(surahNum).padStart(3, '0');
             return `https://server8.mp3quran.net/lhdan/${padded}.mp3`;
         }
 
-        // ВСТРОЕННЫЙ ГЕНЕРАТОР МЯГКОГО ТАКТИЛЬНОГО ЗВУКА iOS (Web Audio API)
+        // =========================================================================
+        // ТАКТИЛЬНЫЕ ЗВУКИ И ВИБРО-ОТКЛИКИ В СТИЛЕ APPLE iOS (WEB AUDIO API)
+        // =========================================================================
         let uiAudioCtx = null;
+        function getAudioCtx() {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return null;
+            if (!uiAudioCtx) uiAudioCtx = new AudioCtx();
+            if (uiAudioCtx.state === 'suspended') uiAudioCtx.resume();
+            return uiAudioCtx;
+        }
+
         function playTactileClick(freq = 165, duration = 0.018) {
             try {
-                if (navigator.vibrate) navigator.vibrate(7);
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (!AudioCtx) return;
-                if (!uiAudioCtx) uiAudioCtx = new AudioCtx();
-                if (uiAudioCtx.state === 'suspended') uiAudioCtx.resume();
-
-                const osc = uiAudioCtx.createOscillator();
-                const gain = uiAudioCtx.createGain();
+                if (navigator.vibrate) navigator.vibrate(8);
+                const ctx = getAudioCtx();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, uiAudioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(48, uiAudioCtx.currentTime + duration);
-
-                gain.gain.setValueAtTime(0.045, uiAudioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, uiAudioCtx.currentTime + duration);
-
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(48, ctx.currentTime + duration);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
                 osc.connect(gain);
-                gain.connect(uiAudioCtx.destination);
+                gain.connect(ctx.destination);
                 osc.start();
-                osc.stop(uiAudioCtx.currentTime + duration);
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        // Изумрудный двойной аккорд Apple (срабатывает при наведении на Киблу и выполнении намаза!)
+        function playAppleSuccessChime() {
+            try {
+                if (navigator.vibrate) navigator.vibrate([35, 55, 65]);
+                const ctx = getAudioCtx();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                [587.33, 880.0].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    const startAt = now + idx * 0.095;
+                    osc.frequency.setValueAtTime(freq, startAt);
+                    gain.gain.setValueAtTime(0.001, startAt);
+                    gain.gain.linearRampToValueAtTime(0.085, startAt + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0008, startAt + 0.34);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(startAt);
+                    osc.stop(startAt + 0.35);
+                });
             } catch (e) {}
         }
 
@@ -1793,7 +1814,6 @@
                 }
             }, { passive: true });
 
-            // Полный список всех 114 сур в разделе «Заучивание сур»
             const sel = document.getElementById('memorize-surah-select');
             if (sel) {
                 const existing = new Set(Array.from(sel.options).map(o => parseInt(o.value, 10)));
@@ -1827,9 +1847,6 @@
             updateQiblaCompassCalculations();
         });
 
-        // =========================================================================
-        // PULL-TO-REFRESH (СВАЙП СВЕРХУ ВНИЗ ДЛЯ ОБНОВЛЕНИЯ КОДА С GITHUB)
-        // =========================================================================
         function initPullToRefresh() {
             let touchStartY = 0;
             let isPulling = false;
@@ -1854,7 +1871,7 @@
 
             window.addEventListener('touchend', () => {
                 if (indicator.classList.contains('pull-active')) {
-                    playTactileClick(220, 0.03);
+                    playAppleSuccessChime();
                     forceUpdateAppVersion();
                 }
                 isPulling = false;
@@ -1874,9 +1891,6 @@
             window.location.replace(cleanUrl);
         }
 
-        // =========================================================================
-        // УВЕДОМЛЕНИЕ О ЯРЛЫКЕ НА 9 СЕКУНД + СТРЕЛОЧКА НА НАСТРОЙКИ ЧЕРЕЗ 10 СЕК
-        // =========================================================================
         function scheduleTopPushAndSettingsCoach() {
             const isInstalled = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
             const pushEl = document.getElementById('ios-push-banner');
@@ -1884,7 +1898,6 @@
             setTimeout(() => {
                 if (!isInstalled && pushEl) {
                     pushEl.classList.add('ios-push-visible');
-                    // Висит ровно 9 секунд по умолчанию, затем уходит и через 1 сек показывает стрелочку на Настройки
                     pushBannerTimer = setTimeout(() => {
                         pushEl.classList.remove('ios-push-visible');
                         coachTipTimer = setTimeout(() => {
@@ -1904,7 +1917,6 @@
             clearTimeout(pushBannerTimer);
             const pushEl = document.getElementById('ios-push-banner');
             if (pushEl) pushEl.classList.remove('ios-push-visible');
-            // Если человек закрыл баннер сам, через 1.5 сек мягко покажем ему, где Настройки (если он еще туда не заходил)
             coachTipTimer = setTimeout(() => {
                 if (!hasVisitedSettings) showSettingsCoachTip();
             }, 1500);
@@ -1927,9 +1939,6 @@
             switchTab('settings');
         }
 
-        // =========================================================================
-        // ЛОГИКА РАЗМЫТОГО ЭКРАНА ПЕРВОГО ВХОДА (ONBOARDING В 3 ШАГА)
-        // =========================================================================
         function openOnboardingWizard() {
             const overlay = document.getElementById('onboarding-overlay');
             if (!overlay) return;
@@ -2028,6 +2037,7 @@
         }
 
         function finishOnboarding() {
+            playAppleSuccessChime();
             localStorage.setItem('aya_onboarding_done', 'true');
             const overlay = document.getElementById('onboarding-overlay');
             if (overlay) {
@@ -2042,6 +2052,7 @@
 
         function copyLinkForSafari(btn) {
             navigator.clipboard.writeText(window.location.href).then(() => {
+                playAppleSuccessChime();
                 const oldHtml = btn.innerHTML;
                 btn.innerHTML = `<span>✓ Ссылка скопирована! Вставьте её в Safari</span>`;
                 btn.className = "spring-interactive w-full py-3 px-4 rounded-xl bg-emeraldAccent text-obsidian font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg";
@@ -2107,7 +2118,6 @@
             if (sectionKey === 'qibla') updateQiblaCompassCalculations();
         }
 
-        // УМНЫЙ ВЫБОР И ПОИСК ГОРОДА В 1 КАСАНИЕ
         function renderQuickCities(filterText = '') {
             const box = document.getElementById('unified-city-results');
             if (!box) return;
@@ -2159,6 +2169,7 @@
         }
 
         async function selectAndSaveCityInstantly(lat, lng, cityName, makeHomeToo = false) {
+            playAppleSuccessChime();
             prayerState.lat = parseFloat(lat);
             prayerState.lng = parseFloat(lng);
             prayerState.city = cityName;
@@ -2244,7 +2255,6 @@
             }, () => switchTab('settings'));
         }
 
-        // DYNAMIC ISLAND ПЛЕЕР (С АВТО-СКРЫТИЕМ ЧЕРЕЗ 1 СЕКУНДУ ПОСЛЕ ОКОНЧАНИЯ!)
         function setupAudioListeners() {
             const slider = document.getElementById('island-seek-slider');
             const currTimeEl = document.getElementById('island-current-time');
@@ -2333,9 +2343,6 @@
             }
         }
 
-        // =========================================================================
-        // ФОНОВЫЙ КОРАН НОН-СТОП НА 5–10 ЧАСОВ ПОДРЯД (ШЕЙХ МУХАММАД АЛЬ-ЛЮХАЙДАН)
-        // =========================================================================
         function startLuhaidanMarathon(startSurahNum = 1) {
             isLuhaidanMarathonMode = true;
             isContinuousMode = false;
@@ -2374,7 +2381,6 @@
             };
         }
 
-        // 1. ВРЕМЯ НАМАЗА И ИСПРАВЛЕННЫЙ РЕЖИМ МУСАФИРА (ВЫКЛЮЧАЕТСЯ СРАЗУ В 1 КЛИК!)
         function getDateIso(offsetDays = 0) {
             const d = new Date();
             d.setDate(d.getDate() - offsetDays);
@@ -2610,6 +2616,7 @@
             const storageKey = `aya_prayers_${getDateIso(0)}`;
             const savedLog = JSON.parse(localStorage.getItem(storageKey) || '{}');
             savedLog[prayerKey] = !savedLog[prayerKey];
+            if (savedLog[prayerKey]) playAppleSuccessChime();
             localStorage.setItem(storageKey, JSON.stringify(savedLog));
             renderPrayerList();
         }
@@ -2652,7 +2659,6 @@
             document.getElementById('countdown-timer').textContent = `${hrs}:${mins}:${secs}`;
         }
 
-        // 2. СВЯЩЕННЫЙ КОРАН (ЧТЕНИЕ ЦЕЛЫХ СУР ШЕЙХА МУХАММАДА АЛЬ-ЛЮХАЙДАНА)
         function convertLatinTranslitToCyrillic(latin) {
             if (!latin) return "";
             let s = latin
@@ -2849,8 +2855,7 @@
             };
         }
 
-        // 3. ЗАУЧИВАНИЕ СУР + АВТО-СКРЫТИЕ ОСТРОВКА ЧЕРЕЗ 1 СЕКУНДУ ПОСЛЕ ОКОНЧАНИЯ ЗАПИСИ
-        async function loadMemorizeSurah(surahNum) {
+       async function loadMemorizeSurah(surahNum) {
             const num = parseInt(surahNum, 10);
             trainerState.surahNumber = num;
             const container = document.getElementById('memorize-ayahs-container');
@@ -3023,8 +3028,12 @@
 
         function toggleAyahLearned(ayahKey) {
             const learnedMap = JSON.parse(localStorage.getItem('aya_memorized_ayahs') || '{}');
-            if (learnedMap[ayahKey]) delete learnedMap[ayahKey];
-            else learnedMap[ayahKey] = true;
+            if (learnedMap[ayahKey]) {
+                delete learnedMap[ayahKey];
+            } else {
+                learnedMap[ayahKey] = true;
+                playAppleSuccessChime();
+            }
             localStorage.setItem('aya_memorized_ayahs', JSON.stringify(learnedMap));
             renderTrainerAyahs();
         }
@@ -3035,7 +3044,7 @@
             if (trainerBadge) trainerBadge.textContent = Object.keys(learnedMap).length;
         }
 
-        // 4. ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ (КИБЛА 360°, Е-ДОБАВКИ, ПОСЛОВНЫЙ НАМАЗ, ПОМОЩНИК)
+        // 4. ПОЛЕЗНЫЕ ИНСТРУМЕНТЫ (КИБЛА 360° С ЗВУКОВЫМ И ВИБРО-ОТКЛИКОМ APPLE ПРИ НАВЕДЕНИИ)
         function renderHalalAdditives(query) {
             const q = (query || '').toLowerCase().trim();
             const list = document.getElementById('halal-results-list');
@@ -3102,13 +3111,13 @@
             dial.style.transform = `rotate(${-headingDeg}deg)`;
             let diff = Math.abs(((targetQiblaBearing - headingDeg + 540) % 360) - 180);
             if (diff <= 8) {
-                dial.className = "relative w-full h-full rounded-full border-[3.5px] border-emeraldAccent shadow-[0_0_45px_rgba(16,185,129,0.55)] flex items-center justify-center";
+                dial.className = "relative w-full h-full rounded-full border-[3.5px] border-emeraldAccent qibla-locked-glow flex items-center justify-center";
                 centerRing.className = "w-6 h-6 rounded-full border-[3px] border-emeraldAccent bg-obsidian shadow-lg";
-                cone.style.background = "linear-gradient(180deg, rgba(16,185,129,0.65) 0%, rgba(16,185,129,0.05) 100%)";
-                instruction.textContent = "Вы направлены в сторону Киблы";
+                cone.style.background = "linear-gradient(180deg, rgba(16,185,129,0.68) 0%, rgba(16,185,129,0.05) 100%)";
+                instruction.textContent = "✓ Вы направлены точно на Киблу";
                 instruction.className = "text-center font-bold text-base text-emeraldAccent mt-3.5 max-w-[260px] leading-snug";
                 if (!isAlignedVibrated) {
-                    playTactileClick(240, 0.03);
+                    playAppleSuccessChime();
                     isAlignedVibrated = true;
                 }
             } else {
@@ -3132,12 +3141,14 @@
                     if (response === 'granted') {
                         window.addEventListener('deviceorientation', handleDeviceOrientation, true);
                         btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emeraldAccent"></i> Гироскоп активен`;
+                        playAppleSuccessChime();
                         lucide.createIcons();
                     }
                 } catch (e) {}
             } else {
                 window.addEventListener('deviceorientation', handleDeviceOrientation, true);
                 btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emeraldAccent"></i> Компас активен`;
+                playAppleSuccessChime();
                 lucide.createIcons();
             }
         }
@@ -3388,7 +3399,7 @@
             return y + lineHeight;
         }
 
-        // 6. ТОЧНЫЙ ЭКСПОРТ КАЛЕНДАРЯ НА 31 ДЕНЬ ВПЕРЕД (.ICS) С ЭМОДЗИ ПОЛУМЕСЯЦА 🌙 И НАПОМИНАНИЕМ О ПРОДЛЕНИИ
+        // 6. ТОЧНЫЙ ЭКСПОРТ КАЛЕНДАРЯ НА 31 ДЕНЬ ВПЕРЕД (.ICS) С ЭМОДЗИ ПОЛУМЕСЯЦА 🌙 И СИНХРОНИЗАЦИЕЙ С ГЛАВНЫМ ЭКРАНОМ
         function checkFridayOrHolidayBanner() {
             if (new Date().getDay() === 5) document.getElementById('special-day-banner').classList.remove('hidden');
         }
@@ -3483,7 +3494,6 @@
                     });
                 }
 
-                // Специальное автоматическое напоминание на 30-й/31-й день в 19:30, чтобы человек не забыл продлить расписание на новый месяц!
                 if (lastExportedDateParts) {
                     const { dd, mm, yyyy } = lastExportedDateParts;
                     icsLines.push(
@@ -3513,7 +3523,6 @@
             }
         }
 
-        // Фоновая предзагрузка расписания при старте
         setTimeout(() => preloadCalendarForCurrentCity(false), 500);
 
         async function exportPrayersToICS(onlyFajr = false, customBtn = null, fromOnboarding = false) {
@@ -3538,6 +3547,7 @@
                 return;
             }
 
+            playAppleSuccessChime();
             const blobUrl = URL.createObjectURL(preloadedIcsBlob);
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
@@ -3559,43 +3569,185 @@
                 }, 1500);
             }
         }
+
         // =========================================================================
-        // МОДУЛЬ ОБУЧЕНИЯ: 28 БУКВ С НАСТОЯЩИМ СТУДИЙНЫМ АУДИО ЧТЕЦА КОРАНА (БЕЗ РОБОТА!)
+        // 7. ИНТЕРАКТИВНЫЙ ВИДЕО-ПЛЕЕР УРОКОВ (БЕЗ YOUTUBE И БЕЗ VPN) + 28 БУКВ С ЖИВЫМ ЧТЕЦОМ
         // =========================================================================
+        const INTERACTIVE_VIDEO_LESSONS = [
+            {
+                badge: "Урок 1 из 4 • Огласовки",
+                tag: "Харакаты (Гласные звуки)",
+                slides: [
+                    { ar: "بَ  •  بِ  •  بُ", title: "Как согласная буква начинает звучать", desc: "Сама буква «Ба» (ب) — согласная. Черточка сверху (Фатха) дает «БА», черточка снизу (Кясра) — «БИ», петелька сверху (Дамма) — «БУ».", wbw: "001_001_001" },
+                    { ar: "بِسْمِ", title: "Пример 1: Кясра («И») и Сукун (остановка)", desc: "В слове «Бисми»: буква Ба с кясрой читается «БИ», буква Син с кружком-сукуном — просто «С», буква Мим с кясрой — «МИ».", wbw: "001_001_001" },
+                    { ar: "الْحَمْدُ", title: "Пример 2: Фатха («А») и Дамма («У»)", desc: "В слове «Аль-хамду»: гортанная Ха с фатхой читается «ХА», Мим с сукуном — «М», Даль с даммой — «ДУ».", wbw: "001_002_001" },
+                    { ar: "رَبِّ", title: "Пример 3: Шадда (Удвоение буквы)", desc: "Значок «w» (Шадда) над буквой Ба удваивает её с плотным нажимом губ: «Раб-би» (Господу).", wbw: "001_002_003" }
+                ]
+            },
+            {
+                badge: "Урок 2 из 4 • Соединение",
+                tag: "Формы букв в слове",
+                slides: [
+                    { ar: "بـ  •  ـبـ  •  ـب", title: "Как буквы соединяются справа налево", desc: "В начале и середине слова у буквы убирается левый хвостик, чтобы протянуть руку следующей букве. Точка внизу всегда остается!", wbw: "001_001_001" },
+                    { ar: "نَعْبُدُ", title: "Разбор слова «На'буду» (Поклоняемся)", desc: "Справа налево: Нун в начале (نَ — На) + Айн в середине (عْ — ' ) + Ба в середине (بُ — бу) + Даль в конце (دُ — ду).", wbw: "001_005_002" },
+                    { ar: "ا  د  ذ  ر  ز  و", title: "Правило «6 гордых букв»", desc: "Эти 6 букв соединяются с буквой справа, но никогда не дают руку следующей букве слева (после них в слове пробел).", wbw: "112_001_004" }
+                ]
+            },
+            {
+                badge: "Урок 3 из 4 • Махрадж",
+                tag: "Твердые и гортанные буквы",
+                slides: [
+                    { ar: "ح  •  ع  •  ه", title: "Три разные гортанные буквы", desc: "Буква Ха (ح) — теплый выдох из середины горла. Айн (ع) — глубокое сжатие гортани. Легкая Ха (ه) — выдох из груди.", wbw: "001_003_001" },
+                    { ar: "ص  ض  ط  ظ  ق", title: "Твердые буквы (Исти'ля)", desc: "При произнесении твердых букв задняя спинка языка поднимается к нёбу, поэтому с фатхой они звучат глубоко с оттенком «О».", wbw: "112_002_002" },
+                    { ar: "قُلْ  vs  كُفُوًا", title: "Разница между твердой Каф (ق) и мягкой Кяф (ك)", desc: "Каф (ق) выходит из самого корня языка у мягкого нёба («КЪуль»), а Кяф (ك) — мягкая, как русская К («Куфуван»).", wbw: "112_001_001" }
+                ]
+            },
+            {
+                badge: "Урок 4 из 4 • Практика",
+                tag: "Чтение суры Аль-Фатиха",
+                slides: [
+                    { ar: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", title: "1-й аят: Бисмилляхи р-Рахмани р-Рахим", desc: "С именем Аллаха, Милостивого, Милующего. Обратите внимание на мягкую «Л» в слове Бисми-Лляхи.", wbw: "001_001_002" },
+                    { ar: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", title: "2-й аят: Аль-хамду ли-Лляхи Раббиль-'алямин", desc: "Вся хвала Аллаху, Господу миров. В слове «аль-'алямин» четко произносим гортанную букву Айн (ع).", wbw: "001_002_004" },
+                    { ar: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", title: "5-й аят: Иййака на'буду ва иййака наста'ин", desc: "Только Тебе мы поклоняемся и только Тебя молим о помощи. Удвоение на букве Йа (إِيَّاكَ — Ий-йака).", wbw: "001_005_001" }
+                ]
+            }
+        ];
+
+        let currentVideoModuleIdx = 0;
+        let currentVideoSlideIdx = 0;
+        let isVideoLessonPlaying = false;
+        let videoLessonTimer = null;
+
+        function selectVideoLessonModule(modIdx) {
+            stopInteractiveVideoLesson();
+            currentVideoModuleIdx = modIdx;
+            currentVideoSlideIdx = 0;
+            [0, 1, 2, 3].forEach(i => {
+                const b = document.getElementById(`vid-mod-btn-${i}`);
+                if (b) {
+                    b.className = i === modIdx
+                        ? "spring-interactive py-2 px-2.5 rounded-xl bg-amberCore text-white font-bold truncate"
+                        : "spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate";
+                }
+            });
+            renderCurrentVideoSlide(true);
+        }
+
+        function renderCurrentVideoSlide(playAudio = false) {
+            const mod = INTERACTIVE_VIDEO_LESSONS[currentVideoModuleIdx];
+            const slide = mod.slides[currentVideoSlideIdx];
+            document.getElementById('lesson-player-badge').textContent = mod.badge;
+            document.getElementById('vid-stage-step').textContent = `Слайд ${currentVideoSlideIdx + 1} / ${mod.slides.length}`;
+            document.getElementById('vid-stage-tag').textContent = mod.tag;
+
+            const centerBox = document.getElementById('vid-stage-center');
+            centerBox.classList.remove('blur-text-reveal');
+            void centerBox.offsetWidth;
+            centerBox.classList.add('blur-text-reveal');
+
+            document.getElementById('vid-stage-arabic').textContent = slide.ar;
+            document.getElementById('vid-stage-title').textContent = slide.title;
+            document.getElementById('vid-stage-desc').textContent = slide.desc;
+
+            if (playAudio && slide.wbw) {
+                playRealQuranWordAudio(slide.wbw, slide.title, slide.desc);
+            }
+        }
+
+        function toggleInteractiveVideoLesson() {
+            if (isVideoLessonPlaying) {
+                stopInteractiveVideoLesson();
+            } else {
+                startInteractiveVideoLesson();
+            }
+        }
+
+        function startInteractiveVideoLesson() {
+            isVideoLessonPlaying = true;
+            const btn = document.getElementById('vid-play-btn');
+            if (btn) {
+                btn.innerHTML = `<i data-lucide="pause" class="w-3.5 h-3.5"></i><span>Пауза урока</span>`;
+                btn.className = "spring-interactive px-4 py-2 rounded-xl bg-emeraldAccent text-obsidian font-bold text-xs flex items-center gap-1.5 shadow-lg";
+                lucide.createIcons();
+            }
+            runVideoSlideStep();
+        }
+
+        function runVideoSlideStep() {
+            if (!isVideoLessonPlaying) return;
+            renderCurrentVideoSlide(true);
+            clearTimeout(videoLessonTimer);
+            videoLessonTimer = setTimeout(() => {
+                if (!isVideoLessonPlaying) return;
+                const mod = INTERACTIVE_VIDEO_LESSONS[currentVideoModuleIdx];
+                if (currentVideoSlideIdx + 1 < mod.slides.length) {
+                    currentVideoSlideIdx++;
+                    runVideoSlideStep();
+                } else {
+                    stopInteractiveVideoLesson();
+                }
+            }, 6200);
+        }
+
+        function stopInteractiveVideoLesson() {
+            isVideoLessonPlaying = false;
+            clearTimeout(videoLessonTimer);
+            const btn = document.getElementById('vid-play-btn');
+            if (btn) {
+                btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i><span>Запустить видеоурок</span>`;
+                btn.className = "spring-interactive px-4 py-2 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center gap-1.5 shadow-lg";
+                lucide.createIcons();
+            }
+        }
+
+        function stepVideoSlide(dir) {
+            stopInteractiveVideoLesson();
+            const mod = INTERACTIVE_VIDEO_LESSONS[currentVideoModuleIdx];
+            currentVideoSlideIdx = (currentVideoSlideIdx + dir + mod.slides.length) % mod.slides.length;
+            renderCurrentVideoSlide(true);
+        }
+
+        function replayCurrentSlideAudio() {
+            const mod = INTERACTIVE_VIDEO_LESSONS[currentVideoModuleIdx];
+            const slide = mod.slides[currentVideoSlideIdx];
+            if (slide && slide.wbw) {
+                playRealQuranWordAudio(slide.wbw, slide.title, slide.desc);
+            }
+        }
+
         const ARABIC_ALPHABET_28 = [
             { letter: "ا", forms: "ـا / ا", name: "Алиф", type: "Мягкая", makhraj: "Из глубины гортани (Хамза) или тянет гласную А", exampleAr: "أَحَدٌ", exampleTr: "Ахадун (112:1)", wbw: "112_001_004" },
             { letter: "ب", forms: "ـب / ـبـ / بـ", name: "Ба", type: "Мягкая", makhraj: "Плотно смыкаются обе губы (звонкая Б)", exampleAr: "بِسْمِ", exampleTr: "Бисми (1:1)", wbw: "001_001_001" },
             { letter: "ت", forms: "ـت / ـتـ / تـ", name: "Та", type: "Мягкая", makhraj: "Кончик языка касается основания верхних передних зубов", exampleAr: "تَبَّتْ", exampleTr: "Таббат (111:1)", wbw: "111_001_001" },
             { letter: "ث", forms: "ـث / ـثـ / ثـ", name: "Са (межзуб.)", type: "Мягкая", makhraj: "Кончик языка слегка выступает между верхними и нижними зубами", exampleAr: "ثُمَّ", exampleTr: "Сумма (102:4)", wbw: "102_004_001" },
             { letter: "ج", forms: "ـج / ـجـ / جـ", name: "Джим", type: "Мягкая", makhraj: "Середина языка прижимается к середине верхнего нёба (слитная ДЖ)", exampleAr: "جَاءَ", exampleTr: "Джа'а (110:1)", wbw: "110_001_002" },
-            { letter: "ح", forms: "ـح / ـحـ / حـ", name: "Ха (гортан.)", type: "Мягкая", makhraj: "Из средней части гортани — чистый шипящий выдох (как когда греем руки дыханием)", exampleAr: "الْحَمْدُ", exampleTr: "Аль-хамду (1:2)", wbw: "001_002_001" },
-            { letter: "خ", forms: "ـخ / ـخـ / خـ", name: "Ха (твердая)", type: "Твердая", makhraj: "Верхняя часть гортани у корня языка (твердая хрипящая Х, с фатхой читается ХО)", exampleAr: "خَلَقَ", exampleTr: "Халяка (113:2)", wbw: "113_002_004" },
+            { letter: "ح", forms: "ـح / ـحـ / حـ", name: "Ха (гортан.)", type: "Мягкая", makhraj: "Из средней части гортани — чистый шипящий выдох", exampleAr: "الْحَمْدُ", exampleTr: "Аль-хамду (1:2)", wbw: "001_002_001" },
+            { letter: "خ", forms: "ـخ / ـخـ / خـ", name: "Ха (твердая)", type: "Твердая", makhraj: "Верхняя часть гортани у корня языка (твердая хрипящая ХО)", exampleAr: "خَلَقَ", exampleTr: "Халяка (113:2)", wbw: "113_002_004" },
             { letter: "د", forms: "ـد / د", name: "Даль", type: "Мягкая", makhraj: "Кончик языка у основания верхних резцов (звонкая Д)", exampleAr: "دِينِ", exampleTr: "Дини (109:6)", wbw: "109_006_004" },
             { letter: "ذ", forms: "ـذ / ذ", name: "Заль (межзуб.)", type: "Мягкая", makhraj: "Кончик языка между зубами — звонкая межзубная З", exampleAr: "ذَٰلِكَ", exampleTr: "Заликя (2:2)", wbw: "002_002_001" },
             { letter: "ر", forms: "ـر / ر", name: "Ра", type: "Твердая/Мягк.", makhraj: "Кончик языка вибрирует у переднего края верхнего нёба", exampleAr: "رَبِّ", exampleTr: "Рабби (1:2)", wbw: "001_002_003" },
-            { letter: "ز", forms: "ـز / ز", name: "За", type: "Мягкая", makhraj: "Кончик языка у нижних передних зубов (чистая звонкая свистящая З)", exampleAr: "زُلْزِلَتِ", exampleTr: "Зульзиляти (99:1)", wbw: "099_001_002" },
+            { letter: "ز", forms: "ـز / ز", name: "За", type: "Мягкая", makhraj: "Кончик языка у нижних передних зубов (чистая звонкая З)", exampleAr: "زُلْزِلَتِ", exampleTr: "Зульзиляти (99:1)", wbw: "099_001_002" },
             { letter: "س", forms: "ـس / ـسـ / سـ", name: "Син", type: "Мягкая", makhraj: "Кончик языка у нижних резцов (мягкая свистящая С)", exampleAr: "سَلَامٌ", exampleTr: "Салямун (97:5)", wbw: "097_005_001" },
-            { letter: "ش", forms: "ـش / ـشـ / شـ", name: "Шин", type: "Мягкая", makhraj: "Середина языка поднимается к нёбу (мягкая комфортная Ш)", exampleAr: "شَرِّ", exampleTr: "Шарри (113:2)", wbw: "113_002_002" },
-            { letter: "ص", forms: "ـص / ـصـ / صـ", name: "Сад (твердая)", type: "Твердая", makhraj: "Твердая густая С (задняя часть языка поднимается к нёбу, с фатхой звучит СО)", exampleAr: "الصَّمَدُ", exampleTr: "Ас-Самад (112:2)", wbw: "112_002_002" },
-            { letter: "ض", forms: "ـض / ـضـ / ضـ", name: "Дад (твердая)", type: "Твердая", makhraj: "Боковой край языка прижимается к верхним коренным зубам (густая твердая Д)", exampleAr: "وَلَا الضَّالِّينَ", exampleTr: "Ва ляд-даллин (1:7)", wbw: "001_007_009" },
+            { letter: "ش", forms: "ـش / ـشـ / شـ", name: "Шин", type: "Мягкая", makhraj: "Середина языка поднимается к нёбу (мягкая Ш)", exampleAr: "شَرِّ", exampleTr: "Шарри (113:2)", wbw: "113_002_002" },
+            { letter: "ص", forms: "ـص / ـصـ / صـ", name: "Сад (твердая)", type: "Твердая", makhraj: "Твердая густая С (задняя часть языка поднимается к нёбу, звучит СО)", exampleAr: "الصَّمَدُ", exampleTr: "Ас-Самад (112:2)", wbw: "112_002_002" },
+            { letter: "ض", forms: "ـض / ـضـ / ضـ", name: "Дад (твердая)", type: "Твердая", makhraj: "Боковой край языка прижимается к верхним коренным зубам (густая Д)", exampleAr: "وَلَا الضَّالِّينَ", exampleTr: "Ва ляд-даллин (1:7)", wbw: "001_007_009" },
             { letter: "ط", forms: "ـط / ـطـ / طـ", name: "Та (твердая)", type: "Твердая", makhraj: "Кончик и спинка языка плотно прижимаются к верхнему нёбу (твердая ТО)", exampleAr: "طَيْرًا", exampleTr: "Тайран (105:3)", wbw: "105_003_003" },
-            { letter: "ظ", forms: "ـظ / ـظـ / ظـ", name: "За (твердая)", type: "Твердая", makhraj: "Кончик языка между зубами + задняя спинка языка поднята (твердая межзубная ЗО)", exampleAr: "ظَهْرَكَ", exampleTr: "Захрак (94:3)", wbw: "094_003_003" },
-            { letter: "ع", forms: "ـع / ـعـ / عـ", name: "Айн", type: "Мягкая", makhraj: "Из средней части гортани путем сжатия надгортанника (глубокий гортанный звук)", exampleAr: "عَبْدُهُ", exampleTr: "Алак (96:2)", wbw: "096_002_004" },
-            { letter: "غ", forms: "ـغ / ـغـ / غـ", name: "Гайн", type: "Твердая", makhraj: "Верхняя часть гортани (мягкая гортанная вибрирующая Г, как при полоскании горла)", exampleAr: "غَيْرِ", exampleTr: "Гайри (1:7)", wbw: "001_007_005" },
+            { letter: "ظ", forms: "ـظ / ـظـ / ظـ", name: "За (твердая)", type: "Твердая", makhraj: "Кончик языка между зубами + задняя спинка языка поднята (твердая ЗО)", exampleAr: "ظَهْرَكَ", exampleTr: "Захрак (94:3)", wbw: "094_003_003" },
+            { letter: "ع", forms: "ـع / ـعـ / عـ", name: "Айн", type: "Мягкая", makhraj: "Из средней части гортани путем сжатия надгортанника", exampleAr: "عَلَقٍ", exampleTr: "Аляк (96:2)", wbw: "096_002_004" },
+            { letter: "غ", forms: "ـغ / ـغـ / غـ", name: "Гайн", type: "Твердая", makhraj: "Верхняя часть гортани (мягкая гортанная Г)", exampleAr: "غَيْرِ", exampleTr: "Гайри (1:7)", wbw: "001_007_005" },
             { letter: "ف", forms: "ـف / ـفـ / فـ", name: "Фа", type: "Мягкая", makhraj: "Края верхних передних зубов касаются внутренней стороны нижней губы", exampleAr: "فِي", exampleTr: "Фи (105:2)", wbw: "105_002_004" },
-            { letter: "ق", forms: "ـق / ـقـ / قـ", name: "Каф (твердая)", type: "Твердая", makhraj: "Самый корень языка ударяется о мягкое нёбо (глубокая твердая КЪ / КО)", exampleAr: "قُلْ", exampleTr: "Куль (112:1)", wbw: "112_001_001" },
-            { letter: "ك", forms: "ـك / ـكـ / كـ", name: "Кяф (мягкая)", type: "Мягкая", makhraj: "Задняя часть языка чуть ближе ко рту, чем у Каф (мягкая К с легким выдохом)", exampleAr: "كُفُوًا", exampleTr: "Куфуван (112:4)", wbw: "112_004_004" },
-            { letter: "ل", forms: "ـل / ـلـ / لـ", name: "Лям", type: "Мягкая", makhraj: "Передний край языка касается десен верхних передних зубов (мягкая Л)", exampleAr: "لَمْ", exampleTr: "Лям (112:3)", wbw: "112_003_001" },
+            { letter: "ق", forms: "ـق / ـقـ / قـ", name: "Каф (твердая)", type: "Твердая", makhraj: "Самый корень языка ударяется о мягкое нёбо (глубокая КЪ)", exampleAr: "قُلْ", exampleTr: "Куль (112:1)", wbw: "112_001_001" },
+            { letter: "ك", forms: "ـك / ـكـ / كـ", name: "Кяф (мягкая)", type: "Мягкая", makhraj: "Мягкая К с легким выдохом воздуха", exampleAr: "كُفُوًا", exampleTr: "Куфуван (112:4)", wbw: "112_004_004" },
+            { letter: "ل", forms: "ـل / ـلـ / لـ", name: "Лям", type: "Мягкая", makhraj: "Передний край языка касается десен верхних резцов (мягкая Л)", exampleAr: "لَمْ", exampleTr: "Лям (112:3)", wbw: "112_003_001" },
             { letter: "م", forms: "ـم / ـمـ / مـ", name: "Мим", type: "Мягкая", makhraj: "Мягкое смыкание губ с легким звуком из носовой полости (М)", exampleAr: "مَالِكِ", exampleTr: "Малики (1:4)", wbw: "001_004_001" },
-            { letter: "ن", forms: "ـن / ـنـ / نـ", name: "Нун", type: "Мягкая", makhraj: "Кончик языка у десен верхних зубов + назализация (гнусавость Гунна)", exampleAr: "نَعْبُدُ", exampleTr: "На'буду (1:5)", wbw: "001_005_002" },
-            { letter: "ه", forms: "ـه / ـهـ / هـ", name: "Ха (лёгкая)", type: "Мягкая", makhraj: "Из самой нижней части гортани у груди — легкий воздушный выдох (английская H)", exampleAr: "هُوَ", exampleTr: "Хува (112:1)", wbw: "112_001_002" },
-            { letter: "و", forms: "ـو / و", name: "Вав", type: "Мягкая", makhraj: "Вытягивание и округление губ вперед без касания зубов (как английская W)", exampleAr: "وَلَمْ", exampleTr: "Ва лям (112:3)", wbw: "112_003_003" },
-            { letter: "ي", forms: "ـي / ـيـ / يـ", name: "Йа", type: "Мягкая", makhraj: "Середина языка поднимается к нёбу (мягкая Й или долгая гласная И)", exampleAr: "يَوْمِ", exampleTr: "Йауми (1:4)", wbw: "001_004_002" }
+            { letter: "ن", forms: "ـن / ـنـ / نـ", name: "Нун", type: "Мягкая", makhraj: "Кончик языка у десен верхних зубов + назализация (Гунна)", exampleAr: "نَعْبُدُ", exampleTr: "На'буду (1:5)", wbw: "001_005_002" },
+            { letter: "ه", forms: "ـه / ـهـ / هـ", name: "Ха (лёгкая)", type: "Мягкая", makhraj: "Из нижней части гортани у груди — легкий теплый выдох", exampleAr: "هُوَ", exampleTr: "Хува (112:1)", wbw: "112_001_002" },
+            { letter: "و", forms: "ـو / و", name: "Вав", type: "Мягкая", makhraj: "Вытягивание и округление губ вперед (как английская W)", exampleAr: "وَلَمْ", exampleTr: "Ва лям (112:3)", wbw: "112_003_003" },
+            { letter: "ي", forms: "ـي / ـيـ / يـ", name: "Йа", type: "Мягкая", makhraj: "Середина языка поднимается к нёбу (мягкая Й)", exampleAr: "يَوْمِ", exampleTr: "Йауми (1:4)", wbw: "001_004_002" }
         ];
 
-        // Воспроизведение настоящего студийного голоса чтеца Корана с официального CDN Quran.com
         function playRealQuranWordAudio(wbwCode, titleText, subtitleText) {
-            playTactileClick(200, 0.02);
+            playTactileClick(205, 0.02);
             isLuhaidanMarathonMode = false;
             isContinuousMode = false;
             const audioUrl = `https://audio.qurancdn.com/wbw/${wbwCode}.mp3`;
@@ -3620,7 +3772,9 @@
                 bArabic.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
                 bSurahs.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
                 renderArabicAlphabetGrid();
+                renderCurrentVideoSlide(false);
             } else {
+                stopInteractiveVideoLesson();
                 pArabic.classList.add('hidden');
                 pSurahs.classList.remove('hidden');
                 bSurahs.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
@@ -3651,11 +3805,11 @@
                             <span class="arabic-text text-4xl text-amberGlow">${item.letter}</span>
                         </div>
                     </div>
-                    <p class="text-[11px] text-white/75 font-body leading-relaxed"><strong>Махрадж (произношение):</strong> ${item.makhraj}</p>
+                    <p class="text-[11px] text-white/75 font-body leading-relaxed"><strong>Махрадж:</strong> ${item.makhraj}</p>
                     <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-2 text-xs">
                         <span class="text-orange-100/90 font-medium flex items-center gap-1.5">
                             <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amberGlow shrink-0"></i>
-                            <span>Слушать пример: <strong>${item.exampleTr}</strong></span>
+                            <span>Пример: <strong>${item.exampleTr}</strong></span>
                         </span>
                         <span class="arabic-text text-xl text-emeraldAccent">${item.exampleAr}</span>
                     </div>
@@ -3664,59 +3818,6 @@
             });
             lucide.createIcons();
         }
-            } else {
-                pArabic.classList.add('hidden');
-                pSurahs.classList.remove('hidden');
-                bSurahs.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-bold bg-amberCore text-white shadow flex items-center justify-center gap-1.5";
-                bArabic.className = "spring-interactive py-2.5 px-3 rounded-xl text-xs font-semibold text-white/70 hover:text-white flex items-center justify-center gap-1.5";
-            }
-            lucide.createIcons();
-        }
-
-        function loadArabicVideoLesson(embedUrl, btnEl) {
-            const iframe = document.getElementById('arabic-lesson-iframe');
-            if (iframe) iframe.src = embedUrl;
-            document.querySelectorAll('.arabic-vid-btn').forEach(b => {
-                b.className = "arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-black/45 border border-white/12 text-white/80 font-semibold text-left truncate";
-            });
-            if (btnEl) {
-                btnEl.className = "arabic-vid-btn spring-interactive py-2.5 px-3 rounded-xl bg-amberCore text-white font-bold text-left truncate";
-            }
-        }
-
-        function speakArabicLetter(arabicChar) {
-            playTactileClick(210, 0.02);
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utter = new SpeechSynthesisUtterance(arabicChar);
-                utter.lang = 'ar-SA';
-                utter.rate = 0.75;
-                window.speechSynthesis.speak(utter);
-            }
-        }
-
-        function renderArabicAlphabetGrid() {
-            const grid = document.getElementById('arabic-alphabet-grid');
-            if (!grid || grid.children.length > 0) return;
-
-            ARABIC_ALPHABET_28.forEach((item, idx) => {
-                const card = document.createElement('div');
-                card.className = "spring-interactive obsidian-matte rounded-2xl p-3 text-center space-y-1 cursor-pointer hover:border-amberGlow/50";
-                card.onclick = () => speakArabicLetter(item.sound);
-                card.innerHTML = `
-                    <div class="flex items-center justify-between text-[10px] text-white/40 px-1">
-                        <span>#${idx + 1}</span>
-                        <i data-lucide="volume-2" class="w-3 h-3 text-amberGlow"></i>
-                    </div>
-                    <p class="arabic-text text-4xl text-amberGlow py-1">${item.letter}</p>
-                    <p class="text-xs font-bold text-white">${item.name}</p>
-                    <p class="text-[10px] text-white/60 font-body leading-snug">${item.tip}</p>
-                `;
-                grid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
     </script>
 </body>
 </html>
-                    
