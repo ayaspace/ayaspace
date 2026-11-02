@@ -1121,90 +1121,58 @@
                 <div id="memorize-ayahs-container" class="space-y-3"></div>
             </div>
 
-            <!-- ПОДВКЛАДКА 2: ШКОЛА АРАБСКОГО С НУЛЯ (ВСТРОЕННЫЙ АНИМИРОВАННЫЙ ВИДЕО-УЧИТЕЛЬ БЕЗ VPN + 5 УРОКОВ С ЖИВЫМ ЧТЕЦОМ) -->
+           <!-- ПОДВКЛАДКА 2: ПОШАГОВОЕ ОБУЧЕНИЕ ЧТЕНИЮ КОРАНА С НУЛЯ (1. АЛФАВИТ -> 2. ОГЛАСОВКИ -> 3. ФОРМЫ -> 4. ВИДЕОУРОКИ) -->
             <div id="learning-panel-arabic" class="hidden space-y-4 blur-text-reveal">
 
-                <!-- ИНТЕРАКТИВНЫЙ ВИДЕО-ПЛЕЕР УРОКОВ (РАБОТАЕТ ВЕЗДЕ БЕЗ YOUTUBE И БЕЗ VPN!) -->
-                <div class="apple-glass-amber rounded-[26px] p-5 space-y-3.5">
+                <!-- ВВЕДЕНИЕ: 3 ОСНОВНЫХ ПРАВИЛА -->
+                <div class="apple-glass-amber rounded-[26px] p-5 space-y-3">
                     <div class="flex items-center justify-between gap-2">
                         <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Интерактивный видеоурок • Без VPN</span>
-                            <h3 class="text-base font-bold text-white">Видео-доска: Чтение Корана с нуля</h3>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Основы чтения • Муаллим Сани</span>
+                            <h3 class="text-base font-bold text-white">3 главных правила арабского чтения</h3>
                         </div>
-                        <span id="lesson-player-badge" class="px-2.5 py-1 rounded-full bg-black/45 border border-white/15 text-[10px] text-emeraldAccent font-bold">Урок 1 из 4</span>
-                    </div>
-
-                    <!-- Экран интерактивного видеоурока -->
-                    <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-gradient-to-br from-[#140B06] via-[#0B0A0E] to-[#12161F] border border-white/20 shadow-2xl flex flex-col justify-between p-4 select-none">
-                        <div class="flex items-center justify-between text-[11px] text-white/60">
-                            <span id="vid-stage-step" class="font-bold text-amberGlow">Слайд 1 / 4</span>
-                            <span id="vid-stage-tag" class="px-2 py-0.5 rounded-md bg-white/10 text-white/80">Огласовки и буквы</span>
-                        </div>
-
-                        <div id="vid-stage-center" class="my-auto text-center space-y-2 py-2">
-                            <p id="vid-stage-arabic" class="arabic-text text-5xl sm:text-6xl text-amberGlow drop-shadow-lg transition-all duration-300">بِسْمِ</p>
-                            <p id="vid-stage-title" class="text-sm sm:text-base font-bold text-white">Нажмите «▶ Запустить видеоурок»</p>
-                            <p id="vid-stage-desc" class="text-xs text-white/75 max-w-xs mx-auto font-body leading-relaxed">Анимированный разбор букв, огласовок и чтения слов со студийным голосом чтеца Корана</p>
-                        </div>
-
-                        <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
-                            <button onclick="toggleInteractiveVideoLesson()" id="vid-play-btn" class="spring-interactive px-4 py-2 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center gap-1.5 shadow-lg">
-                                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
-                                <span>Запустить видеоурок</span>
-                            </button>
-                            <div class="flex items-center gap-1.5">
-                                <button onclick="stepVideoSlide(-1)" class="spring-interactive w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                                <button onclick="replayCurrentSlideAudio()" title="Повторить звук" class="spring-interactive w-8 h-8 rounded-lg bg-emeraldAccent/20 border border-emeraldAccent/40 text-emeraldAccent flex items-center justify-center"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
-                                <button onclick="stepVideoSlide(1)" class="spring-interactive w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Переключатель 4 серий видеоуроков -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px]">
-                        <button onclick="selectVideoLessonModule(0)" id="vid-mod-btn-0" class="spring-interactive py-2 px-2.5 rounded-xl bg-amberCore text-white font-bold truncate">1. Харакаты (А/И/У)</button>
-                        <button onclick="selectVideoLessonModule(1)" id="vid-mod-btn-1" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">2. Соединение букв</button>
-                        <button onclick="selectVideoLessonModule(2)" id="vid-mod-btn-2" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">3. Махрадж (Гортань)</button>
-                        <button onclick="selectVideoLessonModule(3)" id="vid-mod-btn-3" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">4. Чтение Аль-Фатихи</button>
-                    </div>
-                </div>
-
-                <!-- ШАГ 1: 3 ЗОЛОТЫХ ПРАВИЛА ДЛЯ НОВИЧКА -->
-                <div class="apple-glass rounded-[26px] p-5 space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Введение • С чего начать</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">3 главных правила арабского чтения</h3>
+                        <span class="px-2.5 py-1 rounded-full bg-black/40 border border-white/15 text-[10px] text-amberGlow font-bold shrink-0">С нуля</span>
                     </div>
                     <div class="space-y-2 text-xs font-body">
                         <div class="p-3 rounded-2xl bg-black/45 border border-white/10 flex items-start gap-3">
                             <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">1</span>
                             <div>
                                 <p class="font-bold text-white">Читаем справа налево (←)</p>
-                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">В Коране все буквы в слове и все слова в строке читаются справа налево. Заглавных букв в арабском нет.</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">В Коране все буквы в слове и все слова в строке читаются справа налево. Заглавных букв в арабском языке нет.</p>
                             </div>
                         </div>
                         <div class="p-3 rounded-2xl bg-black/45 border border-white/10 flex items-start gap-3">
                             <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">2</span>
                             <div>
-                                <p class="font-bold text-white">Буквы — согласные, а значки сверху/снизу — гласные</p>
-                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Сами 28 букв дают только согласный звук («Б», «М», «С»). Гласные звуки («А», «И», «У») дают черточки и петельки над или под буквой — <strong>огласовки (харакаты)</strong>.</p>
+                                <p class="font-bold text-white">Буквы — согласные, значки — гласные</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Все 28 букв обозначают согласные звуки. Гласные звуки («А», «И», «У») обозначаются черточками над или под буквой — <strong>огласовками (харакатами)</strong>.</p>
                             </div>
                         </div>
                         <div class="p-3 rounded-2xl bg-black/45 border border-white/10 flex items-start gap-3">
                             <span class="w-6 h-6 rounded-lg bg-amberCore text-white font-bold flex items-center justify-center shrink-0 text-[11px]">3</span>
                             <div>
                                 <p class="font-bold text-white">Твердые и мягкие буквы (Махрадж)</p>
-                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Мягкие буквы с черточкой сверху читаются мягко (ближе к «Э»), а <strong>7 твердых букв</strong> (`خ ص ض غ ط ق ظ`) — глубоко и объемно (с оттенком «О/А»).</p>
+                                <p class="text-white/70 text-[11px] mt-0.5 leading-relaxed">Мягкие буквы с черточкой сверху читаются мягко (ближе к «Э»), а <strong>7 твердых букв</strong> (`خ ص ض غ ط ق ظ`) — глубоко и твердо (с оттенком «О/А»).</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ШАГ 2: 6 ОГЛАСОВОК (ХАРАКАТЫ) С ЖИВЫМ ГОЛОСОМ ЧТЕЦА -->
+                <!-- ШАГ 1 (ПЕРВЫМ): ПОЛНЫЙ АРАБСКИЙ АЛФАВИТ (ВСЕ 28 БУКВ С ОЗВУЧКОЙ ЧТЕЦА) -->
                 <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
                     <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldAccent">Урок 1 • Нажмите на карточку для прослушивания</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">6 огласовок (Харакатов) — как оживают буквы</h3>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 1 • Алфавит и произношение (Махрадж)</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">Арабский алфавит (все 28 букв)</h3>
+                        <p class="text-xs text-white/65 font-body mt-0.5">Нажмите на любую карточку, чтобы прослушать правильное произношение буквы на примере слова из Корана:</p>
+                    </div>
+                    <div id="arabic-alphabet-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                </div>
+
+                <!-- ШАГ 2: 6 ОГЛАСОВОК (ХАРАКАТЫ) -->
+                <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldAccent">Урок 2 • Нажмите на карточку для прослушивания</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">6 огласовок (Харакатов) — чтение букв с гласными</h3>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -1276,13 +1244,13 @@
                     </div>
                 </div>
 
-                <!-- ШАГ 3: КАК БУКВЫ СОЕДИНЯЮТСЯ В СЛОВА -->
+                <!-- ШАГ 3: 4 ФОРМЫ БУКВЫ В СЛОВЕ И 6 БУКВ, КОТОРЫЕ НУЖНО ЗАПОМНИТЬ -->
                 <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
                     <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 2 • Секрет соединения букв</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">4 формы буквы в слове и «6 гордых букв»</h3>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 3 • Написание букв в словах</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">4 формы буквы в слове</h3>
                         <p class="text-xs text-white/70 font-body mt-1 leading-relaxed">
-                            В середине слова от буквы остается её «голова» и <strong>точки сверху или снизу</strong>. Именно по точкам вы всегда мгновенно узнаете любую букву!
+                            При соединении букв в слово меняется только соединительная линия справа или слева, а <strong>основная часть буквы и её точки сверху или снизу всегда остаются прежними</strong>:
                         </p>
                     </div>
                     <div class="grid grid-cols-4 gap-2 text-center text-xs">
@@ -1294,78 +1262,122 @@
                         <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
                             <span class="text-[10px] text-white/50 block">В начале</span>
                             <p class="arabic-text text-3xl text-amberGlow my-1">بـ</p>
-                            <span class="text-[10px] text-white/70">Рука влево</span>
+                            <span class="text-[10px] text-white/70">Начальная</span>
                         </div>
                         <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
                             <span class="text-[10px] text-white/50 block">В середине</span>
                             <p class="arabic-text text-3xl text-emeraldAccent my-1">ـبـ</p>
-                            <span class="text-[10px] text-white/70">Обе руки</span>
+                            <span class="text-[10px] text-white/70">Срединная</span>
                         </div>
                         <div class="p-3 rounded-2xl bg-black/45 border border-white/10">
                             <span class="text-[10px] text-white/50 block">В конце</span>
                             <p class="arabic-text text-3xl text-sapphireAccent my-1">ـب</p>
-                            <span class="text-[10px] text-white/70">С хвостиком</span>
+                            <span class="text-[10px] text-white/70">Конечная</span>
                         </div>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-amberCore/15 border border-amberGlow/35 text-xs font-body space-y-1">
-                        <p class="font-bold text-amberGlow">⚠️ Запомните «6 гордых букв»:</p>
+                        <p class="font-bold text-amberGlow">📌 6 букв, которые нужно запомнить:</p>
                         <p class="text-white/85 leading-relaxed">
-                            Буквы <span class="arabic-text text-lg text-white px-1 font-bold">ا د ذ ر ز و</span> (Алиф, Даль, Заль, Ра, За, Вав) соединяются справа, но <strong>никогда не соединяются со следующей буквой слева</strong>!
+                            Есть 6 букв — <span class="arabic-text text-lg text-white px-1 font-bold">ا د ذ ر ز و</span> (Алиф, Даль, Заль, Ра, За, Вав) — которые соединяются с предыдущей буквой справа, но <strong>не соединяются со следующей буквой слева</strong>.
                         </p>
                     </div>
                 </div>
 
-                <!-- ШАГ 4: ПОЛНЫЙ АРАБСКИЙ АЛФАВИТ (28 БУКВ С ЖИВЫМ СТУДИЙНЫМ ЧТЕЦОМ КОРАНА) -->
-                <div class="apple-glass rounded-[26px] p-5 space-y-3.5">
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-amberGlow">Урок 3 • Живое студийное аудио чтеца Корана</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">Все 28 букв: формы, Махрадж и звуковой пример</h3>
-                        <p class="text-xs text-white/65 font-body mt-0.5">Нажмите на любую карточку, чтобы услышать правильное произношение буквы в слове из Корана:</p>
+                <!-- ШАГ 4 (ВНИЗУ): ВИДЕОУРОКИ И ИНТЕРАКТИВНЫЙ РАЗБОР -->
+                <div class="apple-glass-amber rounded-[26px] p-5 space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Урок 4 • Видеоуроки и разбор</span>
+                            <h3 class="text-base font-bold text-white">Видеокурс «Муаллим Сани» и интерактивный разбор</h3>
+                        </div>
+                        <span id="lesson-player-badge" class="px-2.5 py-1 rounded-full bg-black/45 border border-white/15 text-[10px] text-emeraldAccent font-bold shrink-0">Видео</span>
                     </div>
-                    <div id="arabic-alphabet-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
-                </div>
 
-                <!-- ШАГ 5: ПЕРВАЯ ПРАКТИКА ЧТЕНИЯ СЛОВ КОРАНА ПО СЛОГАМ -->
-                <div class="apple-glass-amber rounded-[26px] p-5 space-y-3.5">
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200 block">Урок 4 • Практика чтения с первой секунды</span>
-                        <h3 class="text-base font-bold text-white mt-0.5">Прочитайте свои первые слова из Корана</h3>
-                        <p class="text-xs text-white/80 font-body mt-0.5">Соедините буквы справа налево и нажмите на карточку для самопроверки с чтецом:</p>
+                    <!-- Обычные видеоуроки (Прямые ссылки на проверенные уроки Муаллим Сани и Таджвида) -->
+                    <div class="space-y-2 text-xs">
+                        <p class="text-white/80 font-body">Выберите видеоурок для просмотра:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <a href="https://www.youtube.com/results?search_query=%D0%BC%D1%83%D0%B0%D0%BB%D0%BB%D0%B8%D0%BC+%D1%81%D0%B0%D0%BD%D0%B8+%D1%83%D1%80%D0%BE%D0%BA+1+%D0%B0%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82+%D0%BC%D0%B0%D1%85%D1%80%D0%B0%D0%B4%D0%B6" target="_blank" rel="noopener noreferrer" class="spring-interactive p-3.5 rounded-2xl bg-black/50 hover:bg-black/70 border border-white/15 flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-xl bg-amberCore text-white flex items-center justify-center shrink-0"><i data-lucide="play" class="w-4 h-4 fill-current"></i></div>
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-white truncate">Видеоурок 1: Алфавит и Махрадж</p>
+                                        <p class="text-[10.5px] text-white/55 truncate">Постановка произношения всех 28 букв</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-amberGlow shrink-0"></i>
+                            </a>
+
+                            <a href="https://www.youtube.com/results?search_query=%D0%BC%D1%83%D0%B0%D0%BB%D0%BB%D0%B8%D0%BC+%D1%81%D0%B0%D0%BD%D0%B8+%D0%BE%D0%B3%D0%BB%D0%B0%D1%81%D0%BE%D0%B2%D0%BA%D0%B8+%D1%84%D0%B0%D1%82%D1%85%D0%B0+%D0%BA%D1%8F%D1%81%D1%80%D0%B0+%D0%B4%D0%B0%D0%BC%D0%BC%D0%B0" target="_blank" rel="noopener noreferrer" class="spring-interactive p-3.5 rounded-2xl bg-black/50 hover:bg-black/70 border border-white/15 flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-xl bg-amberCore text-white flex items-center justify-center shrink-0"><i data-lucide="play" class="w-4 h-4 fill-current"></i></div>
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-white truncate">Видеоурок 2: Огласовки и Сукун</p>
+                                        <p class="text-[10.5px] text-white/55 truncate">Чтение слогов с Фатхой, Кясрой и Даммой</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-amberGlow shrink-0"></i>
+                            </a>
+
+                            <a href="https://www.youtube.com/results?search_query=%D0%BC%D1%83%D0%B0%D0%BB%D0%BB%D0%B8%D0%BC+%D1%81%D0%B0%D0%BD%D0%B8+%D1%81%D0%BE%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5+%D0%B1%D1%83%D0%BA%D0%B2+%D1%87%D1%82%D0%B5%D0%BD%D0%B8%D0%B5+%D1%81%D0%BB%D0%BE%D0%B2" target="_blank" rel="noopener noreferrer" class="spring-interactive p-3.5 rounded-2xl bg-black/50 hover:bg-black/70 border border-white/15 flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-xl bg-emeraldAccent text-obsidian flex items-center justify-center shrink-0"><i data-lucide="play" class="w-4 h-4 fill-current"></i></div>
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-white truncate">Видеоурок 3: Соединение букв</p>
+                                        <p class="text-[10.5px] text-white/55 truncate">Практика чтения целых слов по буквам</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-emeraldAccent shrink-0"></i>
+                            </a>
+
+                            <a href="https://www.youtube.com/results?search_query=%D1%82%D0%B0%D0%B4%D0%B6%D0%B2%D0%B8%D0%B4+%D1%81+%D0%BD%D1%83%D0%BB%D1%8F+%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0+%D1%87%D1%82%D0%B5%D0%BD%D0%B8%D1%8F+%D0%BA%D0%BE%D1%80%D0%B0%D0%BD%D0%B0" target="_blank" rel="noopener noreferrer" class="spring-interactive p-3.5 rounded-2xl bg-black/50 hover:bg-black/70 border border-white/15 flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-xl bg-sapphireAccent text-white flex items-center justify-center shrink-0"><i data-lucide="play" class="w-4 h-4 fill-current"></i></div>
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-white truncate">Видеоурок 4: Правила Таджвида</p>
+                                        <p class="text-[10.5px] text-white/55 truncate">Мадд (удлинение), Шадда и правила чтения</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-sapphireAccent shrink-0"></i>
+                            </a>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                        <div onclick="playRealQuranWordAudio('001_001_001', 'Практика: بِسْمِ (Бисми)', 'Ба (БИ) + Син (С) + Мим (МИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
-                            <div>
-                                <p class="font-bold text-amberGlow text-sm">1. БИ + С + МИ = Бисми</p>
-                                <p class="text-[11px] text-white/70 mt-0.5">бِ (би) + сْ (с) + мِ (ми) — «С именем»</p>
-                            </div>
-                            <span class="arabic-text text-3xl text-white">بِسْمِ</span>
+
+                    <!-- Встроенная интерактивная доска (работает даже без интернета и без VPN) -->
+                    <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-gradient-to-br from-[#140B06] via-[#0B0A0E] to-[#12161F] border border-white/20 shadow-2xl flex flex-col justify-between p-4 select-none">
+                        <div class="flex items-center justify-between text-[11px] text-white/60">
+                            <span id="vid-stage-step" class="font-bold text-amberGlow">Слайд 1 / 4</span>
+                            <span id="vid-stage-tag" class="px-2 py-0.5 rounded-md bg-white/10 text-white/80">Интерактивный разбор (Без VPN)</span>
                         </div>
-                        <div onclick="playRealQuranWordAudio('001_002_003', 'Практика: رَبِّ (Рабби)', 'Ра (РА) + удвоенная Ба (ББИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
-                            <div>
-                                <p class="font-bold text-emeraldAccent text-sm">2. РА + ББИ = Рабби</p>
-                                <p class="text-[11px] text-white/70 mt-0.5">рَ (ра) + бِّ (бби) — «Господу»</p>
-                            </div>
-                            <span class="arabic-text text-3xl text-white">رَبِّ</span>
+
+                        <div id="vid-stage-center" class="my-auto text-center space-y-2 py-2">
+                            <p id="vid-stage-arabic" class="arabic-text text-5xl sm:text-6xl text-amberGlow drop-shadow-lg transition-all duration-300">بِسْمِ</p>
+                            <p id="vid-stage-title" class="text-sm sm:text-base font-bold text-white">Нажмите «▶ Запустить разбор»</p>
+                            <p id="vid-stage-desc" class="text-xs text-white/75 max-w-xs mx-auto font-body leading-relaxed">Пошаговый разбор букв, огласовок и чтения слов с голосом чтеца Корана</p>
                         </div>
-                        <div onclick="playRealQuranWordAudio('001_004_001', 'Практика: مَالِكِ (Малики)', 'Мим (МА) + Лям (ЛИ) + Кяф (КИ)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
-                            <div>
-                                <p class="font-bold text-sapphireAccent text-sm">3. МА + ЛИ + КИ = Малики</p>
-                                <p class="text-[11px] text-white/70 mt-0.5">мَا (ма) + лِ (ли) + كِ (ки) — «Властелину»</p>
+
+                        <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+                            <button onclick="toggleInteractiveVideoLesson()" id="vid-play-btn" class="spring-interactive px-4 py-2 rounded-xl bg-amberCore text-white font-bold text-xs flex items-center gap-1.5 shadow-lg">
+                                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                                <span>Запустить разбор</span>
+                            </button>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="stepVideoSlide(-1)" class="spring-interactive w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                <button onclick="replayCurrentSlideAudio()" title="Повторить звук" class="spring-interactive w-8 h-8 rounded-lg bg-emeraldAccent/20 border border-emeraldAccent/40 text-emeraldAccent flex items-center justify-center"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                                <button onclick="stepVideoSlide(1)" class="spring-interactive w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                             </div>
-                            <span class="arabic-text text-3xl text-white">مَالِكِ</span>
                         </div>
-                        <div onclick="playRealQuranWordAudio('112_001_004', 'Практика: أَحَدٌ (Ахадун)', 'Алиф (А) + Ха (ХА) + Даль (ДУН)')" class="spring-interactive obsidian-matte rounded-2xl p-3.5 flex items-center justify-between cursor-pointer">
-                            <div>
-                                <p class="font-bold text-amberGlow text-sm">4. А + ХА + ДУН = Ахадун</p>
-                                <p class="text-[11px] text-white/70 mt-0.5">أَ (а) + حَ (ха) + دٌ (дун) — «Единый»</p>
-                            </div>
-                            <span class="arabic-text text-3xl text-white">أَحَدٌ</span>
-                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px]">
+                        <button onclick="selectVideoLessonModule(0)" id="vid-mod-btn-0" class="spring-interactive py-2 px-2.5 rounded-xl bg-amberCore text-white font-bold truncate">1. Харакаты (А/И/У)</button>
+                        <button onclick="selectVideoLessonModule(1)" id="vid-mod-btn-1" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">2. Соединение букв</button>
+                        <button onclick="selectVideoLessonModule(2)" id="vid-mod-btn-2" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">3. Махрадж (Гортань)</button>
+                        <button onclick="selectVideoLessonModule(3)" id="vid-mod-btn-3" class="spring-interactive py-2 px-2.5 rounded-xl bg-black/45 border border-white/12 text-white/75 font-semibold truncate">4. Чтение Аль-Фатихи</button>
                     </div>
                 </div>
 
             </div>
-        </section>
 
         <!-- ВКЛАДКА 4: РАЗДЕЛ «СТАТУС» -->
         <section id="tab-status" class="tab-view hidden space-y-4">
@@ -3590,7 +3602,7 @@
                 slides: [
                     { ar: "بـ  •  ـبـ  •  ـب", title: "Как буквы соединяются справа налево", desc: "В начале и середине слова у буквы убирается левый хвостик, чтобы протянуть руку следующей букве. Точка внизу всегда остается!", wbw: "001_001_001" },
                     { ar: "نَعْبُدُ", title: "Разбор слова «На'буду» (Поклоняемся)", desc: "Справа налево: Нун в начале (نَ — На) + Айн в середине (عْ — ' ) + Ба в середине (بُ — бу) + Даль в конце (دُ — ду).", wbw: "001_005_002" },
-                    { ar: "ا  د  ذ  ر  ز  و", title: "Правило «6 гордых букв»", desc: "Эти 6 букв соединяются с буквой справа, но никогда не дают руку следующей букве слева (после них в слове пробел).", wbw: "112_001_004" }
+                    { ar: "ا  د  ذ  ر  ز  و", title: "6 букв, которые нужно запомнить", desc: "Эти 6 букв соединяются с буквой справа, но не соединяются со следующей буквой слева.", wbw: "112_001_004" }
                 ]
             },
             {
