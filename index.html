@@ -2588,7 +2588,8 @@
                 } catch (e) {}
             }, 350);
         }
-async function selectAndSaveCityInstantly(lat, lng, cityName, makeHomeToo = false) {
+
+        async function selectAndSaveCityInstantly(lat, lng, cityName, makeHomeToo = false) {
             playAppleSuccessChime();
             prayerState.lat = parseFloat(lat);
             prayerState.lng = parseFloat(lng);
