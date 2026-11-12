@@ -107,10 +107,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 
-    <!-- Шрифты -->
+    <!-- 5 Шрифтов для Статусов + Арабский шрифт -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Marck+Script&family=Montserrat:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -123,12 +123,18 @@
                         amberDeep: '#8F1E00',
                         amberCore: '#FF6600',
                         amberGlow: '#FFA726',
-                        emeraldAccent: '#10B981'
+                        emeraldAccent: '#10B981',
+                        rubyAccent: '#E11D48',
+                        indigoAccent: '#6366F1',
+                        skyAccent: '#0284C7'
                     },
                     fontFamily: {
                         sans: ['ui-rounded', '"SF Pro Rounded"', '-apple-system', 'BlinkMacSystemFont', 'Nunito', 'sans-serif'],
                         body: ['ui-rounded', '"SF Pro Rounded"', '-apple-system', 'BlinkMacSystemFont', 'Nunito', 'sans-serif'],
                         serifOld: ['Playfair Display', 'serif'],
+                        cormorant: ['Cormorant Garamond', 'serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        scriptFont: ['Marck Script', 'cursive'],
                         arabic: ['Scheherazade New', 'serif']
                     }
                 }
@@ -140,8 +146,9 @@
         :root {
             --apple-smooth: cubic-bezier(0.22, 1, 0.36, 1);
             --apple-spring: cubic-bezier(0.25, 1.15, 0.45, 1);
-            --safe-top: max(calc(env(safe-area-inset-top, 12px) + 4px), 14px);
-            --safe-bottom: max(env(safe-area-inset-bottom, 12px), 14px);
+            /* Опускаем шапку чуть ниже из-под системных часов iPhone */
+            --safe-top: max(calc(env(safe-area-inset-top, 20px) + 14px), 28px);
+            --safe-bottom: max(env(safe-area-inset-bottom, 12px), 16px);
         }
 
         * {
@@ -150,10 +157,7 @@
             font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Nunito", sans-serif;
         }
 
-        /* ═══ ПОЛНОЕ УСТРАНЕНИЕ БЕЛОГО БЛЮРА НА iPHONE В PWA / SAFARI ═══
-           На iPhone WebKit берёт цвет системного блюра статус-бара напрямую из html/body.
-           Когда html и body имеют тёмно-янтарный фон #8F1E00 и color-scheme: dark,
-           iOS НИКОГДА не включает белую размытую полосу сверху! */
+        /* Защита от белого блюра сверху на iPhone в режиме PWA */
         html, body {
             margin: 0;
             padding: 0;
@@ -168,22 +172,22 @@
             background-color: #140603 !important;
         }
 
-        /* ═══ ОСНОВНОЙ ХОЛСТ С ПРИГЛУШЁННЫМ ТЁПЛЫМ ТОНОМ И ХАОТИЧНЫМ ОРАНЖЕВЫМ СВЕЧЕНИЕМ ПО ВСЕЙ ВЫСОТЕ ═══ */
+        /* ═══ ПРОФЕССИОНАЛЬНЫЙ 3-ЦВЕТНЫЙ MESH-ГРАДИЕНТ (БЕЛЫЙ + ЖЁЛТЫЙ + ОРАНЖЕВЫЙ) ═══ */
         .orbix-app-shell {
             position: relative;
             width: 100%;
             min-height: 100vh;
             padding-top: var(--safe-top);
-            padding-bottom: calc(var(--safe-bottom) + 88px);
+            padding-bottom: calc(var(--safe-bottom) + 94px);
             color: #121110;
-            /* Не слепяще-белый, а мягкий тёплый камень (#E6DFD5) + хаотичные оранжевые пятна сверху донизу */
             background:
-                radial-gradient(ellipse 105% 360px at 50% 0%, #8F1E00 0%, #C83E0B 42%, #F26B18 72%, rgba(242, 107, 24, 0) 100%),
-                radial-gradient(circle 340px at 12% 38%, rgba(255, 115, 25, 0.24) 0%, transparent 72%),
-                radial-gradient(circle 380px at 88% 54%, rgba(235, 85, 12, 0.22) 0%, transparent 74%),
-                radial-gradient(circle 360px at 22% 76%, rgba(255, 140, 40, 0.25) 0%, transparent 72%),
-                radial-gradient(circle 420px at 82% 92%, rgba(217, 65, 10, 0.22) 0%, transparent 75%),
-                linear-gradient(180deg, #E8E0D6 0%, #E2D9CE 50%, #DDD3C7 100%);
+                radial-gradient(ellipse 110% 390px at 50% 0%, #8F1E00 0%, #D9480F 38%, #FF851B 68%, rgba(253, 224, 71, 0.28) 88%, rgba(235, 228, 218, 0) 100%),
+                radial-gradient(circle 380px at 10% 34%, rgba(250, 204, 21, 0.32) 0%, transparent 74%),
+                radial-gradient(circle 420px at 90% 48%, rgba(255, 107, 26, 0.28) 0%, transparent 75%),
+                radial-gradient(circle 400px at 50% 64%, rgba(255, 253, 248, 0.65) 0%, transparent 72%),
+                radial-gradient(circle 380px at 16% 82%, rgba(251, 191, 36, 0.30) 0%, transparent 74%),
+                radial-gradient(circle 440px at 86% 94%, rgba(234, 88, 12, 0.26) 0%, transparent 76%),
+                linear-gradient(180deg, #EAE2D7 0%, #E5DDD0 50%, #DFD5C8 100%);
             overflow-x: hidden;
             transition: background 0.35s ease, color 0.3s ease;
         }
@@ -191,103 +195,106 @@
         html.dark .orbix-app-shell {
             color: rgba(255, 255, 255, 0.94);
             background:
-                radial-gradient(ellipse 105% 370px at 50% 0%, #6E1804 0%, #9E2E08 35%, #4A1404 68%, rgba(20, 8, 4, 0) 100%),
-                radial-gradient(circle 350px at 14% 36%, rgba(255, 102, 0, 0.20) 0%, transparent 72%),
-                radial-gradient(circle 390px at 86% 56%, rgba(215, 68, 8, 0.19) 0%, transparent 74%),
-                radial-gradient(circle 360px at 18% 78%, rgba(255, 125, 25, 0.18) 0%, transparent 72%),
+                radial-gradient(ellipse 110% 390px at 50% 0%, #6E1804 0%, #A3320B 36%, #4A1404 68%, rgba(20, 8, 4, 0) 100%),
+                radial-gradient(circle 360px at 12% 35%, rgba(250, 204, 21, 0.14) 0%, transparent 72%),
+                radial-gradient(circle 400px at 88% 54%, rgba(255, 102, 0, 0.19) 0%, transparent 74%),
+                radial-gradient(circle 380px at 20% 80%, rgba(245, 158, 11, 0.15) 0%, transparent 72%),
                 radial-gradient(circle 420px at 84% 94%, rgba(195, 52, 6, 0.22) 0%, transparent 75%),
                 linear-gradient(180deg, #0D0806 0%, #0A0705 55%, #080504 100%);
         }
 
-        /* Живые плавающие оранжевые сферы на заднем плане (делают Liquid Glass по-настоящему объёмным при скролле) */
-        @keyframes chaoticFloat1 {
+        /* Плавно движущиеся размытые пятна 3 цветов (Белый, Жёлтый, Оранжевый) на GPU */
+        @keyframes meshDrift1 {
             0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-            50% { transform: translate3d(28px, -24px, 0) scale(1.12); }
+            33% { transform: translate3d(42px, -28px, 0) scale(1.12); }
+            66% { transform: translate3d(-24px, 34px, 0) scale(0.95); }
         }
-        @keyframes chaoticFloat2 {
+        @keyframes meshDrift2 {
             0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-            50% { transform: translate3d(-32px, 26px, 0) scale(1.15); }
+            50% { transform: translate3d(-45px, -36px, 0) scale(1.16); }
         }
         .ambient-chaos-orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(55px);
+            filter: blur(78px);
             pointer-events: none;
             z-index: 1;
+            will-change: transform;
         }
+        /* Оранжево-янтарное облако */
         .orb-1 {
-            width: 280px; height: 280px;
-            top: 28%; left: -70px;
-            background: radial-gradient(circle, rgba(255, 110, 20, 0.34) 0%, transparent 72%);
-            animation: chaoticFloat1 11s ease-in-out infinite;
+            width: 340px; height: 340px;
+            top: 24%; left: -80px;
+            background: radial-gradient(circle, rgba(255, 105, 20, 0.38) 0%, transparent 72%);
+            animation: meshDrift1 16s ease-in-out infinite;
         }
+        /* Солнечно-жёлтое облако */
         .orb-2 {
-            width: 320px; height: 320px;
-            top: 58%; right: -85px;
-            background: radial-gradient(circle, rgba(255, 145, 45, 0.30) 0%, transparent 72%);
-            animation: chaoticFloat2 14s ease-in-out infinite;
+            width: 360px; height: 360px;
+            top: 48%; right: -90px;
+            background: radial-gradient(circle, rgba(250, 204, 21, 0.36) 0%, transparent 72%);
+            animation: meshDrift2 19s ease-in-out infinite;
         }
+        /* Мягкое жемчужно-белое/золотистое облако */
         .orb-3 {
-            width: 300px; height: 300px;
-            bottom: 4%; left: 12%;
-            background: radial-gradient(circle, rgba(225, 75, 12, 0.28) 0%, transparent 72%);
-            animation: chaoticFloat1 13s ease-in-out infinite reverse;
+            width: 380px; height: 380px;
+            bottom: 6%; left: 10%;
+            background: radial-gradient(circle, rgba(255, 250, 235, 0.55) 0%, rgba(255, 140, 35, 0.25) 55%, transparent 75%);
+            animation: meshDrift1 21s ease-in-out infinite reverse;
+        }
+        html.dark .orb-3 {
+            background: radial-gradient(circle, rgba(250, 204, 21, 0.16) 0%, rgba(234, 88, 12, 0.22) 55%, transparent 75%);
         }
 
-        /* ═══ НАСТОЯЩИЙ iOS 27 LIQUID GLASS (ОБЪЁМНАЯ ЛИНЗА, БЛИКИ И ПРЕЛОМЛЕНИЕ) ═══ */
+        /* ═══ НАСТОЯЩИЙ iOS 27 LIQUID GLASS ═══ */
         .liquid-glass, .liquid-glass-pill {
             position: relative;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.12) 52%, rgba(255, 195, 140, 0.26) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.36) 0%, rgba(255, 255, 255, 0.14) 52%, rgba(255, 205, 140, 0.28) 100%);
             backdrop-filter: blur(32px) saturate(200%);
             -webkit-backdrop-filter: blur(32px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.48);
+            border: 1px solid rgba(255, 255, 255, 0.52);
             box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.82),
-                inset 0 -1.5px 1.5px 0 rgba(255, 130, 40, 0.28),
-                inset 0 0 18px rgba(255, 255, 255, 0.18),
+                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.85),
+                inset 0 -1.5px 1.5px 0 rgba(255, 140, 40, 0.28),
                 0 12px 28px -6px rgba(55, 14, 2, 0.32);
             color: #FFFFFF;
         }
 
-        /* Главные стеклянные капсулы iOS 27 (полупрозрачные, преломляют оранжевые сферы сзади!) */
         .sheet-card {
             position: relative;
             z-index: 10;
-            background: linear-gradient(145deg, rgba(255, 252, 248, 0.62) 0%, rgba(255, 246, 238, 0.44) 55%, rgba(255, 228, 205, 0.54) 100%);
+            background: linear-gradient(145deg, rgba(255, 253, 250, 0.64) 0%, rgba(255, 248, 240, 0.46) 55%, rgba(255, 235, 210, 0.56) 100%);
             backdrop-filter: blur(40px) saturate(210%);
             -webkit-backdrop-filter: blur(40px) saturate(210%);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.78);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.82);
             box-shadow:
                 inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.96),
-                inset 0 -1.5px 2px 0 rgba(255, 120, 30, 0.16),
+                inset 0 -1.5px 2px 0 rgba(255, 130, 30, 0.16),
                 inset 0 0 26px rgba(255, 255, 255, 0.32),
-                0 16px 36px -8px rgba(65, 24, 6, 0.14),
+                0 18px 38px -8px rgba(65, 24, 6, 0.14),
                 0 4px 12px rgba(40, 14, 4, 0.06);
             color: #121110;
         }
 
         html.dark .sheet-card {
-            background: linear-gradient(145deg, rgba(44, 28, 22, 0.58) 0%, rgba(24, 16, 13, 0.46) 55%, rgba(58, 28, 16, 0.52) 100%);
+            background: linear-gradient(145deg, rgba(44, 28, 22, 0.60) 0%, rgba(24, 16, 13, 0.48) 55%, rgba(58, 28, 16, 0.54) 100%);
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow:
                 inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.24),
                 inset 0 -1.5px 2px 0 rgba(255, 110, 20, 0.20),
-                inset 0 0 24px rgba(255, 120, 30, 0.06),
-                0 20px 44px -10px rgba(0, 0, 0, 0.78),
-                0 6px 16px rgba(0, 0, 0, 0.45);
+                0 20px 44px -10px rgba(0, 0, 0, 0.78);
             color: rgba(255, 255, 255, 0.95);
         }
 
-        /* Внутренние стеклянные плашки iOS 27 */
         .sheet-subcard {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.54) 0%, rgba(255, 245, 235, 0.34) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 248, 238, 0.38) 100%);
             backdrop-filter: blur(24px) saturate(180%);
             -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.72);
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.76);
             box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.90),
+                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.92),
                 0 6px 16px -4px rgba(55, 20, 5, 0.07);
             color: #121110;
         }
@@ -301,43 +308,39 @@
             color: rgba(255, 255, 255, 0.92);
         }
 
-        /* ═══ КОМПАКТНЫЕ СТРОКИ НАМАЗОВ (ВСЕ 6 СРАЗУ НА ПЕРВОМ ЭКРАНЕ БЕЗ ОБРЕЗКИ) ═══ */
+        /* ═══ УВЕЛИЧЕННЫЕ И ВЫРАЗИТЕЛЬНЫЕ СТРОКИ НАМАЗОВ ═══ */
         .tx-prayer-row {
             position: relative;
-            border-radius: 19px;
-            padding: 7.5px 11px;
-            transition: transform 0.22s var(--apple-smooth), box-shadow 0.22s ease;
+            border-radius: 22px;
+            padding: 12px 14px;
+            transition: transform 0.2s var(--apple-smooth), box-shadow 0.2s ease;
         }
         .tx-prayer-row:active { transform: scale(0.98); }
 
         .tx-prayer-row-active {
-            background: linear-gradient(135deg, rgba(255, 115, 20, 0.24) 0%, rgba(255, 175, 60, 0.12) 100%) !important;
+            background: linear-gradient(135deg, rgba(255, 115, 20, 0.24) 0%, rgba(250, 204, 21, 0.14) 100%) !important;
             border: 1.5px solid rgba(255, 102, 0, 0.68) !important;
             box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.85),
-                0 10px 24px -6px rgba(255, 102, 0, 0.28) !important;
+                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.88),
+                0 10px 24px -6px rgba(255, 102, 0, 0.26) !important;
         }
         html.dark .tx-prayer-row-active {
             background: linear-gradient(135deg, rgba(255, 115, 20, 0.28) 0%, rgba(160, 55, 10, 0.14) 100%) !important;
             border: 1.5px solid rgba(255, 145, 65, 0.72) !important;
-            box-shadow:
-                inset 0 1px 1px 0 rgba(255, 220, 180, 0.35),
-                0 10px 26px -6px rgba(255, 102, 0, 0.35) !important;
         }
 
-        /* Капсульные кнопки действий в стиле Liquid Glass */
         .action-pill-btn {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 245, 235, 0.48) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.70) 0%, rgba(255, 245, 235, 0.50) 100%);
             backdrop-filter: blur(28px) saturate(190%);
             -webkit-backdrop-filter: blur(28px) saturate(190%);
             color: #121110;
-            border: 1px solid rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.84);
             border-radius: 9999px;
             font-weight: 800;
             box-shadow:
                 inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95),
                 0 10px 24px -6px rgba(55, 20, 4, 0.12);
-            transition: transform 0.22s var(--apple-smooth);
+            transition: transform 0.2s var(--apple-smooth);
         }
         .action-pill-btn:active { transform: scale(0.95); }
 
@@ -345,12 +348,9 @@
             background: linear-gradient(135deg, rgba(45, 30, 22, 0.68) 0%, rgba(25, 18, 14, 0.52) 100%);
             color: rgba(255, 255, 255, 0.94);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow:
-                inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.22),
-                0 12px 26px -6px rgba(0, 0, 0, 0.7);
         }
 
-        /* ═══ НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ: МОНОЛИТНАЯ (324px), АКТИВНАЯ = ИКОНКА+ТЕКСТ (132px), ОСТАЛЬНЫЕ = ТОЛЬКО ИКОНКИ (60px) ═══ */
+        /* ═══ 120 FPS НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ЧИСТЫЙ GPU TRANSLATE3D, БЕЗ АНИМАЦИИ WIDTH) ═══ */
         .floating-bottom-nav {
             position: fixed;
             left: 50%;
@@ -359,30 +359,28 @@
             z-index: 45;
             width: 324px;
             height: 60px;
-            padding: 6px;
             border-radius: 9999px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 242, 228, 0.50) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 244, 230, 0.54) 100%);
             backdrop-filter: blur(36px) saturate(210%);
             -webkit-backdrop-filter: blur(36px) saturate(210%);
-            border: 1px solid rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.85);
             box-shadow:
                 inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.96),
                 inset 0 -1px 1.5px 0 rgba(255, 120, 30, 0.18),
                 0 18px 42px -6px rgba(45, 16, 4, 0.24);
-            display: flex;
-            align-items: center;
             user-select: none;
+            overflow: hidden;
         }
 
         html.dark .floating-bottom-nav {
-            background: linear-gradient(135deg, rgba(36, 24, 19, 0.76) 0%, rgba(18, 13, 11, 0.66) 100%);
+            background: linear-gradient(135deg, rgba(36, 24, 19, 0.78) 0%, rgba(18, 13, 11, 0.68) 100%);
             border: 1px solid rgba(255, 255, 255, 0.16);
             box-shadow:
                 inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.22),
                 0 20px 48px -6px rgba(0, 0, 0, 0.85);
         }
 
-        /* Скользящая капсула: ширина всегда 132px, сдвигается ровно на index * 60px! */
+        /* Бегущая капсула (движется только через translate3d — 0 лагов!) */
         #nav-glider {
             position: absolute;
             top: 6px;
@@ -394,7 +392,7 @@
             box-shadow:
                 inset 0 1px 0.5px rgba(255, 255, 255, 0.28),
                 0 6px 18px rgba(18, 17, 16, 0.32);
-            transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform;
             z-index: 1;
             pointer-events: none;
@@ -407,73 +405,70 @@
                 0 6px 20px rgba(255, 102, 0, 0.42);
         }
 
-        /* Неактивная кнопка = 60px (только иконка), Активная кнопка = 132px (иконка + текст). Сумма = 132 + 60*3 = 312px ВСЕГДА! */
+        /* Каждая кнопка позиционируется через GPU translate3d — без пересчёта геометрии браузером */
         .nav-item-btn {
-            position: relative;
-            z-index: 2;
+            position: absolute;
+            top: 6px;
+            left: 6px;
             height: 46px;
-            width: 60px;
-            flex: 0 0 60px;
+            width: 132px;
             border-radius: 9999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(18, 17, 16, 0.58);
+            gap: 7px;
+            color: rgba(18, 17, 16, 0.60);
             font-weight: 800;
             font-size: 13px;
-            transition: width 0.34s cubic-bezier(0.22, 1, 0.36, 1), flex-basis 0.34s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease;
-            overflow: hidden;
+            z-index: 2;
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), color 0.22s ease;
+            will-change: transform;
         }
 
         html.dark .nav-item-btn {
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(255, 255, 255, 0.58);
         }
 
         .nav-item-btn.active {
-            width: 132px;
-            flex: 0 0 132px;
             color: #FFFFFF;
         }
 
         .nav-item-btn .nav-label {
-            display: inline-block;
-            max-width: 0;
+            transition: opacity 0.2s ease, transform 0.25s var(--apple-smooth);
+        }
+
+        .nav-item-btn:not(.active) .nav-label {
             opacity: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            margin-left: 0;
-            transform: translateX(-4px);
-            transition: max-width 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease, margin-left 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            position: absolute;
+            transform: scale(0.85);
         }
 
         .nav-item-btn.active .nav-label {
-            max-width: 82px;
             opacity: 1;
-            margin-left: 7px;
-            transform: translateX(0);
+            position: relative;
+            transform: scale(1);
         }
 
-        /* ═══ ПЛАВНЫЕ БЕЗРЫВКОВЫЕ ПЕРЕХОДЫ ВКЛАДОК НА GPU ═══ */
+        /* ═══ ПЛАВНЫЕ GPU-ПЕРЕХОДЫ МЕЖДУ ВКЛАДКАМИ ═══ */
         @keyframes gpuSlideRight {
-            0% { opacity: 0; transform: translate3d(28px, 0, 0); }
+            0% { opacity: 0; transform: translate3d(24px, 0, 0); }
             100% { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         @keyframes gpuSlideLeft {
-            0% { opacity: 0; transform: translate3d(-28px, 0, 0); }
+            0% { opacity: 0; transform: translate3d(-24px, 0, 0); }
             100% { opacity: 1; transform: translate3d(0, 0, 0); }
         }
-        .tab-slide-right { animation: gpuSlideRight 0.26s cubic-bezier(0.22, 1, 0.36, 1) both; will-change: transform, opacity; }
-        .tab-slide-left  { animation: gpuSlideLeft 0.26s cubic-bezier(0.22, 1, 0.36, 1) both; will-change: transform, opacity; }
+        .tab-slide-right { animation: gpuSlideRight 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .tab-slide-left  { animation: gpuSlideLeft 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-        .spring-tap {
-            transition: transform 0.22s var(--apple-smooth);
-        }
+        .spring-tap { transition: transform 0.2s var(--apple-smooth); }
         .spring-tap:active { transform: scale(0.95); }
 
         /* Dynamic Island Плеер */
         #dynamic-island {
-            top: calc(var(--safe-top) + 4px);
-            transition: transform 0.45s var(--apple-spring), opacity 0.3s var(--apple-smooth);
+            top: calc(var(--safe-top) + 2px);
+            transition: transform 0.42s var(--apple-spring), opacity 0.28s var(--apple-smooth);
         }
         #dynamic-island.island-hidden {
             opacity: 0;
@@ -502,13 +497,12 @@
 
         .arabic-text { font-family: 'Scheherazade New', serif; direction: rtl; line-height: 2.0; }
 
-        /* Тумблер iOS */
         .ios-switch {
             position: relative;
             width: 52px;
             height: 30px;
             border-radius: 9999px;
-            transition: background-color 0.28s var(--apple-smooth);
+            transition: background-color 0.25s var(--apple-smooth);
             cursor: pointer;
             flex-shrink: 0;
         }
@@ -521,9 +515,9 @@
             border-radius: 50%;
             background: #FFFFFF;
             box-shadow: 0 2px 6px rgba(0,0,0,0.28);
-            transition: transform 0.28s var(--apple-spring);
+            transition: transform 0.25s var(--apple-spring);
         }
-        .ios-switch.active { background-color: #FF6600; }
+        .ios-switch.active { background-color: #10B981; }
         .ios-switch.inactive { background-color: rgba(120, 110, 100, 0.35); }
         .ios-switch.active .ios-switch-thumb { transform: translateX(22px); }
 
@@ -542,13 +536,18 @@
         }
         html.dark .word-revealed { color: #FFA726 !important; }
 
+        .status-photo-exposure {
+            transition: filter 0.35s ease, transform 0.5s var(--apple-smooth);
+        }
+        .group:hover .status-photo-exposure { transform: scale(1.03); }
+
         details summary { list-style: none; }
         details summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="selection:bg-amberCore selection:text-white">
 
-    <!-- ХАОТИЧНЫЕ ОРАНЖЕВЫЕ СВЕТОВЫЕ СФЕРЫ ПО ВСЕЙ ВЫСОТЕ ЭКРАНА -->
+    <!-- ПЛАВАЮЩИЙ 3-ЦВЕТНЫЙ MESH-ГРАДИЕНТ (ОРАНЖЕВЫЙ + ЖЁЛТЫЙ + БЕЛЫЙ) -->
     <div class="ambient-chaos-orb orb-1"></div>
     <div class="ambient-chaos-orb orb-2"></div>
     <div class="ambient-chaos-orb orb-3"></div>
@@ -586,7 +585,7 @@
                 </div>
                 <div class="space-y-2">
                     <h1 class="text-3xl font-extrabold tracking-tight text-white">Добро пожаловать в AyaSpace</h1>
-                    <p class="text-sm text-white/90 leading-relaxed max-w-xs mx-auto">Точное время намаза, Священный Коран и реалистичные статусы в эстетике iOS 27 Liquid Glass.</p>
+                    <p class="text-sm text-white/90 leading-relaxed max-w-xs mx-auto">Точное время намаза, Священный Коран и минималистичные статусы в эстетике iOS 27 Liquid Glass.</p>
                 </div>
                 <button onclick="goToOnboardingStep(2)" class="spring-tap w-full py-4 px-6 rounded-full bg-white text-obsidian font-extrabold text-sm flex items-center justify-center gap-2 shadow-xl">
                     <span>Начать настройку</span>
@@ -730,53 +729,53 @@
     </div>
 
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- ОСНОВНАЯ СЦЕНА ПРИЛОЖЕНИЯ (ORBIX LIQUID GLASS) -->
+    <!-- ОСНОВНАЯ СЦЕНА ПРИЛОЖЕНИЯ -->
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <div class="orbix-app-shell">
 
-        <!-- ШАПКА -->
-        <header id="sticky-top-bar" class="relative z-30 w-full max-w-xl mx-auto px-4 pt-0.5 pb-1 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                <div onclick="switchTab('prayer')" class="spring-tap w-10 h-10 rounded-full flex items-center justify-center shrink-0 cursor-pointer shadow-lg"
-                     style="background: linear-gradient(135deg, #FFB347 0%, #FF6A00 52%, #D93A00 100%); border: 1.5px solid rgba(255,255,255,0.65);">
-                    <svg viewBox="0 0 100 100" class="w-6 h-6" fill="none">
+        <!-- УВЕЛИЧЕННАЯ И ЧУТЬ ОПУЩЕННАЯ ШАПКА -->
+        <header id="sticky-top-bar" class="relative z-30 w-full max-w-xl mx-auto px-4 pt-1.5 pb-2 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div onclick="switchTab('prayer')" class="spring-tap w-12 h-12 rounded-full flex items-center justify-center shrink-0 cursor-pointer shadow-lg"
+                     style="background: linear-gradient(135deg, #FFB347 0%, #FF6A00 52%, #D93A00 100%); border: 1.5px solid rgba(255,255,255,0.68);">
+                    <svg viewBox="0 0 100 100" class="w-7 h-7" fill="none">
                         <path fill="#FFFFFF" d="M 50 7 C 52 10.5, 52 13, 50 16 C 48 13, 48 10.5, 50 7 Z"/>
                         <path fill="#FFFFFF" d="M 50 15 C 33 26, 18 42, 18 60 C 18 78, 33 90, 52 90 C 64 90, 73 83, 77 73 C 70 79, 59 81, 49 77 C 35 71, 30 56, 36 43 C 41 31, 55 26, 68 33 C 73 36, 77 40, 79 45 C 76 32, 63 23, 50 15 Z"/>
                         <path fill="#FFFFFF" d="M 62 45 Q 62 56 73 56 Q 62 56 62 67 Q 62 56 51 56 Q 62 56 62 45 Z"/>
                     </svg>
                 </div>
                 <div class="min-w-0 flex-1">
-                    <h1 class="font-extrabold text-[17.5px] tracking-tight text-white leading-tight drop-shadow-sm">AyaSpace</h1>
-                    <p id="hijri-header" class="text-[11px] text-white/90 font-semibold leading-tight truncate">Загрузка календаря Хиджры...</p>
+                    <h1 class="font-extrabold text-[19px] tracking-tight text-white leading-tight drop-shadow-sm">AyaSpace</h1>
+                    <p id="hijri-header" class="text-[11.5px] text-white/90 font-semibold leading-snug">Загрузка календаря Хиджры...</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 shrink-0">
                 <button onclick="switchTab('settings')" title="Выбрать город и мазхаб"
-                        class="spring-tap liquid-glass-pill h-10 px-3.5 rounded-full flex items-center gap-1.5 text-xs font-extrabold text-white">
-                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amberGlow shrink-0"></i>
-                    <span id="current-city-badge" class="max-w-[96px] truncate">Казань</span>
+                        class="spring-tap liquid-glass-pill h-11 px-4 rounded-full flex items-center gap-1.5 text-[13px] font-extrabold text-white">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-amberGlow shrink-0"></i>
+                    <span id="current-city-badge" class="max-w-[105px] truncate">Казань</span>
                 </button>
                 <button onclick="switchTab('settings')" title="Настройки"
-                        class="spring-tap liquid-glass-pill w-10 h-10 rounded-full flex items-center justify-center text-white">
-                    <i data-lucide="settings" class="w-[18px] h-[18px]"></i>
+                        class="spring-tap liquid-glass-pill w-11 h-11 rounded-full flex items-center justify-center text-white">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
                 </button>
             </div>
         </header>
 
-        <!-- ГЛАВНЫЙ ТАЙМЕР НАД РАСПИСАНИЕМ -->
-        <div id="hero-prayer-showcase" class="relative z-20 max-w-xl mx-auto px-4 pt-0.5 pb-2.5">
-            <div class="text-center space-y-0.5">
-                <p id="gregorian-date" class="text-[9.5px] font-extrabold uppercase tracking-[0.16em] text-white/85">
+        <!-- КРУПНЫЙ ТАЙМЕР ДО СЛЕДУЮЩЕГО НАМАЗА -->
+        <div id="hero-prayer-showcase" class="relative z-20 max-w-xl mx-auto px-4 pt-1 pb-3.5">
+            <div class="text-center space-y-1.5">
+                <p id="gregorian-date" class="text-[10.5px] font-extrabold uppercase tracking-[0.16em] text-white/85">
                     КАЗАНЬ • ХАНАФИТСКИЙ МАЗХАБ
                 </p>
-                <div class="flex items-baseline justify-center tracking-tight select-none">
-                    <span id="countdown-hm" class="text-[48px] sm:text-6xl font-extrabold tabular-nums leading-none text-white drop-shadow">00:00</span>
-                    <span id="countdown-sec" class="text-[30px] sm:text-4xl font-light tabular-nums leading-none ml-1 text-white/75">:00</span>
+                <div class="flex items-baseline justify-center tracking-tight select-none py-0.5">
+                    <span id="countdown-hm" class="text-[64px] sm:text-7xl font-extrabold tabular-nums leading-none text-white drop-shadow-md">00:00</span>
+                    <span id="countdown-sec" class="text-[38px] sm:text-5xl font-light tabular-nums leading-none ml-1.5 text-white/75">:00</span>
                 </div>
                 <div class="pt-0.5 flex items-center justify-center">
-                    <div class="liquid-glass-pill px-3.5 py-1 rounded-full inline-flex items-center gap-1.5 text-[11px] font-bold">
-                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-amberGlow"></i>
+                    <div class="liquid-glass-pill px-4 py-1.5 rounded-full inline-flex items-center gap-2 text-xs font-bold">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-amberGlow"></i>
                         <span class="text-white/95">Далее: <strong id="next-prayer-name" class="text-white font-extrabold">Фаджр</strong></span>
                     </div>
                 </div>
@@ -784,72 +783,75 @@
         </div>
 
         <!-- ОСНОВНОЙ КОНТЕНТ -->
-        <main class="relative z-20 max-w-xl mx-auto px-3.5 sm:px-4 space-y-3.5">
+        <main class="relative z-20 max-w-xl mx-auto px-3.5 sm:px-4 space-y-4">
 
             <!-- Пятничный баннер Джума Мубарак -->
-            <div id="special-day-banner" class="hidden sheet-card p-3.5 flex items-center justify-between gap-3">
+            <div id="special-day-banner" class="hidden sheet-card p-4 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-amberCore/15 text-amberCore flex items-center justify-center shrink-0">
-                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <div class="w-10 h-10 rounded-full bg-emeraldAccent/15 text-emeraldAccent flex items-center justify-center shrink-0">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
                     </div>
                     <div>
                         <h3 class="text-xs font-extrabold">Благословенная пятница (Джума Мубарак)</h3>
-                        <p class="text-[10.5px] opacity-65">Прочитайте суру «Аль-Кахф» и умножьте салават Пророку ﷺ</p>
+                        <p class="text-[11px] opacity-65">Прочитайте суру «Аль-Кахф» и умножьте салават Пророку ﷺ</p>
                     </div>
                 </div>
-                <button onclick="openSurahFromBanner(18)" class="spring-tap px-3 py-1.5 rounded-full bg-obsidian text-white text-[11px] font-bold shrink-0">Аль-Кахф</button>
+                <button onclick="openSurahFromBanner(18)" class="spring-tap px-3.5 py-2 rounded-full bg-emeraldAccent text-obsidian text-xs font-extrabold shrink-0">Аль-Кахф</button>
             </div>
 
             <!-- ───────────────────────────────────────────────────────────────── -->
-            <!-- ВКЛАДКА 1: НАМАЗ -->
+            <!-- ВКЛАДКА 1: НАМАЗ (УВЕЛИЧЕННЫЕ И ОБЪЁМНЫЕ СТРОКИ С ЦВЕТНЫМИ АКЦЕНТАМИ) -->
             <!-- ───────────────────────────────────────────────────────────────── -->
-            <section id="tab-prayer" class="space-y-3.5">
+            <section id="tab-prayer" class="space-y-4">
 
-                <!-- ГЛАВНАЯ КАПСУЛА РАСПИСАНИЯ (ВСЕ 6 СТРОК СРАЗУ НА ПЕРВОМ ЭКРАНЕ БЕЗ ПРОКРУТКИ) -->
-                <div class="sheet-card p-3 sm:p-4.5 space-y-2">
+                <div class="sheet-card p-4 sm:p-5 space-y-3">
                     <div class="flex items-center justify-between px-1">
-                        <h2 class="text-[15.5px] sm:text-lg font-extrabold tracking-tight">Расписание намазов</h2>
-                        <button onclick="switchTab('settings')" class="text-xs font-bold opacity-65 hover:opacity-100 transition">Настроить</button>
+                        <h2 class="text-[17px] sm:text-lg font-extrabold tracking-tight">Расписание намазов</h2>
+                        <button onclick="switchTab('settings')" class="text-xs font-extrabold text-amberCore hover:opacity-80 transition">Настроить</button>
                     </div>
-                    <div id="prayer-list" class="space-y-1.5"></div>
+                    <div id="prayer-list" class="space-y-2"></div>
                 </div>
 
                 <!-- Суры по Сунне для текущего намаза -->
                 <div id="current-prayer-surah-pill"></div>
 
-                <!-- Сводка дня -->
-                <div class="grid grid-cols-2 gap-2.5">
+                <!-- Сводка дня (Изумрудный и Индиго-фиолетовый акценты) -->
+                <div class="grid grid-cols-2 gap-3">
                     <div class="sheet-card p-4 space-y-1">
-                        <div class="flex items-center justify-between text-xs opacity-70 font-bold">
+                        <div class="flex items-center justify-between text-xs opacity-75 font-bold">
                             <span>Выполнено за день</span>
-                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emeraldAccent"></i>
+                            <span class="w-6 h-6 rounded-full bg-emeraldAccent/15 text-emeraldAccent flex items-center justify-center">
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                            </span>
                         </div>
                         <div class="flex items-baseline gap-1 pt-0.5">
-                            <span id="completed-prayers-big" class="text-2xl font-extrabold tabular-nums">0</span>
-                            <span class="text-xs font-bold opacity-55 tabular-nums">/ 5 намазов</span>
+                            <span id="completed-prayers-big" class="text-2xl font-extrabold tabular-nums text-emeraldAccent">0</span>
+                            <span class="text-xs font-bold opacity-60 tabular-nums">/ 5 намазов</span>
                         </div>
                     </div>
 
                     <div class="sheet-card p-4 space-y-1">
-                        <div class="flex items-center justify-between text-xs opacity-70 font-bold">
+                        <div class="flex items-center justify-between text-xs opacity-75 font-bold">
                             <span>Последняя ⅓ ночи</span>
-                            <i data-lucide="moon-star" class="w-4 h-4 text-amberCore"></i>
+                            <span class="w-6 h-6 rounded-full bg-indigoAccent/15 text-indigoAccent flex items-center justify-center">
+                                <i data-lucide="moon-star" class="w-4 h-4"></i>
+                            </span>
                         </div>
                         <div class="flex items-baseline gap-1.5 pt-0.5">
-                            <span id="last-third-night-time" class="text-2xl font-extrabold tabular-nums">--:--</span>
-                            <span class="text-xs font-semibold opacity-55">Тахаджуд</span>
+                            <span id="last-third-night-time" class="text-2xl font-extrabold tabular-nums text-indigoAccent">--:--</span>
+                            <span class="text-xs font-semibold opacity-60">Тахаджуд</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Быстрые кнопки -->
+                <!-- Быстрые кнопки с разноцветными акцентами -->
                 <div class="flex items-center justify-between gap-2">
                     <button onclick="scrollToToolsAndOpen('qibla')" class="action-pill-btn spring-tap flex-1 py-3.5 px-4 flex items-center justify-center gap-2 text-xs">
-                        <i data-lucide="compass" class="w-4 h-4 text-amberCore"></i>
+                        <i data-lucide="compass" class="w-4 h-4 text-rubyAccent"></i>
                         <span>Кибла 360°</span>
                     </button>
                     <button onclick="detectGeolocation()" title="Обновить геопозицию по GPS" class="action-pill-btn spring-tap w-12 h-12 flex items-center justify-center shrink-0">
-                        <i data-lucide="locate-fixed" class="w-4 h-4 text-amberCore"></i>
+                        <i data-lucide="locate-fixed" class="w-4 h-4 text-skyAccent"></i>
                     </button>
                     <button onclick="exportPrayersToICS(false, this)" class="action-pill-btn spring-tap flex-1 py-3.5 px-4 flex items-center justify-center gap-2 text-xs">
                         <i data-lucide="calendar-check-2" class="w-4 h-4 text-emeraldAccent"></i>
@@ -861,11 +863,11 @@
                 <div class="sheet-card p-5 space-y-3">
                     <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amberCore"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emeraldAccent"></span>
                             <span class="text-xs font-extrabold uppercase tracking-wider opacity-75">Аят для размышления</span>
                         </div>
                         <span class="px-3 py-1 rounded-full text-[11px] font-bold sheet-subcard tabular-nums">
-                            Смена через <strong id="ayah-3h-countdown" class="text-amberCore">--:--:--</strong>
+                            Смена через <strong id="ayah-3h-countdown" class="text-emeraldAccent">--:--:--</strong>
                         </span>
                     </div>
                     <p id="ayah-3h-arabic" class="arabic-text text-2xl sm:text-3xl text-right leading-loose"></p>
@@ -875,17 +877,17 @@
                         <span id="ayah-3h-source" class="font-bold">Сура Аш-Шарх • 94:5–6</span>
                         <div class="flex items-center gap-3">
                             <button onclick="toggleTranscriptionSetting()" class="spring-tap font-bold underline opacity-75 hover:opacity-100">Транскрипция</button>
-                            <button onclick="playAyahOf3HoursAudio()" class="spring-tap font-extrabold text-amberCore flex items-center gap-1">
+                            <button onclick="playAyahOf3HoursAudio()" class="spring-tap font-extrabold text-emeraldAccent flex items-center gap-1">
                                 <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Слушать аят
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Режим путника (Мусафир) -->
-                <div class="sheet-card p-4.5 sm:p-5 flex items-center justify-between gap-3">
+                <!-- Режим путника (Мусафир — лазурный акцент) -->
+                <div class="sheet-card p-5 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3.5 min-w-0">
-                        <div class="w-11 h-11 rounded-full bg-amberCore/15 text-amberCore flex items-center justify-center shrink-0">
+                        <div class="w-11 h-11 rounded-full bg-skyAccent/15 text-skyAccent flex items-center justify-center shrink-0">
                             <i data-lucide="plane" class="w-5 h-5"></i>
                         </div>
                         <div class="min-w-0">
@@ -907,16 +909,16 @@
 
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 rounded-3xl sheet-card">
                         <button onclick="openToolSection('qibla')" id="tool-tab-qibla" class="spring-tap py-2.5 px-3 rounded-full text-xs font-extrabold bg-obsidian text-white flex items-center justify-center gap-1.5">
-                            <i data-lucide="compass" class="w-3.5 h-3.5"></i> Кибла
+                            <i data-lucide="compass" class="w-3.5 h-3.5 text-rubyAccent"></i> Кибла
                         </button>
                         <button onclick="openToolSection('halal')" id="tool-tab-halal" class="spring-tap py-2.5 px-3 rounded-full text-xs font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1.5">
-                            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Е-коды
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emeraldAccent"></i> Е-коды
                         </button>
                         <button onclick="openToolSection('khushu')" id="tool-tab-khushu" class="spring-tap py-2.5 px-3 rounded-full text-xs font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1.5">
-                            <i data-lucide="book-open-check" class="w-3.5 h-3.5"></i> Смысл
+                            <i data-lucide="book-open-check" class="w-3.5 h-3.5 text-indigoAccent"></i> Смысл
                         </button>
                         <button onclick="openToolSection('emergency')" id="tool-tab-emergency" class="spring-tap py-2.5 px-3 rounded-full text-xs font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1.5">
-                            <i data-lucide="life-buoy" class="w-3.5 h-3.5"></i> Помощник
+                            <i data-lucide="life-buoy" class="w-3.5 h-3.5 text-amberCore"></i> Помощник
                         </button>
                     </div>
 
@@ -974,7 +976,7 @@
                     <div id="tool-panel-halal" class="hidden space-y-3">
                         <div class="sheet-card p-5 space-y-3">
                             <div class="relative">
-                                <i data-lucide="search" class="w-4 h-4 text-amberCore absolute left-4 top-3.5"></i>
+                                <i data-lucide="search" class="w-4 h-4 text-emeraldAccent absolute left-4 top-3.5"></i>
                                 <input id="halal-search-input" type="text" oninput="renderHalalAdditives(this.value)" placeholder="Код или компонент (E120, E441, E471, сычуг)..."
                                     class="w-full pl-11 pr-4 py-3 rounded-full sheet-subcard text-xs font-semibold focus:outline-none">
                             </div>
@@ -982,7 +984,7 @@
                                 <button onclick="quickFilterHalal('E120')" class="px-3 py-1.5 rounded-full sheet-subcard font-bold">E120 Кармин</button>
                                 <button onclick="quickFilterHalal('E441')" class="px-3 py-1.5 rounded-full sheet-subcard font-bold">E441 Желатин</button>
                                 <button onclick="quickFilterHalal('E471')" class="px-3 py-1.5 rounded-full sheet-subcard font-bold">E471</button>
-                                <button onclick="quickFilterHalal('')" class="px-3 py-1.5 rounded-full bg-amberCore text-white font-bold">Все</button>
+                                <button onclick="quickFilterHalal('')" class="px-3 py-1.5 rounded-full bg-emeraldAccent text-obsidian font-extrabold">Все</button>
                             </div>
                         </div>
                         <div id="halal-results-list" class="space-y-2.5"></div>
@@ -1010,7 +1012,7 @@
                 <div class="sheet-card p-5 sm:p-6 space-y-4">
                     <div class="flex items-center justify-between gap-2">
                         <div>
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-amberCore">Аудиопоток • 2–3 часа подряд</span>
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-emeraldAccent">Аудиопоток • 2–3 часа подряд</span>
                             <h2 class="text-lg font-extrabold tracking-tight">Слушать Коран и Рукъю</h2>
                         </div>
                         <button onclick="startLuhaidanMarathon(2)" class="spring-tap px-4 py-2.5 rounded-full bg-obsidian text-white text-xs font-extrabold flex items-center gap-1.5 shadow">
@@ -1061,7 +1063,7 @@
                             <p class="text-xs opacity-60">Тренажёр заучивания сур и арабский алфавит</p>
                         </div>
                         <div class="px-3.5 py-1.5 rounded-full sheet-subcard text-xs font-extrabold">
-                            Выучено: <span id="trainer-total-badge" class="text-amberCore tabular-nums">0</span> аятов
+                            Выучено: <span id="trainer-total-badge" class="text-emeraldAccent tabular-nums">0</span> аятов
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 p-1 rounded-full sheet-subcard">
@@ -1095,7 +1097,7 @@
                             <span class="opacity-65 font-semibold">Цикл повтора аята:</span>
                             <div class="flex gap-1.5">
                                 <button onclick="setLoopTarget(1)" id="loop-btn-1" class="px-3 py-1 rounded-full sheet-subcard font-bold">1x</button>
-                                <button onclick="setLoopTarget(3)" id="loop-btn-3" class="px-3 py-1 rounded-full bg-amberCore text-white font-extrabold">3x</button>
+                                <button onclick="setLoopTarget(3)" id="loop-btn-3" class="px-3 py-1 rounded-full bg-emeraldAccent text-obsidian font-extrabold">3x</button>
                                 <button onclick="setLoopTarget(5)" id="loop-btn-5" class="px-3 py-1 rounded-full sheet-subcard font-bold">5x</button>
                                 <button onclick="setLoopTarget(10)" id="loop-btn-10" class="px-3 py-1 rounded-full sheet-subcard font-bold">10x</button>
                             </div>
@@ -1114,7 +1116,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-amberCore">Бесплатный видеокурс</span>
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-rubyAccent">Бесплатный видеокурс</span>
                                 <h3 class="text-base font-extrabold">Арабский алфавит с нуля на YouTube</h3>
                             </div>
                         </div>
@@ -1160,26 +1162,23 @@
             </section>
 
             <!-- ───────────────────────────────────────────────────────────────── -->
-            <!-- ВКЛАДКА 4: РЕАЛИСТИЧНЫЕ СТАТУСЫ 1080×1920 (РЕАЛЬНЫЕ HD-ФОТО БЕЗ SVG И БЕЗ ЛЮДЕЙ) -->
+            <!-- ВКЛАДКА 4: МИНИМАЛИСТИЧНЫЕ СТАТУСЫ (КАК БЫЛО + 5 ШРИФТОВ И СМЕНА ЦВЕТА ТЕКСТА) -->
             <!-- ───────────────────────────────────────────────────────────────── -->
             <section id="tab-status" class="hidden space-y-4">
                 <div class="sheet-card p-5 space-y-3.5">
                     <div class="flex items-center justify-between gap-2">
                         <div>
-                            <h2 class="text-lg font-extrabold tracking-tight">Статусы и Истории</h2>
-                            <p class="text-xs opacity-60">Реальные HD-фотографии природы, листвы, неба и барханов (без людей)</p>
+                            <h2 class="text-lg font-extrabold tracking-tight">Статусы для историй</h2>
+                            <p class="text-xs opacity-60">Готовые открытки 1080×1920 для WhatsApp, Telegram и Instagram</p>
                         </div>
-                        <button onclick="rebuildWeeklyStatuses(true)" class="spring-tap px-4 py-2 rounded-full bg-obsidian text-white text-xs font-extrabold shrink-0 flex items-center gap-1.5">
-                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amberGlow"></i> Обновить фото
-                        </button>
+                        <button onclick="rebuildWeeklyStatuses(true)" class="spring-tap px-4 py-2 rounded-full bg-obsidian text-white text-xs font-extrabold shrink-0">Обновить</button>
                     </div>
 
+                    <!-- Без указания количества -->
                     <div class="flex flex-wrap gap-1.5">
-                        <button onclick="filterStatuses('all')" id="status-filter-all" class="spring-tap px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-amberCore text-white">Все (24)</button>
-                        <button onclick="filterStatuses('botanical')" id="status-filter-botanical" class="spring-tap px-3.5 py-1.5 rounded-full text-xs font-bold sheet-subcard">🍂 Листья и Ботаника</button>
-                        <button onclick="filterStatuses('mist')" id="status-filter-mist" class="spring-tap px-3.5 py-1.5 rounded-full text-xs font-bold sheet-subcard">🌲 Туман и Небо</button>
-                        <button onclick="filterStatuses('desert')" id="status-filter-desert" class="spring-tap px-3.5 py-1.5 rounded-full text-xs font-bold sheet-subcard">🏜️ Пустыня и Мечети</button>
-                        <button onclick="filterStatuses('jumuah')" id="status-filter-jumuah" class="spring-tap px-3.5 py-1.5 rounded-full text-xs font-bold sheet-subcard">✨ Джума и Праздники</button>
+                        <button onclick="filterStatuses('all')" id="status-filter-all" class="spring-tap px-4 py-1.5 rounded-full text-xs font-extrabold bg-amberCore text-white">Все</button>
+                        <button onclick="filterStatuses('jumuah')" id="status-filter-jumuah" class="spring-tap px-4 py-1.5 rounded-full text-xs font-bold sheet-subcard">Пятница (Джума)</button>
+                        <button onclick="filterStatuses('eid')" id="status-filter-eid" class="spring-tap px-4 py-1.5 rounded-full text-xs font-bold sheet-subcard">Праздники</button>
                     </div>
                 </div>
 
@@ -1196,7 +1195,7 @@
                             <h2 class="text-lg font-extrabold tracking-tight">Город и Мазхаб</h2>
                             <p class="text-xs opacity-60">Время намазов и календарь .ics мгновенно синхронизируются</p>
                         </div>
-                        <button onclick="detectGeolocation()" class="spring-tap px-4 py-2 rounded-full bg-amberCore text-white text-xs font-extrabold flex items-center gap-1.5">
+                        <button onclick="detectGeolocation()" class="spring-tap px-4 py-2 rounded-full bg-emeraldAccent text-obsidian text-xs font-extrabold flex items-center gap-1.5">
                             <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Авто-GPS
                         </button>
                     </div>
@@ -1246,12 +1245,12 @@
                         <p class="text-xs opacity-60">Двойная защита: системный календарь (.ics) и прямые уведомления браузера</p>
                     </div>
 
-                    <div class="p-3.5 rounded-2xl bg-amberCore/15 border border-amberCore/30 flex items-center justify-between gap-2 text-xs">
+                    <div class="p-3.5 rounded-2xl bg-emeraldAccent/15 border border-emeraldAccent/30 flex items-center justify-between gap-2 text-xs">
                         <div class="flex items-center gap-2 min-w-0">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-amberCore shrink-0"></i>
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emeraldAccent shrink-0"></i>
                             <span id="ics-sync-verification" class="font-bold truncate">Экспорт: г. Казань • Ханафи</span>
                         </div>
-                        <span id="ics-asr-preview" class="font-extrabold text-amberCore shrink-0 tabular-nums">Аср: --:--</span>
+                        <span id="ics-asr-preview" class="font-extrabold text-emeraldAccent shrink-0 tabular-nums">Аср: --:--</span>
                     </div>
 
                     <div class="sheet-subcard p-4 flex items-center justify-between gap-3">
@@ -1260,7 +1259,7 @@
                             <span class="text-[11px] opacity-60 block">Уведомлять в момент наступления намаза и за 10 минут</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="sendTestPrayerNotification()" class="spring-tap px-3 py-1.5 rounded-full bg-amberCore/15 text-amberCore text-[11px] font-extrabold">Тест</button>
+                            <button onclick="sendTestPrayerNotification()" class="spring-tap px-3 py-1.5 rounded-full bg-emeraldAccent/15 text-emeraldAccent text-[11px] font-extrabold">Тест</button>
                             <div id="web-notif-switch" onclick="toggleWebNotifications()" class="ios-switch inactive" role="switch">
                                 <div class="ios-switch-thumb"></div>
                             </div>
@@ -1318,7 +1317,7 @@
                 <a href="https://t.me/aitral" target="_blank" rel="noopener noreferrer" class="spring-tap block sheet-card p-5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-amberCore/15 text-amberCore flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-skyAccent/15 text-skyAccent flex items-center justify-center">
                                 <i data-lucide="send" class="w-4 h-4"></i>
                             </div>
                             <div>
@@ -1349,106 +1348,76 @@
     </div>
 
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- МОДАЛЬНОЕ ОКНО РЕАЛИСТИЧНЫХ СТАТУСОВ + МИНИ-РЕДАКТОР (1080×1920) -->
+    <!-- МИНИМАЛИСТИЧНОЕ МОДАЛЬНОЕ ОКНО СТАТУСОВ 1080×1920 (ТЕКСТ ПОСЕРЕДИНЕ + 5 ШРИФТОВ + ЦВЕТ) -->
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <div id="status-modal" class="fixed inset-0 z-50 hidden bg-black/88 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-4 overflow-y-auto">
-        <div class="w-full max-w-[355px] space-y-2.5 my-auto">
+    <div id="status-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center p-4">
+        <div class="relative w-full max-w-[345px] aspect-[9/16] rounded-[34px] overflow-hidden shadow-2xl border border-white/20 flex flex-col justify-between bg-black">
+            <img id="modal-status-img" src="" crossorigin="anonymous" alt="Status" class="absolute inset-0 w-full h-full object-cover status-photo-exposure">
+            <div id="modal-status-gradient" class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/48 to-black/82 transition-all duration-300"></div>
 
-            <!-- ЖИВОЕ ПРЕВЬЮ РЕАЛЬНОЙ ФОТОГРАФИИ 9:16 -->
-            <div id="modal-preview-card" class="relative w-full aspect-[9/16] max-h-[58vh] mx-auto rounded-[30px] overflow-hidden shadow-2xl border border-white/25 bg-black flex flex-col justify-between">
-                <img id="modal-status-img" src="" crossorigin="anonymous" alt="Status HD" class="absolute inset-0 w-full h-full object-cover transition-all duration-300">
-                <div id="modal-status-veil" class="absolute inset-0 transition-all duration-300"></div>
-
-                <div class="relative z-20 flex justify-end p-3.5">
-                    <button onclick="closeStatusModal()" class="spring-tap w-9 h-9 rounded-full bg-black/55 text-white border border-white/25 flex items-center justify-center backdrop-blur-md">
-                        <i data-lucide="x" class="w-4 h-4"></i>
+            <!-- Верхние минималистичные кнопки: Смена 5 шрифтов, Смена цвета текста (Белый / Чёрный) и Закрыть -->
+            <div class="relative z-10 flex items-center justify-between gap-1.5 p-3.5">
+                <div class="flex items-center gap-1.5">
+                    <button onclick="cycleModalStatusFont()" id="modal-font-btn" class="spring-tap px-3 py-1.5 rounded-full bg-black/50 text-white border border-white/25 text-[11px] font-bold backdrop-blur-md">
+                        Шрифт: Курсив
+                    </button>
+                    <button onclick="toggleModalStatusColor()" id="modal-color-btn" class="spring-tap px-3 py-1.5 rounded-full bg-black/50 text-white border border-white/25 text-[11px] font-bold backdrop-blur-md">
+                        Цвет: Белый
                     </button>
                 </div>
-
-                <!-- Контейнер текста, который меняет позицию (Сверху / Центр / Снизу) и стиль -->
-                <div id="modal-text-wrapper" class="relative z-10 px-6 flex-1 flex flex-col justify-center items-center text-center">
-                    <div id="modal-text-glass-box" class="w-full space-y-2.5 transition-all duration-300">
-                        <p id="modal-status-arabic" class="arabic-text text-[20px] leading-relaxed"></p>
-                        <p id="modal-status-cyrillic" class="hidden text-[12px] font-extrabold italic"></p>
-                        <p id="modal-status-russian" class="text-[14.5px] leading-relaxed font-semibold"></p>
-                        <p id="modal-status-source" class="text-[9.5px] uppercase tracking-[0.2em] opacity-80 pt-1"></p>
-                    </div>
-                </div>
-
-                <div class="relative z-10 h-4"></div>
+                <button onclick="closeStatusModal()" class="spring-tap p-2 rounded-full bg-black/50 text-white border border-white/25 backdrop-blur-md">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
 
-            <!-- ПАНЕЛЬ МИНИ-РЕДАКТОРА -->
-            <div class="rounded-[26px] p-3.5 bg-[#181514]/95 border border-white/15 text-white space-y-2.5 shadow-2xl">
-                <!-- 4 режима оформления поверх реальной фотографии -->
-                <div class="grid grid-cols-4 gap-1.5 text-[10.5px]">
-                    <button onclick="setEditorOverlayStyle('lightVeil')" id="ed-ov-lightVeil" class="spring-tap py-1.5 px-2 rounded-full font-extrabold bg-amberCore text-white">Светлая вуаль</button>
-                    <button onclick="setEditorOverlayStyle('liquidGlass')" id="ed-ov-liquidGlass" class="spring-tap py-1.5 px-2 rounded-full font-bold bg-white/10 text-white/85">Liquid Glass</button>
-                    <button onclick="setEditorOverlayStyle('darkCinema')" id="ed-ov-darkCinema" class="spring-tap py-1.5 px-2 rounded-full font-bold bg-white/10 text-white/85">Кино-тень</button>
-                    <button onclick="setEditorOverlayStyle('skyTop')" id="ed-ov-skyTop" class="spring-tap py-1.5 px-2 rounded-full font-bold bg-white/10 text-white/85">В небе</button>
-                </div>
+            <!-- ТЕКСТ СТРОГО ПОСЕРЕДИНЕ (МИНИМАЛИЗМ БЕЗ ЛИШНИХ ПЛАШЕК) -->
+            <div id="modal-status-text-box" class="relative z-10 px-7 text-center my-auto space-y-3">
+                <p id="modal-status-arabic" class="arabic-text text-[21px] leading-relaxed"></p>
+                <p id="modal-status-cyrillic" class="hidden text-[12px] font-bold italic opacity-90"></p>
+                <p id="modal-status-russian" class="font-serifOld italic text-[16px] leading-relaxed"></p>
+                <p id="modal-status-source" class="text-[9.5px] uppercase tracking-[0.22em] opacity-80 pt-1"></p>
+            </div>
 
-                <!-- Управление позицией, цветом текста, сменой реального фото и транскрипцией -->
-                <div class="grid grid-cols-4 gap-1.5 text-[10.5px]">
-                    <button onclick="cycleEditorTextPos()" class="spring-tap py-2 px-1.5 rounded-2xl bg-white/10 hover:bg-white/15 font-bold flex flex-col items-center gap-0.5">
-                        <i data-lucide="align-vertical-space-around" class="w-3.5 h-3.5 text-amberGlow"></i>
-                        <span id="ed-pos-label">Центр</span>
-                    </button>
-                    <button onclick="toggleEditorInk()" class="spring-tap py-2 px-1.5 rounded-2xl bg-white/10 hover:bg-white/15 font-bold flex flex-col items-center gap-0.5">
-                        <i data-lucide="contrast" class="w-3.5 h-3.5 text-amberGlow"></i>
-                        <span id="ed-ink-label">Чернила</span>
-                    </button>
-                    <button onclick="cycleEditorPhoto()" class="spring-tap py-2 px-1.5 rounded-2xl bg-white/10 hover:bg-white/15 font-bold flex flex-col items-center gap-0.5">
-                        <i data-lucide="image" class="w-3.5 h-3.5 text-amberGlow"></i>
-                        <span>Другое фото</span>
-                    </button>
-                    <button onclick="toggleEditorTranscription()" class="spring-tap py-2 px-1.5 rounded-2xl bg-white/10 hover:bg-white/15 font-bold flex flex-col items-center gap-0.5">
-                        <i data-lucide="languages" class="w-3.5 h-3.5 text-emeraldAccent"></i>
-                        <span id="ed-tr-label">Транскр.</span>
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 pt-0.5">
-                    <button onclick="shareStatusImageFile()" class="spring-tap py-3 px-3 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-lg">
-                        <i data-lucide="share-2" class="w-4 h-4"></i>
-                        <span>Поделиться</span>
-                    </button>
-                    <button onclick="downloadStatusImage()" class="spring-tap py-3 px-3 rounded-full bg-white text-obsidian font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-lg">
-                        <i data-lucide="download" class="w-4 h-4"></i>
-                        <span>Скачать 1080p</span>
-                    </button>
-                </div>
+            <!-- Кнопки скачивания и отправки -->
+            <div class="relative z-10 p-4 space-y-2 bg-gradient-to-t from-black/90 via-black/55 to-transparent">
+                <button onclick="shareStatusImageFile()" class="spring-tap w-full py-3 px-4 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs uppercase flex items-center justify-center gap-2 shadow-lg">
+                    <i data-lucide="share-2" class="w-4 h-4"></i>
+                    <span>Отправить в WhatsApp / Истории</span>
+                </button>
+                <button onclick="downloadStatusImage()" class="spring-tap w-full py-2.5 px-4 rounded-full bg-white/15 border border-white/20 text-white font-bold text-[11px] uppercase flex items-center justify-center gap-2">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <span>Скачать 1080×1920</span>
+                </button>
             </div>
         </div>
         <canvas id="status-canvas" width="1080" height="1920" class="hidden"></canvas>
     </div>
 
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- НИЖНИЙ ОСТРОВОК НАВИГАЦИИ: МОНОЛИТНЫЙ (324px), АКТИВНАЯ = ИКОНКА+ТЕКСТ, ОСТАЛЬНЫЕ = ТОЛЬКО ИКОНКИ -->
+    <!-- НИЖНИЙ ОСТРОВОК НАВИГАЦИИ (100% GPU TRANSLATE3D, БЕЗ ПУСТЫХ ДЫР В НАСТРОЙКАХ) -->
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <nav class="floating-bottom-nav" aria-label="Основная навигация">
-        <div id="nav-glider"></div>
+        <div id="nav-glider" style="transform: translate3d(0px, 0, 0);"></div>
 
-        <button onclick="switchTab('prayer')" id="nav-prayer" class="nav-item-btn active">
+        <button onclick="switchTab('prayer')" id="nav-prayer" class="nav-item-btn active" style="width: 132px; transform: translate3d(0px, 0, 0);">
             <i data-lucide="clock-4" class="w-5 h-5 shrink-0"></i>
             <span class="nav-label">Намаз</span>
         </button>
-        <button onclick="switchTab('quran')" id="nav-quran" class="nav-item-btn">
+        <button onclick="switchTab('quran')" id="nav-quran" class="nav-item-btn" style="width: 60px; transform: translate3d(132px, 0, 0);">
             <i data-lucide="book-open" class="w-5 h-5 shrink-0"></i>
             <span class="nav-label">Коран</span>
         </button>
-        <button onclick="switchTab('memorize')" id="nav-memorize" class="nav-item-btn">
+        <button onclick="switchTab('memorize')" id="nav-memorize" class="nav-item-btn" style="width: 60px; transform: translate3d(192px, 0, 0);">
             <i data-lucide="graduation-cap" class="w-5 h-5 shrink-0"></i>
             <span class="nav-label">Обучение</span>
         </button>
-        <button onclick="switchTab('status')" id="nav-status" class="nav-item-btn">
+        <button onclick="switchTab('status')" id="nav-status" class="nav-item-btn" style="width: 60px; transform: translate3d(252px, 0, 0);">
             <i data-lucide="sparkles" class="w-5 h-5 shrink-0"></i>
             <span class="nav-label">Статус</span>
         </button>
     </nav>
-
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- ЯДРО ПРИЛОЖЕНИЯ AYASPACE -->
+    <!-- ЯДРО ПРИЛОЖЕНИЯ AYASPACE (ЧАСТЬ 2) -->
     <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <script>
         const MADHHAB_INFO = {
@@ -1531,68 +1500,65 @@
         };
 
         // ═════════════════════════════════════════════════════════════════════
-        // 30+ РЕАЛЬНЫХ HD-ФОТОГРАФИЙ И КАРТИН ИЗ ОТКРЫТЫХ ИСТОЧНИКОВ (БЕЗ ЛЮДЕЙ И ТЕХНОЛОГИЙ)
+        // ПРОВЕРЕННЫЕ ФОТОГРАФИИ ПРИРОДЫ, ПУСТЫНИ, ТУМАННЫХ ЛЕСОВ И МЕЧЕТЕЙ (БЕЗ ЛЮДЕЙ)
         // ═════════════════════════════════════════════════════════════════════
-        const REAL_HD_PHOTOS = {
-            botanical: [
-                "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1477414348463-c0eb7f1359b6?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1080&q=85"
-            ],
-            mist: [
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Foggy_pine_%28Unsplash%29.jpg/1080px-Foggy_pine_%28Unsplash%29.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Foggy_mountain_%28Unsplash%29.jpg/1080px-Foggy_mountain_%28Unsplash%29.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Misty_shroud_over_a_forest_%28Unsplash%29.jpg/1080px-Misty_shroud_over_a_forest_%28Unsplash%29.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Pine_trees_and_fog_%28Unsplash%29.jpg/1080px-Pine_trees_and_fog_%28Unsplash%29.jpg",
-                "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1080&q=85"
-            ],
-            desert: [
-                "https://upload.wikimedia.org/wikipedia/commons/c/ce/The_massive_sand_dunes_of_Rub_Al_Khali.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Sheikh_Zayed_Mosque_Silhouette.jpg/1080px-Sheikh_Zayed_Mosque_Silhouette.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/8/86/Rub_al-Khali_Oman_2.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Desert_Sand_Dunes_near_sunset.jpg/1080px-Desert_Sand_Dunes_near_sunset.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Antelope_Canyon_%28Unsplash%29.jpg/1080px-Antelope_Canyon_%28Unsplash%29.jpg",
-                "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=1080&q=85",
-                "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=1080&q=85"
-            ]
-        };
+        const REAL_NATURE_PHOTOS = [
+            "https://upload.wikimedia.org/wikipedia/commons/c/ce/The_massive_sand_dunes_of_Rub_Al_Khali.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Sheikh_Zayed_Mosque_Silhouette.jpg/1280px-Sheikh_Zayed_Mosque_Silhouette.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/8/86/Rub_al-Khali_Oman_2.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Desert_Sand_Dunes_near_sunset.jpg/1280px-Desert_Sand_Dunes_near_sunset.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Dense_mist_over_pine_trees_%28Unsplash%29.jpg/1280px-Dense_mist_over_pine_trees_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/c/cb/Rub_al-Khali_001.JPG",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Foggy_pine_%28Unsplash%29.jpg/1280px-Foggy_pine_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Desert_Dunes_U.A.E.jpg/1280px-Desert_Dunes_U.A.E.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Misty_shroud_over_a_forest_%28Unsplash%29.jpg/1280px-Misty_shroud_over_a_forest_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Desert_Dunes_in_New_Mexico_%28Unsplash%29.jpg/1280px-Desert_Dunes_in_New_Mexico_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Foggy_mountain_%28Unsplash%29.jpg/1280px-Foggy_mountain_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Antelope_Canyon_%28Unsplash%29.jpg/1280px-Antelope_Canyon_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Pine_trees_and_fog_%28Unsplash%29.jpg/1280px-Pine_trees_and_fog_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Cloudy_sunset_over_the_sand_dunes_%28Unsplash%29.jpg/1280px-Cloudy_sunset_over_the_sand_dunes_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Sandy_Designs_%28Unsplash%29.jpg/1280px-Sandy_Designs_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Sunset_in_Death_Valley_%28Unsplash%29.jpg/1080px-Sunset_in_Death_Valley_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Desert_Dunes.jpg/1280px-Desert_Dunes.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Canyon_%28Unsplash%29.jpg/1280px-Canyon_%28Unsplash%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/A_snowy_mountain_in_the_desert_%28Unsplash%29.jpg/1280px-A_snowy_mountain_in_the_desert_%28Unsplash%29.jpg",
+            "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1080&q=85",
+            "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1080&q=85",
+            "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1080&q=85",
+            "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1080&q=85",
+            "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1080&q=85"
+        ];
 
-        const FLAT_PHOTO_LIST = [...REAL_HD_PHOTOS.botanical, ...REAL_HD_PHOTOS.mist, ...REAL_HD_PHOTOS.desert];
+        // 5 Шрифтов для переключения в Статусах
+        const STATUS_FONT_PRESETS = [
+            { key: "serifItalic", label: "Курсив", cssClass: "font-serifOld italic font-normal", canvasFont: "italic 400 40px 'Playfair Display', serif" },
+            { key: "sfBold", label: "Жирный", cssClass: "font-sans font-extrabold not-italic tracking-tight", canvasFont: "800 37px 'SF Pro Rounded', 'Nunito', sans-serif" },
+            { key: "cormorant", label: "Книжный", cssClass: "font-cormorant italic font-semibold text-[18px]", canvasFont: "italic 600 44px 'Cormorant Garamond', serif" },
+            { key: "montserrat", label: "Гротеск", cssClass: "font-montserrat font-bold not-italic tracking-tight", canvasFont: "700 35px 'Montserrat', sans-serif" },
+            { key: "scriptFont", label: "Рукописный", cssClass: "font-scriptFont font-normal not-italic text-[19px]", canvasFont: "400 46px 'Marck Script', cursive" }
+        ];
 
         const ALL_STATUS_POOL = [
-            { category: "botanical", overlayStyle: "lightVeil", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "اللهم صل على محمد وعلى آل محمد", cyrillic: "«Аллахумма, салли ’аля Мухаммадин ва ’аля али Мухаммад»", russian: "Да дарует вам Аллах барак’ат во времени, делах и сердцах, и пусть всё, за что вы берётесь, приносит вам пользу в этой жизни и в Последней.", source: "Благословенный салават" },
-            { category: "mist", overlayStyle: "skyTop", textPos: "top", inkMode: "dark", photoGroup: "mist", arabic: "الإمام أبو حامد الغزالي كتاب المواعظ في الاحاديث القدسية", cyrillic: "Имам Абу Хамид аль-Газали • Книга увещеваний", russian: "Отдаляйся от запретного — и твоя вера станет искренней.", source: "Хадис-уль-Кудси" },
-            { category: "botanical", overlayStyle: "lightVeil", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", cyrillic: "«Фа-инна ма’аль-’усри йусра»", russian: "Воистину, за каждой тягостью наступает облегчение.", source: "Сура Аш-Шарх • 94:5" },
-            { category: "desert", overlayStyle: "darkCinema", textPos: "center", inkMode: "light", photoGroup: "desert", arabic: "لا تترك الصلاة من أجل الدنيا فإنها فانية، والصلاة هي أبديتك", cyrillic: "Ля татруки с-салята мин аджли д-дунья...", russian: "Не оставляй намаз ради этой дуньи, ведь она временная, а намаз — твоя вечность.", source: "Напоминание верующим" },
-            { category: "botanical", overlayStyle: "liquidGlass", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "وَفِي السَّمَاءِ رِزْقُكُمْ وَمَا تُوعَدُونَ", cyrillic: "«Ва фи с-самаи ризкукум ва ма ту’адун»", russian: "То, что предписано тебе Всевышним, никогда не достанется другому. Будь спокоен за свой удел.", source: "Сура Аз-Зарият • 51:22" },
-            { category: "mist", overlayStyle: "skyTop", textPos: "top", inkMode: "dark", photoGroup: "mist", arabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", cyrillic: "«Аля би-зикри Лляхи татмаиннуль-кулюб»", russian: "Когда в душе становится тесно от слов людей — ищи покой в поминании Аллаха.", source: "Сура Ар-Раад • 13:28" },
-            { category: "jumuah", overlayStyle: "lightVeil", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ", cyrillic: "«Инна Ллаха ва маляикятаху йусаллюна ’алян-Набийй»", russian: "Благословенная пятница (Джума Мубарак). Озарите этот день салаватом Пророку ﷺ.", source: "Сура Аль-Ахзаб • 33:56" },
-            { category: "desert", overlayStyle: "darkCinema", textPos: "center", inkMode: "light", photoGroup: "desert", arabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا", cyrillic: "«Ля йукяллифу Ллаху нафсан илля вус’аха»", russian: "Если испытание пришло к тебе — значит, Всевышний знает, что у тебя хватит сил его пройти.", source: "Сура Аль-Бакара • 2:286" },
-            { category: "mist", overlayStyle: "liquidGlass", textPos: "center", inkMode: "dark", photoGroup: "mist", arabic: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ", cyrillic: "«Ва Хува ма’акум айна ма кунтум»", russian: "Ты никогда не бываешь один: Господь миров слышит даже шёпот твоего сердца.", source: "Сура Аль-Хадид • 57:4" },
-            { category: "mist", overlayStyle: "skyTop", textPos: "top", inkMode: "dark", photoGroup: "mist", arabic: "مَا أَصَابَكَ لَمْ يَكُنْ لِيُخْطِئَكَ", cyrillic: "«Ма асабакя лям йакун ли-йухты’ак»", russian: "Знай: то, что миновало тебя, не должно было с тобой случиться.", source: "Хадис • Абу Дауд" },
-            { category: "botanical", overlayStyle: "lightVeil", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "عَجَبًا لِأَمْرِ الْمُؤْمِنِ إِنَّ أَمْرَهُ كُلَّهُ خَيْرٌ", cyrillic: "«Аджабан ли-амриль-му’мин, инна амраху кулляху хайр»", russian: "Удивительно положение верующего! В радости он благодарит, в трудности — проявляет терпение.", source: "Сахих Муслим • 2999" },
-            { category: "desert", overlayStyle: "darkCinema", textPos: "center", inkMode: "light", photoGroup: "desert", arabic: "ادْعُونِي أَسْتَجِبْ لَكُمْ", cyrillic: "«Уд’уни астаджиб лякум»", russian: "Ни одна искренняя мольба не пропадает даром у Господа миров.", source: "Сура Гафир • 40:60" },
-            { category: "botanical", overlayStyle: "liquidGlass", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ", cyrillic: "«Ва лясауфа йу’тыка Раббука фа-тарда»", russian: "Господь твой непременно одарит тебя так, что сердце твоё будет довольно.", source: "Сура Ад-Духа • 93:5" },
-            { category: "mist", overlayStyle: "skyTop", textPos: "top", inkMode: "dark", photoGroup: "mist", arabic: "وَاصْبِرْ لِحُكْمِ رَبِّكَ فَإِنَّكَ بِأَعْيُنِنَا", cyrillic: "«Васбир ли-хукми Раббикя фа-иннакя би-а’йунина»", russian: "Иногда закрытая дверь — это защита Всевышнего от того, что причинило бы тебе боль.", source: "Сура Ат-Тур • 52:48" },
-            { category: "botanical", overlayStyle: "lightVeil", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "وَقُل رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", cyrillic: "«Ва куль Рабби рхамхума кяма раббайани сагыра»", russian: "Берегите родителей. Их довольство — открытые врата милости Аллаха.", source: "Сура Аль-Исра • 17:24" },
-            { category: "jumuah", overlayStyle: "darkCinema", textPos: "center", inkMode: "light", photoGroup: "desert", arabic: "مَنْ قَرَأَ سُورَةَ الْكَهْفِ فِي يَوْمِ الْجُمُعَةِ أَضَاءَ لَهُ مِنَ النُّورِ", cyrillic: "«Ман кара’а сураталь-Кяхфи фи йаумиль-джуму’а...»", russian: "Кто прочитает суру «Аль-Кахф» в пятницу, того озарит свет между двумя пятницами.", source: "Сунна • Аль-Хаким" },
-            { category: "jumuah", overlayStyle: "lightVeil", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ", cyrillic: "«Такаббаля Ллаху минна ва минкум»", russian: "Ид Мубарак! Да примет Аллах от нас и от вас праведные деяния.", source: "Праздничное поздравление" },
-            { category: "jumuah", overlayStyle: "liquidGlass", textPos: "center", inkMode: "dark", photoGroup: "mist", arabic: "عِيدُكُمْ مُبَارَكٌ وَكُلُّ عَامٍ وَأَنْتُمْ بِخَيْرٍ", cyrillic: "«Идукум мубарак ва куллю ’амин ва антум би-хайр»", russian: "С благословенным праздником! Пусть Всевышний ответит на ваши благие дуа.", source: "Ид аль-Фитр / Курбан-байрам" },
-            { category: "desert", overlayStyle: "darkCinema", textPos: "center", inkMode: "light", photoGroup: "desert", arabic: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ", cyrillic: "«Хасбуна Ллаху ва ни’маль-Вакиль»", russian: "Достаточно нам Аллаха, и как прекрасен этот Покровитель и Хранитель!", source: "Сура Али Имран • 3:173" },
-            { category: "mist", overlayStyle: "skyTop", textPos: "top", inkMode: "dark", photoGroup: "mist", arabic: "لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا", cyrillic: "«Ля тахзан, инна Ллаха ма’ана»", russian: "Не печалься о том, что ушло. Если с тобой Всевышний — ты ничего не потерял.", source: "Сура Ат-Тауба • 9:40" },
-            { category: "botanical", overlayStyle: "lightVeil", textPos: "center", inkMode: "dark", photoGroup: "botanical", arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", cyrillic: "«Раббана атина фи д-дунья хасанатан ва филь-ахирати хасана»", russian: "Господь наш! Одари нас добром в этом мире и добром в Последней жизни.", source: "Сура Аль-Бакара • 2:201" },
-            { category: "mist", overlayStyle: "liquidGlass", textPos: "center", inkMode: "dark", photoGroup: "mist", arabic: "وَأَحْسِنُوا ۛ إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ", cyrillic: "«Ва ахсину, инна Ллаха йухиббуль-мухсинин»", russian: "Творите добро, ведь поистине Аллах любит творящих добро.", source: "Сура Аль-Бакара • 2:195" },
-            { category: "desert", overlayStyle: "darkCinema", textPos: "center", inkMode: "light", photoGroup: "desert", arabic: "فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ", cyrillic: "«Фазкуруни азкуркум вашкуру ли ва ля такфурун»", russian: "Поминайте Меня, и Я буду помнить о вас. Благодарите Меня и не будьте неблагодарны.", source: "Сура Аль-Бакара • 2:152" },
-            { category: "desert", overlayStyle: "darkCinema", textPos: "center", inkMode: "light", photoGroup: "desert", arabic: "إِنَّ رَحْمَتَ اللَّهِ قَرِيبٌ مِّنَ الْمُحْسِنِينَ", cyrillic: "«Инна рахмата Ллахи карибун миналь-мухсинин»", russian: "Воистину, милость Аллаха близка к творящим добро.", source: "Сура Аль-Араф • 7:56" }
+            { category: "daily", fontIndex: 0, arabic: "لا تترك الصلاة من أجل الدنيا فإنها فانية، والصلاة هي أبديتك.", cyrillic: "Ля татруки с-салята мин аджли д-дунья...", russian: "Не оставляй намаз ради этой дуньи, ведь она временная, а намаз — твоя вечность.", source: "Напоминание верующим" },
+            { category: "daily", fontIndex: 1, arabic: "الإمام أبو حامد الغزالي كتاب المواعظ في الاحاديث القدسية", cyrillic: "Имам Абу Хамид аль-Газали", russian: "Отдаляйся от запретного — и твоя вера станет искренней.", source: "Хадис-уль-Кудси • Имам аль-Газали" },
+            { category: "jumuah", fontIndex: 2, arabic: "اللهم صل على محمد وعلى آل محمد", cyrillic: "«Аллахумма, салли ’аля Мухаммадин ва ’аля али Мухаммад»", russian: "Да дарует вам Аллах баракат во времени, делах и сердцах.", source: "Благословенный салават" },
+            { category: "daily", fontIndex: 1, arabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", cyrillic: "«Фа-инна ма’аль-’усри йусра»", russian: "Воистину, за каждой тягостью наступает облегчение.", source: "Сура Аш-Шарх • 94:5" },
+            { category: "daily", fontIndex: 0, arabic: "وَفِي السَّمَاءِ رِزْقُكُمْ وَمَا تُوعَدُونَ", cyrillic: "«Ва фи с-самаи ризкукум ва ма ту’адун»", russian: "То, что предписано тебе Всевышним, никогда не достанется другому. Будь спокоен за свой удел.", source: "Сура Аз-Зарият • 51:22" },
+            { category: "daily", fontIndex: 3, arabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", cyrillic: "«Аля би-зикри Лляхи татмаиннуль-кулюб»", russian: "Когда в душе становится тесно от слов людей — ищи покой в поминании Аллаха.", source: "Сура Ар-Раад • 13:28" },
+            { category: "daily", fontIndex: 1, arabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا", cyrillic: "«Ля йукяллифу Ллаху нафсан илля вус’аха»", russian: "Если испытание пришло к тебе — значит, Всевышний знает, что у тебя хватит сил его пройти.", source: "Сура Аль-Бакара • 2:286" },
+            { category: "daily", fontIndex: 0, arabic: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ", cyrillic: "«Ва Хува ма’акум айна ма кунтум»", russian: "Ты никогда не бываешь один: Господь миров слышит даже шёпот твоего сердца.", source: "Сура Аль-Хадид • 57:4" },
+            { category: "daily", fontIndex: 2, arabic: "مَا أَصَابَكَ لَمْ يَكُنْ لِيُخْطِئَكَ", cyrillic: "«Ма асабакя лям йакун ли-йухты’ак»", russian: "Знай: то, что миновало тебя, не должно было с тобой случиться.", source: "Хадис • Абу Дауд" },
+            { category: "jumuah", fontIndex: 1, arabic: "إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ", cyrillic: "«Инна Ллаха ва маляикятаху йусаллюна ’алян-Набийй»", russian: "Благословенная пятница (Джума Мубарак). Озарите этот день салаватом Пророку ﷺ.", source: "Сура Аль-Ахзаб • 33:56" },
+            { category: "daily", fontIndex: 0, arabic: "عَجَبًا لِأَمْرِ الْمُؤْمِنِ إِنَّ أَمْرَهُ كُلَّهُ خَيْرٌ", cyrillic: "«Аджабан ли-амриль-му’мин...»", russian: "Удивительно положение верующего! В радости он благодарит, в трудности — проявляет терпение.", source: "Сахих Муслим • 2999" },
+            { category: "daily", fontIndex: 3, arabic: "ادْعُونِي أَسْتَجِبْ لَكُمْ", cyrillic: "«Уд’уни астаджиб лякум»", russian: "Ни одна искренняя мольба не пропадает даром у Господа миров.", source: "Сура Гафир • 40:60" },
+            { category: "daily", fontIndex: 1, arabic: "وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ", cyrillic: "«Ва лясауфа йу’тыка Раббука фа-тарда»", russian: "Господь твой непременно одарит тебя так, что сердце твоё будет довольно.", source: "Сура Ад-Духа • 93:5" },
+            { category: "daily", fontIndex: 0, arabic: "وَاصْبِرْ لِحُكْمِ رَبِّكَ فَإِنَّكَ بِأَعْيُنِنَا", cyrillic: "«Васбир ли-хукми Раббикя...»", russian: "Иногда закрытая дверь — это защита Всевышнего от того, что причинило бы тебе боль.", source: "Сура Ат-Тур • 52:48" },
+            { category: "daily", fontIndex: 4, arabic: "وَقُل رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", cyrillic: "«Ва куль Рабби рхамхума кяма раббайани сагыра»", russian: "Берегите родителей. Их довольство — открытые врата милости Аллаха.", source: "Сура Аль-Исра • 17:24" },
+            { category: "jumuah", fontIndex: 0, arabic: "مَنْ قَرَأَ سُورَةَ الْكَهْفِ فِي يَوْمِ الْجُمُعَةِ أَضَاءَ لَهُ مِنَ النُّورِ", cyrillic: "«Ман кара’а сураталь-Кяхфи...»", russian: "Кто прочитает суру «Аль-Кахф» в пятницу, того озарит свет между двумя пятницами.", source: "Сунна • Аль-Хаким" },
+            { category: "eid", fontIndex: 1, arabic: "تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ", cyrillic: "«Такаббаля Ллаху минна ва минкум»", russian: "Ид Мубарак! Да примет Аллах от нас и от вас праведные деяния.", source: "Праздничное поздравление" },
+            { category: "eid", fontIndex: 2, arabic: "عِيدُكُمْ مُبَارَكٌ وَكُلُّ عَامٍ وَأَنْتُمْ بِخَيْرٍ", cyrillic: "«Идукум мубарак ва куллю ’амин ва антум би-хайр»", russian: "С благословенным праздником! Пусть Всевышний ответит на ваши благие дуа.", source: "Ид аль-Фитр / Курбан-байрам" },
+            { category: "daily", fontIndex: 1, arabic: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ", cyrillic: "«Хасбуна Ллаху ва ни’маль-Вакиль»", russian: "Достаточно нам Аллаха, и как прекрасен этот Покровитель и Хранитель!", source: "Сура Али Имран • 3:173" },
+            { category: "daily", fontIndex: 3, arabic: "لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا", cyrillic: "«Ля тахзан, инна Ллаха ма’ана»", russian: "Не печалься о том, что ушло. Если с тобой Всевышний — ты ничего не потерял.", source: "Сура Ат-Тауба • 9:40" }
         ];
 
         const weeklyStatuses = [];
@@ -1712,8 +1678,10 @@
             timings: null
         };
 
+        const MAIN_TABS = ['prayer', 'quran', 'memorize', 'status'];
         const TAB_ORDER = { prayer: 0, quran: 1, memorize: 2, status: 3, settings: 4 };
         let currentTabKey = 'prayer';
+        let lastActiveMainTab = 'prayer';
 
         let searchDebounceTimer = null;
         let onbSearchDebounceTimer = null;
@@ -1723,7 +1691,6 @@
         let allSurahs = [];
         let currentSurahMeta = null;
         let currentSurahAyahs = [];
-        let currentPlayingIndex = -1;
         let isContinuousMode = false;
         let isLuhaidanMarathonMode = false;
         let currentMarathonSurah = 2;
@@ -1738,7 +1705,7 @@
         let recordedChunks = [];
         let activeStatusCard = null;
         let currentStatusFilter = 'all';
-        const STATUS_FILTER_ORDER = { all: 0, botanical: 1, mist: 2, desert: 3, jumuah: 4 };
+        const STATUS_FILTER_ORDER = { all: 0, jumuah: 1, eid: 2 };
 
         let currentCompassHeading = 0;
         let targetQiblaBearing = 196;
@@ -1750,7 +1717,7 @@
         }
 
         // ═════════════════════════════════════════════════════════════════════
-        // ТАКТИЛЬНЫЙ ЗВУКОВОЙ ДВИЖОК (БЕЗ ЛАГОВ DOM)
+        // ТАКТИЛЬНЫЙ ЗВУКОВОЙ ДВИЖОК
         // ═════════════════════════════════════════════════════════════════════
         let uiAudioCtx = null;
         function getAudioCtx() {
@@ -1864,6 +1831,7 @@
         // ═════════════════════════════════════════════════════════════════════
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            updateBottomNavPositions('prayer');
             syncAllSettingsSwitchesUI();
             initPullToRefresh();
             checkSpecialFridayBanner();
@@ -2202,7 +2170,7 @@
             renderEmergencyCards();
             renderStatusGrid(currentStatusFilter);
             if (activeStatusCard && !document.getElementById('status-modal').classList.contains('hidden')) {
-                syncModalStatusPreview();
+                syncModalStatusUI();
             }
         }
 
@@ -2222,7 +2190,7 @@
             const quranTrPill = document.getElementById('quran-tr-pill');
             if (quranTrPill) {
                 quranTrPill.className = prayerState.showTranscription
-                    ? "spring-tap px-3 py-1.5 rounded-full bg-amberCore text-white text-[11px] font-extrabold"
+                    ? "spring-tap px-3 py-1.5 rounded-full bg-emeraldAccent text-obsidian text-[11px] font-extrabold"
                     : "spring-tap px-3 py-1.5 rounded-full sheet-subcard text-[11px] font-extrabold";
                 quranTrPill.textContent = prayerState.showTranscription ? "✓ Транскрипция" : "Транскрипция";
             }
@@ -2242,40 +2210,53 @@
         }
 
         // ═════════════════════════════════════════════════════════════════════
-        // БЫСТРОЕ ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК НА GPU (БЕЗ ФРИЗОВ И БЕЗ ДЁРГАНИЯ ПАНЕЛИ)
+        // 120 FPS НАВИГАЦИЯ НА ЧИСТОМ TRANSLATE3D + ФИКС ПЕРЕХОДА В НАСТРОЙКИ
         // ═════════════════════════════════════════════════════════════════════
+        function updateBottomNavPositions(activeMainTab) {
+            const activeIdx = MAIN_TABS.indexOf(activeMainTab);
+            const targetIdx = activeIdx >= 0 ? activeIdx : 0;
+
+            const glider = document.getElementById('nav-glider');
+            if (glider) {
+                glider.style.transform = `translate3d(${targetIdx * 60}px, 0, 0)`;
+            }
+
+            let offsetX = 0;
+            MAIN_TABS.forEach((t, idx) => {
+                const btn = document.getElementById(`nav-${t}`);
+                if (!btn) return;
+                const isAct = idx === targetIdx;
+                btn.classList.toggle('active', isAct);
+                btn.style.width = isAct ? '132px' : '60px';
+                btn.style.transform = `translate3d(${offsetX}px, 0, 0)`;
+                offsetX += isAct ? 132 : 60;
+            });
+        }
+
         function switchTab(tabName) {
             if (currentTabKey === tabName && tabName !== 'prayer') return;
             AyaSoundEngine.select();
+
             const oldIndex = TAB_ORDER[currentTabKey] ?? 0;
             const newIndex = TAB_ORDER[tabName] ?? 0;
             const slideClass = newIndex >= oldIndex ? 'tab-slide-right' : 'tab-slide-left';
             currentTabKey = tabName;
 
-            // Скользящая капсула сдвигается ровно на index * 60px! Сама панель (324px) стоит на месте!
-            const glider = document.getElementById('nav-glider');
-            if (glider) {
-                if (newIndex <= 3) {
-                    glider.style.opacity = '1';
-                    glider.style.transform = `translate3d(${newIndex * 60}px, 0, 0)`;
-                } else {
-                    glider.style.opacity = '0';
-                }
+            if (MAIN_TABS.includes(tabName)) {
+                lastActiveMainTab = tabName;
             }
+            // В Настройках сохраняем текущую активную кнопку внизу (текст не пропадает и нет пустой дыры!)
+            updateBottomNavPositions(lastActiveMainTab);
 
             ['prayer', 'quran', 'memorize', 'status', 'settings'].forEach(t => {
                 const sec = document.getElementById(`tab-${t}`);
-                const btn = document.getElementById(`nav-${t}`);
-                if (sec) {
-                    if (t === tabName) {
-                        sec.classList.remove('hidden', 'tab-slide-right', 'tab-slide-left');
-                        void sec.offsetWidth;
-                        sec.classList.add(slideClass);
-                    } else {
-                        sec.classList.add('hidden');
-                    }
+                if (!sec) return;
+                if (t === tabName) {
+                    sec.classList.remove('hidden', 'tab-slide-right', 'tab-slide-left');
+                    requestAnimationFrame(() => sec.classList.add(slideClass));
+                } else {
+                    sec.classList.add('hidden');
                 }
-                if (btn) btn.classList.toggle('active', t === tabName);
             });
 
             const heroShowcase = document.getElementById('hero-prayer-showcase');
@@ -2314,7 +2295,7 @@
         }
 
         // ═════════════════════════════════════════════════════════════════════
-        // РАСЧЁТ НАМАЗОВ
+        // РАСЧЁТ НАМАЗОВ И ЦВЕТНЫЕ АКЦЕНТЫ
         // ═════════════════════════════════════════════════════════════════════
         function getCityNowParts() {
             try {
@@ -2439,15 +2420,16 @@
             document.getElementById('next-prayer-name').textContent = labels[info.nextKey] || info.nextKey;
         }
 
+        // Увеличенные строки намазов с индивидуальными природными цветами иконок
         function renderPrayerList() {
             if (!prayerState.timings) return;
             const scheduleItems = [
-                { key: 'Fajr', name: 'Утренний (Фаджр)', icon: 'moon-star', obligatory: true, rakaats: 2, qasrRakaats: 2 },
-                { key: 'Sunrise', name: 'Восход (Шурук)', icon: 'sunrise', obligatory: false, rakaats: 0, qasrRakaats: 0 },
-                { key: 'Dhuhr', name: 'Обеденный (Зухр)', icon: 'sun', obligatory: true, rakaats: 4, qasrRakaats: 2 },
-                { key: 'Asr', name: 'Послеобеденный (Аср)', icon: 'cloud-sun', obligatory: true, rakaats: 4, qasrRakaats: 2 },
-                { key: 'Maghrib', name: 'Вечерний (Магриб)', icon: 'sunset', obligatory: true, rakaats: 3, qasrRakaats: 3 },
-                { key: 'Isha', name: 'Ночной (Иша)', icon: 'moon', obligatory: true, rakaats: 4, qasrRakaats: 2 }
+                { key: 'Fajr', name: 'Утренний (Фаджр)', icon: 'moon-star', obligatory: true, rakaats: 2, qasrRakaats: 2, colorIdle: 'bg-blue-500/15 text-blue-600 dark:text-blue-400', colorActive: 'bg-blue-600 text-white shadow-md' },
+                { key: 'Sunrise', name: 'Восход (Шурук)', icon: 'sunrise', obligatory: false, rakaats: 0, qasrRakaats: 0, colorIdle: 'bg-amber-500/15 text-amber-600 dark:text-amber-400', colorActive: 'bg-amber-500 text-white shadow-md' },
+                { key: 'Dhuhr', name: 'Обеденный (Зухр)', icon: 'sun', obligatory: true, rakaats: 4, qasrRakaats: 2, colorIdle: 'bg-orange-500/15 text-orange-600 dark:text-orange-400', colorActive: 'bg-orange-500 text-white shadow-md' },
+                { key: 'Asr', name: 'Послеобеденный (Аср)', icon: 'cloud-sun', obligatory: true, rakaats: 4, qasrRakaats: 2, colorIdle: 'bg-rose-500/15 text-rose-600 dark:text-rose-400', colorActive: 'bg-rose-600 text-white shadow-md' },
+                { key: 'Maghrib', name: 'Вечерний (Магриб)', icon: 'sunset', obligatory: true, rakaats: 3, qasrRakaats: 3, colorIdle: 'bg-red-500/15 text-red-600 dark:text-red-400', colorActive: 'bg-red-600 text-white shadow-md' },
+                { key: 'Isha', name: 'Ночной (Иша)', icon: 'moon', obligatory: true, rakaats: 4, qasrRakaats: 2, colorIdle: 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400', colorActive: 'bg-indigo-600 text-white shadow-md' }
             ];
 
             const todayIso = getDateIso();
@@ -2473,12 +2455,12 @@
 
                 if (isCurrent && suggestion) {
                     activeSuggestionHtml = `
-                        <div onclick="openSurahHintModal('${item.key}', '${item.name}')" class="sheet-card px-4 py-3 flex items-center justify-between gap-2 text-xs cursor-pointer spring-tap">
-                            <div class="flex items-center gap-2 min-w-0">
-                                <span class="w-2 h-2 rounded-full bg-amberCore shrink-0"></span>
+                        <div onclick="openSurahHintModal('${item.key}', '${item.name}')" class="sheet-card px-4 py-3.5 flex items-center justify-between gap-2 text-xs cursor-pointer spring-tap">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emeraldAccent shrink-0"></span>
                                 <span class="truncate"><strong>Суры по Сунне (${item.name.split(' ')[0]}):</strong> ${suggestion.s1}, ${suggestion.s2}</span>
                             </div>
-                            <span class="px-3 py-1 rounded-full bg-obsidian text-white text-[10.5px] font-extrabold shrink-0">Открыть</span>
+                            <span class="px-3.5 py-1.5 rounded-full bg-obsidian text-white text-[11px] font-extrabold shrink-0">Открыть</span>
                         </div>
                     `;
                 }
@@ -2488,26 +2470,26 @@
                 if (item.obligatory) row.onclick = () => togglePrayerDone(item.key);
 
                 row.innerHTML = `
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isCurrent ? 'bg-amberCore text-white shadow' : 'bg-amberCore/15 text-amberCore'}">
-                                <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <div class="w-11 h-11 rounded-full flex items-center justify-center shrink-0 ${isCurrent ? item.colorActive : item.colorIdle}">
+                                <i data-lucide="${item.icon}" class="w-5 h-5"></i>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <div class="flex items-center flex-wrap gap-1.5">
-                                    <span class="font-extrabold text-[13.5px] sm:text-[14.5px] leading-tight whitespace-nowrap">${item.name}</span>
-                                    ${isCurrent ? '<span class="px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider bg-amberCore text-white shrink-0">СЕЙЧАС</span>' : ''}
+                                <div class="flex items-center flex-wrap gap-2">
+                                    <span class="font-extrabold text-[15px] sm:text-[16px] leading-tight whitespace-nowrap">${item.name}</span>
+                                    ${isCurrent ? '<span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amberCore text-white shrink-0">СЕЙЧАС</span>' : ''}
                                 </div>
-                                <p class="text-[10.5px] opacity-65 leading-tight mt-0.5">${subText}</p>
+                                <p class="text-[12px] opacity-65 leading-tight mt-0.5">${subText}</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2.5 shrink-0">
-                            <span class="font-extrabold text-[15px] sm:text-base tabular-nums">${timeClean}</span>
+                        <div class="flex items-center gap-3 shrink-0">
+                            <span class="font-extrabold text-[17px] sm:text-[18px] tabular-nums">${timeClean}</span>
                             ${item.obligatory ? `
-                                <div class="w-6 h-6 rounded-full border-[1.8px] flex items-center justify-center transition ${isDone ? 'bg-emeraldAccent border-emeraldAccent text-obsidian shadow' : 'border-current opacity-35'}">
-                                    ${isDone ? '<i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>' : ''}
+                                <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center transition ${isDone ? 'bg-emeraldAccent border-emeraldAccent text-obsidian shadow' : 'border-current opacity-35'}">
+                                    ${isDone ? '<i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>' : ''}
                                 </div>
-                            ` : '<div class="w-6 h-6"></div>'}
+                            ` : '<div class="w-7 h-7"></div>'}
                         </div>
                     </div>
                 `;
@@ -2856,7 +2838,7 @@
             island.classList.add('island-visible');
         }
 
-        function updateIslandPlayState(isPlaying) {
+       function updateIslandPlayState(isPlaying) {
             const btn = document.getElementById('island-play-btn');
             const waveBox = document.getElementById('island-wave-box');
             btn.innerHTML = isPlaying ? `<i data-lucide="pause" class="w-4 h-4"></i>` : `<i data-lucide="play" class="w-4 h-4"></i>`;
@@ -2921,7 +2903,7 @@
 
             const cardsHtml = data.texts.map(t => `
                 <div class="p-4 rounded-3xl sheet-subcard space-y-1.5">
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-amberCore block">${t.badge}</span>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-emeraldAccent block">${t.badge}</span>
                     <p class="arabic-text text-xl text-right leading-loose">${t.arabic}</p>
                     ${showTr && t.cyrillic ? `<p class="text-xs italic font-semibold text-amberCore pt-1">${t.cyrillic}</p>` : ''}
                     <p class="text-xs opacity-80 leading-relaxed">${t.russian}</p>
@@ -2932,9 +2914,9 @@
                 <div class="p-4 rounded-3xl sheet-subcard flex items-center justify-between gap-3">
                     <div class="min-w-0">
                         <h4 class="text-sm font-extrabold truncate">${data.title}</h4>
-                        <p class="text-xs text-amberCore font-bold mt-0.5">${data.durationLabel}</p>
+                        <p class="text-xs text-emeraldAccent font-bold mt-0.5">${data.durationLabel}</p>
                     </div>
-                    <button onclick="startHealingSessionQueue('${sessionKey}')" class="spring-tap px-4 py-2.5 rounded-full bg-amberCore text-white font-extrabold text-xs flex items-center gap-1.5 shrink-0 shadow">Слушать</button>
+                    <button onclick="startHealingSessionQueue('${sessionKey}')" class="spring-tap px-4 py-2.5 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs flex items-center gap-1.5 shrink-0 shadow">Слушать</button>
                 </div>
                 <div class="space-y-2">${cardsHtml}</div>
             `;
@@ -3025,7 +3007,7 @@
                 card.onclick = () => openSurahReader(s.number, ruName, s.name);
                 card.innerHTML = `
                     <div class="flex items-center gap-3.5 min-w-0">
-                        <div class="w-10 h-10 rounded-full bg-amberCore/15 text-amberCore font-extrabold text-xs flex items-center justify-center shrink-0">${s.number}</div>
+                        <div class="w-10 h-10 rounded-full bg-emeraldAccent/15 text-emeraldAccent font-extrabold text-xs flex items-center justify-center shrink-0">${s.number}</div>
                         <div class="min-w-0">
                             <h4 class="font-extrabold text-sm truncate">${ruName}</h4>
                             <p class="text-[11px] opacity-60">${s.numberOfAyahs} аятов • ${s.revelationType === 'Meccan' ? 'Мекканская' : 'Мединская'}</p>
@@ -3102,7 +3084,7 @@
                 card.innerHTML = `
                     <div class="flex items-center justify-between">
                         <span class="px-3.5 py-1 rounded-full sheet-subcard font-extrabold text-xs">Аят ${ayah.numberInSurah}</span>
-                        <button onclick="playSingleAyah(${index})" class="spring-tap px-4 py-1.5 rounded-full bg-amberCore text-white text-xs font-extrabold">Слушать</button>
+                        <button onclick="playSingleAyah(${index})" class="spring-tap px-4 py-1.5 rounded-full bg-emeraldAccent text-obsidian text-xs font-extrabold">Слушать</button>
                     </div>
                     <p class="arabic-text text-2xl sm:text-3xl text-right leading-loose">${ayah.arabic}</p>
                     ${showTr ? `<p class="text-xs italic font-semibold text-amberCore sheet-subcard p-3 rounded-2xl">${ayah.cyrillic}</p>` : ''}
@@ -3183,7 +3165,7 @@
             trainerState.loopTarget = count;
             [1, 3, 5, 10].forEach(n => {
                 document.getElementById(`loop-btn-${n}`).className = n === count
-                    ? "px-3 py-1 rounded-full bg-amberCore text-white font-extrabold"
+                    ? "px-3 py-1 rounded-full bg-emeraldAccent text-obsidian font-extrabold"
                     : "px-3 py-1 rounded-full sheet-subcard font-bold";
             });
             renderTrainerAyahs();
@@ -3437,7 +3419,7 @@
             if (!container) return;
             container.innerHTML = WORD_BY_WORD_NAMAZ[key].words.map(w => `
                 <div class="sheet-subcard p-3.5 text-center space-y-1">
-                    <p class="arabic-text text-2xl text-amberCore">${w.ar}</p>
+                    <p class="arabic-text text-2xl text-indigoAccent">${w.ar}</p>
                     <p class="text-xs font-extrabold">${w.tr}</p>
                     <p class="text-[11px] opacity-70 leading-snug">${w.ru}</p>
                 </div>
@@ -3451,7 +3433,7 @@
             container.innerHTML = SUNNAH_EMERGENCY_CARDS.map(c => `
                 <div class="sheet-card p-5 space-y-2.5">
                     <div class="flex items-center justify-between gap-2">
-                        <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amberCore/15 text-amberCore">${c.badge}</span>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-rubyAccent/15 text-rubyAccent">${c.badge}</span>
                         <span class="text-[11px] opacity-60">${c.source}</span>
                     </div>
                     <h3 class="font-extrabold text-sm sm:text-base">${c.title}</h3>
@@ -3463,34 +3445,38 @@
         }
 
         // ═════════════════════════════════════════════════════════════════════
-        // РЕАЛИСТИЧНЫЕ СТАТУСЫ (РЕАЛЬНЫЕ HD-ФОТО БЕЗ SVG И БЕЗ ЛЮДЕЙ) + МИНИ-РЕДАКТОР
+        // МИНИМАЛИСТИЧНЫЕ СТАТУСЫ (КАК БЫЛО + 5 ШРИФТОВ + СМЕНА ЦВЕТА ТЕКСТА БЕЛЫЙ / ЧЁРНЫЙ)
         // ═════════════════════════════════════════════════════════════════════
+        function getCurrentWeekSeed() {
+            const now = new Date(), start = new Date(now.getFullYear(), 0, 1);
+            const weekNum = Math.ceil((((now - start) / 86400000) + start.getDay() + 1) / 7);
+            return weekNum + parseInt(localStorage.getItem('aya_status_shuffle_offset') || '0', 10);
+        }
+
         function rebuildWeeklyStatuses(incrementOffset = false) {
             if (incrementOffset) {
                 AyaSoundEngine.select();
                 const curr = parseInt(localStorage.getItem('aya_status_shuffle_offset') || '0', 10);
                 localStorage.setItem('aya_status_shuffle_offset', String(curr + 1));
             }
-            const offset = parseInt(localStorage.getItem('aya_status_shuffle_offset') || '0', 10);
+            const seed = getCurrentWeekSeed();
             weeklyStatuses.length = 0;
 
-            ALL_STATUS_POOL.forEach((item, idx) => {
-                const groupPhotos = REAL_HD_PHOTOS[item.photoGroup] || FLAT_PHOTO_LIST;
-                const photoUrl = groupPhotos[(idx + offset) % groupPhotos.length];
+            for (let i = 0; i < ALL_STATUS_POOL.length; i++) {
+                const poolItem = ALL_STATUS_POOL[i];
+                const photoUrl = REAL_NATURE_PHOTOS[(i + seed) % REAL_NATURE_PHOTOS.length];
                 weeklyStatuses.push({
-                    id: idx + 1,
-                    category: item.category,
-                    overlayStyle: item.overlayStyle,
-                    textPos: item.textPos,
-                    inkMode: item.inkMode,
+                    id: i + 1,
+                    category: poolItem.category,
+                    fontIndex: poolItem.fontIndex % STATUS_FONT_PRESETS.length,
+                    inkMode: 'white',
                     image: photoUrl,
-                    photoIdx: (idx + offset) % FLAT_PHOTO_LIST.length,
-                    arabic: item.arabic,
-                    cyrillic: item.cyrillic,
-                    russian: item.russian,
-                    source: item.source
+                    arabic: poolItem.arabic,
+                    cyrillic: poolItem.cyrillic,
+                    russian: poolItem.russian,
+                    source: poolItem.source
                 });
-            });
+            }
             renderStatusGrid(currentStatusFilter);
         }
 
@@ -3501,48 +3487,19 @@
             const slideDir = newOrder >= oldOrder ? 'tab-slide-right' : 'tab-slide-left';
             currentStatusFilter = cat;
 
-            ['all', 'botanical', 'mist', 'desert', 'jumuah'].forEach(c => {
+            ['all', 'jumuah', 'eid'].forEach(c => {
                 const btn = document.getElementById(`status-filter-${c}`);
                 if (btn) btn.className = c === cat
-                    ? "spring-tap px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-amberCore text-white shadow"
-                    : "spring-tap px-3.5 py-1.5 rounded-full text-xs font-bold sheet-subcard";
+                    ? "spring-tap px-4 py-1.5 rounded-full text-xs font-extrabold bg-amberCore text-white shadow"
+                    : "spring-tap px-4 py-1.5 rounded-full text-xs font-bold sheet-subcard";
             });
 
             const grid = document.getElementById('status-grid');
             if (grid) {
                 grid.classList.remove('tab-slide-right', 'tab-slide-left');
-                void grid.offsetWidth;
-                grid.classList.add(slideDir);
+                requestAnimationFrame(() => grid.classList.add(slideDir));
             }
             renderStatusGrid(cat);
-        }
-
-        function getOverlayStylesCSS(item) {
-            const ov = item.overlayStyle || 'lightVeil';
-            const isDarkInk = item.inkMode !== 'light';
-            let veilStyle = '';
-            let boxClass = '';
-            let textColor = isDarkInk ? '#141A1C' : '#FFFFFF';
-            let textShadow = isDarkInk ? '0 1px 12px rgba(255,255,255,0.85)' : '0 2px 16px rgba(0,0,0,0.85)';
-
-            if (ov === 'lightVeil') {
-                veilStyle = 'background: radial-gradient(circle at 50% 50%, rgba(235, 242, 245, 0.88) 0%, rgba(242, 236, 224, 0.70) 58%, rgba(20, 20, 20, 0.15) 100%);';
-            } else if (ov === 'skyTop') {
-                veilStyle = 'background: linear-gradient(180deg, rgba(236, 234, 226, 0.88) 0%, rgba(236, 234, 226, 0.65) 45%, rgba(20, 20, 20, 0.25) 100%);';
-            } else if (ov === 'liquidGlass') {
-                veilStyle = 'background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.32) 100%);';
-                boxClass = isDarkInk
-                    ? 'p-4 rounded-[24px] bg-white/75 backdrop-blur-md border border-white/80 shadow-xl'
-                    : 'p-4 rounded-[24px] bg-black/45 backdrop-blur-md border border-white/25 shadow-xl';
-            } else {
-                veilStyle = 'background: linear-gradient(180deg, rgba(8,8,10,0.38) 0%, rgba(8,8,10,0.58) 50%, rgba(8,8,10,0.86) 100%);';
-            }
-
-            let alignClass = 'justify-center';
-            if (item.textPos === 'top') alignClass = 'justify-start pt-6';
-            if (item.textPos === 'bottom') alignClass = 'justify-end pb-6';
-
-            return { veilStyle, boxClass, textColor, textShadow, alignClass };
         }
 
         function renderStatusGrid(cat) {
@@ -3553,21 +3510,19 @@
             const showTr = prayerState.showTranscription;
 
             items.forEach(item => {
-                const st = getOverlayStylesCSS(item);
+                const fontPreset = STATUS_FONT_PRESETS[item.fontIndex || 0] || STATUS_FONT_PRESETS[0];
                 const card = document.createElement('div');
-                card.className = "spring-tap relative aspect-[9/16] rounded-[26px] overflow-hidden cursor-pointer shadow-xl border border-white/40 bg-stone-800";
+                card.className = "spring-tap relative aspect-[9/16] rounded-[26px] overflow-hidden cursor-pointer group shadow-lg bg-black text-white";
                 card.onclick = () => openStatusModal(item);
 
                 card.innerHTML = `
-                    <img src="${item.image}" crossorigin="anonymous" loading="lazy" alt="Status" class="absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0" style="${st.veilStyle}"></div>
-                    <div class="relative z-10 h-full px-3.5 py-4 flex flex-col ${st.alignClass} items-center text-center" style="color:${st.textColor}; text-shadow:${st.textShadow};">
-                        <div class="${st.boxClass} space-y-1.5 w-full">
-                            <p class="arabic-text text-[13px] sm:text-[14.5px] leading-relaxed font-bold">${item.arabic}</p>
-                            ${showTr && item.cyrillic ? `<p class="text-[9px] font-extrabold italic opacity-90">${item.cyrillic}</p>` : ''}
-                            <p class="text-[10px] sm:text-[11px] font-bold leading-snug">${item.russian}</p>
-                            <span class="block text-[7px] uppercase tracking-[0.18em] opacity-75 pt-0.5">${item.source}</span>
-                        </div>
+                    <img src="${item.image}" crossorigin="anonymous" alt="Status" loading="lazy" class="absolute inset-0 w-full h-full object-cover status-photo-exposure" style="filter: brightness(0.55) contrast(1.06);">
+                    <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/48 to-black/82"></div>
+                    <div class="relative z-10 h-full px-4 py-5 flex flex-col justify-center items-center text-center space-y-2" style="text-shadow: 0 2px 12px rgba(0,0,0,0.8);">
+                        <p class="arabic-text text-[14px] sm:text-[15.5px] leading-relaxed">${item.arabic}</p>
+                        ${showTr && item.cyrillic ? `<p class="text-[9.5px] italic font-bold opacity-90">${item.cyrillic}</p>` : ''}
+                        <p class="${fontPreset.cssClass} text-[11px] sm:text-[12px] leading-relaxed">${item.russian}</p>
+                        <span class="text-[7.5px] uppercase tracking-[0.2em] opacity-75 pt-1">${item.source}</span>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -3576,85 +3531,61 @@
 
         function openStatusModal(statusItem) {
             AyaSoundEngine.select();
-            activeStatusCard = Object.assign({}, statusItem);
-            syncModalStatusPreview();
+            activeStatusCard = statusItem;
+            syncModalStatusUI();
             document.getElementById('status-modal').classList.remove('hidden');
         }
 
-        function closeStatusModal() { document.getElementById('status-modal').classList.add('hidden'); }
+        function closeStatusModal() {
+            document.getElementById('status-modal').classList.add('hidden');
+        }
 
-        function syncModalStatusPreview() {
+        function syncModalStatusUI() {
             if (!activeStatusCard) return;
-            const st = getOverlayStylesCSS(activeStatusCard);
+            const fontPreset = STATUS_FONT_PRESETS[activeStatusCard.fontIndex || 0] || STATUS_FONT_PRESETS[0];
+            const isBlackText = activeStatusCard.inkMode === 'black';
+
             const imgEl = document.getElementById('modal-status-img');
             if (imgEl.src !== activeStatusCard.image) imgEl.src = activeStatusCard.image;
+            imgEl.style.filter = isBlackText ? "brightness(1.08) contrast(0.95)" : "brightness(0.52) contrast(1.06)";
 
-            document.getElementById('modal-status-veil').setAttribute('style', st.veilStyle);
-            const wrapper = document.getElementById('modal-text-wrapper');
-            wrapper.className = `relative z-10 px-6 flex-1 flex flex-col ${st.alignClass} items-center text-center`;
-            wrapper.style.color = st.textColor;
-            wrapper.style.textShadow = st.textShadow;
+            const gradEl = document.getElementById('modal-status-gradient');
+            gradEl.className = isBlackText
+                ? "absolute inset-0 bg-gradient-to-b from-white/55 via-white/65 to-white/75 transition-all duration-300"
+                : "absolute inset-0 bg-gradient-to-b from-black/35 via-black/52 to-black/85 transition-all duration-300";
 
-            const glassBox = document.getElementById('modal-text-glass-box');
-            glassBox.className = `w-full space-y-2.5 transition-all duration-300 ${st.boxClass}`;
+            const textBox = document.getElementById('modal-status-text-box');
+            textBox.style.color = isBlackText ? "#111114" : "#FFFFFF";
+            textBox.style.textShadow = isBlackText ? "0 1px 14px rgba(255,255,255,0.9)" : "0 2px 16px rgba(0,0,0,0.85)";
 
             document.getElementById('modal-status-arabic').textContent = activeStatusCard.arabic;
             const cyrEl = document.getElementById('modal-status-cyrillic');
             cyrEl.textContent = activeStatusCard.cyrillic || '';
             cyrEl.classList.toggle('hidden', !prayerState.showTranscription || !activeStatusCard.cyrillic);
 
-            document.getElementById('modal-status-russian').textContent = activeStatusCard.russian;
+            const rusEl = document.getElementById('modal-status-russian');
+            rusEl.textContent = activeStatusCard.russian;
+            rusEl.className = `${fontPreset.cssClass} text-[16px] leading-relaxed`;
+
             document.getElementById('modal-status-source').textContent = activeStatusCard.source;
 
-            ['lightVeil', 'liquidGlass', 'darkCinema', 'skyTop'].forEach(k => {
-                const btn = document.getElementById(`ed-ov-${k}`);
-                if (btn) btn.className = activeStatusCard.overlayStyle === k
-                    ? "spring-tap py-1.5 px-2 rounded-full font-extrabold bg-amberCore text-white"
-                    : "spring-tap py-1.5 px-2 rounded-full font-bold bg-white/10 text-white/85";
-            });
-
-            const posLabels = { top: 'Сверху', center: 'Центр', bottom: 'Снизу' };
-            document.getElementById('ed-pos-label').textContent = posLabels[activeStatusCard.textPos] || 'Центр';
-            document.getElementById('ed-ink-label').textContent = activeStatusCard.inkMode === 'light' ? 'Белый' : 'Тёмный';
-            document.getElementById('ed-tr-label').textContent = prayerState.showTranscription ? 'Транскр: Да' : 'Транскр: Нет';
+            document.getElementById('modal-font-btn').textContent = `Шрифт: ${fontPreset.label} (${(activeStatusCard.fontIndex || 0) + 1}/5)`;
+            document.getElementById('modal-color-btn').textContent = isBlackText ? "Цвет: Чёрный" : "Цвет: Белый";
         }
 
-        function setEditorOverlayStyle(ovStyle) {
+        function cycleModalStatusFont() {
             if (!activeStatusCard) return;
             AyaSoundEngine.select();
-            activeStatusCard.overlayStyle = ovStyle;
-            if (ovStyle === 'darkCinema') activeStatusCard.inkMode = 'light';
-            else if (ovStyle === 'lightVeil' || ovStyle === 'skyTop') activeStatusCard.inkMode = 'dark';
-            if (ovStyle === 'skyTop') activeStatusCard.textPos = 'top';
-            syncModalStatusPreview();
+            activeStatusCard.fontIndex = ((activeStatusCard.fontIndex || 0) + 1) % STATUS_FONT_PRESETS.length;
+            syncModalStatusUI();
+            renderStatusGrid(currentStatusFilter);
         }
 
-        function cycleEditorTextPos() {
+        function toggleModalStatusColor() {
             if (!activeStatusCard) return;
             AyaSoundEngine.select();
-            const order = ['top', 'center', 'bottom'];
-            activeStatusCard.textPos = order[(order.indexOf(activeStatusCard.textPos) + 1) % order.length];
-            syncModalStatusPreview();
-        }
-
-        function toggleEditorInk() {
-            if (!activeStatusCard) return;
-            AyaSoundEngine.select();
-            activeStatusCard.inkMode = activeStatusCard.inkMode === 'light' ? 'dark' : 'light';
-            syncModalStatusPreview();
-        }
-
-        function cycleEditorPhoto() {
-            if (!activeStatusCard) return;
-            AyaSoundEngine.select();
-            activeStatusCard.photoIdx = ((activeStatusCard.photoIdx || 0) + 1) % FLAT_PHOTO_LIST.length;
-            activeStatusCard.image = FLAT_PHOTO_LIST[activeStatusCard.photoIdx];
-            syncModalStatusPreview();
-        }
-
-        function toggleEditorTranscription() {
-            toggleTranscriptionSetting();
-            syncModalStatusPreview();
+            activeStatusCard.inkMode = activeStatusCard.inkMode === 'black' ? 'white' : 'black';
+            syncModalStatusUI();
         }
 
         async function generateStatusImageBlob() {
@@ -3671,66 +3602,51 @@
                 img.src = activeStatusCard.image;
             });
 
+            const isBlackText = activeStatusCard.inkMode === 'black';
             if (img.width > 0) {
                 const scale = Math.max(W / img.width, H / img.height);
                 const x = (W / 2) - (img.width / 2) * scale;
                 const y = (H / 2) - (img.height / 2) * scale;
+                ctx.filter = isBlackText ? "brightness(108%) contrast(95%)" : "brightness(50%) contrast(108%)";
                 ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+                ctx.filter = "none";
             }
 
-            const ov = activeStatusCard.overlayStyle || 'lightVeil';
-            if (ov === 'lightVeil') {
-                const g = ctx.createRadialGradient(W * 0.5, H * 0.5, 80, W * 0.5, H * 0.5, W * 0.65);
-                g.addColorStop(0, "rgba(235, 242, 245, 0.90)");
-                g.addColorStop(0.65, "rgba(242, 236, 224, 0.72)");
-                g.addColorStop(1, "rgba(20, 20, 20, 0.18)");
-                ctx.fillStyle = g;
-                ctx.fillRect(0, 0, W, H);
-            } else if (ov === 'skyTop') {
-                const g = ctx.createLinearGradient(0, 0, 0, H);
-                g.addColorStop(0, "rgba(236, 234, 226, 0.90)");
-                g.addColorStop(0.46, "rgba(236, 234, 226, 0.68)");
-                g.addColorStop(1, "rgba(20, 20, 20, 0.25)");
-                ctx.fillStyle = g;
-                ctx.fillRect(0, 0, W, H);
+            const grad = ctx.createLinearGradient(0, 0, 0, H);
+            if (isBlackText) {
+                grad.addColorStop(0, "rgba(255, 255, 255, 0.52)");
+                grad.addColorStop(0.5, "rgba(255, 255, 255, 0.65)");
+                grad.addColorStop(1, "rgba(255, 255, 255, 0.78)");
             } else {
-                const g = ctx.createLinearGradient(0, 0, 0, H);
-                g.addColorStop(0, "rgba(8, 8, 10, 0.38)");
-                g.addColorStop(0.5, "rgba(8, 8, 10, 0.58)");
-                g.addColorStop(1, "rgba(8, 8, 10, 0.86)");
-                ctx.fillStyle = g;
-                ctx.fillRect(0, 0, W, H);
+                grad.addColorStop(0, "rgba(6, 6, 8, 0.35)");
+                grad.addColorStop(0.5, "rgba(6, 6, 8, 0.54)");
+                grad.addColorStop(1, "rgba(6, 6, 8, 0.85)");
             }
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, W, H);
 
-            const isDarkInk = activeStatusCard.inkMode !== 'light';
+            const fontPreset = STATUS_FONT_PRESETS[activeStatusCard.fontIndex || 0] || STATUS_FONT_PRESETS[0];
             ctx.textAlign = "center";
-            ctx.shadowColor = isDarkInk ? "rgba(255, 255, 255, 0.85)" : "rgba(0, 0, 0, 0.85)";
+            ctx.shadowColor = isBlackText ? "rgba(255, 255, 255, 0.9)" : "rgba(0, 0, 0, 0.82)";
             ctx.shadowBlur = 18;
 
-            let startY = H * 0.42;
-            if (activeStatusCard.textPos === 'top') startY = H * 0.24;
-            if (activeStatusCard.textPos === 'bottom') startY = H * 0.60;
-
-            ctx.fillStyle = isDarkInk ? "#141A1C" : "#FFFFFF";
-            ctx.font = "700 48px 'Scheherazade New', serif";
-            let curY = wrapCanvasLines(ctx, activeStatusCard.arabic, W / 2, startY, 840, 70);
+            ctx.fillStyle = isBlackText ? "#111114" : "#FFFFFF";
+            ctx.font = "400 54px 'Scheherazade New', serif";
+            let nextY = wrapCanvasLines(ctx, activeStatusCard.arabic, W / 2, 810, 840, 76);
 
             if (prayerState.showTranscription && activeStatusCard.cyrillic) {
-                curY += 14;
-                ctx.fillStyle = isDarkInk ? "#28404A" : "rgba(255, 235, 210, 0.94)";
-                ctx.font = "italic 800 32px 'SF Pro Rounded', 'Nunito', sans-serif";
-                curY = wrapCanvasLines(ctx, activeStatusCard.cyrillic, W / 2, curY, 800, 46);
+                nextY += 12;
+                ctx.font = "italic 700 32px 'SF Pro Rounded', 'Nunito', sans-serif";
+                nextY = wrapCanvasLines(ctx, activeStatusCard.cyrillic, W / 2, nextY, 800, 46);
             }
 
-            curY += 26;
-            ctx.fillStyle = isDarkInk ? "#141A1C" : "#FFFFFF";
-            ctx.font = "800 36px 'SF Pro Rounded', 'Nunito', sans-serif";
-            curY = wrapCanvasLines(ctx, activeStatusCard.russian, W / 2, curY, 800, 52);
+            ctx.fillStyle = isBlackText ? "#111114" : "rgba(255, 255, 255, 0.95)";
+            ctx.font = fontPreset.canvasFont;
+            const afterRusY = wrapCanvasLines(ctx, activeStatusCard.russian, W / 2, nextY + 28, 810, 54);
 
-            curY += 24;
-            ctx.fillStyle = isDarkInk ? "rgba(25, 35, 40, 0.72)" : "rgba(255, 225, 195, 0.80)";
-            ctx.font = "700 22px 'SF Pro Rounded', 'Nunito', sans-serif";
-            ctx.fillText(activeStatusCard.source.toUpperCase(), W / 2, curY);
+            ctx.fillStyle = isBlackText ? "rgba(20, 20, 24, 0.72)" : "rgba(255, 215, 180, 0.78)";
+            ctx.font = "700 20px 'SF Pro Rounded', 'Nunito', sans-serif";
+            ctx.fillText(activeStatusCard.source.toUpperCase(), W / 2, afterRusY + 48);
             ctx.shadowBlur = 0;
 
             return new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.95));
@@ -3853,13 +3769,13 @@
                             <span class="text-xs font-extrabold block">${idx + 1}. ${item.name}</span>
                             <span class="text-[11px] opacity-60">Формы: <strong class="arabic-text text-sm">${item.forms}</strong></span>
                         </div>
-                        <div class="w-12 h-12 rounded-2xl bg-amberCore/15 text-amberCore flex items-center justify-center shrink-0">
+                        <div class="w-12 h-12 rounded-2xl bg-indigoAccent/15 text-indigoAccent flex items-center justify-center shrink-0">
                             <span class="arabic-text text-3xl">${item.letter}</span>
                         </div>
                     </div>
                     <p class="text-[11px] opacity-75 leading-relaxed">${item.makhraj}</p>
                     <div class="pt-1.5 border-t border-black/5 flex items-center justify-between text-xs">
-                        <span class="font-bold text-amberCore">▶ ${item.exampleTr}</span>
+                        <span class="font-bold text-emeraldAccent">▶ ${item.exampleTr}</span>
                         <span class="arabic-text text-lg">${item.exampleAr}</span>
                     </div>
                 `;
