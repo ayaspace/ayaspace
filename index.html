@@ -4,12 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AyaSpace — Современное духовное пространство</title>
-
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-
-    <!-- PWA / iOS Home Screen Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="AyaSpace">
@@ -20,45 +15,27 @@
             try {
                 const savedTheme = localStorage.getItem('aya_theme') || 'light';
                 const html = document.documentElement;
-                if (savedTheme === 'dark') {
-                    html.classList.remove('light');
-                    html.classList.add('dark');
-                } else {
-                    html.classList.remove('dark');
-                    html.classList.add('light');
-                    localStorage.setItem('aya_theme', 'light');
-                }
+                html.classList.toggle('dark', savedTheme === 'dark');
+                html.classList.toggle('light', savedTheme !== 'dark');
+                if (savedTheme !== 'dark') localStorage.setItem('aya_theme', 'light');
             } catch (e) {}
         })();
     </script>
 
-    <!-- Генератор иконки приложения + Манифест -->
     <script>
         (function() {
             try {
                 function createIconDataURL(size) {
-                    const c = document.createElement('canvas');
-                    c.width = size; c.height = size;
+                    const c = document.createElement('canvas'); c.width = size; c.height = size;
                     const ctx = c.getContext('2d');
                     const g = ctx.createLinearGradient(0, 0, size, size);
-                    g.addColorStop(0, '#FFB347');
-                    g.addColorStop(0.5, '#FF6A00');
-                    g.addColorStop(1, '#D93A00');
-                    ctx.fillStyle = g;
-                    ctx.fillRect(0, 0, size, size);
-
+                    g.addColorStop(0, '#FFB347'); g.addColorStop(0.5, '#FF6A00'); g.addColorStop(1, '#D93A00');
+                    ctx.fillStyle = g; ctx.fillRect(0, 0, size, size);
                     const glow = ctx.createRadialGradient(size * 0.3, size * 0.22, size * 0.04, size * 0.5, size * 0.5, size * 0.65);
-                    glow.addColorStop(0, 'rgba(255, 240, 200, 0.45)');
-                    glow.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                    ctx.fillStyle = glow;
-                    ctx.fillRect(0, 0, size, size);
-
-                    ctx.save();
-                    const s = size / 100;
-                    ctx.scale(s, s);
-                    ctx.shadowColor = 'rgba(120, 20, 0, 0.32)';
-                    ctx.shadowBlur = 8;
-                    ctx.shadowOffsetY = 3;
+                    glow.addColorStop(0, 'rgba(255, 240, 200, 0.45)'); glow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    ctx.fillStyle = glow; ctx.fillRect(0, 0, size, size);
+                    ctx.save(); const s = size / 100; ctx.scale(s, s);
+                    ctx.shadowColor = 'rgba(120, 20, 0, 0.32)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
                     ctx.fillStyle = '#FFFFFF';
                     ctx.fill(new Path2D('M 50 7 C 52 10.5, 52 13, 50 16 C 48 13, 48 10.5, 50 7 Z'));
                     ctx.fill(new Path2D('M 50 15 C 33 26, 18 42, 18 60 C 18 78, 33 90, 52 90 C 64 90, 73 83, 77 73 C 70 79, 59 81, 49 77 C 35 71, 30 56, 36 43 C 41 31, 55 26, 68 33 C 73 36, 77 40, 79 45 C 76 32, 63 23, 50 15 Z'));
@@ -66,48 +43,17 @@
                     ctx.restore();
                     return c.toDataURL('image/png');
                 }
-
-                const icon180 = createIconDataURL(180);
-                const icon192 = createIconDataURL(192);
-                const icon512 = createIconDataURL(512);
-
-                const appleIcon = document.createElement('link');
-                appleIcon.rel = 'apple-touch-icon';
-                appleIcon.sizes = '180x180';
-                appleIcon.href = icon180;
-                document.head.appendChild(appleIcon);
-
-                const favIcon = document.createElement('link');
-                favIcon.rel = 'icon';
-                favIcon.type = 'image/png';
-                favIcon.href = icon192;
-                document.head.appendChild(favIcon);
-
-                const manifestObj = {
-                    name: "AyaSpace",
-                    short_name: "AyaSpace",
-                    start_url: ".",
-                    display: "standalone",
-                    background_color: "#8F1E00",
-                    theme_color: "#8F1E00",
-                    icons: [
-                        { src: icon192, sizes: "192x192", type: "image/png", purpose: "any maskable" },
-                        { src: icon512, sizes: "512x512", type: "image/png", purpose: "any maskable" }
-                    ]
-                };
-                const manifestLink = document.createElement('link');
-                manifestLink.rel = 'manifest';
-                manifestLink.href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj));
-                document.head.appendChild(manifestLink);
+                const icon180 = createIconDataURL(180), icon192 = createIconDataURL(192), icon512 = createIconDataURL(512);
+                const appleIcon = document.createElement('link'); appleIcon.rel = 'apple-touch-icon'; appleIcon.sizes = '180x180'; appleIcon.href = icon180; document.head.appendChild(appleIcon);
+                const favIcon = document.createElement('link'); favIcon.rel = 'icon'; favIcon.type = 'image/png'; favIcon.href = icon192; document.head.appendChild(favIcon);
+                const manifestObj = { name: "AyaSpace", short_name: "AyaSpace", start_url: ".", display: "standalone", background_color: "#8F1E00", theme_color: "#8F1E00", icons: [{ src: icon192, sizes: "192x192", type: "image/png", purpose: "any maskable" }, { src: icon512, sizes: "512x512", type: "image/png", purpose: "any maskable" }] };
+                const manifestLink = document.createElement('link'); manifestLink.rel = 'manifest'; manifestLink.href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj)); document.head.appendChild(manifestLink);
             } catch (e) {}
         })();
     </script>
 
-    <!-- Tailwind CSS & Lucide Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-
-    <!-- 5 Шрифтов для Статусов + Арабский шрифт -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Marck+Script&family=Montserrat:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
@@ -118,23 +64,15 @@
             theme: {
                 extend: {
                     colors: {
-                        obsidian: '#121110',
-                        obsidianCard: '#1A1412',
-                        amberDeep: '#8F1E00',
-                        amberCore: '#FF6600',
-                        amberGlow: '#FFA726',
-                        emeraldAccent: '#10B981',
-                        rubyAccent: '#E11D48',
-                        indigoAccent: '#6366F1',
-                        skyAccent: '#0284C7'
+                        obsidian: '#121110', obsidianCard: '#1A1412', amberDeep: '#8F1E00',
+                        amberCore: '#FF6600', amberGlow: '#FFA726', emeraldAccent: '#10B981',
+                        rubyAccent: '#E11D48', indigoAccent: '#6366F1', skyAccent: '#0284C7'
                     },
                     fontFamily: {
                         sans: ['ui-rounded', '"SF Pro Rounded"', '-apple-system', 'BlinkMacSystemFont', 'Nunito', 'sans-serif'],
                         body: ['ui-rounded', '"SF Pro Rounded"', '-apple-system', 'BlinkMacSystemFont', 'Nunito', 'sans-serif'],
-                        serifOld: ['Playfair Display', 'serif'],
-                        cormorant: ['Cormorant Garamond', 'serif'],
-                        montserrat: ['Montserrat', 'sans-serif'],
-                        scriptFont: ['Marck Script', 'cursive'],
+                        serifOld: ['Playfair Display', 'serif'], cormorant: ['Cormorant Garamond', 'serif'],
+                        montserrat: ['Montserrat', 'sans-serif'], scriptFont: ['Marck Script', 'cursive'],
                         arabic: ['Scheherazade New', 'serif']
                     }
                 }
@@ -146,166 +84,86 @@
         :root {
             --apple-smooth: cubic-bezier(0.22, 1, 0.36, 1);
             --apple-spring: cubic-bezier(0.25, 1.15, 0.45, 1);
-            /* Опускаем шапку чуть ниже из-под системных часов iPhone */
             --safe-top: max(calc(env(safe-area-inset-top, 20px) + 14px), 28px);
             --safe-bottom: max(env(safe-area-inset-bottom, 12px), 16px);
         }
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Nunito", sans-serif; }
+        html, body { margin: 0; padding: 0; background-color: #8F1E00 !important; color-scheme: dark; -webkit-font-smoothing: antialiased; overflow-x: hidden; min-height: 100vh; }
+        html.dark, html.dark body { background-color: #140603 !important; }
 
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-            font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Nunito", sans-serif;
-        }
-
-        /* Защита от белого блюра сверху на iPhone в режиме PWA */
-        html, body {
-            margin: 0;
-            padding: 0;
-            background-color: #8F1E00 !important;
-            color-scheme: dark;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        html.dark, html.dark body {
-            background-color: #140603 !important;
-        }
-
-        /* ═══ ПРОФЕССИОНАЛЬНЫЙ 3-ЦВЕТНЫЙ MESH-ГРАДИЕНТ (БЕЛЫЙ + ЖЁЛТЫЙ + ОРАНЖЕВЫЙ) ═══ */
         .orbix-app-shell {
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-            padding-top: var(--safe-top);
-            padding-bottom: calc(var(--safe-bottom) + 94px);
+            position: relative; width: 100%; min-height: 100vh;
+            padding-top: var(--safe-top); padding-bottom: calc(var(--safe-bottom) + 94px);
             color: #121110;
             background:
                 radial-gradient(ellipse 110% 390px at 50% 0%, #8F1E00 0%, #D9480F 38%, #FF851B 68%, rgba(253, 224, 71, 0.28) 88%, rgba(235, 228, 218, 0) 100%),
-                radial-gradient(circle 380px at 10% 34%, rgba(250, 204, 21, 0.32) 0%, transparent 74%),
-                radial-gradient(circle 420px at 90% 48%, rgba(255, 107, 26, 0.28) 0%, transparent 75%),
-                radial-gradient(circle 400px at 50% 64%, rgba(255, 253, 248, 0.65) 0%, transparent 72%),
-                radial-gradient(circle 380px at 16% 82%, rgba(251, 191, 36, 0.30) 0%, transparent 74%),
-                radial-gradient(circle 440px at 86% 94%, rgba(234, 88, 12, 0.26) 0%, transparent 76%),
+                radial-gradient(circle 380px at 10% 34%, rgba(250, 204, 21, 0.30) 0%, transparent 74%),
+                radial-gradient(circle 420px at 90% 48%, rgba(255, 107, 26, 0.26) 0%, transparent 75%),
+                radial-gradient(circle 400px at 50% 64%, rgba(255, 253, 248, 0.60) 0%, transparent 72%),
+                radial-gradient(circle 380px at 16% 82%, rgba(251, 191, 36, 0.28) 0%, transparent 74%),
+                radial-gradient(circle 440px at 86% 94%, rgba(234, 88, 12, 0.24) 0%, transparent 76%),
                 linear-gradient(180deg, #EAE2D7 0%, #E5DDD0 50%, #DFD5C8 100%);
             overflow-x: hidden;
-            transition: background 0.35s ease, color 0.3s ease;
         }
-
         html.dark .orbix-app-shell {
             color: rgba(255, 255, 255, 0.94);
             background:
                 radial-gradient(ellipse 110% 390px at 50% 0%, #6E1804 0%, #A3320B 36%, #4A1404 68%, rgba(20, 8, 4, 0) 100%),
                 radial-gradient(circle 360px at 12% 35%, rgba(250, 204, 21, 0.14) 0%, transparent 72%),
-                radial-gradient(circle 400px at 88% 54%, rgba(255, 102, 0, 0.19) 0%, transparent 74%),
-                radial-gradient(circle 380px at 20% 80%, rgba(245, 158, 11, 0.15) 0%, transparent 72%),
-                radial-gradient(circle 420px at 84% 94%, rgba(195, 52, 6, 0.22) 0%, transparent 75%),
+                radial-gradient(circle 400px at 88% 54%, rgba(255, 102, 0, 0.18) 0%, transparent 74%),
+                radial-gradient(circle 380px at 20% 80%, rgba(245, 158, 11, 0.14) 0%, transparent 72%),
+                radial-gradient(circle 420px at 84% 94%, rgba(195, 52, 6, 0.20) 0%, transparent 75%),
                 linear-gradient(180deg, #0D0806 0%, #0A0705 55%, #080504 100%);
         }
 
-        /* Плавно движущиеся размытые пятна 3 цветов (Белый, Жёлтый, Оранжевый) на GPU */
-        .ambient-chaos-orb {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        /* Оранжево-янтарное облако (через лёгкий radial-gradient без тяжёлого filter: blur) */
-        .orb-1 {
-            width: 420px; height: 420px;
-            top: 18%; left: -120px;
-            background: radial-gradient(circle, rgba(255, 105, 20, 0.28) 0%, rgba(255, 105, 20, 0) 70%);
-        }
-        /* Солнечно-жёлтое облако */
-        .orb-2 {
-            width: 440px; height: 440px;
-            top: 46%; right: -130px;
-            background: radial-gradient(circle, rgba(250, 204, 21, 0.26) 0%, rgba(250, 204, 21, 0) 70%);
-        }
-        /* Мягкое жемчужно-белое/золотистое облако */
-        .orb-3 {
-            width: 460px; height: 460px;
-            bottom: 2%; left: 5%;
-            background: radial-gradient(circle, rgba(255, 250, 235, 0.42) 0%, rgba(255, 140, 35, 0.16) 45%, rgba(255, 140, 35, 0) 72%);
-        }
-        html.dark .orb-3 {
-            background: radial-gradient(circle, rgba(250, 204, 21, 0.12) 0%, rgba(234, 88, 12, 0.14) 45%, transparent 72%);
-        }
+        /* Статичные лёгкие градиентные сферы (0% нагрузки на GPU, без нагрева) */
+        .ambient-chaos-orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 1; }
+        .orb-1 { width: 420px; height: 420px; top: 18%; left: -120px; background: radial-gradient(circle, rgba(255, 105, 20, 0.24) 0%, rgba(255, 105, 20, 0) 70%); }
+        .orb-2 { width: 440px; height: 440px; top: 46%; right: -130px; background: radial-gradient(circle, rgba(250, 204, 21, 0.22) 0%, rgba(250, 204, 21, 0) 70%); }
+        .orb-3 { width: 460px; height: 460px; bottom: 2%; left: 5%; background: radial-gradient(circle, rgba(255, 250, 235, 0.38) 0%, rgba(255, 140, 35, 0.14) 45%, rgba(255, 140, 35, 0) 72%); }
+        html.dark .orb-3 { background: radial-gradient(circle, rgba(250, 204, 21, 0.10) 0%, rgba(234, 88, 12, 0.12) 45%, transparent 72%); }
 
-        /* ═══ НАСТОЯЩИЙ iOS 27 LIQUID GLASS (ОПТИМИЗИРОВАННЫЙ ПОД 120 ГЦ) ═══ */
+        /* Оптимизированный iOS 27 Liquid Glass (без лишних буферов размытия) */
         .liquid-glass, .liquid-glass-pill {
             position: relative;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.36) 0%, rgba(255, 255, 255, 0.14) 52%, rgba(255, 205, 140, 0.28) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.52);
-            box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.85),
-                inset 0 -1.5px 1.5px 0 rgba(255, 140, 40, 0.28),
-                0 10px 24px -6px rgba(55, 14, 2, 0.28);
+            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.85), inset 0 -1.5px 1.5px 0 rgba(255, 140, 40, 0.28), 0 10px 24px -6px rgba(55, 14, 2, 0.28);
             color: #FFFFFF;
         }
-
         .sheet-card {
-            position: relative;
-            z-index: 10;
-            background: linear-gradient(145deg, rgba(255, 253, 250, 0.72) 0%, rgba(255, 248, 240, 0.56) 55%, rgba(255, 235, 210, 0.64) 100%);
-            backdrop-filter: blur(22px) saturate(180%);
-            -webkit-backdrop-filter: blur(22px) saturate(180%);
-            border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.85);
-            box-shadow:
-                inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.96),
-                inset 0 -1.5px 2px 0 rgba(255, 130, 30, 0.16),
-                0 16px 34px -8px rgba(65, 24, 6, 0.12),
-                0 4px 10px rgba(40, 14, 4, 0.05);
+            position: relative; z-index: 10;
+            background: linear-gradient(145deg, rgba(255, 253, 250, 0.78) 0%, rgba(255, 248, 240, 0.64) 55%, rgba(255, 235, 210, 0.72) 100%);
+            border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.88);
+            box-shadow: inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.96), inset 0 -1.5px 2px 0 rgba(255, 130, 30, 0.16), 0 16px 34px -8px rgba(65, 24, 6, 0.12), 0 4px 10px rgba(40, 14, 4, 0.05);
             color: #121110;
         }
-
         html.dark .sheet-card {
-            background: linear-gradient(145deg, rgba(44, 28, 22, 0.72) 0%, rgba(24, 16, 13, 0.62) 55%, rgba(58, 28, 16, 0.66) 100%);
+            background: linear-gradient(145deg, rgba(44, 28, 22, 0.78) 0%, rgba(24, 16, 13, 0.68) 55%, rgba(58, 28, 16, 0.72) 100%);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.24),
-                inset 0 -1.5px 2px 0 rgba(255, 110, 20, 0.20),
-                0 18px 38px -10px rgba(0, 0, 0, 0.75);
+            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.24), inset 0 -1.5px 2px 0 rgba(255, 110, 20, 0.20), 0 18px 38px -10px rgba(0, 0, 0, 0.75);
             color: rgba(255, 255, 255, 0.95);
         }
-
         .sheet-subcard {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 248, 238, 0.48) 100%);
-            border-radius: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.82);
-            box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.92),
-                0 4px 12px -3px rgba(55, 20, 5, 0.06);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 248, 238, 0.52) 100%);
+            border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.84);
+            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.92), 0 4px 12px -3px rgba(55, 20, 5, 0.06);
             color: #121110;
         }
-
         html.dark .sheet-subcard {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.04) 100%);
             border: 1px solid rgba(255, 255, 255, 0.11);
-            box-shadow:
-                inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.16),
-                0 6px 16px -4px rgba(0, 0, 0, 0.45);
+            box-shadow: inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.16), 0 6px 16px -4px rgba(0, 0, 0, 0.45);
             color: rgba(255, 255, 255, 0.92);
         }
 
-        /* ═══ УВЕЛИЧЕННЫЕ И ВЫРАЗИТЕЛЬНЫЕ СТРОКИ НАМАЗОВ ═══ */
-        .tx-prayer-row {
-            position: relative;
-            border-radius: 22px;
-            padding: 12px 14px;
-            transition: transform 0.2s var(--apple-smooth), box-shadow 0.2s ease;
-        }
+        .tx-prayer-row { position: relative; border-radius: 22px; padding: 12px 13px; transition: transform 0.2s var(--apple-smooth); }
         .tx-prayer-row:active { transform: scale(0.98); }
-
         .tx-prayer-row-active {
             background: linear-gradient(135deg, rgba(255, 115, 20, 0.24) 0%, rgba(250, 204, 21, 0.14) 100%) !important;
             border: 1.5px solid rgba(255, 102, 0, 0.68) !important;
-            box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.88),
-                0 10px 24px -6px rgba(255, 102, 0, 0.26) !important;
+            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.88), 0 10px 24px -6px rgba(255, 102, 0, 0.24) !important;
         }
         html.dark .tx-prayer-row-active {
             background: linear-gradient(135deg, rgba(255, 115, 20, 0.28) 0%, rgba(160, 55, 10, 0.14) 100%) !important;
@@ -313,237 +171,101 @@
         }
 
         .action-pill-btn {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.70) 0%, rgba(255, 245, 235, 0.50) 100%);
-            backdrop-filter: blur(28px) saturate(190%);
-            -webkit-backdrop-filter: blur(28px) saturate(190%);
-            color: #121110;
-            border: 1px solid rgba(255, 255, 255, 0.84);
-            border-radius: 9999px;
-            font-weight: 800;
-            box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95),
-                0 10px 24px -6px rgba(55, 20, 4, 0.12);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 245, 235, 0.62) 100%);
+            color: #121110; border: 1px solid rgba(255, 255, 255, 0.86); border-radius: 9999px; font-weight: 800;
+            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95), 0 10px 24px -6px rgba(55, 20, 4, 0.12);
             transition: transform 0.2s var(--apple-smooth);
         }
         .action-pill-btn:active { transform: scale(0.95); }
-
         html.dark .action-pill-btn {
-            background: linear-gradient(135deg, rgba(45, 30, 22, 0.68) 0%, rgba(25, 18, 14, 0.52) 100%);
-            color: rgba(255, 255, 255, 0.94);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg, rgba(45, 30, 22, 0.78) 0%, rgba(25, 18, 14, 0.64) 100%);
+            color: rgba(255, 255, 255, 0.94); border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        /* ═══ 120 FPS НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ЧИСТЫЙ GPU TRANSLATE3D, БЕЗ АНИМАЦИИ WIDTH) ═══ */
+        /* 120 FPS Нижняя панель навигации */
         .floating-bottom-nav {
-            position: fixed;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: max(env(safe-area-inset-bottom, 10px), 10px);
-            z-index: 45;
-            width: 324px;
-            height: 60px;
-            border-radius: 9999px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 244, 230, 0.54) 100%);
-            backdrop-filter: blur(36px) saturate(210%);
-            -webkit-backdrop-filter: blur(36px) saturate(210%);
+            position: fixed; left: 50%; transform: translateX(-50%);
+            bottom: max(env(safe-area-inset-bottom, 10px), 10px); z-index: 45;
+            width: 324px; height: 60px; border-radius: 9999px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 244, 230, 0.60) 100%);
+            backdrop-filter: blur(28px) saturate(190%); -webkit-backdrop-filter: blur(28px) saturate(190%);
             border: 1px solid rgba(255, 255, 255, 0.85);
-            box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.96),
-                inset 0 -1px 1.5px 0 rgba(255, 120, 30, 0.18),
-                0 18px 42px -6px rgba(45, 16, 4, 0.24);
-            user-select: none;
-            overflow: hidden;
+            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.96), 0 18px 42px -6px rgba(45, 16, 4, 0.24);
+            user-select: none; overflow: hidden;
         }
-
         html.dark .floating-bottom-nav {
-            background: linear-gradient(135deg, rgba(36, 24, 19, 0.78) 0%, rgba(18, 13, 11, 0.68) 100%);
+            background: linear-gradient(135deg, rgba(36, 24, 19, 0.82) 0%, rgba(18, 13, 11, 0.72) 100%);
             border: 1px solid rgba(255, 255, 255, 0.16);
-            box-shadow:
-                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.22),
-                0 20px 48px -6px rgba(0, 0, 0, 0.85);
+            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.22), 0 20px 48px -6px rgba(0, 0, 0, 0.85);
         }
-
-        /* Бегущая капсула (движется только через translate3d — 0 лагов!) */
         #nav-glider {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            width: 132px;
-            height: 46px;
-            border-radius: 9999px;
-            background: #121110;
-            box-shadow:
-                inset 0 1px 0.5px rgba(255, 255, 255, 0.28),
-                0 6px 18px rgba(18, 17, 16, 0.32);
-            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: transform;
-            z-index: 1;
-            pointer-events: none;
+            position: absolute; top: 6px; left: 6px; width: 132px; height: 46px; border-radius: 9999px;
+            background: #121110; box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.28), 0 6px 18px rgba(18, 17, 16, 0.32);
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1); z-index: 1; pointer-events: none;
         }
-
         html.dark #nav-glider {
             background: linear-gradient(135deg, #FF7A1A 0%, #D9460F 100%);
-            box-shadow:
-                inset 0 1px 1px rgba(255, 255, 255, 0.42),
-                0 6px 20px rgba(255, 102, 0, 0.42);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.42), 0 6px 20px rgba(255, 102, 0, 0.42);
         }
-
-        /* Каждая кнопка позиционируется через GPU translate3d — без пересчёта геометрии браузером */
         .nav-item-btn {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            height: 46px;
-            width: 132px;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            color: rgba(18, 17, 16, 0.60);
-            font-weight: 800;
-            font-size: 13px;
-            z-index: 2;
+            position: absolute; top: 6px; left: 6px; height: 46px; width: 132px; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            color: rgba(18, 17, 16, 0.60); font-weight: 800; font-size: 13px; z-index: 2;
             transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), color 0.22s ease;
-            will-change: transform;
         }
+        html.dark .nav-item-btn { color: rgba(255, 255, 255, 0.58); }
+        .nav-item-btn.active { color: #FFFFFF; }
+        .nav-item-btn .nav-label { transition: opacity 0.2s ease, transform 0.25s var(--apple-smooth); }
+        .nav-item-btn:not(.active) .nav-label { opacity: 0; pointer-events: none; position: absolute; transform: scale(0.85); }
+        .nav-item-btn.active .nav-label { opacity: 1; position: relative; transform: scale(1); }
 
-        html.dark .nav-item-btn {
-            color: rgba(255, 255, 255, 0.58);
-        }
-
-        .nav-item-btn.active {
-            color: #FFFFFF;
-        }
-
-        .nav-item-btn .nav-label {
-            transition: opacity 0.2s ease, transform 0.25s var(--apple-smooth);
-        }
-
-        .nav-item-btn:not(.active) .nav-label {
-            opacity: 0;
-            pointer-events: none;
-            position: absolute;
-            transform: scale(0.85);
-        }
-
-        .nav-item-btn.active .nav-label {
-            opacity: 1;
-            position: relative;
-            transform: scale(1);
-        }
-
-        /* ═══ ПЛАВНЫЕ GPU-ПЕРЕХОДЫ МЕЖДУ ВКЛАДКАМИ ═══ */
-        @keyframes gpuSlideRight {
-            0% { opacity: 0; transform: translate3d(24px, 0, 0); }
-            100% { opacity: 1; transform: translate3d(0, 0, 0); }
-        }
-        @keyframes gpuSlideLeft {
-            0% { opacity: 0; transform: translate3d(-24px, 0, 0); }
-            100% { opacity: 1; transform: translate3d(0, 0, 0); }
-        }
+        @keyframes gpuSlideRight { 0% { opacity: 0; transform: translate3d(24px, 0, 0); } 100% { opacity: 1; transform: translate3d(0, 0, 0); } }
+        @keyframes gpuSlideLeft  { 0% { opacity: 0; transform: translate3d(-24px, 0, 0); } 100% { opacity: 1; transform: translate3d(0, 0, 0); } }
         .tab-slide-right { animation: gpuSlideRight 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .tab-slide-left  { animation: gpuSlideLeft 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
-
         .spring-tap { transition: transform 0.2s var(--apple-smooth); }
         .spring-tap:active { transform: scale(0.95); }
 
-        /* Dynamic Island Плеер */
-        #dynamic-island {
-            top: calc(var(--safe-top) + 2px);
-            transition: transform 0.42s var(--apple-spring), opacity 0.28s var(--apple-smooth);
-        }
-        #dynamic-island.island-hidden {
-            opacity: 0;
-            transform: translate3d(-50%, -150%, 0) scale(0.9);
-            pointer-events: none;
-        }
-        #dynamic-island.island-visible {
-            opacity: 1;
-            transform: translate3d(-50%, 0, 0) scale(1);
-            pointer-events: auto;
-        }
+        #dynamic-island { top: calc(var(--safe-top) + 2px); transition: transform 0.42s var(--apple-spring), opacity 0.28s var(--apple-smooth); }
+        #dynamic-island.island-hidden { opacity: 0; visibility: hidden; transform: translate3d(-50%, -150%, 0) scale(0.9); pointer-events: none; }
+        #dynamic-island.island-visible { opacity: 1; visibility: visible; transform: translate3d(-50%, 0, 0) scale(1); pointer-events: auto; }
 
-        @keyframes soundWave { 0%, 100% { height: 5px; } 50% { height: 16px; } }
-        .wave-bar { width: 3px; border-radius: 999px; animation: soundWave 0.85s ease-in-out infinite; }
-        .wave-paused .wave-bar { animation-play-state: paused !important; height: 5px !important; }
+        @keyframes soundWave { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+        .wave-bar { width: 3px; height: 16px; border-radius: 999px; animation: soundWave 0.85s ease-in-out infinite; }
+        .wave-paused .wave-bar, #dynamic-island.island-hidden .wave-bar { animation-play-state: paused !important; transform: scaleY(0.3) !important; }
 
-        input[type="range"].apple-slider {
-            -webkit-appearance: none; appearance: none;
-            height: 6px; background: rgba(255, 102, 0, 0.26); border-radius: 999px; outline: none;
-        }
-        input[type="range"].apple-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none;
-            width: 18px; height: 18px; border-radius: 50%; background: #FF6600;
-            box-shadow: 0 2px 8px rgba(255, 102, 0, 0.6); cursor: pointer;
-        }
-
+        input[type="range"].apple-slider { -webkit-appearance: none; appearance: none; height: 6px; background: rgba(255, 102, 0, 0.26); border-radius: 999px; outline: none; }
+        input[type="range"].apple-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #FF6600; box-shadow: 0 2px 8px rgba(255, 102, 0, 0.6); cursor: pointer; }
         .arabic-text { font-family: 'Scheherazade New', serif; direction: rtl; line-height: 2.0; }
 
-        .ios-switch {
-            position: relative;
-            width: 52px;
-            height: 30px;
-            border-radius: 9999px;
-            transition: background-color 0.25s var(--apple-smooth);
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .ios-switch-thumb {
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #FFFFFF;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.28);
-            transition: transform 0.25s var(--apple-spring);
-        }
+        .ios-switch { position: relative; width: 52px; height: 30px; border-radius: 9999px; transition: background-color 0.25s var(--apple-smooth); cursor: pointer; flex-shrink: 0; }
+        .ios-switch-thumb { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 6px rgba(0,0,0,0.28); transition: transform 0.25s var(--apple-spring); }
         .ios-switch.active { background-color: #10B981; }
         .ios-switch.inactive { background-color: rgba(120, 110, 100, 0.35); }
         .ios-switch.active .ios-switch-thumb { transform: translateX(22px); }
 
-        .word-hidden {
-            background: rgba(255, 102, 0, 0.14); color: transparent !important;
-            border-radius: 10px; border: 1px dashed rgba(255, 102, 0, 0.5);
-            cursor: pointer; user-select: none; padding: 0 8px; margin: 0 2px; display: inline-block;
-        }
-        .word-blur {
-            filter: blur(8px); cursor: pointer; user-select: none;
-            transition: filter 0.3s ease; padding: 0 4px; display: inline-block;
-        }
-        .word-revealed {
-            color: #D9460F !important; filter: blur(0);
-            background: rgba(255, 102, 0, 0.16); border-radius: 10px; padding: 0 8px; display: inline-block;
-        }
+        .word-hidden { background: rgba(255, 102, 0, 0.14); color: transparent !important; border-radius: 10px; border: 1px dashed rgba(255, 102, 0, 0.5); cursor: pointer; user-select: none; padding: 0 8px; margin: 0 2px; display: inline-block; }
+        .word-blur { filter: blur(8px); cursor: pointer; user-select: none; transition: filter 0.3s ease; padding: 0 4px; display: inline-block; }
+        .word-revealed { color: #D9460F !important; filter: blur(0); background: rgba(255, 102, 0, 0.16); border-radius: 10px; padding: 0 8px; display: inline-block; }
         html.dark .word-revealed { color: #FFA726 !important; }
-
-        .status-photo-exposure {
-            transition: filter 0.35s ease, transform 0.5s var(--apple-smooth);
-        }
+        .status-photo-exposure { transition: filter 0.35s ease, transform 0.5s var(--apple-smooth); }
         .group:hover .status-photo-exposure { transform: scale(1.03); }
-
         details summary { list-style: none; }
         details summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="selection:bg-amberCore selection:text-white">
 
-    <!-- ПЛАВАЮЩИЙ 3-ЦВЕТНЫЙ MESH-ГРАДИЕНТ (ОРАНЖЕВЫЙ + ЖЁЛТЫЙ + БЕЛЫЙ) -->
     <div class="ambient-chaos-orb orb-1"></div>
     <div class="ambient-chaos-orb orb-2"></div>
     <div class="ambient-chaos-orb orb-3"></div>
 
-    <!-- ИНДИКАТОР СВАЙПА ВНИЗ ДЛЯ ОБНОВЛЕНИЯ -->
     <div id="pull-refresh-indicator" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-2 rounded-full liquid-glass-pill text-xs font-bold items-center gap-2 shadow-lg">
         <i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin"></i>
         <span>Обновление расписания...</span>
     </div>
 
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <!-- ОНБОРДИНГ В 4 ШАГА -->
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <div id="onboarding-overlay" class="fixed inset-0 z-[100] hidden flex flex-col justify-center items-center p-4 overflow-y-auto"
          style="background: linear-gradient(180deg, #6E1404 0%, #9E2A08 38%, #E55812 76%, #F5A55A 100%);">
         <div class="relative z-10 w-full max-w-md rounded-[34px] p-6 sm:p-7 liquid-glass space-y-5 my-auto">
@@ -568,7 +290,7 @@
                 </div>
                 <div class="space-y-2">
                     <h1 class="text-3xl font-extrabold tracking-tight text-white">Добро пожаловать в AyaSpace</h1>
-                    <p class="text-sm text-white/90 leading-relaxed max-w-xs mx-auto">Точное время намаза, Священный Коран и минималистичные статусы в эстетике iOS 27 Liquid Glass.</p>
+                    <p class="text-sm text-white/90 leading-relaxed max-w-xs mx-auto">Точное время намаза, Священный Коран, Тасбих и статусы в эстетике iOS 27 Liquid Glass.</p>
                 </div>
                 <button onclick="goToOnboardingStep(2)" class="spring-tap w-full py-4 px-6 rounded-full bg-white text-obsidian font-extrabold text-sm flex items-center justify-center gap-2 shadow-xl">
                     <span>Начать настройку</span>
@@ -607,31 +329,19 @@
                 </div>
                 <div class="grid grid-cols-2 gap-2.5" id="onb-madhhab-grid">
                     <button type="button" onclick="selectMadhhab('hanafi', true)" data-madhhab="hanafi" class="onb-madhhab-btn spring-tap p-3.5 rounded-[22px] bg-white text-obsidian text-left space-y-1 shadow-lg">
-                        <div class="flex items-center justify-between">
-                            <span class="font-extrabold text-xs">Ханафитский</span>
-                            <span class="madhhab-check w-4 h-4 rounded-full bg-obsidian text-white flex items-center justify-center text-[10px]">✓</span>
-                        </div>
+                        <div class="flex items-center justify-between"><span class="font-extrabold text-xs">Ханафитский</span><span class="madhhab-check w-4 h-4 rounded-full bg-obsidian text-white flex items-center justify-center text-[10px]">✓</span></div>
                         <p class="text-[10.5px] opacity-75 leading-tight">Татарстан, Башкирия, Москва, СНГ</p>
                     </button>
                     <button type="button" onclick="selectMadhhab('shafii', true)" data-madhhab="shafii" class="onb-madhhab-btn spring-tap p-3.5 rounded-[22px] liquid-glass-pill text-white text-left space-y-1">
-                        <div class="flex items-center justify-between">
-                            <span class="font-extrabold text-xs">Шафиитский</span>
-                            <span class="madhhab-check w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[10px]"></span>
-                        </div>
+                        <div class="flex items-center justify-between"><span class="font-extrabold text-xs">Шафиитский</span><span class="madhhab-check w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[10px]"></span></div>
                         <p class="text-[10.5px] opacity-80 leading-tight">Дагестан, Чечня, Ингушетия</p>
                     </button>
                     <button type="button" onclick="selectMadhhab('maliki', true)" data-madhhab="maliki" class="onb-madhhab-btn spring-tap p-3.5 rounded-[22px] liquid-glass-pill text-white text-left space-y-1">
-                        <div class="flex items-center justify-between">
-                            <span class="font-extrabold text-xs">Маликитский</span>
-                            <span class="madhhab-check w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[10px]"></span>
-                        </div>
+                        <div class="flex items-center justify-between"><span class="font-extrabold text-xs">Маликитский</span><span class="madhhab-check w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[10px]"></span></div>
                         <p class="text-[10.5px] opacity-80 leading-tight">Северная Африка, ОАЭ</p>
                     </button>
                     <button type="button" onclick="selectMadhhab('hanbali', true)" data-madhhab="hanbali" class="onb-madhhab-btn spring-tap p-3.5 rounded-[22px] liquid-glass-pill text-white text-left space-y-1">
-                        <div class="flex items-center justify-between">
-                            <span class="font-extrabold text-xs">Ханбалитский</span>
-                            <span class="madhhab-check w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[10px]"></span>
-                        </div>
+                        <div class="flex items-center justify-between"><span class="font-extrabold text-xs">Ханбалитский</span><span class="madhhab-check w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[10px]"></span></div>
                         <p class="text-[10.5px] opacity-80 leading-tight">Саудовская Аравия, Катар</p>
                     </button>
                 </div>
@@ -659,22 +369,12 @@
                 </div>
                 <div class="space-y-2.5 text-xs">
                     <div class="rounded-[24px] p-4 bg-white text-obsidian flex items-start gap-3.5 shadow">
-                        <div class="w-10 h-10 rounded-2xl bg-amberCore/15 text-amberCore flex items-center justify-center shrink-0">
-                            <i data-lucide="share" class="w-5 h-5"></i>
-                        </div>
-                        <div class="space-y-1">
-                            <p class="font-extrabold text-obsidian">На iPhone (в Safari):</p>
-                            <p class="text-obsidian/80 leading-relaxed">1. Нажмите <strong>«Поделиться» (↑)</strong> внизу экрана.<br>2. Выберите <strong>«На экран "Домой"»</strong>.</p>
-                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-amberCore/15 text-amberCore flex items-center justify-center shrink-0"><i data-lucide="share" class="w-5 h-5"></i></div>
+                        <div class="space-y-1"><p class="font-extrabold text-obsidian">На iPhone (в Safari):</p><p class="text-obsidian/80 leading-relaxed">1. Нажмите <strong>«Поделиться» (↑)</strong> внизу экрана.<br>2. Выберите <strong>«На экран "Домой"»</strong>.</p></div>
                     </div>
                     <div class="rounded-[24px] p-4 bg-white text-obsidian flex items-start gap-3.5 shadow">
-                        <div class="w-10 h-10 rounded-2xl bg-amberCore/15 text-amberCore flex items-center justify-center shrink-0">
-                            <i data-lucide="more-vertical" class="w-5 h-5"></i>
-                        </div>
-                        <div class="space-y-1">
-                            <p class="font-extrabold text-obsidian">На Android (в Chrome):</p>
-                            <p class="text-obsidian/80 leading-relaxed">1. Нажмите <strong>три точки (⋮)</strong> вверху.<br>2. Нажмите <strong>«Установить приложение»</strong>.</p>
-                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-amberCore/15 text-amberCore flex items-center justify-center shrink-0"><i data-lucide="more-vertical" class="w-5 h-5"></i></div>
+                        <div class="space-y-1"><p class="font-extrabold text-obsidian">На Android (в Chrome):</p><p class="text-obsidian/80 leading-relaxed">1. Нажмите <strong>три точки (⋮)</strong> вверху.<br>2. Нажмите <strong>«Установить приложение»</strong>.</p></div>
                     </div>
                 </div>
                 <button onclick="finishOnboarding()" class="spring-tap w-full py-4 px-6 rounded-full bg-obsidian text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-2xl border border-white/20">
@@ -687,9 +387,9 @@
 
     <!-- DYNAMIC ISLAND АУДИО-ПЛЕЕР -->
     <div id="dynamic-island" class="island-hidden fixed left-1/2 z-50 w-[92%] max-w-md rounded-[30px] px-4 py-3.5 text-white shadow-2xl"
-         style="background: rgba(18, 17, 16, 0.92); backdrop-filter: blur(32px); border: 1px solid rgba(255,255,255,0.22);">
+         style="background: rgba(18, 17, 16, 0.92); backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.22);">
         <div class="flex items-center justify-between gap-3">
-            <div id="island-wave-box" class="flex items-center gap-1 h-8 px-3 py-1 rounded-full bg-white/10 shrink-0">
+            <div id="island-wave-box" class="wave-paused flex items-center gap-1 h-8 px-3 py-1 rounded-full bg-white/10 shrink-0">
                 <span class="wave-bar bg-amberGlow" style="animation-delay: 0.0s"></span>
                 <span class="wave-bar bg-amberCore" style="animation-delay: 0.2s"></span>
                 <span class="wave-bar bg-emeraldAccent" style="animation-delay: 0.4s"></span>
@@ -711,12 +411,8 @@
         </div>
     </div>
 
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- ОСНОВНАЯ СЦЕНА ПРИЛОЖЕНИЯ -->
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- ОСНОВНАЯ СЦЕНА -->
     <div class="orbix-app-shell">
-
-        <!-- УВЕЛИЧЕННАЯ И ЧУТЬ ОПУЩЕННАЯ ШАПКА -->
         <header id="sticky-top-bar" class="relative z-30 w-full max-w-xl mx-auto px-4 pt-1.5 pb-2 flex items-center justify-between gap-2">
             <div class="flex items-center gap-3 min-w-0 flex-1">
                 <div onclick="switchTab('prayer')" class="spring-tap w-12 h-12 rounded-full flex items-center justify-center shrink-0 cursor-pointer shadow-lg"
@@ -746,12 +442,9 @@
             </div>
         </header>
 
-        <!-- КРУПНЫЙ ТАЙМЕР ДО СЛЕДУЮЩЕГО НАМАЗА -->
         <div id="hero-prayer-showcase" class="relative z-20 max-w-xl mx-auto px-4 pt-1 pb-3.5">
             <div class="text-center space-y-1.5">
-                <p id="gregorian-date" class="text-[10.5px] font-extrabold uppercase tracking-[0.16em] text-white/85">
-                    КАЗАНЬ • ХАНАФИТСКИЙ МАЗХАБ
-                </p>
+                <p id="gregorian-date" class="text-[10.5px] font-extrabold uppercase tracking-[0.16em] text-white/85">КАЗАНЬ • ХАНАФИТСКИЙ МАЗХАБ</p>
                 <div class="flex items-baseline justify-center tracking-tight select-none py-0.5">
                     <span id="countdown-hm" class="text-[64px] sm:text-7xl font-extrabold tabular-nums leading-none text-white drop-shadow-md">00:00</span>
                     <span id="countdown-sec" class="text-[38px] sm:text-5xl font-light tabular-nums leading-none ml-1.5 text-white/75">:00</span>
@@ -765,15 +458,10 @@
             </div>
         </div>
 
-        <!-- ОСНОВНОЙ КОНТЕНТ -->
         <main class="relative z-20 max-w-xl mx-auto px-3.5 sm:px-4 space-y-4">
-
-            <!-- Пятничный баннер Джума Мубарак -->
             <div id="special-day-banner" class="hidden sheet-card p-4 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-emeraldAccent/15 text-emeraldAccent flex items-center justify-center shrink-0">
-                        <i data-lucide="sparkles" class="w-5 h-5"></i>
-                    </div>
+                    <div class="w-10 h-10 rounded-full bg-emeraldAccent/15 text-emeraldAccent flex items-center justify-center shrink-0"><i data-lucide="sparkles" class="w-5 h-5"></i></div>
                     <div>
                         <h3 class="text-xs font-extrabold">Благословенная пятница (Джума Мубарак)</h3>
                         <p class="text-[11px] opacity-65">Прочитайте суру «Аль-Кахф» и умножьте салават Пророку ﷺ</p>
@@ -782,11 +470,8 @@
                 <button onclick="openSurahFromBanner(18)" class="spring-tap px-3.5 py-2 rounded-full bg-emeraldAccent text-obsidian text-xs font-extrabold shrink-0">Аль-Кахф</button>
             </div>
 
-            <!-- ───────────────────────────────────────────────────────────────── -->
-            <!-- ВКЛАДКА 1: НАМАЗ (УВЕЛИЧЕННЫЕ И ОБЪЁМНЫЕ СТРОКИ С ЦВЕТНЫМИ АКЦЕНТАМИ) -->
-            <!-- ───────────────────────────────────────────────────────────────── -->
+            <!-- ВКЛАДКА 1: НАМАЗ -->
             <section id="tab-prayer" class="space-y-4">
-
                 <div class="sheet-card p-4 sm:p-5 space-y-3">
                     <div class="flex items-center justify-between px-1">
                         <h2 class="text-[17px] sm:text-lg font-extrabold tracking-tight">Расписание намазов</h2>
@@ -795,17 +480,13 @@
                     <div id="prayer-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Суры по Сунне для текущего намаза -->
                 <div id="current-prayer-surah-pill"></div>
 
-                <!-- Сводка дня (Изумрудный и Индиго-фиолетовый акценты) -->
                 <div class="grid grid-cols-2 gap-3">
                     <div class="sheet-card p-4 space-y-1">
                         <div class="flex items-center justify-between text-xs opacity-75 font-bold">
                             <span>Выполнено за день</span>
-                            <span class="w-6 h-6 rounded-full bg-emeraldAccent/15 text-emeraldAccent flex items-center justify-center">
-                                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-                            </span>
+                            <span class="w-6 h-6 rounded-full bg-emeraldAccent/15 text-emeraldAccent flex items-center justify-center"><i data-lucide="check-circle-2" class="w-4 h-4"></i></span>
                         </div>
                         <div class="flex items-baseline gap-1 pt-0.5">
                             <span id="completed-prayers-big" class="text-2xl font-extrabold tabular-nums text-emeraldAccent">0</span>
@@ -816,9 +497,7 @@
                     <div class="sheet-card p-4 space-y-1">
                         <div class="flex items-center justify-between text-xs opacity-75 font-bold">
                             <span>Последняя ⅓ ночи</span>
-                            <span class="w-6 h-6 rounded-full bg-indigoAccent/15 text-indigoAccent flex items-center justify-center">
-                                <i data-lucide="moon-star" class="w-4 h-4"></i>
-                            </span>
+                            <span class="w-6 h-6 rounded-full bg-indigoAccent/15 text-indigoAccent flex items-center justify-center"><i data-lucide="moon-star" class="w-4 h-4"></i></span>
                         </div>
                         <div class="flex items-baseline gap-1.5 pt-0.5">
                             <span id="last-third-night-time" class="text-2xl font-extrabold tabular-nums text-indigoAccent">--:--</span>
@@ -827,18 +506,22 @@
                     </div>
                 </div>
 
-                <!-- Быстрые кнопки с разноцветными акцентами -->
-                <div class="flex items-center justify-between gap-2">
-                    <button onclick="scrollToToolsAndOpen('qibla')" class="action-pill-btn spring-tap flex-1 py-3.5 px-4 flex items-center justify-center gap-2 text-xs">
+                <!-- Быстрые кнопки: Тасбих 33x, Кибла 360°, GPS, В календарь -->
+                <div class="flex items-center justify-between gap-1.5">
+                    <button onclick="scrollToToolsAndOpen('tasbih')" class="action-pill-btn spring-tap flex-1 py-3.5 px-3 flex items-center justify-center gap-1.5 text-xs">
+                        <i data-lucide="fingerprint" class="w-4 h-4 text-amberCore"></i>
+                        <span>Тасбих 33×</span>
+                    </button>
+                    <button onclick="scrollToToolsAndOpen('qibla')" class="action-pill-btn spring-tap flex-1 py-3.5 px-3 flex items-center justify-center gap-1.5 text-xs">
                         <i data-lucide="compass" class="w-4 h-4 text-rubyAccent"></i>
                         <span>Кибла 360°</span>
                     </button>
-                    <button onclick="detectGeolocation()" title="Обновить геопозицию по GPS" class="action-pill-btn spring-tap w-12 h-12 flex items-center justify-center shrink-0">
+                    <button onclick="detectGeolocation()" title="Обновить геопозицию по GPS" class="action-pill-btn spring-tap w-11 h-11 flex items-center justify-center shrink-0">
                         <i data-lucide="locate-fixed" class="w-4 h-4 text-skyAccent"></i>
                     </button>
-                    <button onclick="exportPrayersToICS(false, this)" class="action-pill-btn spring-tap flex-1 py-3.5 px-4 flex items-center justify-center gap-2 text-xs">
+                    <button onclick="exportPrayersToICS(false, this)" class="action-pill-btn spring-tap flex-1 py-3.5 px-3 flex items-center justify-center gap-1.5 text-xs">
                         <i data-lucide="calendar-check-2" class="w-4 h-4 text-emeraldAccent"></i>
-                        <span>В календарь</span>
+                        <span>Календарь</span>
                     </button>
                 </div>
 
@@ -867,45 +550,78 @@
                     </div>
                 </div>
 
-                <!-- Режим путника (Мусафир — лазурный акцент) -->
+                <!-- Режим путника -->
                 <div class="sheet-card p-5 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3.5 min-w-0">
-                        <div class="w-11 h-11 rounded-full bg-skyAccent/15 text-skyAccent flex items-center justify-center shrink-0">
-                            <i data-lucide="plane" class="w-5 h-5"></i>
-                        </div>
+                        <div class="w-11 h-11 rounded-full bg-skyAccent/15 text-skyAccent flex items-center justify-center shrink-0"><i data-lucide="plane" class="w-5 h-5"></i></div>
                         <div class="min-w-0">
                             <h3 class="text-sm font-extrabold">Режим путника (Мусафир)</h3>
                             <p id="musafir-subtitle" class="text-xs opacity-60 truncate">Сокращение 4-ракаатных намазов до 2 ракаатов (> 85 км)</p>
                         </div>
                     </div>
-                    <div id="musafir-switch" onclick="toggleMusafirMode()" class="ios-switch inactive" role="switch" aria-checked="false">
-                        <div class="ios-switch-thumb"></div>
-                    </div>
+                    <div id="musafir-switch" onclick="toggleMusafirMode()" class="ios-switch inactive" role="switch" aria-checked="false"><div class="ios-switch-thumb"></div></div>
                 </div>
 
-                <!-- Инструменты -->
+                <!-- ИНСТРУМЕНТЫ (ТАСБИХ, КИБЛА, Е-КОДЫ, СМЫСЛ, ПОМОЩНИК) -->
                 <div id="main-tools-anchor" class="space-y-3.5 pt-1">
                     <div class="flex items-center justify-between px-1">
                         <h2 class="text-base sm:text-lg font-extrabold tracking-tight">Инструменты</h2>
-                        <span class="text-xs opacity-55 font-semibold">Кибла • Халяль • Смысл • Фикх</span>
+                        <span class="text-xs opacity-55 font-semibold">Тасбих • Кибла • Халяль • Смысл</span>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 rounded-3xl sheet-card">
-                        <button onclick="openToolSection('qibla')" id="tool-tab-qibla" class="spring-tap py-2.5 px-3 rounded-full text-xs font-extrabold bg-obsidian text-white flex items-center justify-center gap-1.5">
+                    <div class="grid grid-cols-5 gap-1 p-1.5 rounded-3xl sheet-card">
+                        <button onclick="openToolSection('tasbih')" id="tool-tab-tasbih" class="spring-tap py-2.5 px-2 rounded-full text-[11px] font-extrabold bg-obsidian text-white flex items-center justify-center gap-1">
+                            <i data-lucide="fingerprint" class="w-3.5 h-3.5 text-amberGlow"></i> Тасбих
+                        </button>
+                        <button onclick="openToolSection('qibla')" id="tool-tab-qibla" class="spring-tap py-2.5 px-2 rounded-full text-[11px] font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1">
                             <i data-lucide="compass" class="w-3.5 h-3.5 text-rubyAccent"></i> Кибла
                         </button>
-                        <button onclick="openToolSection('halal')" id="tool-tab-halal" class="spring-tap py-2.5 px-3 rounded-full text-xs font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1.5">
+                        <button onclick="openToolSection('halal')" id="tool-tab-halal" class="spring-tap py-2.5 px-2 rounded-full text-[11px] font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1">
                             <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emeraldAccent"></i> Е-коды
                         </button>
-                        <button onclick="openToolSection('khushu')" id="tool-tab-khushu" class="spring-tap py-2.5 px-3 rounded-full text-xs font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1.5">
+                        <button onclick="openToolSection('khushu')" id="tool-tab-khushu" class="spring-tap py-2.5 px-2 rounded-full text-[11px] font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1">
                             <i data-lucide="book-open-check" class="w-3.5 h-3.5 text-indigoAccent"></i> Смысл
                         </button>
-                        <button onclick="openToolSection('emergency')" id="tool-tab-emergency" class="spring-tap py-2.5 px-3 rounded-full text-xs font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1.5">
-                            <i data-lucide="life-buoy" class="w-3.5 h-3.5 text-amberCore"></i> Помощник
+                        <button onclick="openToolSection('emergency')" id="tool-tab-emergency" class="spring-tap py-2.5 px-2 rounded-full text-[11px] font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1">
+                            <i data-lucide="life-buoy" class="w-3.5 h-3.5 text-amberCore"></i> Фикх
                         </button>
                     </div>
 
-                    <div id="tool-panel-qibla">
+                    <!-- Панель 0: Тасбих-счётчик после намаза (33 / 33 / 34) -->
+                    <div id="tool-panel-tasbih">
+                        <div class="sheet-card p-6 text-center space-y-4 select-none">
+                            <div class="flex items-center justify-between">
+                                <span id="tasbih-stage-badge" class="px-3 py-1 rounded-full bg-emeraldAccent/15 text-emeraldAccent text-[11px] font-extrabold uppercase">Шаг 1 из 3 • СубханаЛлах</span>
+                                <button onclick="resetTasbihCounter()" class="spring-tap px-3 py-1 rounded-full sheet-subcard text-xs font-bold flex items-center gap-1">
+                                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Сброс
+                                </button>
+                            </div>
+
+                            <div class="space-y-1 py-1">
+                                <p id="tasbih-arabic" class="arabic-text text-4xl text-amberCore">سُبْحَانَ اللَّهِ</p>
+                                <p id="tasbih-translit" class="text-base font-extrabold">Субхана-Ллах</p>
+                                <p id="tasbih-meaning" class="text-xs opacity-65">«Пречист Аллах от любых недостатков»</p>
+                            </div>
+
+                            <!-- Большая тактильная кнопка Тасбиха -->
+                            <div class="py-2 flex justify-center">
+                                <button onclick="incrementTasbih()" class="spring-tap relative w-44 h-44 rounded-full flex flex-col items-center justify-center shadow-2xl border-4 border-amberCore/40"
+                                        style="background: radial-gradient(circle at 35% 30%, #FF851B 0%, #D9480F 65%, #8F1E00 100%); color: #FFFFFF;">
+                                    <span id="tasbih-current-count" class="text-5xl font-extrabold tabular-nums leading-none">0</span>
+                                    <span id="tasbih-target-label" class="text-xs font-bold opacity-80 mt-1 tabular-nums">из 33</span>
+                                    <span class="text-[10px] uppercase tracking-widest opacity-75 mt-2">Нажмите</span>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center justify-between text-xs px-2 pt-1 opacity-75 font-bold">
+                                <span>Всего за круг: <strong id="tasbih-total-100" class="text-emeraldAccent tabular-nums">0 / 100</strong></span>
+                                <span>Сунна после намаза (Муслим 597)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Панель 1: Компас Киблы 360° -->
+                    <div id="tool-panel-qibla" class="hidden">
                         <div class="relative rounded-[32px] overflow-hidden p-6 text-white min-h-[400px] flex flex-col justify-between select-none shadow-2xl"
                              style="background: radial-gradient(circle at 50% 42%, #8F1E00 0%, #3D0B02 65%, #140502 100%);">
                             <div class="flex items-start justify-between gap-2">
@@ -932,30 +648,23 @@
                                         <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-extrabold text-xs text-white/85">W</span>
                                         <div id="qibla-kaaba-orbit" class="absolute inset-0 pointer-events-none" style="transform: rotate(196deg);">
                                             <div class="absolute -top-6 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                                                <div class="w-6 h-6 rounded-md bg-obsidian border-2 border-amberGlow shadow-lg flex items-center justify-center">
-                                                    <div class="w-full h-1 bg-amberGlow"></div>
-                                                </div>
+                                                <div class="w-6 h-6 rounded-md bg-obsidian border-2 border-amberGlow shadow-lg flex items-center justify-center"><div class="w-full h-1 bg-amberGlow"></div></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="w-48 mt-5">
-                                    <input id="manual-heading-slider" type="range" min="0" max="360" value="0" oninput="onManualCompassSlide(this.value)" class="apple-slider w-full cursor-pointer">
-                                </div>
+                                <div class="w-48 mt-5"><input id="manual-heading-slider" type="range" min="0" max="360" value="0" oninput="onManualCompassSlide(this.value)" class="apple-slider w-full cursor-pointer"></div>
                                 <p id="qibla-instruction-text" class="text-center font-extrabold text-sm text-white mt-3">Поверните телефон в сторону Киблы</p>
                             </div>
 
                             <div class="flex items-center justify-between">
-                                <button onclick="detectGeolocation()" class="spring-tap liquid-glass-pill px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5">
-                                    <i data-lucide="locate-fixed" class="w-3.5 h-3.5"></i> GPS
-                                </button>
-                                <button onclick="resetCompassNorth()" class="spring-tap liquid-glass-pill px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5">
-                                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Выровнять
-                                </button>
+                                <button onclick="detectGeolocation()" class="spring-tap liquid-glass-pill px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5"><i data-lucide="locate-fixed" class="w-3.5 h-3.5"></i> GPS</button>
+                                <button onclick="resetCompassNorth()" class="spring-tap liquid-glass-pill px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Выровнять</button>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Панель 2: Е-коды -->
                     <div id="tool-panel-halal" class="hidden space-y-3">
                         <div class="sheet-card p-5 space-y-3">
                             <div class="relative">
@@ -973,6 +682,7 @@
                         <div id="halal-results-list" class="space-y-2.5"></div>
                     </div>
 
+                    <!-- Панель 3: Смысл намаза -->
                     <div id="tool-panel-khushu" class="hidden space-y-3">
                         <div class="sheet-card p-5 space-y-4">
                             <div class="flex gap-1.5 p-1 rounded-full sheet-subcard">
@@ -984,13 +694,12 @@
                         </div>
                     </div>
 
+                    <!-- Панель 4: Помощник -->
                     <div id="tool-panel-emergency" class="hidden space-y-3"></div>
                 </div>
             </section>
 
-            <!-- ───────────────────────────────────────────────────────────────── -->
-            <!-- ВКЛАДКА 2: СВЯЩЕННЫЙ КОРАН -->
-            <!-- ───────────────────────────────────────────────────────────────── -->
+            <!-- ВКЛАДКА 2: КОРАН -->
             <section id="tab-quran" class="hidden space-y-4">
                 <div class="sheet-card p-5 sm:p-6 space-y-4">
                     <div class="flex items-center justify-between gap-2">
@@ -999,8 +708,7 @@
                             <h2 class="text-lg font-extrabold tracking-tight">Слушать Коран и Рукъю</h2>
                         </div>
                         <button onclick="startLuhaidanMarathon(2)" class="spring-tap px-4 py-2.5 rounded-full bg-obsidian text-white text-xs font-extrabold flex items-center gap-1.5 shadow">
-                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
-                            <span>Нон-стоп</span>
+                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i><span>Нон-стоп</span>
                         </button>
                     </div>
                     <div class="grid grid-cols-3 gap-2 p-1 rounded-full sheet-subcard">
@@ -1019,9 +727,7 @@
                         </div>
                         <div class="flex items-center gap-1.5">
                             <button onclick="toggleTranscriptionSetting()" id="quran-tr-pill" class="spring-tap px-3 py-1.5 rounded-full sheet-subcard text-[11px] font-extrabold">Транскрипция</button>
-                            <button id="back-to-surahs-btn" onclick="showSurahList()" class="spring-tap hidden px-3.5 py-1.5 rounded-full bg-amberCore text-white text-xs font-extrabold flex items-center gap-1">
-                                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Назад
-                            </button>
+                            <button id="back-to-surahs-btn" onclick="showSurahList()" class="spring-tap hidden px-3.5 py-1.5 rounded-full bg-amberCore text-white text-xs font-extrabold flex items-center gap-1"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Назад</button>
                         </div>
                     </div>
                     <div id="surah-search-box" class="relative">
@@ -1035,9 +741,7 @@
                 <div id="surah-reader-container" class="hidden space-y-3"></div>
             </section>
 
-            <!-- ───────────────────────────────────────────────────────────────── -->
             <!-- ВКЛАДКА 3: ОБУЧЕНИЕ -->
-            <!-- ───────────────────────────────────────────────────────────────── -->
             <section id="tab-memorize" class="hidden space-y-4">
                 <div class="sheet-card p-5 space-y-4">
                     <div class="flex items-center justify-between">
@@ -1045,9 +749,7 @@
                             <h2 class="text-lg font-extrabold tracking-tight">Обучение</h2>
                             <p class="text-xs opacity-60">Тренажёр заучивания сур и арабский алфавит</p>
                         </div>
-                        <div class="px-3.5 py-1.5 rounded-full sheet-subcard text-xs font-extrabold">
-                            Выучено: <span id="trainer-total-badge" class="text-emeraldAccent tabular-nums">0</span> аятов
-                        </div>
+                        <div class="px-3.5 py-1.5 rounded-full sheet-subcard text-xs font-extrabold">Выучено: <span id="trainer-total-badge" class="text-emeraldAccent tabular-nums">0</span> аятов</div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 p-1 rounded-full sheet-subcard">
                         <button onclick="switchLearningSubTab('surahs')" id="learn-sub-surahs" class="spring-tap py-2.5 px-3 rounded-full text-xs font-extrabold bg-obsidian text-white">Заучивание сур</button>
@@ -1057,8 +759,7 @@
 
                 <div id="learning-panel-surahs" class="space-y-4">
                     <div class="sheet-card p-5 space-y-3.5">
-                        <select id="memorize-surah-select" onchange="loadMemorizeSurah(this.value)"
-                            class="w-full px-4 py-3 rounded-full sheet-subcard text-xs font-extrabold focus:outline-none">
+                        <select id="memorize-surah-select" onchange="loadMemorizeSurah(this.value)" class="w-full px-4 py-3 rounded-full sheet-subcard text-xs font-extrabold focus:outline-none">
                             <option value="1">1. Аль-Фатиха (Открывающая)</option>
                             <option value="114" selected>114. Ан-Нас (Люди)</option>
                             <option value="113">113. Аль-Фаляк (Рассвет)</option>
@@ -1093,10 +794,7 @@
                     <div class="sheet-card p-5 space-y-3.5">
                         <div class="flex items-center gap-3">
                             <div class="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center shrink-0">
-                                <svg viewBox="0 0 24 24" class="w-7 h-7" fill="#FF0000">
-                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
-                                    <path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#FFFFFF"/>
-                                </svg>
+                                <svg viewBox="0 0 24 24" class="w-7 h-7" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#FFFFFF"/></svg>
                             </div>
                             <div>
                                 <span class="text-[10px] font-extrabold uppercase tracking-wider text-rubyAccent">Бесплатный видеокурс</span>
@@ -1104,14 +802,8 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <a href="https://www.youtube.com/watch?v=D52jSetT9bE" target="_blank" rel="noopener noreferrer"
-                               class="spring-tap py-3 px-4 rounded-full bg-obsidian text-white font-extrabold text-xs flex items-center justify-center gap-2">
-                                <i data-lucide="play" class="w-3.5 h-3.5"></i> Урок 1: Алфавит
-                            </a>
-                            <a href="https://www.youtube.com/@nasledieislama/playlists" target="_blank" rel="noopener noreferrer"
-                               class="spring-tap py-3 px-4 rounded-full sheet-subcard font-extrabold text-xs flex items-center justify-center gap-2">
-                                <i data-lucide="list-video" class="w-3.5 h-3.5"></i> Все плейлисты
-                            </a>
+                            <a href="https://www.youtube.com/watch?v=D52jSetT9bE" target="_blank" rel="noopener noreferrer" class="spring-tap py-3 px-4 rounded-full bg-obsidian text-white font-extrabold text-xs flex items-center justify-center gap-2"><i data-lucide="play" class="w-3.5 h-3.5"></i> Урок 1: Алфавит</a>
+                            <a href="https://www.youtube.com/@nasledieislama/playlists" target="_blank" rel="noopener noreferrer" class="spring-tap py-3 px-4 rounded-full sheet-subcard font-extrabold text-xs flex items-center justify-center gap-2"><i data-lucide="list-video" class="w-3.5 h-3.5"></i> Все плейлисты</a>
                         </div>
                     </div>
 
@@ -1133,10 +825,7 @@
 
                     <details class="sheet-card p-5" open>
                         <summary class="flex items-center justify-between cursor-pointer select-none">
-                            <div>
-                                <h4 class="text-sm font-extrabold">28 букв арабского алфавита с озвучкой</h4>
-                                <p class="text-xs opacity-60">Нажмите на любую букву, чтобы услышать махрадж и пример из Корана</p>
-                            </div>
+                            <div><h4 class="text-sm font-extrabold">28 букв арабского алфавита с озвучкой</h4><p class="text-xs opacity-60">Нажмите на любую букву, чтобы услышать махрадж и пример из Корана</p></div>
                             <i data-lucide="chevron-down" class="w-5 h-5 opacity-55"></i>
                         </summary>
                         <div id="arabic-alphabet-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-4 mt-3 border-t border-black/5"></div>
@@ -1144,9 +833,7 @@
                 </div>
             </section>
 
-            <!-- ───────────────────────────────────────────────────────────────── -->
-            <!-- ВКЛАДКА 4: МИНИМАЛИСТИЧНЫЕ СТАТУСЫ (КАК БЫЛО + 5 ШРИФТОВ И СМЕНА ЦВЕТА ТЕКСТА) -->
-            <!-- ───────────────────────────────────────────────────────────────── -->
+            <!-- ВКЛАДКА 4: МИНИМАЛИСТИЧНЫЕ СТАТУСЫ -->
             <section id="tab-status" class="hidden space-y-4">
                 <div class="sheet-card p-5 space-y-3.5">
                     <div class="flex items-center justify-between gap-2">
@@ -1156,33 +843,22 @@
                         </div>
                         <button onclick="rebuildWeeklyStatuses(true)" class="spring-tap px-4 py-2 rounded-full bg-obsidian text-white text-xs font-extrabold shrink-0">Обновить</button>
                     </div>
-
-                    <!-- Без указания количества -->
                     <div class="flex flex-wrap gap-1.5">
                         <button onclick="filterStatuses('all')" id="status-filter-all" class="spring-tap px-4 py-1.5 rounded-full text-xs font-extrabold bg-amberCore text-white">Все</button>
                         <button onclick="filterStatuses('jumuah')" id="status-filter-jumuah" class="spring-tap px-4 py-1.5 rounded-full text-xs font-bold sheet-subcard">Пятница (Джума)</button>
                         <button onclick="filterStatuses('eid')" id="status-filter-eid" class="spring-tap px-4 py-1.5 rounded-full text-xs font-bold sheet-subcard">Праздники</button>
                     </div>
                 </div>
-
                 <div id="status-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
             </section>
 
-            <!-- ───────────────────────────────────────────────────────────────── -->
             <!-- ВКЛАДКА 5: НАСТРОЙКИ -->
-            <!-- ───────────────────────────────────────────────────────────────── -->
             <section id="tab-settings" class="hidden space-y-4">
                 <div class="sheet-card p-5 sm:p-6 space-y-4">
                     <div class="flex items-center justify-between gap-2">
-                        <div>
-                            <h2 class="text-lg font-extrabold tracking-tight">Город и Мазхаб</h2>
-                            <p class="text-xs opacity-60">Время намазов и календарь .ics мгновенно синхронизируются</p>
-                        </div>
-                        <button onclick="detectGeolocation()" class="spring-tap px-4 py-2 rounded-full bg-emeraldAccent text-obsidian text-xs font-extrabold flex items-center gap-1.5">
-                            <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Авто-GPS
-                        </button>
+                        <div><h2 class="text-lg font-extrabold tracking-tight">Город и Мазхаб</h2><p class="text-xs opacity-60">Время намазов и календарь .ics мгновенно синхронизируются</p></div>
+                        <button onclick="detectGeolocation()" class="spring-tap px-4 py-2 rounded-full bg-emeraldAccent text-obsidian text-xs font-extrabold flex items-center gap-1.5"><i data-lucide="navigation" class="w-3.5 h-3.5"></i> Авто-GPS</button>
                     </div>
-
                     <div class="sheet-subcard p-4 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-[10px] uppercase tracking-wider opacity-55 font-bold block">Текущая локация</span>
@@ -1191,14 +867,11 @@
                         </div>
                         <button onclick="openOnboardingWizard()" class="spring-tap px-3.5 py-2 rounded-full bg-obsidian text-white text-xs font-bold">Мастер настройки</button>
                     </div>
-
                     <div class="relative">
                         <i data-lucide="search" class="w-4 h-4 text-amberCore absolute left-4 top-3.5"></i>
-                        <input id="unified-city-input" type="text" oninput="onUnifiedCityInput(this.value)" placeholder="Введите любой город или село..."
-                            class="w-full pl-11 pr-9 py-3 rounded-full sheet-subcard text-xs font-semibold focus:outline-none">
+                        <input id="unified-city-input" type="text" oninput="onUnifiedCityInput(this.value)" placeholder="Введите любой город или село..." class="w-full pl-11 pr-9 py-3 rounded-full sheet-subcard text-xs font-semibold focus:outline-none">
                     </div>
                     <div id="unified-city-results" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto"></div>
-
                     <div class="space-y-2 pt-2 border-t border-black/5">
                         <label class="text-xs font-extrabold block">Мазхаб (расчёт времени Аср):</label>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="settings-madhhab-pills">
@@ -1208,7 +881,6 @@
                             <button type="button" onclick="selectMadhhab('hanbali', false)" data-madhhab="hanbali" class="settings-madhhab-btn spring-tap py-2.5 px-3 rounded-2xl text-xs font-bold sheet-subcard">Ханбалитский</button>
                         </div>
                     </div>
-
                     <div>
                         <label class="text-xs font-extrabold block mb-1.5">Метод расчёта углов зари:</label>
                         <select id="settings-method" onchange="instantSaveMethod()" class="w-full p-3 rounded-full sheet-subcard text-xs font-extrabold focus:outline-none">
@@ -1221,78 +893,41 @@
                     </div>
                 </div>
 
-                <!-- СИСТЕМА УВЕДОМЛЕНИЙ -->
                 <div class="sheet-card p-5 sm:p-6 space-y-4">
-                    <div>
-                        <h3 class="text-base font-extrabold">Система уведомлений о намазе</h3>
-                        <p class="text-xs opacity-60">Двойная защита: системный календарь (.ics) и прямые уведомления браузера</p>
-                    </div>
-
+                    <div><h3 class="text-base font-extrabold">Система уведомлений о намазе</h3><p class="text-xs opacity-60">Двойная защита: системный календарь (.ics) и прямые уведомления браузера</p></div>
                     <div class="p-3.5 rounded-2xl bg-emeraldAccent/15 border border-emeraldAccent/30 flex items-center justify-between gap-2 text-xs">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emeraldAccent shrink-0"></i>
-                            <span id="ics-sync-verification" class="font-bold truncate">Экспорт: г. Казань • Ханафи</span>
-                        </div>
+                        <div class="flex items-center gap-2 min-w-0"><i data-lucide="check-circle" class="w-4 h-4 text-emeraldAccent shrink-0"></i><span id="ics-sync-verification" class="font-bold truncate">Экспорт: г. Казань • Ханафи</span></div>
                         <span id="ics-asr-preview" class="font-extrabold text-emeraldAccent shrink-0 tabular-nums">Аср: --:--</span>
                     </div>
-
                     <div class="sheet-subcard p-4 flex items-center justify-between gap-3">
-                        <div class="space-y-0.5">
-                            <span class="text-xs font-extrabold block">Push-уведомления в браузере / PWA</span>
-                            <span class="text-[11px] opacity-60 block">Уведомлять в момент наступления намаза и за 10 минут</span>
-                        </div>
+                        <div class="space-y-0.5"><span class="text-xs font-extrabold block">Push-уведомления в браузере / PWA</span><span class="text-[11px] opacity-60 block">Уведомлять в момент наступления намаза и за 10 минут</span></div>
                         <div class="flex items-center gap-2">
                             <button onclick="sendTestPrayerNotification()" class="spring-tap px-3 py-1.5 rounded-full bg-emeraldAccent/15 text-emeraldAccent text-[11px] font-extrabold">Тест</button>
-                            <div id="web-notif-switch" onclick="toggleWebNotifications()" class="ios-switch inactive" role="switch">
-                                <div class="ios-switch-thumb"></div>
-                            </div>
+                            <div id="web-notif-switch" onclick="toggleWebNotifications()" class="ios-switch inactive" role="switch"><div class="ios-switch-thumb"></div></div>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-1 gap-2.5">
-                        <button onclick="exportPrayersToICS(false, this)" class="spring-tap py-4 px-4 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg">
-                            <i data-lucide="calendar-check-2" class="w-4 h-4"></i>
-                            <span>Все 5 намазов на 30 дней (.ics)</span>
-                        </button>
-                        <button onclick="exportPrayersToICS(true, this)" class="spring-tap py-4 px-4 rounded-full bg-obsidian text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg">
-                            <i data-lucide="alarm-clock" class="w-4 h-4 text-amberGlow"></i>
-                            <span>Только Фаджр на 30 дней (.ics)</span>
-                        </button>
+                        <button onclick="exportPrayersToICS(false, this)" class="spring-tap py-4 px-4 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg"><i data-lucide="calendar-check-2" class="w-4 h-4"></i><span>Все 5 намазов на 30 дней (.ics)</span></button>
+                        <button onclick="exportPrayersToICS(true, this)" class="spring-tap py-4 px-4 rounded-full bg-obsidian text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg"><i data-lucide="alarm-clock" class="w-4 h-4 text-amberGlow"></i><span>Только Фаджр на 30 дней (.ics)</span></button>
                     </div>
                 </div>
 
                 <div class="sheet-card p-5 sm:p-6 space-y-4">
                     <h3 class="text-base font-extrabold">Интерфейс, Звуки и Транскрипция</h3>
                     <div class="grid grid-cols-2 gap-2 p-1 rounded-full sheet-subcard">
-                        <button onclick="setAppTheme('light')" id="theme-btn-light" class="spring-tap py-2.5 rounded-full text-xs font-extrabold bg-obsidian text-white flex items-center justify-center gap-1.5">
-                            <i data-lucide="sun" class="w-3.5 h-3.5"></i> Светлая (Стоковая)
-                        </button>
-                        <button onclick="setAppTheme('dark')" id="theme-btn-dark" class="spring-tap py-2.5 rounded-full text-xs font-bold opacity-65 flex items-center justify-center gap-1.5">
-                            <i data-lucide="moon" class="w-3.5 h-3.5"></i> Тёмная (Orbix Dark)
-                        </button>
+                        <button onclick="setAppTheme('light')" id="theme-btn-light" class="spring-tap py-2.5 rounded-full text-xs font-extrabold bg-obsidian text-white flex items-center justify-center gap-1.5"><i data-lucide="sun" class="w-3.5 h-3.5"></i> Светлая (Стоковая)</button>
+                        <button onclick="setAppTheme('dark')" id="theme-btn-dark" class="spring-tap py-2.5 rounded-full text-xs font-bold opacity-65 flex items-center justify-center gap-1.5"><i data-lucide="moon" class="w-3.5 h-3.5"></i> Тёмная (Orbix Dark)</button>
                     </div>
-
                     <div onclick="toggleTranscriptionSetting()" class="sheet-subcard p-4 flex items-center justify-between gap-3 cursor-pointer select-none">
-                        <div>
-                            <span class="text-xs font-extrabold block">Кириллическая транскрипция ВЕЗДЕ</span>
-                            <span class="text-[11px] opacity-60 block">Показывать русское произношение во всех аятах, Коране, дуа и статусах</span>
-                        </div>
+                        <div><span class="text-xs font-extrabold block">Кириллическая транскрипция ВЕЗДЕ</span><span class="text-[11px] opacity-60 block">Показывать русское произношение во всех аятах, Коране, дуа и статусах</span></div>
                         <div id="transcription-switch" class="ios-switch inactive"><div class="ios-switch-thumb"></div></div>
                     </div>
-
                     <div onclick="toggleSoundSetting()" class="sheet-subcard p-4 flex items-center justify-between gap-3 cursor-pointer select-none">
-                        <div>
-                            <span class="text-xs font-extrabold block">Тактильные звуки iOS</span>
-                            <span class="text-[11px] opacity-60 block">Мягкий акустический импульс при нажатиях</span>
-                        </div>
+                        <div><span class="text-xs font-extrabold block">Тактильные звуки iOS</span><span class="text-[11px] opacity-60 block">Мягкий акустический импульс при нажатиях</span></div>
                         <div id="sound-switch" class="ios-switch active"><div class="ios-switch-thumb"></div></div>
                     </div>
-
                     <div onclick="toggleHapticSetting()" class="sheet-subcard p-4 flex items-center justify-between gap-3 cursor-pointer select-none">
-                        <div>
-                            <span class="text-xs font-extrabold block">Тактильная вибрация</span>
-                            <span class="text-[11px] opacity-60 block">Короткий виброотклик на поддерживаемых смартфонах</span>
-                        </div>
+                        <div><span class="text-xs font-extrabold block">Тактильная вибрация</span><span class="text-[11px] opacity-60 block">Короткий виброотклик на поддерживаемых смартфонах</span></div>
                         <div id="haptic-switch" class="ios-switch active"><div class="ios-switch-thumb"></div></div>
                     </div>
                 </div>
@@ -1300,13 +935,8 @@
                 <a href="https://t.me/aitral" target="_blank" rel="noopener noreferrer" class="spring-tap block sheet-card p-5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-skyAccent/15 text-skyAccent flex items-center justify-center">
-                                <i data-lucide="send" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <span class="text-[10px] font-bold uppercase opacity-55 block">Идеи и обратная связь</span>
-                                <span class="text-sm font-extrabold">Telegram разработчика: @aitral</span>
-                            </div>
+                            <div class="w-10 h-10 rounded-full bg-skyAccent/15 text-skyAccent flex items-center justify-center"><i data-lucide="send" class="w-4 h-4"></i></div>
+                            <div><span class="text-[10px] font-bold uppercase opacity-55 block">Идеи и обратная связь</span><span class="text-sm font-extrabold">Telegram разработчика: @aitral</span></div>
                         </div>
                         <i data-lucide="external-link" class="w-4 h-4 opacity-50"></i>
                     </div>
@@ -1319,10 +949,7 @@
     <div id="surah-hint-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xl flex items-center justify-center p-4">
         <div class="sheet-card w-full max-w-md rounded-[34px] p-6 space-y-4 max-h-[85vh] flex flex-col">
             <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-[10px] uppercase tracking-widest text-amberCore font-extrabold">Сунна перед намазом</span>
-                    <h3 id="surah-hint-title" class="font-extrabold text-base mt-0.5">Суры для текущего намаза</h3>
-                </div>
+                <div><span class="text-[10px] uppercase tracking-widest text-amberCore font-extrabold">Сунна перед намазом</span><h3 id="surah-hint-title" class="font-extrabold text-base mt-0.5">Суры для текущего намаза</h3></div>
                 <button onclick="closeSurahHintModal()" class="spring-tap w-9 h-9 rounded-full sheet-subcard flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <div id="surah-hint-body" class="space-y-3 overflow-y-auto pr-1 text-xs flex-1"></div>
@@ -1330,78 +957,41 @@
         </div>
     </div>
 
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- МИНИМАЛИСТИЧНОЕ МОДАЛЬНОЕ ОКНО СТАТУСОВ 1080×1920 (ТЕКСТ ПОСЕРЕДИНЕ + 5 ШРИФТОВ + ЦВЕТ) -->
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- МИНИМАЛИСТИЧНОЕ МОДАЛЬНОЕ ОКНО СТАТУСОВ 1080×1920 -->
     <div id="status-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center p-4">
         <div class="relative w-full max-w-[345px] aspect-[9/16] rounded-[34px] overflow-hidden shadow-2xl border border-white/20 flex flex-col justify-between bg-black">
             <img id="modal-status-img" src="" crossorigin="anonymous" alt="Status" class="absolute inset-0 w-full h-full object-cover status-photo-exposure">
             <div id="modal-status-gradient" class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/48 to-black/82 transition-all duration-300"></div>
-
-            <!-- Верхние минималистичные кнопки: Смена 5 шрифтов, Смена цвета текста (Белый / Чёрный) и Закрыть -->
             <div class="relative z-10 flex items-center justify-between gap-1.5 p-3.5">
                 <div class="flex items-center gap-1.5">
-                    <button onclick="cycleModalStatusFont()" id="modal-font-btn" class="spring-tap px-3 py-1.5 rounded-full bg-black/50 text-white border border-white/25 text-[11px] font-bold backdrop-blur-md">
-                        Шрифт: Курсив
-                    </button>
-                    <button onclick="toggleModalStatusColor()" id="modal-color-btn" class="spring-tap px-3 py-1.5 rounded-full bg-black/50 text-white border border-white/25 text-[11px] font-bold backdrop-blur-md">
-                        Цвет: Белый
-                    </button>
+                    <button onclick="cycleModalStatusFont()" id="modal-font-btn" class="spring-tap px-3 py-1.5 rounded-full bg-black/50 text-white border border-white/25 text-[11px] font-bold backdrop-blur-md">Шрифт: Курсив</button>
+                    <button onclick="toggleModalStatusColor()" id="modal-color-btn" class="spring-tap px-3 py-1.5 rounded-full bg-black/50 text-white border border-white/25 text-[11px] font-bold backdrop-blur-md">Цвет: Белый</button>
                 </div>
-                <button onclick="closeStatusModal()" class="spring-tap p-2 rounded-full bg-black/50 text-white border border-white/25 backdrop-blur-md">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
+                <button onclick="closeStatusModal()" class="spring-tap p-2 rounded-full bg-black/50 text-white border border-white/25 backdrop-blur-md"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
-
-            <!-- ТЕКСТ СТРОГО ПОСЕРЕДИНЕ (МИНИМАЛИЗМ БЕЗ ЛИШНИХ ПЛАШЕК) -->
             <div id="modal-status-text-box" class="relative z-10 px-7 text-center my-auto space-y-3">
                 <p id="modal-status-arabic" class="arabic-text text-[21px] leading-relaxed"></p>
                 <p id="modal-status-cyrillic" class="hidden text-[12px] font-bold italic opacity-90"></p>
                 <p id="modal-status-russian" class="font-serifOld italic text-[16px] leading-relaxed"></p>
                 <p id="modal-status-source" class="text-[9.5px] uppercase tracking-[0.22em] opacity-80 pt-1"></p>
             </div>
-
-            <!-- Кнопки скачивания и отправки -->
             <div class="relative z-10 p-4 space-y-2 bg-gradient-to-t from-black/90 via-black/55 to-transparent">
-                <button onclick="shareStatusImageFile()" class="spring-tap w-full py-3 px-4 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs uppercase flex items-center justify-center gap-2 shadow-lg">
-                    <i data-lucide="share-2" class="w-4 h-4"></i>
-                    <span>Отправить в WhatsApp / Истории</span>
-                </button>
-                <button onclick="downloadStatusImage()" class="spring-tap w-full py-2.5 px-4 rounded-full bg-white/15 border border-white/20 text-white font-bold text-[11px] uppercase flex items-center justify-center gap-2">
-                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                    <span>Скачать 1080×1920</span>
-                </button>
+                <button onclick="shareStatusImageFile()" class="spring-tap w-full py-3 px-4 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs uppercase flex items-center justify-center gap-2 shadow-lg"><i data-lucide="share-2" class="w-4 h-4"></i><span>Отправить в WhatsApp / Истории</span></button>
+                <button onclick="downloadStatusImage()" class="spring-tap w-full py-2.5 px-4 rounded-full bg-white/15 border border-white/20 text-white font-bold text-[11px] uppercase flex items-center justify-center gap-2"><i data-lucide="download" class="w-3.5 h-3.5"></i><span>Скачать 1080×1920</span></button>
             </div>
         </div>
         <canvas id="status-canvas" width="1080" height="1920" class="hidden"></canvas>
     </div>
 
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- НИЖНИЙ ОСТРОВОК НАВИГАЦИИ (100% GPU TRANSLATE3D, БЕЗ ПУСТЫХ ДЫР В НАСТРОЙКАХ) -->
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- НИЖНИЙ ОСТРОВОК НАВИГАЦИИ -->
     <nav class="floating-bottom-nav" aria-label="Основная навигация">
         <div id="nav-glider" style="transform: translate3d(0px, 0, 0);"></div>
-
-        <button onclick="switchTab('prayer')" id="nav-prayer" class="nav-item-btn active" style="width: 132px; transform: translate3d(0px, 0, 0);">
-            <i data-lucide="clock-4" class="w-5 h-5 shrink-0"></i>
-            <span class="nav-label">Намаз</span>
-        </button>
-        <button onclick="switchTab('quran')" id="nav-quran" class="nav-item-btn" style="width: 60px; transform: translate3d(132px, 0, 0);">
-            <i data-lucide="book-open" class="w-5 h-5 shrink-0"></i>
-            <span class="nav-label">Коран</span>
-        </button>
-        <button onclick="switchTab('memorize')" id="nav-memorize" class="nav-item-btn" style="width: 60px; transform: translate3d(192px, 0, 0);">
-            <i data-lucide="graduation-cap" class="w-5 h-5 shrink-0"></i>
-            <span class="nav-label">Обучение</span>
-        </button>
-        <button onclick="switchTab('status')" id="nav-status" class="nav-item-btn" style="width: 60px; transform: translate3d(252px, 0, 0);">
-            <i data-lucide="sparkles" class="w-5 h-5 shrink-0"></i>
-            <span class="nav-label">Статус</span>
-        </button>
+        <button onclick="switchTab('prayer')" id="nav-prayer" class="nav-item-btn active" style="width: 132px; transform: translate3d(0px, 0, 0);"><i data-lucide="clock-4" class="w-5 h-5 shrink-0"></i><span class="nav-label">Намаз</span></button>
+        <button onclick="switchTab('quran')" id="nav-quran" class="nav-item-btn" style="width: 60px; transform: translate3d(132px, 0, 0);"><i data-lucide="book-open" class="w-5 h-5 shrink-0"></i><span class="nav-label">Коран</span></button>
+        <button onclick="switchTab('memorize')" id="nav-memorize" class="nav-item-btn" style="width: 60px; transform: translate3d(192px, 0, 0);"><i data-lucide="graduation-cap" class="w-5 h-5 shrink-0"></i><span class="nav-label">Обучение</span></button>
+        <button onclick="switchTab('status')" id="nav-status" class="nav-item-btn" style="width: 60px; transform: translate3d(252px, 0, 0);"><i data-lucide="sparkles" class="w-5 h-5 shrink-0"></i><span class="nav-label">Статус</span></button>
     </nav>
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
-    <!-- ЯДРО ПРИЛОЖЕНИЯ AYASPACE (ЧАСТЬ 2) -->
-    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+
     <script>
         const MADHHAB_INFO = {
             hanafi:  { name: "Ханафитский",  short: "Ханафи",  schoolParam: "1" },
@@ -1422,42 +1012,10 @@
         ];
 
         const SURAH_NAMES_RU = {
-            1: "Аль-Фатиха (Открывающая)", 2: "Аль-Бакара (Корова)", 3: "Али Имран (Семейство Имрана)", 4: "Ан-Ниса (Женщины)",
-            5: "Аль-Маида (Трапеза)", 6: "Аль-Анам (Скот)", 7: "Аль-Араф (Ограды)", 8: "Аль-Анфаль (Трофеи)",
-            9: "Ат-Тауба (Покаяние)", 10: "Юнус (Иона)", 11: "Худ (Худ)", 12: "Юсуф (Иосиф)",
-            13: "Ар-Раад (Гром)", 14: "Ибрахим (Авраам)", 15: "Аль-Хиджр (Хиджр)", 16: "Ан-Нахль (Пчёлы)",
-            17: "Аль-Исра (Ночной перенос)", 18: "Аль-Кахф (Пещера)", 19: "Марьям (Мария)", 20: "Та Ха (Та Ха)",
-            21: "Аль-Анбия (Пророки)", 22: "Аль-Хадж (Паломничество)", 23: "Аль-Муминун (Верующие)", 24: "Ан-Нур (Свет)",
-            25: "Аль-Фуркан (Различение)", 26: "Аш-Шуара (Поэты)", 27: "Ан-Намль (Муравьи)", 28: "Аль-Касас (Рассказ)",
-            29: "Аль-Анкабут (Паук)", 30: "Ар-Рум (Римляне)", 31: "Лукман (Лукман)", 32: "Ас-Саджда (Земной поклон)",
-            33: "Аль-Ахзаб (Союзники)", 34: "Саба (Сава)", 35: "Фатыр (Творец)", 36: "Йа Син (Ясин)",
-            37: "Ас-Саффат (Выстроившиеся в ряды)", 38: "Сад (Сад)", 39: "Аз-Зумар (Толпы)", 40: "Гафир (Прощающий)",
-            41: "Фуссылят (Разъяснены)", 42: "Аш-Шура (Совет)", 43: "Аз-Зухруф (Украшения)", 44: "Ад-Духан (Дым)",
-            45: "Аль-Джасия (Коленопреклонённые)", 46: "Аль-Ахкаф (Барханы)", 47: "Мухаммад (Мухаммад)", 48: "Аль-Фатх (Победа)",
-            49: "Аль-Худжурат (Комнаты)", 50: "Каф (Каф)", 51: "Аз-Зарият (Рассеивающие прах)", 52: "Ат-Тур (Гора)",
-            53: "Ан-Наджм (Звезда)", 54: "Аль-Камар (Месяц)", 55: "Ар-Рахман (Милостивый)", 56: "Аль-Вакиа (Событие)",
-            57: "Аль-Хадид (Железо)", 58: "Аль-Муджадиля (Препирающаяся)", 59: "Аль-Хашр (Сбор)", 60: "Аль-Мумтахана (Испытуемая)",
-            61: "Ас-Сафф (Ряды)", 62: "Аль-Джумуа (Собрание)", 63: "Аль-Мунафикун (Лицемеры)", 64: "Ат-Тагабун (Взаимное обделение)",
-            65: "Ат-Таляк (Развод)", 66: "Ат-Тахрим (Запрещение)", 67: "Аль-Мульк (Власть)", 68: "Аль-Калям (Письменная трость)",
-            69: "Аль-Хакка (Неминуемое)", 70: "Аль-Мааридж (Ступени)", 71: "Нух (Ной)", 72: "Аль-Джинн (Джинны)",
-            73: "Аль-Муззаммиль (Закутавшийся)", 74: "Аль-Муддассир (Завернувшийся)", 75: "Аль-Кияма (Воскресение)", 76: "Аль-Инсан (Человек)",
-            77: "Аль-Мурсалят (Посылаемые)", 78: "Ан-Наба (Весть)", 79: "Ан-Назиат (Исторгающие)", 80: "Абаса (Нахмурился)",
-            81: "Ат-Таквир (Скручивание)", 82: "Аль-Инфитар (Раскалывание)", 83: "Аль-Мутаффифин (Обвешивающие)", 84: "Аль-Иншикак (Разверзнется)",
-            85: "Аль-Бурудж (Созвездия Зодиака)", 86: "Ат-Тарик (Ночной путник)", 87: "Аль-Аля (Всевышний)", 88: "Аль-Гашия (Покрывающее)",
-            89: "Аль-Фаджр (Заря)", 90: "Аль-Баляд (Город)", 91: "Аш-Шамс (Солнце)", 92: "Аль-Лейль (Ночь)",
-            93: "Ад-Духа (Утро)", 94: "Аш-Шарх (Раскрытие)", 95: "Ат-Тин (Смоковница)", 96: "Аль-Аляк (Сгусток крови)",
-            97: "Аль-Кадр (Предопределение)", 98: "Аль-Баййина (Ясное знамение)", 99: "Аз-Зальзаля (Сотрясение)", 100: "Аль-Адият (Скачущие)",
-            101: "Аль-Кариа (Великое бедствие)", 102: "Ат-Такасур (Страсть к приумножению)", 103: "Аль-Аср (Предвечернее время)", 104: "Аль-Хумаза (Хулитель)",
-            105: "Аль-Филь (Слон)", 106: "Курайш (Курайшиты)", 107: "Аль-Маун (Мелочь)", 108: "Аль-Каусар (Изобилие)",
-            109: "Аль-Кафирун (Неверующие)", 110: "Ан-Наср (Помощь)", 111: "Аль-Масад (Пальмовые волокна)", 112: "Аль-Ихляс (Очищение веры)",
-            113: "Аль-Фаляк (Рассвет)", 114: "Ан-Нас (Люди)"
+            1: "Аль-Фатиха (Открывающая)", 2: "Аль-Бакара (Корова)", 3: "Али Имран (Семейство Имрана)", 4: "Ан-Ниса (Женщины)", 5: "Аль-Маида (Трапеза)", 6: "Аль-Анам (Скот)", 7: "Аль-Араф (Ограды)", 8: "Аль-Анфаль (Трофеи)", 9: "Ат-Тауба (Покаяние)", 10: "Юнус (Иона)", 11: "Худ (Худ)", 12: "Юсуф (Иосиф)", 13: "Ар-Раад (Гром)", 14: "Ибрахим (Авраам)", 15: "Аль-Хиджр (Хиджр)", 16: "Ан-Нахль (Пчёлы)", 17: "Аль-Исра (Ночной перенос)", 18: "Аль-Кахф (Пещера)", 19: "Марьям (Мария)", 20: "Та Ха (Та Ха)", 21: "Аль-Анбия (Пророки)", 22: "Аль-Хадж (Паломничество)", 23: "Аль-Муминун (Верующие)", 24: "Ан-Нур (Свет)", 25: "Аль-Фуркан (Различение)", 26: "Аш-Шуара (Поэты)", 27: "Ан-Намль (Муравьи)", 28: "Аль-Касас (Рассказ)", 29: "Аль-Анкабут (Паук)", 30: "Ар-Рум (Римляне)", 31: "Лукман (Лукман)", 32: "Ас-Саджда (Земной поклон)", 33: "Аль-Ахзаб (Союзники)", 34: "Саба (Сава)", 35: "Фатыр (Творец)", 36: "Йа Син (Ясин)", 37: "Ас-Саффат (Выстроившиеся в ряды)", 38: "Сад (Сад)", 39: "Аз-Зумар (Толпы)", 40: "Гафир (Прощающий)", 41: "Фуссылят (Разъяснены)", 42: "Аш-Шура (Совет)", 43: "Аз-Зухруф (Украшения)", 44: "Ад-Духан (Дым)", 45: "Аль-Джасия (Коленопреклонённые)", 46: "Аль-Ахкаф (Барханы)", 47: "Мухаммад (Мухаммад)", 48: "Аль-Фатх (Победа)", 49: "Аль-Худжурат (Комнаты)", 50: "Каф (Каф)", 51: "Аз-Зарият (Рассеивающие прах)", 52: "Ат-Тур (Гора)", 53: "Ан-Наджм (Звезда)", 54: "Аль-Камар (Месяц)", 55: "Ар-Рахман (Милостивый)", 56: "Аль-Вакиа (Событие)", 57: "Аль-Хадид (Железо)", 58: "Аль-Муджадиля (Препирающаяся)", 59: "Аль-Хашр (Сбор)", 60: "Аль-Мумтахана (Испытуемая)", 61: "Ас-Сафф (Ряды)", 62: "Аль-Джумуа (Собрание)", 63: "Аль-Мунафикун (Лицемеры)", 64: "Ат-Тагабун (Взаимное обделение)", 65: "Ат-Таляк (Развод)", 66: "Ат-Тахрим (Запрещение)", 67: "Аль-Мульк (Власть)", 68: "Аль-Калям (Письменная трость)", 69: "Аль-Хакка (Неминуемое)", 70: "Аль-Мааридж (Ступени)", 71: "Нух (Ной)", 72: "Аль-Джинн (Джинны)", 73: "Аль-Муззаммиль (Закутавшийся)", 74: "Аль-Муддассир (Завернувшийся)", 75: "Аль-Кияма (Воскресение)", 76: "Аль-Инсан (Человек)", 77: "Аль-Мурсалят (Посылаемые)", 78: "Ан-Наба (Весть)", 79: "Ан-Назиат (Исторгающие)", 80: "Абаса (Нахмурился)", 81: "Ат-Таквир (Скручивание)", 82: "Аль-Инфитар (Раскалывание)", 83: "Аль-Мутаффифин (Обвешивающие)", 84: "Аль-Иншикак (Разверзнется)", 85: "Аль-Бурудж (Созвездия Зодиака)", 86: "Ат-Тарик (Ночной путник)", 87: "Аль-Аля (Всевышний)", 88: "Аль-Гашия (Покрывающее)", 89: "Аль-Фаджр (Заря)", 90: "Аль-Баляд (Город)", 91: "Аш-Шамс (Солнце)", 92: "Аль-Лейль (Ночь)", 93: "Ад-Духа (Утро)", 94: "Аш-Шарх (Раскрытие)", 95: "Ат-Тин (Смоковница)", 96: "Аль-Аляк (Сгусток крови)", 97: "Аль-Кадр (Предопределение)", 98: "Аль-Баййина (Ясное знамение)", 99: "Аз-Зальзаля (Сотрясение)", 100: "Аль-Адият (Скачущие)", 101: "Аль-Кариа (Великое бедствие)", 102: "Ат-Такасур (Страсть к приумножению)", 103: "Аль-Аср (Предвечернее время)", 104: "Аль-Хумаза (Хулитель)", 105: "Аль-Филь (Слон)", 106: "Курайш (Курайшиты)", 107: "Аль-Маун (Мелочь)", 108: "Аль-Каусар (Изобилие)", 109: "Аль-Кафирун (Неверующие)", 110: "Ан-Наср (Помощь)", 111: "Аль-Масад (Пальмовые волокна)", 112: "Аль-Ихляс (Очищение веры)", 113: "Аль-Фаляк (Рассвет)", 114: "Ан-Нас (Люди)"
         };
 
-        const HIJRI_MONTHS_RU = {
-            1: "Мухаррам", 2: "Сафар", 3: "Раби аль-авваль", 4: "Раби ас-сани",
-            5: "Джумада аль-уля", 6: "Джумада ас-сания", 7: "Раджаб", 8: "Шаабан",
-            9: "Рамадан", 10: "Шавваль", 11: "Зуль-каада", 12: "Зуль-хиджа"
-        };
+        const HIJRI_MONTHS_RU = { 1: "Мухаррам", 2: "Сафар", 3: "Раби аль-авваль", 4: "Раби ас-сани", 5: "Джумада аль-уля", 6: "Джумада ас-сания", 7: "Раджаб", 8: "Шаабан", 9: "Рамадан", 10: "Шавваль", 11: "Зуль-каада", 12: "Зуль-хиджа" };
 
         const HEALING_SESSIONS_DATA = {
             ruqyah: {
@@ -1482,9 +1040,6 @@
             }
         };
 
-        // ═════════════════════════════════════════════════════════════════════
-        // ПРОВЕРЕННЫЕ ФОТОГРАФИИ ПРИРОДЫ, ПУСТЫНИ, ТУМАННЫХ ЛЕСОВ И МЕЧЕТЕЙ (БЕЗ ЛЮДЕЙ)
-        // ═════════════════════════════════════════════════════════════════════
         const REAL_NATURE_PHOTOS = [
             "https://upload.wikimedia.org/wikipedia/commons/c/ce/The_massive_sand_dunes_of_Rub_Al_Khali.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Sheikh_Zayed_Mosque_Silhouette.jpg/1280px-Sheikh_Zayed_Mosque_Silhouette.jpg",
@@ -1504,15 +1059,9 @@
             "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Sunset_in_Death_Valley_%28Unsplash%29.jpg/1080px-Sunset_in_Death_Valley_%28Unsplash%29.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Desert_Dunes.jpg/1280px-Desert_Dunes.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Canyon_%28Unsplash%29.jpg/1280px-Canyon_%28Unsplash%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/A_snowy_mountain_in_the_desert_%28Unsplash%29.jpg/1280px-A_snowy_mountain_in_the_desert_%28Unsplash%29.jpg",
-            "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1080&q=85",
-            "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1080&q=85",
-            "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1080&q=85",
-            "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1080&q=85",
-            "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1080&q=85"
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/A_snowy_mountain_in_the_desert_%28Unsplash%29.jpg/1280px-A_snowy_mountain_in_the_desert_%28Unsplash%29.jpg"
         ];
 
-        // 5 Шрифтов для переключения в Статусах
         const STATUS_FONT_PRESETS = [
             { key: "serifItalic", label: "Курсив", cssClass: "font-serifOld italic font-normal", canvasFont: "italic 400 40px 'Playfair Display', serif" },
             { key: "sfBold", label: "Жирный", cssClass: "font-sans font-extrabold not-italic tracking-tight", canvasFont: "800 37px 'SF Pro Rounded', 'Nunito', sans-serif" },
@@ -1562,42 +1111,9 @@
         ];
 
         const WORD_BY_WORD_NAMAZ = {
-            fatiha: {
-                words: [
-                    { ar: "بِسْمِ", tr: "Бисми", ru: "С именем" }, { ar: "اللَّهِ", tr: "Лляхи", ru: "Аллаха" },
-                    { ar: "الرَّحْمَٰنِ", tr: "Ар-Рахмани", ru: "Милостивого" }, { ar: "الرَّحِيمِ", tr: "Ар-Рахим", ru: "Милующего" },
-                    { ar: "الْحَمْدُ", tr: "Аль-хамду", ru: "Вся хвала" }, { ar: "لِلَّهِ", tr: "ли-Лляхи", ru: "Аллаху" },
-                    { ar: "رَبِّ", tr: "Рабби", ru: "Господу" }, { ar: "الْعَالَمِينَ", tr: "аль-'алямин", ru: "миров" },
-                    { ar: "مَالِكِ", tr: "Малики", ru: "Властелину" }, { ar: "يَوْمِ", tr: "йауми", ru: "Дня" },
-                    { ar: "الدِّينِ", tr: "ад-дин", ru: "Суда" }, { ar: "إِيَّاكَ", tr: "Иййака", ru: "Только Тебе" },
-                    { ar: "نَعْبُدُ", tr: "на'буду", ru: "поклоняемся" }, { ar: "وَإِيَّاكَ", tr: "ва иййака", ru: "и только Тебя" },
-                    { ar: "نَسْتَعِينُ", tr: "наста'ин", ru: "просим о помощи" }, { ar: "اهْدِنَا", tr: "Ихдина", ru: "Веди нас" },
-                    { ar: "الصِّرَاطَ", tr: "ас-сырата", ru: "путём" }, { ar: "الْمُسْتَقِيمَ", tr: "аль-мустакым", ru: "прямым" }
-                ]
-            },
-            tahiyyat: {
-                words: [
-                    { ar: "التَّحِيَّاتُ لِلَّهِ", tr: "Ат-тахиййату ли-Лляхи", ru: "Все приветствия Аллаху" },
-                    { ar: "وَالصَّلَوَاتُ وَالطَّيِّبَاتُ", tr: "вас-салявату ват-таййибату", ru: "молитвы и благие дела" },
-                    { ar: "السَّلَامُ عَلَيْكَ", tr: "Ас-саляму 'алейка", ru: "Мир тебе" },
-                    { ar: "أَيُّهَا النَّبِيُّ", tr: "аййухан-Набиййу", ru: "о Пророк" },
-                    { ar: "السَّلَامُ عَلَيْنَا", tr: "Ас-саляму 'алейна", ru: "Мир нам" },
-                    { ar: "وَعَلَىٰ عِبَادِ اللَّهِ الصَّالِحِينَ", tr: "ва 'аля 'ибадиЛляхи с-салихин", ru: "и праведным рабам Аллаха" },
-                    { ar: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ", tr: "Ашхаду ан ля иляха илля-Ллах", ru: "Свидетельствую: нет божества, кроме Аллаха" },
-                    { ar: "وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", tr: "ва ашхаду анна Мухаммадан 'абдуху ва расулюх", ru: "и Мухаммад — Его раб и Посланник" },
-                    { ar: "اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ", tr: "Аллахумма салли 'аля Мухаммад", ru: "О Аллах, благослови Мухаммада" }
-                ]
-            },
-            adhkar: {
-                words: [
-                    { ar: "اللَّهُ أَكْبَرُ", tr: "Аллаху Акбар", ru: "Аллах Превелик" },
-                    { ar: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", tr: "Субхана Раббияль-'Азым", ru: "Пречист Господь мой Великий (в руку)" },
-                    { ar: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ", tr: "Сами'а-Ллаху лиман хамидах", ru: "Услышал Аллах восхваляющего Его" },
-                    { ar: "رَبَّنَا وَلَكَ الْحَمْدُ", tr: "Раббана ва лякаль-хамд", ru: "Господь наш, Тебе хвала" },
-                    { ar: "سُبْحَانَ رَبِّيَ الْأَعْلَىٰ", tr: "Субхана Раббияль-А'ля", ru: "Пречист Господь мой Всевышний (в суджуде)" },
-                    { ar: "رَبِّ اغْفِرْ لِي", tr: "Рабби-гфир ли", ru: "Господи, прости меня" }
-                ]
-            }
+            fatiha: { words: [{ ar: "بِسْمِ", tr: "Бисми", ru: "С именем" }, { ar: "اللَّهِ", tr: "Лляхи", ru: "Аллаха" }, { ar: "الرَّحْمَٰنِ", tr: "Ар-Рахмани", ru: "Милостивого" }, { ar: "الرَّحِيمِ", tr: "Ар-Рахим", ru: "Милующего" }, { ar: "الْحَمْدُ", tr: "Аль-хамду", ru: "Вся хвала" }, { ar: "لِلَّهِ", tr: "ли-Лляхи", ru: "Аллаху" }, { ar: "رَبِّ", tr: "Рабби", ru: "Господу" }, { ar: "الْعَالَمِينَ", tr: "аль-'алямин", ru: "миров" }, { ar: "مَالِكِ", tr: "Малики", ru: "Властелину" }, { ar: "يَوْمِ", tr: "йауми", ru: "Дня" }, { ar: "الدِّينِ", tr: "ад-дин", ru: "Суда" }, { ar: "إِيَّاكَ", tr: "Иййака", ru: "Только Тебе" }, { ar: "نَعْبُدُ", tr: "на'буду", ru: "поклоняемся" }, { ar: "وَإِيَّاكَ", tr: "ва иййака", ru: "и только Тебя" }, { ar: "نَسْتَعِينُ", tr: "наста'ин", ru: "просим о помощи" }, { ar: "اهْدِنَا", tr: "Ихдина", ru: "Веди нас" }, { ar: "الصِّرَاطَ", tr: "ас-сырата", ru: "путём" }, { ar: "الْمُسْتَقِيمَ", tr: "аль-мустакым", ru: "прямым" }] },
+            tahiyyat: { words: [{ ar: "التَّحِيَّاتُ لِلَّهِ", tr: "Ат-тахиййату ли-Лляхи", ru: "Все приветствия Аллаху" }, { ar: "وَالصَّلَوَاتُ وَالطَّيِّبَاتُ", tr: "вас-салявату ват-таййибату", ru: "молитвы и благие дела" }, { ar: "السَّلَامُ عَلَيْكَ", tr: "Ас-саляму 'алейка", ru: "Мир тебе" }, { ar: "أَيُّهَا النَّبِيُّ", tr: "аййухан-Набиййу", ru: "о Пророк" }, { ar: "السَّلَامُ عَلَيْنَا", tr: "Ас-саляму 'алейна", ru: "Мир нам" }, { ar: "وَعَلَىٰ عِبَادِ اللَّهِ الصَّالِحِينَ", tr: "ва 'аля 'ибадиЛляхи с-салихин", ru: "и праведным рабам Аллаха" }, { ar: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ", tr: "Ашхаду ан ля иляха илля-Ллах", ru: "Свидетельствую: нет божества, кроме Аллаха" }, { ar: "وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", tr: "ва ашхаду анна Мухаммадан 'абдуху ва расулюх", ru: "и Мухаммад — Его раб и Посланник" }, { ar: "اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ", tr: "Аллахумма салли 'аля Мухаммад", ru: "О Аллах, благослови Мухаммада" }] },
+            adhkar: { words: [{ ar: "اللَّهُ أَكْبَرُ", tr: "Аллаху Акбар", ru: "Аллах Превелик" }, { ar: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", tr: "Субхана Раббияль-'Азым", ru: "Пречист Господь мой Великий (в руку)" }, { ar: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ", tr: "Сами'а-Ллаху лиман хамидах", ru: "Услышал Аллах восхваляющего Его" }, { ar: "رَبَّنَا وَلَكَ الْحَمْدُ", tr: "Раббана ва лякаль-хамд", ru: "Господь наш, Тебе хвала" }, { ar: "سُبْحَانَ رَبِّيَ الْأَعْلَىٰ", tr: "Субхана Раббияль-А'ля", ru: "Пречист Господь мой Всевышний (в суджуде)" }, { ar: "رَبِّ اغْفِرْ لِي", tr: "Рабби-гфир ли", ru: "Господи, прости меня" }] }
         };
 
         const SUNNAH_EMERGENCY_CARDS = [
@@ -1642,9 +1158,6 @@
             { name: "Баку", lat: 40.4093, lng: 49.8671 }, { name: "Мекка", lat: 21.4225, lng: 39.8262 }
         ];
 
-        // ═════════════════════════════════════════════════════════════════════
-        // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
-        // ═════════════════════════════════════════════════════════════════════
         let prayerState = {
             lat: parseFloat(localStorage.getItem('aya_lat')) || 55.7961,
             lng: parseFloat(localStorage.getItem('aya_lng')) || 49.1064,
@@ -1666,42 +1179,26 @@
         let currentTabKey = 'prayer';
         let lastActiveMainTab = 'prayer';
 
-        let searchDebounceTimer = null;
-        let onbSearchDebounceTimer = null;
+        let searchDebounceTimer = null, onbSearchDebounceTimer = null, islandHideTimer = null;
         let globalAudio = new Audio();
-        let islandHideTimer = null;
-
-        let allSurahs = [];
-        let currentSurahMeta = null;
-        let currentSurahAyahs = [];
-        let isContinuousMode = false;
-        let isLuhaidanMarathonMode = false;
-        let currentMarathonSurah = 2;
-
-        let activeHealingSessionKey = 'ruqyah';
-        let isHealingQueuePlaying = false;
-        let currentHealingQueue = [];
-        let currentHealingQueueIndex = 0;
-
+        let allSurahs = [], currentSurahMeta = null, currentSurahAyahs = [];
+        let isContinuousMode = false, isLuhaidanMarathonMode = false, currentMarathonSurah = 2;
+        let activeHealingSessionKey = 'ruqyah', isHealingQueuePlaying = false, currentHealingQueue = [], currentHealingQueueIndex = 0;
         let trainerState = { surahNumber: 114, ayahs: [], mode: 'read', loopTarget: 3, currentLoopCount: 0 };
-        let mediaRecorder = null;
-        let recordedChunks = [];
-        let activeStatusCard = null;
-        let currentStatusFilter = 'all';
+        let mediaRecorder = null, recordedChunks = [];
+        let activeStatusCard = null, currentStatusFilter = 'all';
         const STATUS_FILTER_ORDER = { all: 0, jumuah: 1, eid: 2 };
-
-        let currentCompassHeading = 0;
-        let targetQiblaBearing = 196;
-        let isAlignedVibrated = false;
+        let currentCompassHeading = 0, targetQiblaBearing = 196, isAlignedVibrated = false, isCompassListening = false;
         let lastNotifiedKey = '';
+
+        // Состояние Тасбих-счётчика (33 / 33 / 34)
+        let tasbihTotal = parseInt(localStorage.getItem('aya_tasbih_total') || '0', 10);
 
         function getLuhaidanSurahAudioUrl(surahNum) {
             return `https://server8.mp3quran.net/lhdan/${String(surahNum).padStart(3, '0')}.mp3`;
         }
 
-        // ═════════════════════════════════════════════════════════════════════
         // ТАКТИЛЬНЫЙ ЗВУКОВОЙ ДВИЖОК
-        // ═════════════════════════════════════════════════════════════════════
         let uiAudioCtx = null;
         function getAudioCtx() {
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -1713,9 +1210,7 @@
 
         function triggerHaptic(pattern) {
             if (!prayerState.hapticEnabled) return;
-            try {
-                if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(pattern);
-            } catch (e) {}
+            try { if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(pattern); } catch (e) {}
         }
 
         const AyaSoundEngine = {
@@ -1723,106 +1218,63 @@
                 triggerHaptic(5);
                 if (!prayerState.soundEnabled) return;
                 try {
-                    const ctx = getAudioCtx();
-                    if (!ctx) return;
-                    const now = ctx.currentTime;
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(150, now);
-                    osc.frequency.exponentialRampToValueAtTime(48, now + 0.02);
-                    gain.gain.setValueAtTime(0.001, now);
-                    gain.gain.linearRampToValueAtTime(0.05, now + 0.003);
-                    gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.022);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(now);
-                    osc.stop(now + 0.023);
+                    const ctx = getAudioCtx(); if (!ctx) return;
+                    const now = ctx.currentTime, osc = ctx.createOscillator(), gain = ctx.createGain();
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(150, now); osc.frequency.exponentialRampToValueAtTime(48, now + 0.02);
+                    gain.gain.setValueAtTime(0.001, now); gain.gain.linearRampToValueAtTime(0.05, now + 0.003); gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.022);
+                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.023);
                 } catch (e) {}
             },
             select() {
                 triggerHaptic(8);
                 if (!prayerState.soundEnabled) return;
                 try {
-                    const ctx = getAudioCtx();
-                    if (!ctx) return;
-                    const now = ctx.currentTime;
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(280, now);
-                    osc.frequency.exponentialRampToValueAtTime(440, now + 0.045);
-                    gain.gain.setValueAtTime(0.001, now);
-                    gain.gain.linearRampToValueAtTime(0.04, now + 0.008);
-                    gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.05);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(now);
-                    osc.stop(now + 0.055);
+                    const ctx = getAudioCtx(); if (!ctx) return;
+                    const now = ctx.currentTime, osc = ctx.createOscillator(), gain = ctx.createGain();
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(280, now); osc.frequency.exponentialRampToValueAtTime(440, now + 0.045);
+                    gain.gain.setValueAtTime(0.001, now); gain.gain.linearRampToValueAtTime(0.04, now + 0.008); gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.05);
+                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.055);
                 } catch (e) {}
             },
             toggle(isOn = true) {
                 triggerHaptic(10);
                 if (!prayerState.soundEnabled) return;
                 try {
-                    const ctx = getAudioCtx();
-                    if (!ctx) return;
-                    const now = ctx.currentTime;
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(isOn ? 260 : 380, now);
-                    osc.frequency.exponentialRampToValueAtTime(isOn ? 390 : 240, now + 0.045);
-                    gain.gain.setValueAtTime(0.001, now);
-                    gain.gain.linearRampToValueAtTime(0.045, now + 0.008);
-                    gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.05);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(now);
-                    osc.stop(now + 0.055);
+                    const ctx = getAudioCtx(); if (!ctx) return;
+                    const now = ctx.currentTime, osc = ctx.createOscillator(), gain = ctx.createGain();
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(isOn ? 260 : 380, now); osc.frequency.exponentialRampToValueAtTime(isOn ? 390 : 240, now + 0.045);
+                    gain.gain.setValueAtTime(0.001, now); gain.gain.linearRampToValueAtTime(0.045, now + 0.008); gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.05);
+                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.055);
                 } catch (e) {}
             },
             complete() {
                 triggerHaptic([12, 30, 18]);
                 if (!prayerState.soundEnabled) return;
                 try {
-                    const ctx = getAudioCtx();
-                    if (!ctx) return;
+                    const ctx = getAudioCtx(); if (!ctx) return;
                     const now = ctx.currentTime;
                     [440, 554.37, 659.25].forEach((freq, idx) => {
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
-                        const start = now + idx * 0.04;
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(freq, start);
-                        gain.gain.setValueAtTime(0.001, start);
-                        gain.gain.linearRampToValueAtTime(0.04, start + 0.012);
-                        gain.gain.exponentialRampToValueAtTime(0.0006, start + 0.22);
-                        osc.connect(gain);
-                        gain.connect(ctx.destination);
-                        osc.start(start);
-                        osc.stop(start + 0.23);
+                        const osc = ctx.createOscillator(), gain = ctx.createGain(), start = now + idx * 0.04;
+                        osc.type = 'sine'; osc.frequency.setValueAtTime(freq, start);
+                        gain.gain.setValueAtTime(0.001, start); gain.gain.linearRampToValueAtTime(0.04, start + 0.012); gain.gain.exponentialRampToValueAtTime(0.0006, start + 0.22);
+                        osc.connect(gain); gain.connect(ctx.destination); osc.start(start); osc.stop(start + 0.23);
                     });
                 } catch (e) {}
             },
-            reveal() { this.select(); },
             error() { triggerHaptic([20, 40, 20]); }
         };
 
-        // ═════════════════════════════════════════════════════════════════════
         // ИНИЦИАЛИЗАЦИЯ
-        // ═════════════════════════════════════════════════════════════════════
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             updateBottomNavPositions('prayer');
             syncAllSettingsSwitchesUI();
             initPullToRefresh();
             checkSpecialFridayBanner();
+            updateTasbihUI();
 
             document.addEventListener('pointerdown', e => {
-                if (e.target.closest('button, .spring-tap, .tx-prayer-row')) {
-                    AyaSoundEngine.tap();
-                }
+                if (e.target.closest('button, .spring-tap, .tx-prayer-row')) AyaSoundEngine.tap();
             }, { passive: true });
 
             const sel = document.getElementById('memorize-surah-select');
@@ -1831,16 +1283,13 @@
                 for (let sNum = 1; sNum <= 114; sNum++) {
                     if (!existing.has(sNum)) {
                         const opt = document.createElement('option');
-                        opt.value = sNum;
-                        opt.textContent = `${sNum}. ${SURAH_NAMES_RU[sNum]}`;
+                        opt.value = sNum; opt.textContent = `${sNum}. ${SURAH_NAMES_RU[sNum]}`;
                         sel.appendChild(opt);
                     }
                 }
             }
 
-            if (localStorage.getItem('aya_onboarding_done') !== 'true') {
-                openOnboardingWizard();
-            }
+            if (localStorage.getItem('aya_onboarding_done') !== 'true') openOnboardingWizard();
 
             rebuildWeeklyStatuses(false);
             initPrayerTab();
@@ -1857,14 +1306,10 @@
 
         function initPullToRefresh() {
             let touchStartY = 0;
-            window.addEventListener('touchstart', e => {
-                touchStartY = (window.scrollY || 0) <= 5 ? e.touches[0].clientY : 0;
-            }, { passive: true });
-
+            window.addEventListener('touchstart', e => { touchStartY = (window.scrollY || 0) <= 5 ? e.touches[0].clientY : 0; }, { passive: true });
             window.addEventListener('touchend', async e => {
                 if (!touchStartY) return;
-                const diff = e.changedTouches[0].clientY - touchStartY;
-                if (diff > 110 && (window.scrollY || 0) <= 5) {
+                if (e.changedTouches[0].clientY - touchStartY > 110 && (window.scrollY || 0) <= 5) {
                     const ind = document.getElementById('pull-refresh-indicator');
                     if (ind) { ind.classList.remove('hidden'); ind.classList.add('flex'); }
                     AyaSoundEngine.select();
@@ -1885,80 +1330,123 @@
             setTimeout(() => openSurahReader(surahNum, SURAH_NAMES_RU[surahNum] || 'Аль-Кахф', 'سُورَةُ الكَهْفِ'), 120);
         }
 
-        // ═════════════════════════════════════════════════════════════════════
-        // АЯТ 3 ЧАСОВ
-        // ═════════════════════════════════════════════════════════════════════
+        // ТАСБИХ-СЧЁТЧИК ПОСЛЕ НАМАЗА (33 / 33 / 34)
+        function updateTasbihUI() {
+            const countEl = document.getElementById('tasbih-current-count');
+            const targetEl = document.getElementById('tasbih-target-label');
+            const badgeEl = document.getElementById('tasbih-stage-badge');
+            const arEl = document.getElementById('tasbih-arabic');
+            const trEl = document.getElementById('tasbih-translit');
+            const mnEl = document.getElementById('tasbih-meaning');
+            const totEl = document.getElementById('tasbih-total-100');
+            if (!countEl) return;
+
+            if (tasbihTotal < 33) {
+                badgeEl.textContent = "Шаг 1 из 3 • СубханаЛлах (33×)";
+                arEl.textContent = "سُبْحَانَ اللَّهِ";
+                trEl.textContent = "Субхана-Ллах";
+                mnEl.textContent = "«Пречист Аллах от любых недостатков»";
+                countEl.textContent = String(tasbihTotal);
+                targetEl.textContent = "из 33";
+            } else if (tasbihTotal < 66) {
+                badgeEl.textContent = "Шаг 2 из 3 • АльхамдулиЛлях (33×)";
+                arEl.textContent = "الْحَمْدُ لِلَّهِ";
+                trEl.textContent = "Альхамду-ли-Ллях";
+                mnEl.textContent = "«Вся хвала и благодарность Аллаху»";
+                countEl.textContent = String(tasbihTotal - 33);
+                targetEl.textContent = "из 33";
+            } else if (tasbihTotal < 99) {
+                badgeEl.textContent = "Шаг 3 из 3 • Аллаху Акбар (33×)";
+                arEl.textContent = "اللَّهُ أَكْبَرُ";
+                trEl.textContent = "Аллаху Акбар";
+                mnEl.textContent = "«Аллах Превелик»";
+                countEl.textContent = String(tasbihTotal - 66);
+                targetEl.textContent = "из 33";
+            } else {
+                badgeEl.textContent = "Завершение 100-го зикра";
+                arEl.textContent = "لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ";
+                trEl.textContent = "Ля иляха илля-Ллаху вахдаху ля шарикя ляху, ляхуль-мульку ва ляхуль-хамду ва Хува ’аля кулли шай’ин Кадир";
+                mnEl.textContent = "«Прощаются грехи, даже если их будет подобно пене морской» (Муслим 597)";
+                countEl.textContent = "100";
+                targetEl.textContent = "Завершено ✓";
+            }
+            totEl.textContent = `${Math.min(100, tasbihTotal)} / 100`;
+        }
+
+        function incrementTasbih() {
+            tasbihTotal = (tasbihTotal >= 100) ? 1 : tasbihTotal + 1;
+            localStorage.setItem('aya_tasbih_total', String(tasbihTotal));
+            if (tasbihTotal === 33 || tasbihTotal === 66 || tasbihTotal === 99 || tasbihTotal === 100) {
+                AyaSoundEngine.complete();
+            } else {
+                AyaSoundEngine.select();
+            }
+            updateTasbihUI();
+        }
+
+        function resetTasbihCounter() {
+            AyaSoundEngine.toggle(false);
+            tasbihTotal = 0;
+            localStorage.setItem('aya_tasbih_total', '0');
+            updateTasbihUI();
+        }
+
+        // АЯТ 3 ЧАСОВ (БЕЗ ЕЖЕСЕКУНДНОГО ЧТЕНИЯ LOCALSTORAGE)
         const THREE_HOURS_MS = 3 * 3600 * 1000;
+        let cachedAyahSlot = -1, cachedAyahIndex = 0;
 
         function updateDeterministicAyahOf3Hours() {
             const nowMs = Date.now();
             const currentSlot = Math.floor(nowMs / THREE_HOURS_MS);
             const nextChangeMs = (currentSlot + 1) * THREE_HOURS_MS;
 
-            let savedSlot = parseInt(localStorage.getItem('aya_ayah3h_slot') || '-1', 10);
-            let ayahIndex = parseInt(localStorage.getItem('aya_ayah3h_index') || '0', 10);
-
-            if (savedSlot !== currentSlot) {
-                ayahIndex = currentSlot % AYAHS_3H_POOL.length;
-                localStorage.setItem('aya_ayah3h_slot', String(currentSlot));
-                localStorage.setItem('aya_ayah3h_index', String(ayahIndex));
+            if (cachedAyahSlot !== currentSlot) {
+                cachedAyahSlot = currentSlot;
+                cachedAyahIndex = currentSlot % AYAHS_3H_POOL.length;
+                const ayahItem = AYAHS_3H_POOL[cachedAyahIndex] || AYAHS_3H_POOL[0];
+                const arEl = document.getElementById('ayah-3h-arabic');
+                const ruEl = document.getElementById('ayah-3h-russian');
+                const srcEl = document.getElementById('ayah-3h-source');
+                if (arEl) arEl.textContent = ayahItem.arabic;
+                if (ruEl) ruEl.textContent = ayahItem.russian;
+                if (srcEl) srcEl.textContent = ayahItem.source;
             }
 
-            const ayahItem = AYAHS_3H_POOL[ayahIndex] || AYAHS_3H_POOL[0];
-            const arEl = document.getElementById('ayah-3h-arabic');
             const cyrEl = document.getElementById('ayah-3h-cyrillic');
-            const ruEl = document.getElementById('ayah-3h-russian');
-            const srcEl = document.getElementById('ayah-3h-source');
-
-            if (arEl && arEl.textContent !== ayahItem.arabic) {
-                arEl.textContent = ayahItem.arabic;
-                ruEl.textContent = ayahItem.russian;
-                srcEl.textContent = ayahItem.source;
-            }
             if (cyrEl) {
-                cyrEl.textContent = ayahItem.cyrillic || '';
-                cyrEl.classList.toggle('hidden', !prayerState.showTranscription);
+                const ayahItem = AYAHS_3H_POOL[cachedAyahIndex] || AYAHS_3H_POOL[0];
+                const shouldHide = !prayerState.showTranscription;
+                if (cyrEl.classList.contains('hidden') !== shouldHide) {
+                    cyrEl.textContent = ayahItem.cyrillic || '';
+                    cyrEl.classList.toggle('hidden', shouldHide);
+                }
             }
 
             const remSec = Math.max(0, Math.floor((nextChangeMs - nowMs) / 1000));
             const h = String(Math.floor(remSec / 3600)).padStart(2, '0');
             const m = String(Math.floor((remSec % 3600) / 60)).padStart(2, '0');
             const s = String(remSec % 60).padStart(2, '0');
-
             const timerEl = document.getElementById('ayah-3h-countdown');
             if (timerEl) timerEl.textContent = `${h}:${m}:${s}`;
         }
 
         function playAyahOf3HoursAudio() {
             AyaSoundEngine.select();
-            const ayahIndex = parseInt(localStorage.getItem('aya_ayah3h_index') || '0', 10);
-            const ayahItem = AYAHS_3H_POOL[ayahIndex] || AYAHS_3H_POOL[0];
+            const ayahItem = AYAHS_3H_POOL[cachedAyahIndex] || AYAHS_3H_POOL[0];
             const urls = ayahItem.audioUrls || [];
             if (!urls.length) return;
-
-            isLuhaidanMarathonMode = false;
-            isHealingQueuePlaying = false;
-            isContinuousMode = false;
-
+            isLuhaidanMarathonMode = false; isHealingQueuePlaying = false; isContinuousMode = false;
             let idx = 0;
             showDynamicIsland(ayahItem.source, "Аят 3 часов • Мишари Рашид аль-Афаси");
-
             const playNextPart = () => {
-                if (idx >= urls.length) {
-                    updateIslandPlayState(false);
-                    scheduleHideDynamicIsland(1000);
-                    return;
-                }
-                globalAudio.src = urls[idx];
-                globalAudio.play().catch(() => {});
+                if (idx >= urls.length) { updateIslandPlayState(false); scheduleHideDynamicIsland(1000); return; }
+                globalAudio.src = urls[idx]; globalAudio.play().catch(() => {});
                 globalAudio.onended = () => { idx++; playNextPart(); };
             };
             playNextPart();
         }
 
-        // ═════════════════════════════════════════════════════════════════════
         // ОНБОРДИНГ
-        // ═════════════════════════════════════════════════════════════════════
         function openOnboardingWizard() {
             const overlay = document.getElementById('onboarding-overlay');
             if (!overlay) return;
@@ -1973,11 +1461,7 @@
                 const panel = document.getElementById(`onb-step-${n}`);
                 const dot = document.getElementById(`onb-dot-${n}`);
                 if (panel) panel.classList.toggle('hidden', n !== step);
-                if (dot) {
-                    dot.className = n === step
-                        ? "h-2 w-7 rounded-full bg-white transition-all"
-                        : (n < step ? "h-2 w-2 rounded-full bg-amberGlow transition-all" : "h-2 w-2 rounded-full bg-white/35 transition-all");
-                }
+                if (dot) dot.className = n === step ? "h-2 w-7 rounded-full bg-white transition-all" : (n < step ? "h-2 w-2 rounded-full bg-amberGlow transition-all" : "h-2 w-2 rounded-full bg-white/35 transition-all");
             });
             const counter = document.getElementById('onb-step-counter');
             if (counter) counter.textContent = `Шаг ${step} из 4`;
@@ -1992,13 +1476,9 @@
             const box = document.getElementById('onb-city-results');
             if (!box) return;
             const q = filterText.toLowerCase().trim();
-            const matched = QUICK_CITIES.filter(c => c.name.toLowerCase().includes(q)).slice(0, 12);
-            box.innerHTML = matched.map(c => `
-                <button type="button" onclick="pickOnboardingCity(${c.lat}, ${c.lng}, '${c.name}')"
-                    class="spring-tap px-4 py-2 rounded-full text-xs font-extrabold liquid-glass-pill text-white">
-                    ${c.name}
-                </button>
-            `).join('');
+            box.innerHTML = QUICK_CITIES.filter(c => c.name.toLowerCase().includes(q)).slice(0, 12).map(c =>
+                `<button type="button" onclick="pickOnboardingCity(${c.lat}, ${c.lng}, '${c.name}')" class="spring-tap px-4 py-2 rounded-full text-xs font-extrabold liquid-glass-pill text-white">${c.name}</button>`
+            ).join('');
         }
 
         function onOnboardingCitySearch(val) {
@@ -2006,7 +1486,6 @@
             renderOnboardingQuickCities(q);
             clearTimeout(onbSearchDebounceTimer);
             if (q.length < 2) return;
-
             onbSearchDebounceTimer = setTimeout(async () => {
                 const box = document.getElementById('onb-city-results');
                 if (!box) return;
@@ -2015,8 +1494,7 @@
                     const places = await res.json();
                     places.forEach(p => {
                         const shortName = p.display_name.split(',')[0].replace(/'/g, "");
-                        const lat = parseFloat(p.lat).toFixed(4);
-                        const lng = parseFloat(p.lon).toFixed(4);
+                        const lat = parseFloat(p.lat).toFixed(4), lng = parseFloat(p.lon).toFixed(4);
                         const btn = document.createElement('button');
                         btn.type = 'button';
                         btn.className = "spring-tap w-full text-left px-4 py-3 rounded-2xl bg-white text-obsidian flex items-center justify-between gap-2 mt-1 shadow";
@@ -2028,17 +1506,11 @@
             }, 350);
         }
 
-        async function pickOnboardingCity(lat, lng, cityName) {
-            await selectAndSaveCityInstantly(lat, lng, cityName);
-            goToOnboardingStep(3);
-        }
-
+        async function pickOnboardingCity(lat, lng, cityName) { await selectAndSaveCityInstantly(lat, lng, cityName); goToOnboardingStep(3); }
         function detectGeoForOnboarding() {
             if (!navigator.geolocation) return;
             navigator.geolocation.getCurrentPosition(async pos => {
-                const lat = parseFloat(pos.coords.latitude.toFixed(4));
-                const lng = parseFloat(pos.coords.longitude.toFixed(4));
-                await selectAndSaveCityInstantly(lat, lng, "Моя геопозиция");
+                await selectAndSaveCityInstantly(parseFloat(pos.coords.latitude.toFixed(4)), parseFloat(pos.coords.longitude.toFixed(4)), "Моя геопозиция");
                 goToOnboardingStep(3);
             });
         }
@@ -2046,10 +1518,8 @@
         async function selectMadhhab(madhhabKey, isFromOnboarding = false) {
             AyaSoundEngine.select();
             const info = MADHHAB_INFO[madhhabKey] || MADHHAB_INFO.hanafi;
-            prayerState.madhhabKey = madhhabKey;
-            prayerState.school = info.schoolParam;
-            localStorage.setItem('aya_madhhab_key', madhhabKey);
-            localStorage.setItem('aya_school', info.schoolParam);
+            prayerState.madhhabKey = madhhabKey; prayerState.school = info.schoolParam;
+            localStorage.setItem('aya_madhhab_key', madhhabKey); localStorage.setItem('aya_school', info.schoolParam);
             syncMadhhabButtonsUI();
             await initPrayerTab();
             if (isFromOnboarding) renderOnboardingSchedulePreview();
@@ -2058,10 +1528,8 @@
         function syncMadhhabButtonsUI() {
             const activeKey = prayerState.madhhabKey || 'hanafi';
             const info = MADHHAB_INFO[activeKey] || MADHHAB_INFO.hanafi;
-
             document.querySelectorAll('.onb-madhhab-btn').forEach(btn => {
-                const k = btn.getAttribute('data-madhhab');
-                const check = btn.querySelector('.madhhab-check');
+                const k = btn.getAttribute('data-madhhab'), check = btn.querySelector('.madhhab-check');
                 if (k === activeKey) {
                     btn.className = "onb-madhhab-btn spring-tap p-3.5 rounded-[22px] bg-white text-obsidian text-left space-y-1 shadow-lg";
                     if (check) { check.className = "madhhab-check w-4 h-4 rounded-full bg-obsidian text-white flex items-center justify-center text-[10px]"; check.textContent = "✓"; }
@@ -2070,14 +1538,12 @@
                     if (check) { check.className = "madhhab-check w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[10px]"; check.textContent = ""; }
                 }
             });
-
             document.querySelectorAll('.settings-madhhab-btn').forEach(btn => {
                 const k = btn.getAttribute('data-madhhab');
                 btn.className = k === activeKey
                     ? "settings-madhhab-btn spring-tap py-2.5 px-3 rounded-2xl text-xs font-extrabold bg-obsidian text-white shadow"
                     : "settings-madhhab-btn spring-tap py-2.5 px-3 rounded-2xl text-xs font-bold sheet-subcard";
             });
-
             const previewLabel = document.getElementById('onb-preview-madhhab-label');
             if (previewLabel) previewLabel.textContent = info.name;
         }
@@ -2087,15 +1553,8 @@
             const dateEl = document.getElementById('onb-preview-date');
             if (dateEl) dateEl.textContent = prayerState.city;
             if (!box || !prayerState.timings) return;
-
-            const items = [
-                { key: 'Fajr', label: 'Фаджр' }, { key: 'Dhuhr', label: 'Зухр' },
-                { key: 'Asr', label: 'Аср' }, { key: 'Maghrib', label: 'Магриб' }, { key: 'Isha', label: 'Иша' }
-            ];
-            box.innerHTML = items.map(it => {
-                const t = prayerState.timings[it.key].split(' ')[0];
-                return `<div class="rounded-2xl bg-white/10 p-2 border border-white/15"><span class="text-[10px] text-white/75 block">${it.label}</span><strong class="text-xs font-extrabold text-white tabular-nums">${t}</strong></div>`;
-            }).join('');
+            const items = [{ key: 'Fajr', label: 'Фаджр' }, { key: 'Dhuhr', label: 'Зухр' }, { key: 'Asr', label: 'Аср' }, { key: 'Maghrib', label: 'Магриб' }, { key: 'Isha', label: 'Иша' }];
+            box.innerHTML = items.map(it => `<div class="rounded-2xl bg-white/10 p-2 border border-white/15"><span class="text-[10px] text-white/75 block">${it.label}</span><strong class="text-xs font-extrabold text-white tabular-nums">${prayerState.timings[it.key].split(' ')[0]}</strong></div>`).join('');
         }
 
         function finishOnboarding() {
@@ -2104,22 +1563,13 @@
             document.getElementById('onboarding-overlay').classList.add('hidden');
         }
 
-        // ═════════════════════════════════════════════════════════════════════
-        // ТЕМА, ЗВУКИ, ВИБРАЦИЯ И ГЛОБАЛЬНАЯ ТРАНСКРИПЦИЯ
-        // ═════════════════════════════════════════════════════════════════════
+        // ТЕМА, ЗВУКИ, ВИБРАЦИЯ И ТРАНСКРИПЦИЯ
         function setAppTheme(theme) {
             AyaSoundEngine.select();
-            const html = document.documentElement;
-            const metaTheme = document.getElementById('meta-theme-color');
-            if (theme === 'dark') {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                if (metaTheme) metaTheme.setAttribute('content', '#140603');
-            } else {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                if (metaTheme) metaTheme.setAttribute('content', '#8F1E00');
-            }
+            const html = document.documentElement, metaTheme = document.getElementById('meta-theme-color');
+            html.classList.toggle('dark', theme === 'dark');
+            html.classList.toggle('light', theme !== 'dark');
+            if (metaTheme) metaTheme.setAttribute('content', theme === 'dark' ? '#140603' : '#8F1E00');
             localStorage.setItem('aya_theme', theme);
             syncAllSettingsSwitchesUI();
         }
@@ -2143,46 +1593,31 @@
             localStorage.setItem('aya_show_transcription', String(prayerState.showTranscription));
             AyaSoundEngine.toggle(prayerState.showTranscription);
             syncAllSettingsSwitchesUI();
-
             updateDeterministicAyahOf3Hours();
             selectHealingSession(activeHealingSessionKey);
-            if (currentSurahAyahs.length > 0 && currentSurahMeta) {
-                renderSurahAyahs(currentSurahMeta.num, currentSurahMeta.engName, currentSurahMeta.arabName);
-            }
+            if (currentSurahAyahs.length > 0 && currentSurahMeta) renderSurahAyahs(currentSurahMeta.num, currentSurahMeta.engName, currentSurahMeta.arabName);
             if (trainerState.ayahs.length > 0) renderTrainerAyahs();
             renderEmergencyCards();
             renderStatusGrid(currentStatusFilter);
-            if (activeStatusCard && !document.getElementById('status-modal').classList.contains('hidden')) {
-                syncModalStatusUI();
-            }
+            if (activeStatusCard && !document.getElementById('status-modal').classList.contains('hidden')) syncModalStatusUI();
         }
 
         function syncAllSettingsSwitchesUI() {
             const currentTheme = localStorage.getItem('aya_theme') || 'light';
-            const btnLight = document.getElementById('theme-btn-light');
-            const btnDark = document.getElementById('theme-btn-dark');
+            const btnLight = document.getElementById('theme-btn-light'), btnDark = document.getElementById('theme-btn-dark');
             if (btnLight && btnDark) {
-                btnLight.className = currentTheme === 'light'
-                    ? "spring-tap py-2.5 rounded-full text-xs font-extrabold bg-obsidian text-white flex items-center justify-center gap-1.5"
-                    : "spring-tap py-2.5 rounded-full text-xs font-bold opacity-65 flex items-center justify-center gap-1.5";
-                btnDark.className = currentTheme === 'dark'
-                    ? "spring-tap py-2.5 rounded-full text-xs font-extrabold bg-amberCore text-white flex items-center justify-center gap-1.5"
-                    : "spring-tap py-2.5 rounded-full text-xs font-bold opacity-65 flex items-center justify-center gap-1.5";
+                btnLight.className = currentTheme === 'light' ? "spring-tap py-2.5 rounded-full text-xs font-extrabold bg-obsidian text-white flex items-center justify-center gap-1.5" : "spring-tap py-2.5 rounded-full text-xs font-bold opacity-65 flex items-center justify-center gap-1.5";
+                btnDark.className = currentTheme === 'dark' ? "spring-tap py-2.5 rounded-full text-xs font-extrabold bg-amberCore text-white flex items-center justify-center gap-1.5" : "spring-tap py-2.5 rounded-full text-xs font-bold opacity-65 flex items-center justify-center gap-1.5";
             }
-
             const quranTrPill = document.getElementById('quran-tr-pill');
             if (quranTrPill) {
-                quranTrPill.className = prayerState.showTranscription
-                    ? "spring-tap px-3 py-1.5 rounded-full bg-emeraldAccent text-obsidian text-[11px] font-extrabold"
-                    : "spring-tap px-3 py-1.5 rounded-full sheet-subcard text-[11px] font-extrabold";
+                quranTrPill.className = prayerState.showTranscription ? "spring-tap px-3 py-1.5 rounded-full bg-emeraldAccent text-obsidian text-[11px] font-extrabold" : "spring-tap px-3 py-1.5 rounded-full sheet-subcard text-[11px] font-extrabold";
                 quranTrPill.textContent = prayerState.showTranscription ? "✓ Транскрипция" : "Транскрипция";
             }
-
             const setSw = (id, state) => {
                 const el = document.getElementById(id);
                 if (!el) return;
-                el.classList.toggle('active', !!state);
-                el.classList.toggle('inactive', !state);
+                el.classList.toggle('active', !!state); el.classList.toggle('inactive', !state);
             };
             setSw('sound-switch', prayerState.soundEnabled);
             setSw('haptic-switch', prayerState.hapticEnabled);
@@ -2192,17 +1627,12 @@
             syncMadhhabButtonsUI();
         }
 
-        // ═════════════════════════════════════════════════════════════════════
-        // 120 FPS НАВИГАЦИЯ НА ЧИСТОМ TRANSLATE3D + ФИКС ПЕРЕХОДА В НАСТРОЙКИ
-        // ═════════════════════════════════════════════════════════════════════
+        // 120 FPS НАВИГАЦИЯ + АВТО-ОТКЛЮЧЕНИЕ ГИРОСКОПА В ФОНЕ
         function updateBottomNavPositions(activeMainTab) {
             const activeIdx = MAIN_TABS.indexOf(activeMainTab);
             const targetIdx = activeIdx >= 0 ? activeIdx : 0;
-
             const glider = document.getElementById('nav-glider');
-            if (glider) {
-                glider.style.transform = `translate3d(${targetIdx * 60}px, 0, 0)`;
-            }
+            if (glider) glider.style.transform = `translate3d(${targetIdx * 60}px, 0, 0)`;
 
             let offsetX = 0;
             MAIN_TABS.forEach((t, idx) => {
@@ -2219,16 +1649,14 @@
         function switchTab(tabName) {
             if (currentTabKey === tabName && tabName !== 'prayer') return;
             AyaSoundEngine.select();
+            if (tabName !== 'prayer') stopCompassGyro();
 
             const oldIndex = TAB_ORDER[currentTabKey] ?? 0;
             const newIndex = TAB_ORDER[tabName] ?? 0;
             const slideClass = newIndex >= oldIndex ? 'tab-slide-right' : 'tab-slide-left';
             currentTabKey = tabName;
 
-            if (MAIN_TABS.includes(tabName)) {
-                lastActiveMainTab = tabName;
-            }
-            // В Настройках сохраняем текущую активную кнопку внизу (текст не пропадает и нет пустой дыры!)
+            if (MAIN_TABS.includes(tabName)) lastActiveMainTab = tabName;
             updateBottomNavPositions(lastActiveMainTab);
 
             ['prayer', 'quran', 'memorize', 'status', 'settings'].forEach(t => {
@@ -2263,25 +1691,20 @@
 
         function openToolSection(sectionKey) {
             AyaSoundEngine.select();
-            ['qibla', 'halal', 'khushu', 'emergency'].forEach(k => {
+            if (sectionKey !== 'qibla') stopCompassGyro();
+            ['tasbih', 'qibla', 'halal', 'khushu', 'emergency'].forEach(k => {
                 const panel = document.getElementById(`tool-panel-${k}`);
                 const btn = document.getElementById(`tool-tab-${k}`);
-                if (k === sectionKey) {
-                    panel.classList.remove('hidden');
-                    btn.className = "spring-tap py-2.5 px-3 rounded-full text-xs font-extrabold bg-obsidian text-white flex items-center justify-center gap-1.5";
-                } else {
-                    panel.classList.add('hidden');
-                    btn.className = "spring-tap py-2.5 px-3 rounded-full text-xs font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1.5";
-                }
+                if (panel) panel.classList.toggle('hidden', k !== sectionKey);
+                if (btn) btn.className = k === sectionKey
+                    ? "spring-tap py-2.5 px-2 rounded-full text-[11px] font-extrabold bg-obsidian text-white flex items-center justify-center gap-1"
+                    : "spring-tap py-2.5 px-2 rounded-full text-[11px] font-bold opacity-65 hover:opacity-100 flex items-center justify-center gap-1";
             });
             if (sectionKey === 'qibla') updateQiblaCompassCalculations();
         }
 
-// ═════════════════════════════════════════════════════════════════════
-        // РАСЧЁТ НАМАЗОВ И ЦВЕТНЫЕ АКЦЕНТЫ
-        // ═════════════════════════════════════════════════════════════════════
-        let cachedTzFormatter = null;
-        let cachedTzName = '';
+        // РАСЧЁТ НАМАЗОВ, КЭШ ЧАСОВОГО ПОЯСА + ОФЛАЙН-КЭШ РАСПИСАНИЯ
+        let cachedTzFormatter = null, cachedTzName = '';
 
         function getCityNowParts() {
             try {
@@ -2321,6 +1744,24 @@
             document.getElementById('current-city-badge').textContent = prayerState.city;
             syncAllSettingsSwitchesUI();
             updateQiblaCompassCalculations();
+
+            // Мгновенный рендер из офлайн-кэша за 0.01 сек (работает даже без интернета!)
+            try {
+                const cachedRaw = localStorage.getItem('aya_cached_prayer_data');
+                if (cachedRaw) {
+                    const parsed = JSON.parse(cachedRaw);
+                    if (parsed && parsed.timings) {
+                        prayerState.timings = parsed.timings;
+                        if (parsed.hijriText) document.getElementById('hijri-header').textContent = parsed.hijriText;
+                        const madhhabInfo = MADHHAB_INFO[prayerState.madhhabKey] || MADHHAB_INFO.hanafi;
+                        document.getElementById('gregorian-date').textContent = `${prayerState.city.toUpperCase()} • ${madhhabInfo.name.toUpperCase()} МАЗХАБ`;
+                        calculateLastThirdOfNight();
+                        renderPrayerList();
+                        updateCountdownTimer();
+                    }
+                }
+            } catch (e) {}
+
             await fetchPrayerTimes();
 
             if (!window.prayerTimerInterval) {
@@ -2330,7 +1771,6 @@
                     updateDeterministicAyahOf3Hours();
                     checkWebNotificationTriggers();
 
-                    // Авто-обновление при смене суток (в полночь)
                     const currentDay = getDateIso();
                     if (currentDay !== lastCheckedDay) {
                         lastCheckedDay = currentDay;
@@ -2338,7 +1778,7 @@
                     }
                 }, 1000);
 
-                // Авто-проверка расписания и часового пояса 2 раза в день (каждые 12 часов)
+                // Авто-обновление 2 раза в сутки (каждые 12 часов)
                 setInterval(() => {
                     cachedTzFormatter = null;
                     fetchPrayerTimes();
@@ -2362,10 +1802,17 @@
                     }
                     const hijri = data.data.date.hijri;
                     const hijriMonthRu = HIJRI_MONTHS_RU[hijri.month.number] || hijri.month.en;
+                    const hijriText = `${hijri.day} ${hijriMonthRu} ${hijri.year} г.Х.`;
                     const madhhabInfo = MADHHAB_INFO[prayerState.madhhabKey] || MADHHAB_INFO.hanafi;
 
-                    document.getElementById('hijri-header').textContent = `${hijri.day} ${hijriMonthRu} ${hijri.year} г.Х.`;
+                    document.getElementById('hijri-header').textContent = hijriText;
                     document.getElementById('gregorian-date').textContent = `${prayerState.city.toUpperCase()} • ${madhhabInfo.name.toUpperCase()} МАЗХАБ`;
+
+                    localStorage.setItem('aya_cached_prayer_data', JSON.stringify({
+                        timings: prayerState.timings,
+                        hijriText: hijriText,
+                        city: prayerState.city
+                    }));
 
                     calculateLastThirdOfNight();
                     renderPrayerList();
@@ -2424,7 +1871,7 @@
             document.getElementById('next-prayer-name').textContent = labels[info.nextKey] || info.nextKey;
         }
 
-        // Увеличенные строки намазов с индивидуальными природными цветами иконок
+        // ИСПРАВЛЕННЫЕ СТРОКИ НАМАЗОВ (БЕЗ НАЕЗДА «ПОСЛЕОБЕДЕННЫЙ (АСР)» НА IPHONE 13 PRO)
         function renderPrayerList() {
             if (!prayerState.timings) return;
             const scheduleItems = [
@@ -2550,9 +1997,7 @@
 
         function closeSurahHintModal() { document.getElementById('surah-hint-modal').classList.add('hidden'); }
 
-        // ═════════════════════════════════════════════════════════════════════
         // УВЕДОМЛЕНИЯ И КАЛЕНДАРЬ .ICS НА 30 ДНЕЙ
-        // ═════════════════════════════════════════════════════════════════════
         async function requestOrTestWebNotifications() {
             if (!('Notification' in window)) { switchTab('settings'); return; }
             if (Notification.permission !== 'granted') {
@@ -2576,12 +2021,7 @@
         function sendTestPrayerNotification() {
             AyaSoundEngine.complete();
             if ('Notification' in window && Notification.permission === 'granted') {
-                try {
-                    new Notification('🌙 AyaSpace — Уведомления активны', {
-                        body: `Город: ${prayerState.city} (${MADHHAB_INFO[prayerState.madhhabKey]?.name || 'Ханафи'}). Вы получите сигнал ко времени намаза.`,
-                        tag: 'ayaspace-test'
-                    });
-                } catch (e) {}
+                try { new Notification('🌙 AyaSpace — Уведомления активны', { body: `Город: ${prayerState.city} (${MADHHAB_INFO[prayerState.madhhabKey]?.name || 'Ханафи'}).`, tag: 'ayaspace-test' }); } catch (e) {}
             } else requestOrTestWebNotifications();
         }
 
@@ -2605,20 +2045,17 @@
                 const triggerId10m = `${cityNow.isoDate}_${p.key}_10m`;
 
                 if (nowMin === pMin && lastNotifiedKey !== triggerIdExact) {
-                    lastNotifiedKey = triggerIdExact;
-                    AyaSoundEngine.complete();
+                    lastNotifiedKey = triggerIdExact; AyaSoundEngine.complete();
                     try { new Notification(`🌙 Наступило время: ${p.title}`, { body: `${prayerState.city} • ${cleanTime}`, tag: triggerIdExact }); } catch (e) {}
                 } else if (nowMin === pMin - 10 && lastNotifiedKey !== triggerId10m) {
-                    lastNotifiedKey = triggerId10m;
-                    AyaSoundEngine.select();
+                    lastNotifiedKey = triggerId10m; AyaSoundEngine.select();
                     try { new Notification(`⏳ Через 10 минут: ${p.title}`, { body: `${prayerState.city} • В ${cleanTime} наступит ${p.title}.`, tag: triggerId10m }); } catch (e) {}
                 }
             });
         }
 
         async function exportPrayersToICS(onlyFajr = false, customBtn = null) {
-            const btn = customBtn;
-            const oldHtml = btn ? btn.innerHTML : '';
+            const btn = customBtn, oldHtml = btn ? btn.innerHTML : '';
             const activeLat = parseFloat(prayerState.lat), activeLng = parseFloat(prayerState.lng);
             const activeCity = prayerState.city, activeMethod = prayerState.method, activeSchool = prayerState.school;
             const madhhabTitle = (MADHHAB_INFO[prayerState.madhhabKey] || MADHHAB_INFO.hanafi).short;
@@ -2696,11 +2133,8 @@
                 const icsBlob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
                 const blobUrl = URL.createObjectURL(icsBlob);
                 const a = document.createElement('a');
-                a.href = blobUrl;
-                a.download = `ayaspace-${activeCity}-${madhhabTitle}-30days.ics`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                a.href = blobUrl; a.download = `ayaspace-${activeCity}-${madhhabTitle}-30days.ics`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
             } catch (err) {
                 AyaSoundEngine.error();
             } finally {
@@ -2708,15 +2142,12 @@
             }
         }
 
-        // ═════════════════════════════════════════════════════════════════════
         // ВЫБОР ГОРОДА И ГЕОЛОКАЦИЯ
-        // ═════════════════════════════════════════════════════════════════════
         function renderQuickCities(filterText = '') {
             const box = document.getElementById('unified-city-results');
             if (!box) return;
             const q = filterText.toLowerCase().trim();
-            const matched = QUICK_CITIES.filter(c => c.name.toLowerCase().includes(q));
-            box.innerHTML = matched.map(c => {
+            box.innerHTML = QUICK_CITIES.filter(c => c.name.toLowerCase().includes(q)).map(c => {
                 const isSelected = prayerState.city === c.name;
                 return `<button type="button" onclick="selectAndSaveCityInstantly(${c.lat}, ${c.lng}, '${c.name}')" class="spring-tap px-3.5 py-2 rounded-full text-xs font-extrabold ${isSelected ? 'bg-amberCore text-white shadow' : 'sheet-subcard'}">${isSelected ? '✓ ' : ''}${c.name}</button>`;
             }).join('');
@@ -2727,7 +2158,6 @@
             renderQuickCities(q);
             clearTimeout(searchDebounceTimer);
             if (q.length < 2) return;
-
             searchDebounceTimer = setTimeout(async () => {
                 const box = document.getElementById('unified-city-results');
                 if (!box) return;
@@ -2750,12 +2180,8 @@
 
         async function selectAndSaveCityInstantly(lat, lng, cityName) {
             AyaSoundEngine.select();
-            prayerState.lat = parseFloat(lat);
-            prayerState.lng = parseFloat(lng);
-            prayerState.city = cityName;
-            localStorage.setItem('aya_lat', prayerState.lat);
-            localStorage.setItem('aya_lng', prayerState.lng);
-            localStorage.setItem('aya_city', prayerState.city);
+            prayerState.lat = parseFloat(lat); prayerState.lng = parseFloat(lng); prayerState.city = cityName;
+            localStorage.setItem('aya_lat', prayerState.lat); localStorage.setItem('aya_lng', prayerState.lng); localStorage.setItem('aya_city', prayerState.city);
             const input = document.getElementById('unified-city-input');
             if (input) input.value = '';
             renderQuickCities('');
@@ -2778,13 +2204,10 @@
             if (tzLabel) tzLabel.textContent = `Часовой пояс: ${prayerState.timezone || 'Europe/Moscow'}`;
             const methodSelect = document.getElementById('settings-method');
             if (methodSelect) methodSelect.value = prayerState.method;
-
             const syncBadge = document.getElementById('ics-sync-verification');
             const asrBadge = document.getElementById('ics-asr-preview');
             if (syncBadge) syncBadge.textContent = `Экспорт: г. ${prayerState.city} • ${info.name}`;
-            if (asrBadge && prayerState.timings && prayerState.timings.Asr) {
-                asrBadge.textContent = `Аср: ${prayerState.timings.Asr.split(' ')[0]}`;
-            }
+            if (asrBadge && prayerState.timings && prayerState.timings.Asr) asrBadge.textContent = `Аср: ${prayerState.timings.Asr.split(' ')[0]}`;
         }
 
         function detectGeolocation() {
@@ -2801,9 +2224,7 @@
             }, () => switchTab('settings'));
         }
 
-        // ═════════════════════════════════════════════════════════════════════
-        // АУДИО-ПЛЕЕР, КОРАН И СЕССИИ ИСЦЕЛЕНИЯ
-        // ═════════════════════════════════════════════════════════════════════
+        // АУДИО-ПЛЕЕР С ИНДИКАТОРОМ ЗАГРУЗКИ (БУФЕРИЗАЦИИ)
         function setupAudioListeners() {
             const slider = document.getElementById('island-seek-slider');
             const currTimeEl = document.getElementById('island-current-time');
@@ -2816,6 +2237,8 @@
                     durTimeEl.textContent = formatSeconds(globalAudio.duration);
                 }
             });
+            globalAudio.addEventListener('waiting', () => updateIslandPlayState('loading'));
+            globalAudio.addEventListener('playing', () => { clearTimeout(islandHideTimer); updateIslandPlayState(true); });
             globalAudio.addEventListener('play', () => { clearTimeout(islandHideTimer); updateIslandPlayState(true); });
             globalAudio.addEventListener('pause', () => updateIslandPlayState(false));
         }
@@ -2840,13 +2263,22 @@
             document.getElementById('island-subtitle').textContent = subtitle;
             island.classList.remove('island-hidden');
             island.classList.add('island-visible');
+            updateIslandPlayState('loading');
         }
 
-       function updateIslandPlayState(isPlaying) {
+        function updateIslandPlayState(state) {
             const btn = document.getElementById('island-play-btn');
             const waveBox = document.getElementById('island-wave-box');
-            btn.innerHTML = isPlaying ? `<i data-lucide="pause" class="w-4 h-4"></i>` : `<i data-lucide="play" class="w-4 h-4"></i>`;
-            waveBox.classList.toggle('wave-paused', !isPlaying);
+            if (state === 'loading') {
+                btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>`;
+                waveBox.classList.add('wave-paused');
+            } else if (state === true) {
+                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i>`;
+                waveBox.classList.remove('wave-paused');
+            } else {
+                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i>`;
+                waveBox.classList.add('wave-paused');
+            }
             lucide.createIcons({ root: btn });
         }
 
@@ -2899,12 +2331,10 @@
                     ? "spring-tap py-2.5 px-2 rounded-full text-xs font-extrabold bg-obsidian text-white"
                     : "spring-tap py-2.5 px-2 rounded-full text-xs font-bold opacity-65";
             });
-
             const data = HEALING_SESSIONS_DATA[sessionKey];
             const box = document.getElementById('healing-session-content');
             if (!box || !data) return;
             const showTr = prayerState.showTranscription;
-
             const cardsHtml = data.texts.map(t => `
                 <div class="p-4 rounded-3xl sheet-subcard space-y-1.5">
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-emeraldAccent block">${t.badge}</span>
@@ -2913,13 +2343,9 @@
                     <p class="text-xs opacity-80 leading-relaxed">${t.russian}</p>
                 </div>
             `).join('');
-
             box.innerHTML = `
                 <div class="p-4 rounded-3xl sheet-subcard flex items-center justify-between gap-3">
-                    <div class="min-w-0">
-                        <h4 class="text-sm font-extrabold truncate">${data.title}</h4>
-                        <p class="text-xs text-emeraldAccent font-bold mt-0.5">${data.durationLabel}</p>
-                    </div>
+                    <div class="min-w-0"><h4 class="text-sm font-extrabold truncate">${data.title}</h4><p class="text-xs text-emeraldAccent font-bold mt-0.5">${data.durationLabel}</p></div>
                     <button onclick="startHealingSessionQueue('${sessionKey}')" class="spring-tap px-4 py-2.5 rounded-full bg-emeraldAccent text-obsidian font-extrabold text-xs flex items-center gap-1.5 shrink-0 shadow">Слушать</button>
                 </div>
                 <div class="space-y-2">${cardsHtml}</div>
@@ -2930,11 +2356,8 @@
             AyaSoundEngine.select();
             const data = HEALING_SESSIONS_DATA[sessionKey];
             if (!data) return;
-            isHealingQueuePlaying = true;
-            isLuhaidanMarathonMode = false;
-            isContinuousMode = false;
-            currentHealingQueue = data.surahQueue;
-            currentHealingQueueIndex = 0;
+            isHealingQueuePlaying = true; isLuhaidanMarathonMode = false; isContinuousMode = false;
+            currentHealingQueue = data.surahQueue; currentHealingQueueIndex = 0;
             playNextInHealingQueue(data.title);
         }
 
@@ -2948,29 +2371,14 @@
                 if (isHealingQueuePlaying) {
                     currentHealingQueueIndex = (currentHealingQueueIndex + 1) % currentHealingQueue.length;
                     playNextInHealingQueue(sessionTitle);
-                } else {
-                    updateIslandPlayState(false);
-                    scheduleHideDynamicIsland(1000);
-                }
+                } else { updateIslandPlayState(false); scheduleHideDynamicIsland(1000); }
             };
         }
 
-        // ═════════════════════════════════════════════════════════════════════
-        // ВСЕ 114 СУР КОРАНА И ТРЕНАЖЁР ЗАУЧИВАНИЯ
-        // ═════════════════════════════════════════════════════════════════════
+        // ВСЕ 114 СУР КОРАНА И ТРЕНАЖЁР
         function convertLatinTranslitToCyrillic(latin) {
             if (!latin) return "";
-            let s = latin
-                .replace(/sh/gi, 'ш').replace(/kh/gi, 'х').replace(/gh/gi, 'г')
-                .replace(/th/gi, 'с').replace(/dh/gi, 'з').replace(/ch/gi, 'ч')
-                .replace(/aa/gi, 'а').replace(/ee/gi, 'и').replace(/oo/gi, 'у')
-                .replace(/ai/gi, 'ай').replace(/au/gi, 'ау').replace(/ay/gi, 'ай').replace(/aw/gi, 'ау')
-                .replace(/q/gi, 'к').replace(/w/gi, 'в').replace(/j/gi, 'дж').replace(/y/gi, 'й')
-                .replace(/z/gi, 'з').replace(/s/gi, 'с').replace(/h/gi, 'х').replace(/t/gi, 'т')
-                .replace(/d/gi, 'д').replace(/r/gi, 'р').replace(/l/gi, 'л').replace(/n/gi, 'н')
-                .replace(/m/gi, 'м').replace(/b/gi, 'б').replace(/f/gi, 'ф').replace(/k/gi, 'к')
-                .replace(/g/gi, 'г').replace(/a/gi, 'а').replace(/i/gi, 'и').replace(/u/gi, 'у')
-                .replace(/e/gi, 'е').replace(/o/gi, 'о');
+            let s = latin.replace(/sh/gi, 'ш').replace(/kh/gi, 'х').replace(/gh/gi, 'г').replace(/th/gi, 'с').replace(/dh/gi, 'з').replace(/ch/gi, 'ч').replace(/aa/gi, 'а').replace(/ee/gi, 'и').replace(/oo/gi, 'у').replace(/ai/gi, 'ай').replace(/au/gi, 'ау').replace(/ay/gi, 'ай').replace(/aw/gi, 'ау').replace(/q/gi, 'к').replace(/w/gi, 'в').replace(/j/gi, 'дж').replace(/y/gi, 'й').replace(/z/gi, 'з').replace(/s/gi, 'с').replace(/h/gi, 'х').replace(/t/gi, 'т').replace(/d/gi, 'д').replace(/r/gi, 'р').replace(/l/gi, 'л').replace(/n/gi, 'н').replace(/m/gi, 'м').replace(/b/gi, 'б').replace(/f/gi, 'ф').replace(/k/gi, 'к').replace(/g/gi, 'г').replace(/a/gi, 'а').replace(/i/gi, 'и').replace(/u/gi, 'у').replace(/e/gi, 'е').replace(/o/gi, 'о');
             return s.charAt(0).toUpperCase() + s.slice(1);
         }
 
@@ -2978,10 +2386,7 @@
             if (surahNumber === 1 || surahNumber === 9 || ayahNumberInSurah !== 1) return arabicText;
             const basmalaVariants = ["بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ", "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ "];
             for (const b of basmalaVariants) {
-                if (arabicText.startsWith(b)) {
-                    const stripped = arabicText.slice(b.length).trim();
-                    if (stripped.length > 0) return stripped;
-                }
+                if (arabicText.startsWith(b)) { const stripped = arabicText.slice(b.length).trim(); if (stripped.length > 0) return stripped; }
             }
             return arabicText;
         }
@@ -2992,13 +2397,8 @@
             try {
                 const res = await fetch('https://api.alquran.cloud/v1/surah');
                 const data = await res.json();
-                if (data.code === 200) {
-                    allSurahs = data.data;
-                    renderSurahList(allSurahs);
-                }
-            } catch (e) {
-                container.innerHTML = `<div class="sheet-card p-6 col-span-2 text-center text-red-500 text-xs">Ошибка подключения к серверу Корана.</div>`;
-            }
+                if (data.code === 200) { allSurahs = data.data; renderSurahList(allSurahs); }
+            } catch (e) { container.innerHTML = `<div class="sheet-card p-6 col-span-2 text-center text-red-500 text-xs">Ошибка подключения к серверу Корана.</div>`; }
         }
 
         function renderSurahList(surahs) {
@@ -3012,10 +2412,7 @@
                 card.innerHTML = `
                     <div class="flex items-center gap-3.5 min-w-0">
                         <div class="w-10 h-10 rounded-full bg-emeraldAccent/15 text-emeraldAccent font-extrabold text-xs flex items-center justify-center shrink-0">${s.number}</div>
-                        <div class="min-w-0">
-                            <h4 class="font-extrabold text-sm truncate">${ruName}</h4>
-                            <p class="text-[11px] opacity-60">${s.numberOfAyahs} аятов • ${s.revelationType === 'Meccan' ? 'Мекканская' : 'Мединская'}</p>
-                        </div>
+                        <div class="min-w-0"><h4 class="font-extrabold text-sm truncate">${ruName}</h4><p class="text-[11px] opacity-60">${s.numberOfAyahs} аятов • ${s.revelationType === 'Meccan' ? 'Мекканская' : 'Мединская'}</p></div>
                     </div>
                     <span class="arabic-text text-xl text-amberCore shrink-0">${s.name}</span>
                 `;
@@ -3025,10 +2422,7 @@
 
         function filterSurahs() {
             const q = document.getElementById('surah-search-input').value.toLowerCase().trim();
-            renderSurahList(allSurahs.filter(s => {
-                const ruName = (SURAH_NAMES_RU[s.number] || '').toLowerCase();
-                return String(s.number).includes(q) || ruName.includes(q) || s.englishName.toLowerCase().includes(q) || s.name.includes(q);
-            }));
+            renderSurahList(allSurahs.filter(s => String(s.number).includes(q) || (SURAH_NAMES_RU[s.number] || '').toLowerCase().includes(q) || s.englishName.toLowerCase().includes(q) || s.name.includes(q)));
         }
 
         async function openSurahReader(surahNumber, engName, arabName) {
@@ -3039,8 +2433,7 @@
             document.getElementById('back-to-surahs-btn').classList.remove('hidden');
 
             const reader = document.getElementById('surah-reader-container');
-            reader.classList.remove('hidden', 'tab-slide-left');
-            reader.classList.add('tab-slide-right');
+            reader.classList.remove('hidden', 'tab-slide-left'); reader.classList.add('tab-slide-right');
             reader.innerHTML = `<div class="sheet-card p-8 text-center text-xs opacity-60">Загрузка суры ${engName}...</div>`;
 
             try {
@@ -3049,7 +2442,6 @@
                 if (data.code === 200) {
                     const arabicEd = data.data[0].ayahs, russianEd = data.data[1].ayahs, audioEd = data.data[2].ayahs, translitEd = data.data[3].ayahs;
                     const verifiedCyr = VERIFIED_CYRILLIC_TRANSCRIPTIONS[surahNumber];
-
                     currentSurahAyahs = arabicEd.map((a, idx) => ({
                         surahNumber, numberInSurah: a.numberInSurah,
                         arabic: cleanBasmalaFromFirstAyah(a.text, surahNumber, a.numberInSurah),
@@ -3059,16 +2451,13 @@
                     }));
                     renderSurahAyahs(surahNumber, engName, arabName);
                 }
-            } catch (err) {
-                reader.innerHTML = `<div class="sheet-card p-6 text-center text-red-500 text-xs">Не удалось загрузить суру.</div>`;
-            }
+            } catch (err) { reader.innerHTML = `<div class="sheet-card p-6 text-center text-red-500 text-xs">Не удалось загрузить суру.</div>`; }
         }
 
         function renderSurahAyahs(surahNumber, engName, arabName) {
             const reader = document.getElementById('surah-reader-container');
             const showBasmalaHeader = surahNumber !== 1 && surahNumber !== 9;
             const showTr = prayerState.showTranscription;
-
             reader.innerHTML = `
                 <div class="sheet-card p-6 text-center space-y-3">
                     <p class="arabic-text text-3xl text-amberCore">${arabName}</p>
@@ -3290,9 +2679,7 @@
             });
         }
 
-        // ═════════════════════════════════════════════════════════════════════
-        // КИБЛА 360°, Е-ДОБАВКИ, ПОСЛОВНЫЙ СМЫСЛ И ПОМОЩНИК
-        // ═════════════════════════════════════════════════════════════════════
+        // КИБЛА 360° С АВТО-ОСТАНОВКОЙ ГИРОСКОПА В ФОНЕ
         function calculateHaversineKm(lat1, lon1, lat2, lon2) {
             const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
@@ -3345,20 +2732,31 @@
         function onManualCompassSlide(val) { applyCompassRotation(parseFloat(val)); }
         function resetCompassNorth() { document.getElementById('manual-heading-slider').value = targetQiblaBearing; applyCompassRotation(targetQiblaBearing); }
 
+        function stopCompassGyro() {
+            if (!isCompassListening) return;
+            window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
+            isCompassListening = false;
+            const btn = document.getElementById('activate-compass-btn');
+            if (btn) btn.innerHTML = `Включить гироскоп`;
+        }
+
         async function enableIOSCompass() {
             const btn = document.getElementById('activate-compass-btn');
+            if (isCompassListening) { stopCompassGyro(); return; }
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 try {
                     const response = await DeviceOrientationEvent.requestPermission();
                     if (response === 'granted') {
                         window.addEventListener('deviceorientation', handleDeviceOrientation, true);
-                        btn.textContent = "✓ Гироскоп активен";
+                        isCompassListening = true;
+                        btn.textContent = "✓ Гироскоп активен (Выкл)";
                         AyaSoundEngine.complete();
                     }
                 } catch (e) {}
             } else {
                 window.addEventListener('deviceorientation', handleDeviceOrientation, true);
-                btn.textContent = "✓ Компас активен";
+                isCompassListening = true;
+                btn.textContent = "✓ Компас активен (Выкл)";
                 AyaSoundEngine.complete();
             }
         }
@@ -3448,9 +2846,7 @@
             `).join('');
         }
 
-        // ═════════════════════════════════════════════════════════════════════
-        // МИНИМАЛИСТИЧНЫЕ СТАТУСЫ (КАК БЫЛО + 5 ШРИФТОВ + СМЕНА ЦВЕТА ТЕКСТА БЕЛЫЙ / ЧЁРНЫЙ)
-        // ═════════════════════════════════════════════════════════════════════
+        // МИНИМАЛИСТИЧНЫЕ СТАТУСЫ + ЗАЩИТА ОТ БИТЫХ ССЫЛОК ONERROR + 5 ШРИФТОВ + ЦВЕТ
         function getCurrentWeekSeed() {
             const now = new Date(), start = new Date(now.getFullYear(), 0, 1);
             const weekNum = Math.ceil((((now - start) / 86400000) + start.getDay() + 1) / 7);
@@ -3512,15 +2908,16 @@
             grid.innerHTML = '';
             const items = cat === 'all' ? weeklyStatuses : weeklyStatuses.filter(s => s.category === cat);
             const showTr = prayerState.showTranscription;
+            const fallbackImg = REAL_NATURE_PHOTOS[0];
 
             items.forEach(item => {
                 const fontPreset = STATUS_FONT_PRESETS[item.fontIndex || 0] || STATUS_FONT_PRESETS[0];
                 const card = document.createElement('div');
-                card.className = "spring-tap relative aspect-[9/16] rounded-[26px] overflow-hidden cursor-pointer group shadow-lg bg-black text-white";
+                card.className = "spring-tap relative aspect-[9/16] rounded-[26px] overflow-hidden cursor-pointer group shadow-lg bg-stone-900 text-white";
                 card.onclick = () => openStatusModal(item);
 
                 card.innerHTML = `
-                    <img src="${item.image}" crossorigin="anonymous" alt="Status" loading="lazy" class="absolute inset-0 w-full h-full object-cover status-photo-exposure" style="filter: brightness(0.55) contrast(1.06);">
+                    <img src="${item.image}" crossorigin="anonymous" onerror="this.onerror=null;this.src='${fallbackImg}';" alt="Status" loading="lazy" class="absolute inset-0 w-full h-full object-cover status-photo-exposure" style="filter: brightness(0.55) contrast(1.06);">
                     <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/48 to-black/82"></div>
                     <div class="relative z-10 h-full px-4 py-5 flex flex-col justify-center items-center text-center space-y-2" style="text-shadow: 0 2px 12px rgba(0,0,0,0.8);">
                         <p class="arabic-text text-[14px] sm:text-[15.5px] leading-relaxed">${item.arabic}</p>
@@ -3540,9 +2937,7 @@
             document.getElementById('status-modal').classList.remove('hidden');
         }
 
-        function closeStatusModal() {
-            document.getElementById('status-modal').classList.add('hidden');
-        }
+        function closeStatusModal() { document.getElementById('status-modal').classList.add('hidden'); }
 
         function syncModalStatusUI() {
             if (!activeStatusCard) return;
@@ -3550,6 +2945,7 @@
             const isBlackText = activeStatusCard.inkMode === 'black';
 
             const imgEl = document.getElementById('modal-status-img');
+            imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = REAL_NATURE_PHOTOS[0]; };
             if (imgEl.src !== activeStatusCard.image) imgEl.src = activeStatusCard.image;
             imgEl.style.filter = isBlackText ? "brightness(1.08) contrast(0.95)" : "brightness(0.52) contrast(1.06)";
 
@@ -3572,7 +2968,6 @@
             rusEl.className = `${fontPreset.cssClass} text-[16px] leading-relaxed`;
 
             document.getElementById('modal-status-source').textContent = activeStatusCard.source;
-
             document.getElementById('modal-font-btn').textContent = `Шрифт: ${fontPreset.label} (${(activeStatusCard.fontIndex || 0) + 1}/5)`;
             document.getElementById('modal-color-btn').textContent = isBlackText ? "Цвет: Чёрный" : "Цвет: Белый";
         }
@@ -3693,9 +3088,7 @@
             return y + lineHeight;
         }
 
-        // ═════════════════════════════════════════════════════════════════════
         // 28 БУКВ АРАБСКОГО АЛФАВИТА С ОЗВУЧКОЙ
-        // ═════════════════════════════════════════════════════════════════════
         const ARABIC_ALPHABET_28 = [
             { letter: "ا", forms: "ـا / ا", name: "Алиф", makhraj: "Из глубины гортани или тянет гласную А", exampleAr: "أَحَدٌ", exampleTr: "Ахадун (112:1)", wbw: "112_001_004" },
             { letter: "ب", forms: "ـب / ـبـ / بـ", name: "Ба", makhraj: "Плотно смыкаются обе губы (звонкая Б)", exampleAr: "بِسْمِ", exampleTr: "Бисми (1:1)", wbw: "001_001_001" },
