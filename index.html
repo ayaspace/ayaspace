@@ -184,12 +184,15 @@
         linear-gradient(#0d0806, #0a0705 55%, #080504);
     }
 
+    .aya-icon { width: 1em; height: 1em; display: inline-block; flex-shrink: 0; vertical-align: -0.125em; }
+
     .ambient-chaos-orb {
       pointer-events: none;
       z-index: 1;
       border-radius: 50%;
       position: fixed;
       contain: strict;
+      transform: translateZ(0);
     }
     .orb-1 { background: radial-gradient(circle, #ff691438, #ff691400 70%); width: 400px; height: 400px; top: 18%; left: -120px; }
     .orb-2 { background: radial-gradient(circle, #facc1532, #facc1500 70%); width: 420px; height: 420px; top: 46%; right: -130px; }
@@ -202,10 +205,10 @@
     .aya-stack-sm > * + * { margin-top: 12px; }
     .aya-stack-xs > * + * { margin-top: 8px; }
 
-    /* Поверхности Liquid Glass и карточки (с оптимизацией GPU blur) */
+    /* Поверхности Liquid Glass и карточки (лёгкий GPU blur без нагрева телефона) */
     .liquid-glass, .liquid-glass-pill {
-      -webkit-backdrop-filter: blur(14px) saturate(155%);
-      backdrop-filter: blur(14px) saturate(155%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      backdrop-filter: blur(12px) saturate(150%);
       color: #fff;
       background: linear-gradient(135deg, #ffffff54, #ffffff22 52%, #ffcd8c42);
       border: 1px solid #ffffff7a;
@@ -292,8 +295,8 @@
       left: 50%;
       bottom: max(env(safe-area-inset-bottom, 10px), 10px);
       z-index: 45;
-      -webkit-backdrop-filter: blur(18px) saturate(165%);
-      backdrop-filter: blur(18px) saturate(165%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      backdrop-filter: blur(14px) saturate(160%);
       user-select: none;
       -webkit-user-select: none;
       background: linear-gradient(135deg, #ffffffc9, #fff4e6a3);
@@ -351,35 +354,35 @@
     .nav-item-btn:not(.active) .nav-label { opacity: 0; pointer-events: none; position: absolute; transform: scale(0.88); }
     .nav-item-btn.active .nav-label { opacity: 1; position: relative; transform: scale(1); }
 
-    /* Анимации Apple: плавные blur + fade-in без дёргания */
+    /* Анимации Apple: только композиторные transform + opacity (60/120fps без фризов на телефоне) */
     @keyframes appleBlurSlideRight {
-      0% { opacity: 0; transform: translate3d(14px, 0, 0); filter: blur(5px); }
-      100% { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0px); }
+      0% { opacity: 0; transform: translate3d(14px, 0, 0); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0); }
     }
     @keyframes appleBlurSlideLeft {
-      0% { opacity: 0; transform: translate3d(-14px, 0, 0); filter: blur(5px); }
-      100% { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0px); }
+      0% { opacity: 0; transform: translate3d(-14px, 0, 0); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0); }
     }
     @keyframes appleFadeBlurIn {
-      0% { opacity: 0; transform: translate3d(0, 8px, 0); filter: blur(4px); }
-      100% { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0px); }
+      0% { opacity: 0; transform: translate3d(0, 8px, 0); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0); }
     }
     @keyframes appleModalIn {
-      0% { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.975); filter: blur(6px); }
-      100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
+      0% { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.975); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
     }
     @keyframes soundWave { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .tab-slide-right { animation: appleBlurSlideRight 0.3s var(--apple-ease) both; }
-    .tab-slide-left { animation: appleBlurSlideLeft 0.3s var(--apple-ease) both; }
-    .card-spring-enter { animation: appleFadeBlurIn 0.28s var(--apple-ease) both; }
-    .modal-spring-card { animation: appleModalIn 0.3s var(--apple-decel) both; }
+    .tab-slide-right { animation: appleBlurSlideRight 0.28s var(--apple-ease) both; }
+    .tab-slide-left { animation: appleBlurSlideLeft 0.28s var(--apple-ease) both; }
+    .card-spring-enter { animation: appleFadeBlurIn 0.24s var(--apple-ease) both; }
+    .modal-spring-card { animation: appleModalIn 0.28s var(--apple-decel) both; }
     .spring-tap { transition: transform 0.18s var(--apple-ease), opacity 0.16s ease; }
     .spring-tap:active { transform: scale(0.96); }
     .animate-spin { animation: spin 1s linear infinite; }
 
-    /* Dynamic Island */
+    /* Динамический остров */
     #dynamic-island {
       position: fixed;
       left: 50%;
@@ -391,24 +394,22 @@
       padding: 14px 16px;
       color: #fff;
       background: rgba(18, 17, 16, 0.92);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.22);
       box-shadow: 0 24px 48px -12px rgba(0,0,0,0.55);
-      transition: transform 0.34s var(--apple-ease), opacity 0.26s ease, filter 0.26s ease;
+      transition: transform 0.34s var(--apple-ease), opacity 0.24s ease;
     }
     #dynamic-island.island-hidden {
       opacity: 0 !important;
       visibility: hidden !important;
       pointer-events: none !important;
-      filter: blur(6px);
       transform: translate3d(-50%, -120%, 0) scale(0.94) !important;
     }
     #dynamic-island.island-visible {
       opacity: 1 !important;
       visibility: visible !important;
       pointer-events: auto !important;
-      filter: blur(0px);
       transform: translate3d(-50%, 0, 0) scale(1) !important;
     }
     .wave-bar { border-radius: 999px; width: 3px; height: 16px; animation: 0.9s ease-in-out infinite soundWave; }
@@ -474,6 +475,11 @@
       overflow-y: auto;
     }
 
+    .perf-card-vis {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 76px;
+    }
+
     .story-card {
       position: relative;
       aspect-ratio: 9 / 16;
@@ -484,6 +490,8 @@
       text-align: center;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
       width: 100%;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 240px;
     }
     .story-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) contrast(1.06); transition: transform 0.45s var(--apple-ease); }
     .story-card:hover img { transform: scale(1.03); }
@@ -505,7 +513,7 @@
 
   <!-- Индикатор обновления при свайпе вниз -->
   <div id="pull-refresh-indicator" class="hidden liquid-glass-pill" style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;padding:8px 16px;border-radius:9999px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 10px 24px rgba(0,0,0,0.25);">
-    <span class="animate-spin" style="display:inline-flex;">⟳</span>
+    <svg class="aya-icon animate-spin" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4a8 8 0 0 1 6.3 3.1L20 5.5V11h-5.5l2.2-2.2A6 6 0 1 0 18 13h2a8 8 0 1 1-8-9z"/></svg>
     <span>Обновление расписания...</span>
   </div>
 
@@ -523,8 +531,12 @@
         <p id="island-subtitle" class="truncate" style="margin:0;font-size:11px;color:rgba(255,255,255,0.7);">Сура Аль-Фатиха</p>
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-        <button type="button" id="island-play-btn" aria-label="Воспроизвести или пауза" class="spring-tap" style="width:36px;height:36px;border-radius:9999px;background:#ff6600;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">▶</button>
-        <button type="button" id="island-close-btn" aria-label="Закрыть плеер" class="spring-tap" style="width:36px;height:36px;border-radius:9999px;background:rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">✕</button>
+        <button type="button" id="island-play-btn" aria-label="Воспроизвести или пауза" class="spring-tap" style="width:36px;height:36px;border-radius:9999px;background:#ff6600;color:#fff;display:flex;align-items:center;justify-content:center;">
+          <svg class="aya-icon" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 4.5a1.5 1.5 0 0 1 2.3-1.3l12 7.5a1.5 1.5 0 0 1 0 2.6l-12 7.5A1.5 1.5 0 0 1 5 19.5v-15z"/></svg>
+        </button>
+        <button type="button" id="island-close-btn" aria-label="Закрыть плеер" class="spring-tap" style="width:36px;height:36px;border-radius:9999px;background:rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;justify-content:center;">
+          <svg class="aya-icon" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.3 4.9L12 10.6l5.7-5.7 1.4 1.4L13.4 12l5.7 5.7-1.4 1.4L12 13.4l-5.7 5.7-1.4-1.4L10.6 12 4.9 6.3l1.4-1.4z"/></svg>
+        </button>
       </div>
     </div>
     <div style="margin-top:10px;display:flex;align-items:center;gap:10px;">
@@ -571,10 +583,12 @@
 
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
         <button type="button" id="header-city-btn" class="spring-tap liquid-glass-pill" style="height:44px;padding:0 16px;border-radius:9999px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;">
-          <span style="color:#ffa726;">📍</span>
+          <svg class="aya-icon" style="width:16px;height:16px;color:#ffa726;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
           <span id="current-city-badge" class="truncate" style="max-width:105px;">Казань</span>
         </button>
-        <button type="button" id="header-settings-btn" aria-label="Настройки" class="spring-tap liquid-glass-pill" style="width:44px;height:44px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:18px;">⚙️</button>
+        <button type="button" id="header-settings-btn" aria-label="Настройки" class="spring-tap liquid-glass-pill" style="width:44px;height:44px;border-radius:9999px;display:flex;align-items:center;justify-content:center;">
+          <svg class="aya-icon" style="width:20px;height:20px;color:#fff;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.3 2h3.4l.6 2.3 2 .8 2.1-1.1 2.4 2.4-1.1 2.1.8 2 2.3.6v3.4l-2.3.6-.8 2 1.1 2.1-2.4 2.4-2.1-1.1-2 .8-.6 2.3h-3.4l-.6-2.3-2-.8-2.1 1.1-2.4-2.4 1.1-2.1-.8-2-2.3-.6v-3.4l2.3-.6.8-2-1.1-2.1 2.4-2.4 2.1 1.1 2-.8.6-2.3zm1.7 6.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/></svg>
+        </button>
       </div>
     </header>
 
@@ -587,7 +601,7 @@
       </div>
       <div style="display:flex;justify-content:center;padding-top:2px;">
         <div class="liquid-glass-pill" style="padding:6px 16px;border-radius:9999px;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;">
-          <span style="color:#ffa726;">↗</span>
+          <svg class="aya-icon" style="width:14px;height:14px;color:#ffa726;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6a1 1 0 0 0 0 2h6.6L5.3 16.3a1 1 0 1 0 1.4 1.4L15 9.4V16a1 1 0 1 0 2 0V6H7z"/></svg>
           <span>Далее: <strong id="next-prayer-name" style="color:#fff;font-weight:800;">Зухр</strong></span>
         </div>
       </div>
@@ -597,7 +611,9 @@
     <main class="aya-container aya-stack">
       <div id="special-day-banner" class="hidden sheet-card" style="padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:40px;height:40px;border-radius:9999px;background:rgba(16,185,129,0.15);color:#10b981;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✨</div>
+          <div style="width:40px;height:40px;border-radius:9999px;background:rgba(16,185,129,0.15);color:#10b981;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg class="aya-icon" style="width:20px;height:20px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6zm8 11l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z"/></svg>
+          </div>
           <div>
             <h3 style="margin:0;font-size:12px;font-weight:800;">Благословенная пятница (Джума Мубарак)</h3>
             <p style="margin:0;font-size:11px;opacity:0.65;">Прочитайте суру «Аль-Кахф» и умножьте салават Пророку ﷺ</p>
@@ -618,16 +634,16 @@
   <nav class="floating-bottom-nav" aria-label="Основная навигация">
     <div id="nav-glider"></div>
     <button type="button" id="nav-prayer" class="nav-item-btn active" data-tab="prayer">
-      <span>🕒</span><span class="nav-label">Намаз</span>
+      <svg class="aya-icon" style="width:18px;height:18px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 5a1 1 0 0 0-2 0v5.5l4 2.5a1 1 0 0 0 1-1.7l-3-1.8V7z"/></svg><span class="nav-label">Намаз</span>
     </button>
     <button type="button" id="nav-quran" class="nav-item-btn" data-tab="quran">
-      <span>📖</span><span class="nav-label">Коран</span>
+      <svg class="aya-icon" style="width:18px;height:18px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 5a2 2 0 0 1 2-2h5a3 3 0 0 1 2 .8V20a2 2 0 0 0-2-1H4a2 2 0 0 1-2-2V5zm20 0a2 2 0 0 0-2-2h-5a3 3 0 0 0-2 .8V20a2 2 0 0 1 2-1h5a2 2 0 0 0 2-2V5z"/></svg><span class="nav-label">Коран</span>
     </button>
     <button type="button" id="nav-memorize" class="nav-item-btn" data-tab="memorize">
-      <span>🎓</span><span class="nav-label">Обучение</span>
+      <svg class="aya-icon" style="width:18px;height:18px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3L1 8.5 12 14l9-4.5V16h2V8.5L12 3zm-6 9.8v4.2c0 2 2.7 3.8 6 3.8s6-1.8 6-3.8v-4.2l-6 3-6-3z"/></svg><span class="nav-label">Обучение</span>
     </button>
     <button type="button" id="nav-status" class="nav-item-btn" data-tab="status">
-      <span>✨</span><span class="nav-label">Статус</span>
+      <svg class="aya-icon" style="width:18px;height:18px;" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6zm8 11l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z"/></svg><span class="nav-label">Статус</span>
     </button>
   </nav>
 
@@ -647,13 +663,51 @@
     } = AYA_DATA;
 
     const SCHEDULE_ITEMS = [
-      { key: 'Fajr', name: 'Утренний (Фаджр)', icon: '🌙', obligatory: true, rakaats: 2, qasrRakaats: 2 },
-      { key: 'Sunrise', name: 'Восход (Шурук)', icon: '🌅', obligatory: false, rakaats: 0, qasrRakaats: 0 },
-      { key: 'Dhuhr', name: 'Обеденный (Зухр)', icon: '☀️', obligatory: true, rakaats: 4, qasrRakaats: 2 },
-      { key: 'Asr', name: 'Послеобеденный (Аср)', icon: '🌤️', obligatory: true, rakaats: 4, qasrRakaats: 2 },
-      { key: 'Maghrib', name: 'Вечерний (Магриб)', icon: '🌇', obligatory: true, rakaats: 3, qasrRakaats: 3 },
-      { key: 'Isha', name: 'Ночной (Иша)', icon: '✨', obligatory: true, rakaats: 4, qasrRakaats: 2 }
+      { key: 'Fajr', name: 'Утренний (Фаджр)', icon: 'moon-star', obligatory: true, rakaats: 2, qasrRakaats: 2, idleBg: 'rgba(59,130,246,0.15)', idleFg: '#2563eb', activeBg: '#2563eb' },
+      { key: 'Sunrise', name: 'Восход (Шурук)', icon: 'sunrise', obligatory: false, rakaats: 0, qasrRakaats: 0, idleBg: 'rgba(245,158,11,0.15)', idleFg: '#d97706', activeBg: '#f59e0b' },
+      { key: 'Dhuhr', name: 'Обеденный (Зухр)', icon: 'sun', obligatory: true, rakaats: 4, qasrRakaats: 2, idleBg: 'rgba(249,115,22,0.15)', idleFg: '#ea580c', activeBg: '#f97316' },
+      { key: 'Asr', name: 'Послеобеденный (Аср)', icon: 'cloud-sun', obligatory: true, rakaats: 4, qasrRakaats: 2, idleBg: 'rgba(244,63,94,0.15)', idleFg: '#e11d48', activeBg: '#e11d48' },
+      { key: 'Maghrib', name: 'Вечерний (Магриб)', icon: 'sunset', obligatory: true, rakaats: 3, qasrRakaats: 3, idleBg: 'rgba(239,68,68,0.15)', idleFg: '#dc2626', activeBg: '#dc2626' },
+      { key: 'Isha', name: 'Ночной (Иша)', icon: 'moon', obligatory: true, rakaats: 4, qasrRakaats: 2, idleBg: 'rgba(99,102,241,0.15)', idleFg: '#4f46e5', activeBg: '#4f46e5' }
     ];
+
+    const ICON_PATHS = {
+      'moon-star': '<path d="M10 2a9 9 0 1 0 10.8 11.4A7.5 7.5 0 0 1 10 2zm8 0l1 2.5L21.5 5.5 19 6.5 18 9l-1-2.5L14.5 5.5 17 4.5 18 2z"/>',
+      'moon': '<path d="M10.5 2a9.5 9.5 0 1 0 11 11.5A7.8 7.8 0 0 1 10.5 2z"/>',
+      'sun': '<path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1zm9-7a1 1 0 0 1 0 2h-2a1 1 0 1 1 0-2h2zM5 11a1 1 0 0 1 0 2H3a1 1 0 1 1 0-2h2zm13.4-6.4a1 1 0 0 1 0 1.4l-1.4 1.4a1 1 0 0 1-1.4-1.4l1.4-1.4a1 1 0 0 1 1.4 0zM8 16a1 1 0 0 1 0 1.4l-1.4 1.4a1 1 0 0 1-1.4-1.4L6.6 16A1 1 0 0 1 8 16zm10.4 2.8a1 1 0 0 1-1.4 0L15.6 17.4a1 1 0 0 1 1.4-1.4l1.4 1.4a1 1 0 0 1 0 1.4zM8 8a1 1 0 0 1-1.4 0L5.2 6.6a1 1 0 1 1 1.4-1.4L8 6.6A1 1 0 0 1 8 8z"/>',
+      'sunrise': '<path d="M12 2l3.5 3.5-1.4 1.4L13 5.8V9h-2V5.8L9.9 6.9 8.5 5.5 12 2zm-6 14a6 6 0 1 1 12 0H6zm-3 3h18v2H3v-2z"/>',
+      'sunset': '<path d="M13 2v3.2l1.1-1.1 1.4 1.4L12 9 8.5 5.5l1.4-1.4L11 5.2V2h2zm-7 14a6 6 0 1 1 12 0H6zm-3 3h18v2H3v-2z"/>',
+      'cloud-sun': '<path d="M15.5 4.5a4 4 0 0 1 3.8 2.8A4.5 4.5 0 0 1 18.5 16H7a5 5 0 0 1-.6-10A4 4 0 0 1 15.5 4.5zM4 18.5h16v2H4v-2z"/>',
+      'check': '<path d="M20.3 5.3a1 1 0 0 1 0 1.4l-11 11a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L8.6 15.6 18.9 5.3a1 1 0 0 1 1.4 0z"/>',
+      'check-circle-2': '<path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.7 7.7a1 1 0 0 0-1.4-1.4L10.5 13l-2.3-2.3a1 1 0 0 0-1.4 1.4l3 3a1 1 0 0 0 1.4 0l5.5-5.4z"/>',
+      'fingerprint': '<path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a6 6 0 0 0-6 6v2a1 1 0 1 0 2 0v-2a4 4 0 1 1 8 0v2.5a1 1 0 1 0 2 0V12a6 6 0 0 0-6-6zm0 4a2 2 0 0 0-2 2v4.5a1 1 0 1 0 2 0V12a.5.5 0 0 1 1 0v3.5a1 1 0 1 0 2 0V12a2.5 2.5 0 0 0-3-2z"/>',
+      'compass': '<path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.8 5.2l-2.6 7-7 2.6 2.6-7 7-2.6zM12 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>',
+      'locate-fixed': '<path fill-rule="evenodd" d="M13 2v2.1A8 8 0 0 1 19.9 11H22v2h-2.1A8 8 0 0 1 13 19.9V22h-2v-2.1A8 8 0 0 1 4.1 13H2v-2h2.1A8 8 0 0 1 11 4.1V2h2zm-1 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>',
+      'calendar-check-2': '<path fill-rule="evenodd" d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zm8.7 9.7a1 1 0 0 0-1.4-1.4L11 13.6l-1.8-1.8a1 1 0 0 0-1.4 1.4l2.5 2.5a1 1 0 0 0 1.4 0l4-4z"/>',
+      'volume-2': '<path d="M11 4L6 9H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h3l5 5V4zm5.5 3.5a1 1 0 0 1 1.4 0 6.5 6.5 0 0 1 0 9 1 1 0 1 1-1.4-1.4 4.5 4.5 0 0 0 0-6.2 1 1 0 0 1 0-1.4z"/>',
+      'plane': '<path d="M2.5 3l19 9-19 9 2.5-8h8v-2H5L2.5 3z"/>',
+      'rotate-ccw': '<path d="M12 4a8 8 0 1 1-7.4 11h2.2A6 6 0 1 0 12 6c-1.8 0-3.4.8-4.5 2H10v2H4V4h2v2.4A8 8 0 0 1 12 4z"/>',
+      'refresh-cw': '<path d="M12 4a8 8 0 0 1 6.3 3.1L20 5.5V11h-5.5l2.2-2.2A6 6 0 1 0 18 13h2a8 8 0 1 1-8-9z"/>',
+      'play': '<path d="M5 4.5a1.5 1.5 0 0 1 2.3-1.3l12 7.5a1.5 1.5 0 0 1 0 2.6l-12 7.5A1.5 1.5 0 0 1 5 19.5v-15z"/>',
+      'pause': '<path d="M6 4h3.5v16H6V4zm8.5 0H18v16h-3.5V4z"/>',
+      'loader-2': '<path d="M12 2a10 10 0 0 0-10 10h2a8 8 0 0 1 8-8V2z"/>',
+      'x': '<path d="M6.3 4.9L12 10.6l5.7-5.7 1.4 1.4L13.4 12l5.7 5.7-1.4 1.4L12 13.4l-5.7 5.7-1.4-1.4L10.6 12 4.9 6.3l1.4-1.4z"/>',
+      'arrow-left': '<path d="M11.7 4.3a1 1 0 0 1 0 1.4L6.4 11H20a1 1 0 1 1 0 2H6.4l5.3 5.3a1 1 0 0 1-1.4 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.4 0z"/>',
+      'arrow-right': '<path d="M12.3 4.3a1 1 0 0 1 1.4 0l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.4-1.4l5.3-5.3H4a1 1 0 1 1 0-2h13.6l-5.3-5.3a1 1 0 0 1 0-1.4z"/>',
+      'image-plus': '<path fill-rule="evenodd" d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4zm10.5 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM4 17l4.5-5.5 3.5 4 2.5-3L20 17H4z"/>',
+      'alarm-clock': '<path fill-rule="evenodd" d="M12 4a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17zm1 4h-2v5l3.5 2.2 1-1.7L13 11.8V8zM5.3 2.3l1.4 1.4-3 3-1.4-1.4 3-3zm13.4 0l3 3-1.4 1.4-3-3 1.4-1.4z"/>',
+      'download': '<path d="M13 3v9.2l2.6-2.6 1.4 1.4-5 5-5-5 1.4-1.4L11 12.2V3h2zM4 16h2v3h12v-3h2v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3z"/>'
+    };
+
+    function svgIcon(name, size = 16, style = '', cls = '') {
+      return '<svg class="aya-icon ' + cls + '" style="width:' + size + 'px;height:' + size + 'px;' + style + '" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' + (ICON_PATHS[name] || '') + '</svg>';
+    }
+
+    function createOfflineDesertSvg(seed) {
+      const p = [['#7C2D12','#EA580C','#F59E0B'],['#0F172A','#1E3A8A','#38BDF8'],['#064E3B','#059669','#34D399'],['#4C1D95','#7C3AED','#F472B6']][Math.abs(seed || 0) % 4];
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + p[0] + '"/><stop offset="55%" stop-color="' + p[1] + '"/><stop offset="100%" stop-color="' + p[2] + '"/></linearGradient></defs><rect width="600" height="900" fill="url(#g)"/><path d="M0 640 Q180 570 360 630 T600 610 L600 900 L0 900 Z" fill="rgba(18,17,16,0.34)"/></svg>');
+    }
+    window.createOfflineDesertSvg = createOfflineDesertSvg;
 
     /* =========================================================================
        5. БЛОК 2 — ТАКТИЛЬНЫЙ ДВИЖОК ЗВУКОВ (БЕЗ ЗАДЕРЖЕК И БЕЗ ЗВУКА В ТАСБИХЕ)
@@ -1075,14 +1129,14 @@
       document.getElementById('island-subtitle').textContent = subtitle;
       document.getElementById('dynamic-island').classList.remove('island-hidden');
       document.getElementById('dynamic-island').classList.add('island-visible');
-      document.getElementById('island-play-btn').textContent = '⏳';
+      document.getElementById('island-play-btn').innerHTML = svgIcon('loader-2', 16, '', 'animate-spin');
     }
     function stopAudio(hide = false) {
       clearTimeout(hideIslandTimer);
       audioEl.onended = null;
       audioEl.pause();
       audioEl.currentTime = 0;
-      document.getElementById('island-play-btn').textContent = '▶';
+      document.getElementById('island-play-btn').innerHTML = svgIcon('play', 16);
       document.getElementById('island-wave-box').classList.add('wave-paused');
       if (hide) {
         document.getElementById('dynamic-island').classList.add('island-hidden');
@@ -1090,11 +1144,11 @@
       }
     }
     audioEl.addEventListener('playing', () => {
-      document.getElementById('island-play-btn').textContent = '⏸';
+      document.getElementById('island-play-btn').innerHTML = svgIcon('pause', 16);
       document.getElementById('island-wave-box').classList.remove('wave-paused');
     });
     audioEl.addEventListener('pause', () => {
-      document.getElementById('island-play-btn').textContent = '▶';
+      document.getElementById('island-play-btn').innerHTML = svgIcon('play', 16);
       document.getElementById('island-wave-box').classList.add('wave-paused');
     });
     audioEl.addEventListener('timeupdate', () => {
@@ -1136,6 +1190,12 @@
       return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
+    const dirtyTabs = { prayer: true, quran: true, memorize: true, status: true, settings: true };
+    const hdrCache = { hijri: '', city: '', greg: '', nextName: '', curKey: '', friday: null };
+    function markDirty(...tabs) {
+      (tabs.length ? tabs : ['prayer', 'quran', 'memorize', 'status', 'settings']).forEach(t => { dirtyTabs[t] = true; });
+    }
+
     async function refreshPrayerTimes() {
       const now = getCityNowParts(appState.timezone);
       const dStr = String(now.day).padStart(2, '0') + '-' + String(now.month).padStart(2, '0') + '-' + now.year;
@@ -1155,24 +1215,55 @@
         appState.timings = getDeterministicFallbackTimings(appState.lat, appState.lng, appState.school);
         appState.hijriText = 'Расчётное расписание (офлайн)';
       }
-      renderHeaderAndHero();
+      markDirty('prayer', 'settings');
+      renderHeaderAndHero(false);
       if (uiState.activeTab === 'prayer') renderPrayerTab();
       if (uiState.activeTab === 'settings') renderSettingsTab();
       if (!document.getElementById('onboarding-overlay').classList.contains('hidden')) renderOnboarding();
     }
 
-    function renderHeaderAndHero() {
-      document.getElementById('hijri-header').textContent = appState.hijriText;
-      document.getElementById('current-city-badge').textContent = appState.city;
-      const mInfo = MADHHAB_INFO[appState.madhhabKey] || MADHHAB_INFO.hanafi;
-      document.getElementById('gregorian-date').textContent = appState.city.toUpperCase() + ' • ' + mInfo.name.toUpperCase() + ' МАЗХАБ';
+    function renderHeaderAndHero(clockOnly = false) {
       const now = getCityNowParts(appState.timezone);
       const info = getNextAndCurrentPrayerInfo(appState.timings, now);
+      if (!clockOnly || hdrCache.hijri !== appState.hijriText) {
+        hdrCache.hijri = appState.hijriText;
+        document.getElementById('hijri-header').textContent = appState.hijriText;
+      }
+      if (!clockOnly || hdrCache.city !== appState.city) {
+        hdrCache.city = appState.city;
+        document.getElementById('current-city-badge').textContent = appState.city;
+      }
+      const mInfo = MADHHAB_INFO[appState.madhhabKey] || MADHHAB_INFO.hanafi;
+      const gregText = appState.city.toUpperCase() + ' • ' + mInfo.name.toUpperCase() + ' МАЗХАБ';
+      if (!clockOnly || hdrCache.greg !== gregText) {
+        hdrCache.greg = gregText;
+        document.getElementById('gregorian-date').textContent = gregText;
+      }
       document.getElementById('countdown-hm').textContent = String(Math.floor(info.diffSec / 3600)).padStart(2, '0') + ':' + String(Math.floor((info.diffSec % 3600) / 60)).padStart(2, '0');
       document.getElementById('countdown-sec').textContent = ':' + String(info.diffSec % 60).padStart(2, '0');
-      document.getElementById('next-prayer-name').textContent = PRAYER_LABELS_RU[info.nextKey] || info.nextKey;
+      const nextLbl = PRAYER_LABELS_RU[info.nextKey] || info.nextKey;
+      if (!clockOnly || hdrCache.nextName !== nextLbl) {
+        hdrCache.nextName = nextLbl;
+        document.getElementById('next-prayer-name').textContent = nextLbl;
+      }
       const isFriday = new Date().getDay() === 5;
-      document.getElementById('special-day-banner')?.classList.toggle('hidden', !isFriday);
+      if (!clockOnly || hdrCache.friday !== isFriday) {
+        hdrCache.friday = isFriday;
+        document.getElementById('special-day-banner')?.classList.toggle('hidden', !isFriday);
+      }
+      if (uiState.activeTab === 'prayer') {
+        const ayahEl = document.getElementById('ayah-3h-countdown');
+        if (ayahEl) {
+          const slot = Math.floor(Date.now() / 10800000);
+          const rem = Math.max(0, Math.floor(((slot + 1) * 10800000 - Date.now()) / 1000));
+          ayahEl.textContent = String(Math.floor(rem / 3600)).padStart(2, '0') + ':' + String(Math.floor((rem % 3600) / 60)).padStart(2, '0') + ':' + String(rem % 60).padStart(2, '0');
+        }
+        if (hdrCache.curKey && hdrCache.curKey !== info.currentKey) {
+          hdrCache.curKey = info.currentKey;
+          renderPrayerTab();
+        }
+      }
+      hdrCache.curKey = info.currentKey;
     }
 
     function updateNavPositions() {
@@ -1190,7 +1281,7 @@
       });
     }
 
-    function switchTab(tab) {
+    function switchTab(tab, forceRender = false) {
       const tabs = ['prayer', 'quran', 'memorize', 'status', 'settings'];
       const oldIdx = tabs.indexOf(uiState.activeTab), newIdx = tabs.indexOf(tab);
       uiState.activeTab = tab;
@@ -1207,19 +1298,19 @@
 
       updateNavPositions();
 
-      if (tab === 'prayer') renderPrayerTab();
-      if (tab === 'quran') renderQuranTab();
-      if (tab === 'memorize') renderMemorizeTab();
-      if (tab === 'status') renderStatusTab();
-      if (tab === 'settings') renderSettingsTab();
-      if (window.scrollY > 40) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (tab === 'prayer' && (forceRender || dirtyTabs.prayer)) renderPrayerTab();
+      if (tab === 'quran' && (forceRender || dirtyTabs.quran)) renderQuranTab();
+      if (tab === 'memorize' && (forceRender || dirtyTabs.memorize)) renderMemorizeTab();
+      if (tab === 'status' && (forceRender || dirtyTabs.status)) renderStatusTab();
+      if (tab === 'settings' && (forceRender || dirtyTabs.settings)) renderSettingsTab();
+      if (window.scrollY > 40) window.scrollTo(0, 0);
     }
 
     function getTasbihStage(tCount) {
       if (tCount < 33) return { b: 'Шаг 1 из 3 • СубханаЛлах (33×)', ar: 'سُبْحَانَ اللَّهِ', tr: 'Субхана-Ллах', ru: '«Пречист Аллах от любых недостатков»', c: tCount, tg: 'из 33' };
       if (tCount < 66) return { b: 'Шаг 2 из 3 • АльхамдулиЛлях (33×)', ar: 'الْحَمْدُ لِلَّهِ', tr: 'Альхамду-ли-Ллях', ru: '«Вся хвала и благодарность Аллаху»', c: tCount - 33, tg: 'из 33' };
       if (tCount < 99) return { b: 'Шаг 3 из 3 • Аллаху Акбар (33×)', ar: 'اللَّهُ أَكْبَرُ', tr: 'Аллаху Акбар', ru: '«Аллах Превелик»', c: tCount - 66, tg: 'из 33' };
-      return { b: 'Завершение 100-го зикра', ar: 'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ', tr: 'Ля иляха илля-Ллаху вахдаху ля шарикя ляху...', ru: '«Прощаются грехи...» (Муслим 597)', c: 100, tg: 'Завершено ✓' };
+      return { b: 'Завершение 100-го зикра', ar: 'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ', tr: 'Ля иляха илля-Ллаху вахдаху ля шарикя ляху...', ru: '«Прощаются грехи...» (Муслим 597)', c: 100, tg: 'Завершено' };
     }
 
     function renderHalalCardsHtml() {
@@ -1237,6 +1328,7 @@
     }
 
     function renderPrayerTab() {
+      dirtyTabs.prayer = false;
       const root = document.getElementById('tab-prayer');
       const now = getCityNowParts(appState.timezone);
       const info = getNextAndCurrentPrayerInfo(appState.timings, now);
@@ -1269,9 +1361,11 @@
               const tm = (appState.timings[item.key] || '--:--').split(' ')[0];
               const rk = appState.manualMusafir ? item.qasrRakaats : item.rakaats;
               const sub = item.obligatory ? (rk + ' ракаата ' + (appState.manualMusafir && item.rakaats === 4 ? '(Каср)' : 'фард')) : 'Восход солнца';
+              const iconBg = isNow ? item.activeBg : item.idleBg;
+              const iconFg = isNow ? '#ffffff' : item.idleFg;
               return `<button type="button" class="tx-prayer-row ${isNow ? 'tx-prayer-row-active' : 'sheet-subcard'}" ${item.obligatory ? `onclick="togglePrayerDone('${item.key}')"` : ''}>
                 <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
-                  <span style="width:40px;height:40px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:rgba(255,102,0,0.14);flex-shrink:0;">${item.icon}</span>
+                  <span style="width:40px;height:40px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:${iconBg};color:${iconFg};flex-shrink:0;${isNow ? 'box-shadow:0 4px 12px rgba(0,0,0,0.16);' : ''}">${svgIcon(item.icon, 20)}</span>
                   <div style="min-width:0;flex:1;">
                     <span class="truncate" style="display:block;font-weight:800;font-size:14px;">${item.name}</span>
                     <span style="font-size:11.5px;opacity:0.65;">${sub} ${isNow ? '<b style="background:#ff6600;color:#fff;padding:2px 6px;border-radius:9999px;font-size:9px;margin-left:4px;">СЕЙЧАС</b>' : ''}</span>
@@ -1279,7 +1373,7 @@
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
                   <strong class="tabular-nums" style="font-size:16px;">${tm}</strong>
-                  ${item.obligatory ? `<span style="width:26px;height:26px;border-radius:9999px;border:2px solid ${isDone ? '#10b981' : 'currentColor'};background:${isDone ? '#10b981' : 'transparent'};color:${isDone ? '#121110' : 'inherit'};opacity:${isDone ? 1 : 0.35};display:flex;align-items:center;justify-content:center;font-weight:800;">${isDone ? '✓' : ''}</span>` : '<span style="width:26px;"></span>'}
+                  ${item.obligatory ? `<span style="width:26px;height:26px;border-radius:9999px;border:2px solid ${isDone ? '#10b981' : 'currentColor'};background:${isDone ? '#10b981' : 'transparent'};color:${isDone ? '#121110' : 'inherit'};opacity:${isDone ? 1 : 0.35};display:flex;align-items:center;justify-content:center;font-weight:800;">${isDone ? svgIcon('check', 15) : ''}</span>` : '<span style="width:26px;"></span>'}
                 </div>
               </button>`;
             }).join('')}
@@ -1287,24 +1381,34 @@
         </div>
 
         ${sug ? `<button type="button" onclick="openSurahHint('${info.currentKey}')" class="sheet-card spring-tap" style="width:100%;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;font-size:12px;">
-          <span class="truncate">🟢 <b>Короткие суры для намаза:</b> ${sug.s1}, ${sug.s2}</span>
+          <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+            <span style="width:10px;height:10px;border-radius:9999px;background:#10b981;flex-shrink:0;"></span>
+            <span class="truncate"><b>Короткие суры для намаза:</b> ${sug.s1}, ${sug.s2}</span>
+          </div>
           <span class="pill-btn bg-obsidian" style="flex-shrink:0;">Открыть</span>
         </button>` : ''}
 
         <div class="sheet-card" style="padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <span style="font-size:13px;opacity:0.8;font-weight:700;">Выполнено за день</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:28px;height:28px;border-radius:9999px;background:rgba(16,185,129,0.15);color:#10b981;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${svgIcon('check-circle-2', 16)}</span>
+            <span style="font-size:13px;opacity:0.8;font-weight:700;">Выполнено за день</span>
+          </div>
           <div><strong class="tabular-nums text-emerald" style="font-size:24px;">${doneCount}</strong> <span style="font-size:12px;opacity:0.6;">/ 5 намазов</span></div>
         </div>
 
-        <div style="display:flex;gap:6px;">
-          <button type="button" onclick="setTool('tasbih',true)" class="action-pill-btn spring-tap" style="flex:1;padding:14px 8px;font-size:12px;">📿 Тасбих 33×</button>
-          <button type="button" onclick="setTool('qibla',true)" class="action-pill-btn spring-tap" style="flex:1;padding:14px 8px;font-size:12px;">🧭 Кибла 360°</button>
-          <button type="button" onclick="exportPrayersToICS(false)" class="action-pill-btn spring-tap" style="flex:1;padding:14px 8px;font-size:12px;">📅 Календарь</button>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button type="button" onclick="setTool('tasbih',true)" class="action-pill-btn spring-tap" style="flex:1;padding:13px 8px;font-size:11.5px;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;">${svgIcon('fingerprint', 16, 'color:#ff6600;')}<span>Тасбих 33×</span></button>
+          <button type="button" onclick="setTool('qibla',true)" class="action-pill-btn spring-tap" style="flex:1;padding:13px 8px;font-size:11.5px;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;">${svgIcon('compass', 16, 'color:#e11d48;')}<span>Кибла 360°</span></button>
+          <button type="button" onclick="detectGeoLocation()" aria-label="Обновить геопозицию по GPS" title="Обновить геопозицию по GPS" class="action-pill-btn spring-tap" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${svgIcon('locate-fixed', 16, 'color:#0284c7;')}</button>
+          <button type="button" onclick="exportPrayersToICS(false)" class="action-pill-btn spring-tap" style="flex:1;padding:13px 8px;font-size:11.5px;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;">${svgIcon('calendar-check-2', 16, 'color:#10b981;')}<span>Календарь</span></button>
         </div>
 
         <div class="sheet-card aya-stack-xs">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:12px;font-weight:800;text-transform:uppercase;opacity:0.75;">🟢 Аят для размышления</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:10px;height:10px;border-radius:9999px;background:#10b981;flex-shrink:0;"></span>
+              <span style="font-size:12px;font-weight:800;text-transform:uppercase;opacity:0.75;">Аят для размышления</span>
+            </div>
             <span class="sheet-subcard tabular-nums" style="padding:4px 12px;font-size:11px;font-weight:700;">Смена через <b id="ayah-3h-countdown" class="text-emerald">${remStr}</b></span>
           </div>
           <p class="arabic-text" style="margin:0;font-size:26px;text-align:right;">${ayah3h.arabic}</p>
@@ -1312,17 +1416,20 @@
           <p style="margin:0;font-size:14px;opacity:0.85;">${ayah3h.russian}</p>
           <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding-top:4px;">
             <b>${ayah3h.source}</b>
-            <div style="display:flex;gap:12px;">
+            <div style="display:flex;gap:12px;align-items:center;">
               <button type="button" onclick="toggleTranscription()" style="text-decoration:underline;font-weight:700;">Транскрипция</button>
-              <button type="button" onclick="play3hAyah()" class="text-emerald" style="font-weight:800;">🔊 Слушать</button>
+              <button type="button" onclick="play3hAyah()" class="text-emerald" style="font-weight:800;display:inline-flex;align-items:center;gap:4px;">${svgIcon('volume-2', 14)}<span>Слушать</span></button>
             </div>
           </div>
         </div>
 
         <div class="sheet-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <div>
-            <h3 style="margin:0;font-size:14px;font-weight:800;">✈️ Режим путника (Мусафир)</h3>
-            <p style="margin:0;font-size:12px;opacity:0.6;">Сокращение 4-ракаатных намазов до 2 ракаатов (&gt; 85 км)</p>
+          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <span style="width:38px;height:38px;border-radius:9999px;background:rgba(2,132,199,0.14);color:#0284c7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${svgIcon('plane', 18)}</span>
+            <div style="min-width:0;">
+              <h3 style="margin:0;font-size:14px;font-weight:800;">Режим путника (Мусафир)</h3>
+              <p style="margin:0;font-size:12px;opacity:0.6;">Сокращение 4-ракаатных намазов до 2 ракаатов (&gt; 85 км)</p>
+            </div>
           </div>
           <button type="button" onclick="toggleMusafir()" class="ios-switch ${appState.manualMusafir ? 'active' : 'inactive'}" role="switch" aria-checked="${appState.manualMusafir}" aria-label="Режим путника Мусафир"><span class="ios-switch-thumb"></span></button>
         </div>
@@ -1338,7 +1445,7 @@
           ${uiState.activeTool === 'tasbih' ? `<div class="sheet-card card-spring-enter" style="text-align:center;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <span id="tasbih-badge" style="padding:4px 12px;border-radius:9999px;background:rgba(16,185,129,0.15);color:#10b981;font-size:11px;font-weight:800;">${tStage.b}</span>
-              <button type="button" data-no-ui-sound="true" onclick="resetTasbih()" class="sheet-subcard pill-btn">↺ Сброс</button>
+              <button type="button" data-no-ui-sound="true" onclick="resetTasbih()" class="sheet-subcard pill-btn">${svgIcon('rotate-ccw', 14)}<span>Сброс</span></button>
             </div>
             <p id="tasbih-ar" class="arabic-text text-amber" style="margin:12px 0 4px;font-size:34px;">${tStage.ar}</p>
             <p id="tasbih-tr" style="margin:0;font-size:16px;font-weight:800;">${tStage.tr}</p>
@@ -1366,9 +1473,9 @@
             <div style="max-width:220px;margin:18px auto 8px;">
               <input id="qibla-slider" type="range" min="0" max="360" value="${uiState.heading}" oninput="updateQiblaHeading(Number(this.value))" class="apple-slider" aria-label="Азимут Киблы" />
             </div>
-            <p id="qibla-status-msg" style="font-weight:800;font-size:13px;color:${aligned ? '#10b981' : '#fff'};">${aligned ? '✓ Вы направлены точно на Киблу' : 'Поверните телефон в сторону Киблы'}</p>
+            <p id="qibla-status-msg" style="font-weight:800;font-size:13px;color:${aligned ? '#10b981' : '#fff'};display:flex;align-items:center;justify-content:center;gap:6px;">${aligned ? svgIcon('check-circle-2', 15) + '<span>Вы направлены точно на Киблу</span>' : 'Поверните телефон в сторону Киблы'}</p>
             <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:8px;">
-              <button type="button" onclick="toggleLiveCompass()" class="liquid-glass-pill pill-btn spring-tap">${uiState.compassActive ? 'Датчик активен' : '🧭 Живой компас'}</button>
+              <button type="button" onclick="toggleLiveCompass()" class="liquid-glass-pill pill-btn spring-tap">${svgIcon('compass', 14)}<span>${uiState.compassActive ? 'Датчик активен' : 'Живой компас'}</span></button>
               <button type="button" onclick="updateQiblaHeading(${qBearing},true)" class="liquid-glass-pill pill-btn spring-tap">Выровнять</button>
             </div>
           </div>` : ''}
@@ -1410,44 +1517,55 @@
       const q = uiState.surahSearch.toLowerCase().trim();
       const filtered = uiState.surahs.filter(s => String(s.number).includes(q) || (SURAH_NAMES_RU[s.number] || '').toLowerCase().includes(q) || s.englishName.toLowerCase().includes(q));
       if (!filtered.length) return '<div class="sheet-card" style="text-align:center;font-size:13px;opacity:0.7;">Сура не найдена</div>';
-      return filtered.map(s => `<button type="button" onclick="openSurahReader(${s.number},'${escapeHtml(SURAH_NAMES_RU[s.number] || s.englishName)}','${escapeHtml(s.name)}')" class="sheet-card spring-tap" style="padding:16px;display:flex;align-items:center;justify-content:space-between;text-align:left;">
+      return filtered.map(s => `<button type="button" onclick="openSurahReader(${s.number},'${escapeHtml(SURAH_NAMES_RU[s.number] || s.englishName)}','${escapeHtml(s.name)}')" class="sheet-card spring-tap perf-card-vis" style="padding:16px;display:flex;align-items:center;justify-content:space-between;text-align:left;">
         <div style="display:flex;align-items:center;gap:12px;min-width:0;">
-          <span style="width:38px;height:38px;border-radius:9999px;background:rgba(16,185,129,0.15);color:#10b981;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">${s.number}</span>
+          <span style="width:38px;height:38px;border-radius:9999px;background:rgba(16,185,129,0.15);color:#10b981;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${s.number}</span>
           <div style="min-width:0;"><b style="display:block;font-size:14px;">${SURAH_NAMES_RU[s.number] || s.englishName}</b><span style="font-size:11px;opacity:0.6;">${s.numberOfAyahs} аятов</span></div>
         </div>
         <span class="arabic-text text-amber" style="font-size:20px;">${s.name}</span>
       </button>`).join('');
     }
 
+    let quranCatalogSynced = false;
     async function renderQuranTab() {
+      dirtyTabs.quran = false;
       const root = document.getElementById('tab-quran');
       if (!uiState.surahs.length) {
-        try {
-          const r = await fetchJsonWithTimeout('https://api.alquran.cloud/v1/surah', 6500);
-          uiState.surahs = (r && r.data) ? r.data : FALLBACK_SURAH_LIST;
-        } catch { uiState.surahs = FALLBACK_SURAH_LIST; }
+        uiState.surahs = FALLBACK_SURAH_LIST.slice();
+      }
+      if (!quranCatalogSynced) {
+        quranCatalogSynced = true;
+        fetchJsonWithTimeout('https://api.alquran.cloud/v1/surah', 5000).then(r => {
+          if (r && Array.isArray(r.data) && r.data.length === 114) {
+            uiState.surahs = r.data;
+            if (uiState.activeTab === 'quran' && !uiState.openedSurah) {
+              const g = document.getElementById('quran-surah-grid');
+              if (g) g.innerHTML = renderSurahGridHtml();
+            }
+          }
+        }).catch(() => {});
       }
       const sess = HEALING_SESSIONS_DATA[uiState.healingKey];
 
       root.innerHTML = `
         <div class="sheet-card aya-stack-sm">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
             <div><span class="text-emerald" style="font-size:10px;font-weight:800;text-transform:uppercase;">Аудиопоток • 2–3 часа</span><h2 style="margin:0;font-size:18px;font-weight:800;">Слушать Коран и Рукъю</h2></div>
-            <button type="button" onclick="playSurahLuhaidan(2,'Аль-Бакара')" class="pill-btn bg-obsidian">▶ Нон-стоп</button>
+            <button type="button" onclick="playSurahLuhaidan(2,'Аль-Бакара')" class="pill-btn bg-obsidian">${svgIcon('play', 12)}<span>Нон-стоп</span></button>
           </div>
           <div class="grid-3">
             ${[{k:'ruqyah',l:'От сглаза'},{k:'sakina',l:'Утешение'},{k:'shifa',l:'Исцеление'}].map(t => `<button type="button" onclick="uiState.healingKey='${t.k}';renderQuranTab()" class="pill-btn ${uiState.healingKey===t.k?'bg-obsidian':'sheet-subcard'}">${t.l}</button>`).join('')}
           </div>
           <div class="sheet-subcard" style="padding:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;">
             <div><b style="font-size:14px;display:block;">${sess.title}</b><span class="text-emerald" style="font-size:12px;font-weight:700;">${sess.durationLabel}</span></div>
-            <button type="button" onclick="playSurahLuhaidan(${sess.surahQueue[0]},'${escapeHtml(sess.title)}')" class="pill-btn bg-emerald">Слушать</button>
+            <button type="button" onclick="playSurahLuhaidan(${sess.surahQueue[0]},'${escapeHtml(sess.title)}')" class="pill-btn bg-emerald">${svgIcon('volume-2', 13)}<span>Слушать</span></button>
           </div>
         </div>
 
         <div class="sheet-card aya-stack-sm">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
             <h3 style="margin:0;font-size:16px;font-weight:800;">Все 114 сур Корана</h3>
-            ${uiState.openedSurah ? '<button type="button" onclick="uiState.openedSurah=null;renderQuranTab()" class="pill-btn bg-amber">← Назад</button>' : ''}
+            ${uiState.openedSurah ? `<button type="button" onclick="uiState.openedSurah=null;renderQuranTab()" class="pill-btn bg-amber">${svgIcon('arrow-left', 13)}<span>Назад</span></button>` : ''}
           </div>
           ${!uiState.openedSurah ? `<input type="text" value="${escapeHtml(uiState.surahSearch)}" oninput="uiState.surahSearch=this.value;document.getElementById('quran-surah-grid').innerHTML=renderSurahGridHtml();" placeholder="Поиск суры (1–114)..." class="sheet-subcard" style="width:100%;padding:12px 16px;border:0;outline:none;font-size:13px;" />` : ''}
         </div>
@@ -1456,12 +1574,12 @@
           <div class="sheet-card" style="text-align:center;">
             <p class="arabic-text text-amber" style="margin:0;font-size:28px;">${uiState.openedSurah.arabName}</p>
             <h3 style="margin:4px 0 10px;">Сура ${uiState.openedSurah.num}. ${uiState.openedSurah.name}</h3>
-            <button type="button" onclick="playSurahLuhaidan(${uiState.openedSurah.num},'${escapeHtml(uiState.openedSurah.name)}')" class="pill-btn bg-obsidian">Слушать суру целиком</button>
+            <button type="button" onclick="playSurahLuhaidan(${uiState.openedSurah.num},'${escapeHtml(uiState.openedSurah.name)}')" class="pill-btn bg-obsidian">${svgIcon('play', 12)}<span>Слушать суру целиком</span></button>
           </div>
-          ${uiState.openedAyahs.length ? uiState.openedAyahs.map(a => `<div class="sheet-card aya-stack-xs">
+          ${uiState.openedAyahs.length ? uiState.openedAyahs.map(a => `<div class="sheet-card aya-stack-xs perf-card-vis">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <span class="sheet-subcard pill-btn">Аят ${a.numberInSurah}</span>
-              <button type="button" onclick="playAudioUrl('${a.audio}','${escapeHtml(uiState.openedSurah.name)} — Аят ${a.numberInSurah}','Мишари аль-Афаси')" class="pill-btn bg-emerald">Слушать</button>
+              <button type="button" onclick="playAudioUrl('${a.audio}','${escapeHtml(uiState.openedSurah.name)} — Аят ${a.numberInSurah}','Мишари аль-Афаси')" class="pill-btn bg-emerald">${svgIcon('volume-2', 13)}<span>Слушать</span></button>
             </div>
             <p class="arabic-text" style="margin:0;font-size:26px;text-align:right;">${a.arabic}</p>
             ${appState.showTranscription ? `<p class="sheet-subcard text-amber" style="margin:0;padding:10px;font-size:12px;font-style:italic;">${a.cyrillic}</p>` : ''}
@@ -1494,10 +1612,34 @@
       return list;
     }
 
+    window.revealMemWord = (btn, wk) => {
+      uiState.memRevealed[wk] = true;
+      const w = btn.textContent || '';
+      const span = document.createElement('span');
+      span.className = 'word-revealed';
+      span.textContent = w + ' ';
+      btn.replaceWith(span);
+    };
+
+    let memFetchingNum = 0;
     async function renderMemorizeTab() {
+      dirtyTabs.memorize = false;
       const root = document.getElementById('tab-memorize');
       if (uiState.memSubTab === 'surahs' && !uiState.memAyahs.length) {
-        try { uiState.memAyahs = await fetchSurahAyahs(uiState.memSurahNum); } catch { uiState.memAyahs = []; }
+        if (surahCache.has(uiState.memSurahNum)) {
+          uiState.memAyahs = surahCache.get(uiState.memSurahNum);
+        } else if (memFetchingNum !== uiState.memSurahNum) {
+          const targetNum = uiState.memSurahNum;
+          memFetchingNum = targetNum;
+          fetchSurahAyahs(targetNum).then(list => {
+            if (uiState.memSurahNum === targetNum) {
+              uiState.memAyahs = list || [];
+              memFetchingNum = 0;
+              if (uiState.activeTab === 'memorize' && uiState.memSubTab === 'surahs') renderMemorizeTab();
+              else dirtyTabs.memorize = true;
+            }
+          }).catch(() => { if (memFetchingNum === targetNum) memFetchingNum = 0; });
+        }
       }
       root.innerHTML = `
         <div class="sheet-card aya-stack-sm">
@@ -1526,14 +1668,14 @@
               </div>
             </div>
           </div>
-          ${uiState.memAyahs.map((a) => {
+          ${uiState.memAyahs.length ? uiState.memAyahs.map((a) => {
             const done = !!uiState.memLearned[a.key];
-            return `<div class="sheet-card aya-stack-xs" style="${done?'border:2px solid rgba(16,185,129,0.5);':''}">
+            return `<div class="sheet-card aya-stack-xs perf-card-vis" style="${done?'border:2px solid rgba(16,185,129,0.5);':''}">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
                 <span class="sheet-subcard pill-btn">Аят ${a.numberInSurah}</span>
                 <div style="display:flex;gap:6px;">
-                  <button type="button" onclick="playLoopAudio('${a.audio}','Аят ${a.numberInSurah}',${uiState.memLoop})" class="pill-btn bg-amber">▶ Повтор</button>
-                  <button type="button" onclick="toggleMemorized('${a.key}')" class="pill-btn ${done?'bg-emerald':'sheet-subcard'}">${done?'✓ Выучено':'Запомнил'}</button>
+                  <button type="button" onclick="playLoopAudio('${a.audio}','Аят ${a.numberInSurah}',${uiState.memLoop})" class="pill-btn bg-amber">${svgIcon('play', 12)}<span>Повтор</span></button>
+                  <button type="button" onclick="toggleMemorized('${a.key}')" class="pill-btn ${done?'bg-emerald':'sheet-subcard'}">${done ? svgIcon('check', 13) + '<span>Выучено</span>' : 'Запомнил'}</button>
                 </div>
               </div>
               <div class="arabic-text" style="font-size:26px;text-align:right;">
@@ -1542,13 +1684,13 @@
                   const h50 = uiState.memMode === 'half' && wi % 2 === 1;
                   if (uiState.memMode === 'read' || (uiState.memMode === 'half' && !h50)) return '<span>' + w + ' </span>';
                   if (uiState.memRevealed[wk]) return '<span class="word-revealed">' + w + ' </span>';
-                  return `<button type="button" onclick="uiState.memRevealed['${wk}']=true;renderMemorizeTab()" class="${h50?'word-hidden':'word-blur'} arabic-text">${w}</button>`;
+                  return `<button type="button" onclick="revealMemWord(this,'${wk}')" class="${h50?'word-hidden':'word-blur'} arabic-text">${w}</button>`;
                 }).join('')}
               </div>
               ${appState.showTranscription && a.cyrillic ? `<p class="sheet-subcard text-amber" style="margin:0;padding:10px;font-size:12px;font-style:italic;">${a.cyrillic}</p>` : ''}
               <p style="margin:0;font-size:12px;opacity:0.75;">${a.russian}</p>
             </div>`;
-          }).join('')}
+          }).join('') : `<div class="sheet-card" style="text-align:center;font-size:13px;opacity:0.75;">${svgIcon('loader-2', 16, 'margin-right:6px;animation:spin 1s linear infinite;')}Загрузка аятов суры...</div>`}
         ` : `
           <div class="sheet-card aya-stack-xs">
             <h3 style="margin:0;font-size:16px;font-weight:800;">Занятия с преподавателем Хадиджей</h3>
@@ -1556,7 +1698,7 @@
             <a href="${KHADIJAH_WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" class="pill-btn bg-emerald" style="width:100%;padding:14px;text-decoration:none;">Написать преподавателю в WhatsApp</a>
           </div>
           <div class="grid-auto-2">
-            ${ARABIC_ALPHABET_28.map((l, i) => `<button type="button" onclick="playAudioUrl('https://audio.qurancdn.com/wbw/${l.wbw}.mp3','Буква ${escapeHtml(l.name)}','${escapeHtml(l.exampleTr)}')" class="sheet-card spring-tap" style="padding:16px;text-align:left;">
+            ${ARABIC_ALPHABET_28.map((l, i) => `<button type="button" onclick="playAudioUrl('https://audio.qurancdn.com/wbw/${l.wbw}.mp3','Буква ${escapeHtml(l.name)}','${escapeHtml(l.exampleTr)}')" class="sheet-card spring-tap perf-card-vis" style="padding:16px;text-align:left;">
               <div style="display:flex;justify-content:space-between;align-items:center;">
                 <div><b>${i+1}. ${l.name}</b><span style="display:block;font-size:11px;opacity:0.6;">Формы: ${l.forms}</span></div>
                 <span class="arabic-text text-indigo" style="font-size:28px;">${l.letter}</span>
@@ -1569,6 +1711,7 @@
     }
 
     function renderStatusTab() {
+      dirtyTabs.status = false;
       const root = document.getElementById('tab-status');
       const items = ALL_STATUS_POOL.map((s, i) => ({
         id: i + 1, ...s,
@@ -1577,11 +1720,11 @@
 
       root.innerHTML = `
         <div class="sheet-card aya-stack-sm">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
             <div><h2 style="margin:0;font-size:18px;font-weight:800;">Статусы и сторис</h2><p style="margin:0;font-size:12px;opacity:0.6;">64 текста • 30 фонов</p></div>
             <div style="display:flex;gap:6px;">
-              <button type="button" onclick="document.getElementById('custom-status-file-input').click()" class="pill-btn bg-emerald">Своё фото</button>
-              <button type="button" onclick="uiState.statusShuffle++;renderStatusTab()" class="pill-btn bg-obsidian">↻ Фоны</button>
+              <button type="button" onclick="document.getElementById('custom-status-file-input').click()" class="pill-btn bg-emerald">${svgIcon('image-plus', 14)}<span>Своё фото</span></button>
+              <button type="button" onclick="uiState.statusShuffle++;renderStatusTab()" class="pill-btn bg-obsidian">${svgIcon('refresh-cw', 13)}<span>Фоны</span></button>
             </div>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;">
@@ -1590,7 +1733,7 @@
         </div>
         <div class="grid-status">
           ${items.map(s => `<button type="button" onclick="openStatusModal(${s.id})" class="story-card spring-tap">
-            <img src="${s.image}" alt="${escapeHtml(s.source)}" loading="lazy" />
+            <img src="${s.image}" alt="${escapeHtml(s.source)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=createOfflineDesertSvg(${s.id})" />
             <div style="position:relative;z-index:2;height:100%;padding:16px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0.78));text-shadow:0 2px 10px rgba(0,0,0,0.8);">
               <p class="arabic-text" style="margin:0;font-size:14px;">${s.arabic}</p>
               <p class="${STATUS_FONT_PRESETS[s.fontIndex % 5].cssClass}" style="margin:6px 0;font-size:11.5px;">${s.russian}</p>
@@ -1602,6 +1745,7 @@
     }
 
     function renderSettingsTab() {
+      dirtyTabs.settings = false;
       const root = document.getElementById('tab-settings');
       const mInfo = MADHHAB_INFO[appState.madhhabKey] || MADHHAB_INFO.hanafi;
       const notifOk = 'Notification' in window && Notification.permission === 'granted' && appState.webNotifEnabled;
@@ -1609,14 +1753,14 @@
       root.innerHTML = `
         <div class="sheet-card aya-stack-sm">
           <h2 style="margin:0;font-size:18px;font-weight:800;">Город и Мазхаб</h2>
-          <div class="sheet-subcard" style="padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <div class="sheet-subcard" style="padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
             <div>
               <span style="font-size:10px;opacity:0.55;font-weight:700;display:block;">ТЕКУЩАЯ ЛОКАЦИЯ</span>
               <strong style="font-size:14px;">${appState.city} • ${mInfo.name}</strong>
               <span style="font-size:12px;opacity:0.6;display:block;">Часовой пояс: ${appState.timezone}</span>
             </div>
             <div style="display:flex;gap:6px;">
-              <button type="button" onclick="detectGeoLocation()" class="pill-btn bg-amber">GPS</button>
+              <button type="button" onclick="detectGeoLocation()" class="pill-btn bg-amber">${svgIcon('locate-fixed', 13)}<span>GPS</span></button>
               <button type="button" onclick="openOnboarding()" class="pill-btn bg-obsidian">Мастер</button>
             </div>
           </div>
@@ -1639,15 +1783,15 @@
               <button type="button" onclick="toggleWebNotif()" class="ios-switch ${notifOk?'active':'inactive'}" role="switch" aria-checked="${notifOk}" aria-label="Уведомления в браузере"><span class="ios-switch-thumb"></span></button>
             </div>
           </div>
-          <button type="button" onclick="exportPrayersToICS(false)" class="pill-btn bg-emerald" style="width:100%;padding:14px;">📅 Все 5 намазов на 30 дней (.ics)</button>
-          <button type="button" onclick="exportPrayersToICS(true)" class="pill-btn bg-obsidian" style="width:100%;padding:14px;">⏰ Только Фаджр на 30 дней (.ics)</button>
+          <button type="button" onclick="exportPrayersToICS(false)" class="pill-btn bg-emerald" style="width:100%;padding:14px;">${svgIcon('calendar-check-2', 15)}<span>Все 5 намазов на 30 дней (.ics)</span></button>
+          <button type="button" onclick="exportPrayersToICS(true)" class="pill-btn bg-obsidian" style="width:100%;padding:14px;">${svgIcon('alarm-clock', 15)}<span>Только Фаджр на 30 дней (.ics)</span></button>
         </div>
 
         <div class="sheet-card aya-stack-sm">
           <h3 style="margin:0;font-size:16px;font-weight:800;">Интерфейс, Звуки и Транскрипция</h3>
           <div class="grid-2">
-            <button type="button" onclick="setTheme('light')" class="pill-btn ${appState.theme==='light'?'bg-obsidian':'sheet-subcard'}">☀️ Светлая</button>
-            <button type="button" onclick="setTheme('dark')" class="pill-btn ${appState.theme==='dark'?'bg-amber':'sheet-subcard'}">🌙 Тёмная</button>
+            <button type="button" onclick="setTheme('light')" class="pill-btn ${appState.theme==='light'?'bg-obsidian':'sheet-subcard'}">${svgIcon('sun', 15)}<span>Светлая</span></button>
+            <button type="button" onclick="setTheme('dark')" class="pill-btn ${appState.theme==='dark'?'bg-amber':'sheet-subcard'}">${svgIcon('moon', 15)}<span>Тёмная</span></button>
           </div>
           <button type="button" onclick="toggleTranscription()" class="sheet-subcard" style="width:100%;padding:14px;display:flex;justify-content:space-between;align-items:center;text-align:left;">
             <span><b>Кириллическая транскрипция</b></span>
@@ -1719,7 +1863,7 @@
       }
       const msg = document.getElementById('qibla-status-msg');
       if (msg) {
-        msg.textContent = aligned ? '✓ Вы направлены точно на Киблу' : 'Поверните телефон в сторону Киблы';
+        msg.innerHTML = aligned ? svgIcon('check-circle-2', 15) + '<span>Вы направлены точно на Киблу</span>' : 'Поверните телефон в сторону Киблы';
         msg.style.color = aligned ? '#10b981' : '#fff';
       }
       if (syncSlider) {
@@ -1778,7 +1922,8 @@
       appState.showTranscription = !appState.showTranscription;
       AyaSoundEngine.toggle(appState.showTranscription);
       try { localStorage.setItem('aya_show_transcription', String(appState.showTranscription)); } catch {}
-      switchTab(uiState.activeTab);
+      markDirty('prayer', 'quran', 'memorize', 'settings');
+      switchTab(uiState.activeTab, true);
     };
     window.toggleSound = () => {
       appState.soundEnabled = !appState.soundEnabled;
@@ -1877,7 +2022,7 @@
       box.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <b>Чтение Корана в намазе</b>
-          <button type="button" onclick="document.getElementById('surah-hint-modal').classList.add('hidden')" class="sheet-subcard pill-btn">✕</button>
+          <button type="button" aria-label="Закрыть" onclick="document.getElementById('surah-hint-modal').classList.add('hidden')" class="sheet-subcard pill-btn" style="padding:8px;">${svgIcon('x', 15)}</button>
         </div>
         <div class="sheet-subcard" style="padding:14px;"><b>1-й ракаат: ${sug.s1}</b><p class="arabic-text" style="font-size:20px;text-align:right;">${sug.arab1}</p></div>
         <div class="sheet-subcard" style="padding:14px;"><b>2-й ракаат: ${sug.s2}</b><p class="arabic-text" style="font-size:20px;text-align:right;">${sug.arab2}</p></div>
@@ -1893,15 +2038,15 @@
       const txtColor = modalStatusState.darkInk ? '#121110' : '#ffffff';
       const overlayBg = modalStatusState.darkInk ? 'linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.72))' : 'linear-gradient(180deg,rgba(0,0,0,0.34),rgba(0,0,0,0.76))';
       document.getElementById('status-modal-inner').innerHTML = `
-        <img src="${modalStatusState.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(${modalStatusState.darkInk ? '1.05' : '0.58'});" />
+        <img src="${modalStatusState.img}" onerror="this.onerror=null;this.src=createOfflineDesertSvg(${modalStatusState.id})" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(${modalStatusState.darkInk ? '1.05' : '0.58'});" />
         <div style="position:absolute;inset:0;background:${overlayBg};pointer-events:none;"></div>
         <div style="position:relative;z-index:2;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:6px;">
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button type="button" onclick="modalStatusState.fontIdx++;renderStatusModalInner()" class="pill-btn" style="background:rgba(0,0,0,0.55);color:#fff;">Aa ${preset.label}</button>
             <button type="button" onclick="modalStatusState.darkInk=!modalStatusState.darkInk;renderStatusModalInner()" class="pill-btn" style="background:rgba(0,0,0,0.55);color:#fff;">${modalStatusState.darkInk ? 'Светлый текст' : 'Тёмный текст'}</button>
-            <button type="button" onclick="document.getElementById('custom-status-file-input').click()" class="pill-btn bg-emerald">Своё фото</button>
+            <button type="button" onclick="document.getElementById('custom-status-file-input').click()" class="pill-btn bg-emerald">${svgIcon('image-plus', 13)}<span>Своё фото</span></button>
           </div>
-          <button type="button" onclick="document.getElementById('status-modal').classList.add('hidden')" class="pill-btn" style="background:rgba(0,0,0,0.6);color:#fff;">✕</button>
+          <button type="button" aria-label="Закрыть редактор" onclick="document.getElementById('status-modal').classList.add('hidden')" class="pill-btn" style="background:rgba(0,0,0,0.6);color:#fff;padding:8px;">${svgIcon('x', 15)}</button>
         </div>
         <div style="position:relative;z-index:2;padding:20px;text-align:center;color:${txtColor};margin:auto;">
           <p class="arabic-text" style="font-size:21px;margin:0 0 8px;">${s.arabic}</p>
@@ -1909,7 +2054,7 @@
           <span style="font-size:10px;opacity:0.78;">${s.source}</span>
         </div>
         <div style="position:relative;z-index:2;padding:14px;display:flex;gap:8px;">
-          <button type="button" onclick="downloadStatusPng()" class="pill-btn bg-emerald" style="flex:1;padding:12px;">Скачать 1080×1920</button>
+          <button type="button" onclick="downloadStatusPng()" class="pill-btn bg-emerald" style="flex:1;padding:12px;">${svgIcon('download', 14)}<span>Скачать 1080×1920</span></button>
           <button type="button" onclick="document.getElementById('status-modal').classList.add('hidden')" class="pill-btn bg-obsidian" style="padding:12px 16px;">Готово</button>
         </div>
       `;
@@ -1989,7 +2134,7 @@
       onbCityDebounce = setTimeout(async () => {
         const res = await searchCityPlacesAPI(q.trim());
         if (box) {
-          box.innerHTML = res.map(r => `<button type="button" onclick="selectCity(${r.lat},${r.lng},'${escapeHtml(r.shortName)}','${r.timezone || ''}').then(()=>{uiState.onbStep=3;renderOnboarding()})" class="liquid-glass-pill pill-btn" style="width:100%;justify-content:space-between;padding:10px 14px;"><span>${escapeHtml(r.displayName)}</span><span>→</span></button>`).join('');
+          box.innerHTML = res.map(r => `<button type="button" onclick="selectCity(${r.lat},${r.lng},'${escapeHtml(r.shortName)}','${r.timezone || ''}').then(()=>{uiState.onbStep=3;renderOnboarding()})" class="liquid-glass-pill pill-btn" style="width:100%;justify-content:space-between;padding:10px 14px;"><span>${escapeHtml(r.displayName)}</span>${svgIcon('arrow-right', 14)}</button>`).join('');
         }
       }, 450);
     };
@@ -2036,7 +2181,7 @@
           <div style="text-align:center;" class="aya-stack-sm">
             <h2 style="margin:0;font-size:26px;font-weight:800;color:#fff;">Добро пожаловать в AyaSpace</h2>
             <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.9);">Точное время намаза, Священный Коран, Тасбих и статусы в эстетике Liquid Glass.</p>
-            <button type="button" onclick="uiState.onbStep=2;renderOnboarding()" class="pill-btn spring-tap" style="width:100%;padding:16px;background:#fff;color:#121110;">Начать настройку →</button>
+            <button type="button" onclick="uiState.onbStep=2;renderOnboarding()" class="pill-btn spring-tap" style="width:100%;padding:16px;background:#fff;color:#121110;"><span>Начать настройку</span>${svgIcon('arrow-right', 15)}</button>
           </div>`;
       } else if (uiState.onbStep === 2) {
         box.innerHTML = `
@@ -2044,7 +2189,7 @@
             <h2 style="margin:0;font-size:22px;font-weight:800;color:#fff;">Ваш город</h2>
             <input type="text" placeholder="Введите ваш город или село..." oninput="handleOnboardingCitySearch(this.value)" style="width:100%;padding:12px 16px;border-radius:18px;border:1px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.18);color:#fff;outline:none;font-size:13px;" />
             <div id="onb-city-results" class="aya-stack-xs"></div>
-            <button type="button" onclick="detectGeoLocation()" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:12px;">📍 Определить по GPS</button>
+            <button type="button" onclick="detectGeoLocation()" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:12px;">${svgIcon('locate-fixed', 14)}<span>Определить по GPS</span></button>
             <div style="display:flex;flex-wrap:wrap;gap:8px;max-height:160px;overflow-y:auto;">
               ${QUICK_CITIES.slice(0, 12).map(c => `<button type="button" onclick="selectCity(${c.lat},${c.lng},'${c.name}','${c.timezone}').then(()=>{uiState.onbStep=3;renderOnboarding()})" class="liquid-glass-pill pill-btn spring-tap">${c.name}</button>`).join('')}
             </div>
@@ -2056,16 +2201,16 @@
             <div class="grid-2">
               ${Object.keys(MADHHAB_INFO).map(k => `<button type="button" onclick="selectMadhhab('${k}')" class="pill-btn spring-tap" style="background:${appState.madhhabKey===k?'#fff':'rgba(255,255,255,0.2)'};color:${appState.madhhabKey===k?'#121110':'#fff'};padding:12px;">${MADHHAB_INFO[k].name}</button>`).join('')}
             </div>
-            <button type="button" onclick="exportPrayersToICS(false)" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:12px;">📅 Добавить 5 намазов на 30 дней (.ics)</button>
-            <button type="button" onclick="uiState.onbStep=4;renderOnboarding()" class="pill-btn spring-tap" style="width:100%;padding:14px;background:#fff;color:#121110;">Далее →</button>
+            <button type="button" onclick="exportPrayersToICS(false)" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:12px;">${svgIcon('calendar-check-2', 14)}<span>Добавить 5 намазов на 30 дней (.ics)</span></button>
+            <button type="button" onclick="uiState.onbStep=4;renderOnboarding()" class="pill-btn spring-tap" style="width:100%;padding:14px;background:#fff;color:#121110;"><span>Далее</span>${svgIcon('arrow-right', 15)}</button>
           </div>`;
       } else {
         box.innerHTML = `
           <div class="aya-stack-sm">
             <h2 style="margin:0;font-size:22px;font-weight:800;color:#fff;">Добавьте на экран «Домой»</h2>
-            <div style="background:#fff;color:#121110;padding:14px;border-radius:20px;font-size:12px;"><b>iPhone (Safari):</b> Поделиться (↑) → На экран «Домой»</div>
-            <div style="background:#fff;color:#121110;padding:14px;border-radius:20px;font-size:12px;"><b>Android (Chrome):</b> Три точки (⋮) → Установить приложение</div>
-            <button type="button" onclick="localStorage.setItem('aya_onboarding_done','true');document.getElementById('onboarding-overlay').classList.add('hidden');AyaSoundEngine.complete()" class="pill-btn bg-obsidian spring-tap" style="width:100%;padding:16px;">✓ Войти в AyaSpace</button>
+            <div style="background:#fff;color:#121110;padding:14px;border-radius:20px;font-size:12px;"><b>iPhone (Safari):</b> Поделиться → На экран «Домой»</div>
+            <div style="background:#fff;color:#121110;padding:14px;border-radius:20px;font-size:12px;"><b>Android (Chrome):</b> Меню браузера → Установить приложение</div>
+            <button type="button" onclick="localStorage.setItem('aya_onboarding_done','true');document.getElementById('onboarding-overlay').classList.add('hidden');AyaSoundEngine.complete()" class="pill-btn bg-obsidian spring-tap" style="width:100%;padding:16px;">${svgIcon('check', 15)}<span>Войти в AyaSpace</span></button>
           </div>`;
       }
     }
@@ -2096,7 +2241,7 @@
 
     // Ежесекундный тик и проверка уведомлений браузера
     function tickClockAndNotifications() {
-      renderHeaderAndHero();
+      renderHeaderAndHero(true);
       const now = getCityNowParts(appState.timezone);
       if (appState.webNotifEnabled && appState.timings && 'Notification' in window && Notification.permission === 'granted' && now.second <= 5) {
         const nowMin = now.hour * 60 + now.minute;
