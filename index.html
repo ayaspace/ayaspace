@@ -13865,9 +13865,22 @@ function getQuranWordAudioUrl(wbwCode) {
 	return `https://audio.qurancdn.com/wbw/${wbwCode}.mp3`;
 }
 // src/utils/apiClients.ts
+var SURAH_LIST_CACHE_KEY = "aya_cached_surah_list_v1";
+var surahAyahsMemoryCache = /* @__PURE__ */ new Map();
+async function fetchJsonWithTimeout(url, timeoutMs = 6500) {
+	const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+	const timer = controller ? window.setTimeout(() => controller.abort(), timeoutMs) : null;
+	try {
+		const res = await fetch(url, controller ? { signal: controller.signal } : void 0);
+		if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		return await res.json();
+	} finally {
+		if (timer !== null) window.clearTimeout(timer);
+	}
+}
 async function searchCityPlacesAPI(query) {
 	try {
-		const data = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=ru&format=json`)).json();
+		const data = await fetchJsonWithTimeout(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=ru&format=json`, 5e3);
 		if (data?.results?.length) return data.results.map((r) => ({
 			shortName: r.name.replace(/'/g, ""),
 			displayName: [
@@ -13880,19 +13893,19 @@ async function searchCityPlacesAPI(query) {
 		}));
 	} catch {}
 	try {
-		return (await (await fetch(`https://nominatim.openstreetmap.org/search?format=json&accept-language=ru&limit=5&q=${encodeURIComponent(query)}`)).json()).map((p) => ({
+		const places = await fetchJsonWithTimeout(`https://nominatim.openstreetmap.org/search?format=json&accept-language=ru&limit=5&q=${encodeURIComponent(query)}`, 5500);
+		if (Array.isArray(places)) return places.map((p) => ({
 			shortName: p.display_name.split(",")[0].replace(/'/g, ""),
 			displayName: p.display_name,
 			lat: Number(Number(p.lat).toFixed(4)),
 			lng: Number(Number(p.lon).toFixed(4))
 		}));
-	} catch {
-		return [];
-	}
+	} catch {}
+	return [];
 }
 async function reverseGeocodeCity(lat, lng) {
 	try {
-		const d = await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&accept-language=ru&lat=${lat}&lon=${lng}`)).json();
+		const d = await fetchJsonWithTimeout(`https://nominatim.openstreetmap.org/reverse?format=json&accept-language=ru&lat=${lat}&lon=${lng}`, 5500);
 		if (d?.address) return d.address.city || d.address.town || d.address.village || d.address.state || "Моя геопозиция";
 	} catch {}
 	return "Моя геопозиция";
@@ -13900,8 +13913,7 @@ async function reverseGeocodeCity(lat, lng) {
 async function fetchPrayerTimesAPI(lat, lng, method, school, currentTimezone, hijriMonthsRu) {
 	try {
 		const nowParts = getCityNowParts(currentTimezone);
-		const url = `https://api.aladhan.com/v1/timings/${`${String(nowParts.day).padStart(2, "0")}-${String(nowParts.month).padStart(2, "0")}-${nowParts.year}`}?latitude=${lat}&longitude=${lng}&method=${method}&school=${school}`;
-		const data = await (await fetch(url)).json();
+		const data = await fetchJsonWithTimeout(`https://api.aladhan.com/v1/timings/${`${String(nowParts.day).padStart(2, "0")}-${String(nowParts.month).padStart(2, "0")}-${nowParts.year}`}?latitude=${lat}&longitude=${lng}&method=${method}&school=${school}`, 6500);
 		if (data?.code === 200 && data?.data?.timings) {
 			const tz = data.data.meta?.timezone || currentTimezone;
 			const hijri = data.data.date?.hijri;
@@ -13924,11 +13936,26 @@ async function fetchPrayerTimesAPI(lat, lng, method, school, currentTimezone, hi
 }
 async function fetchAllSurahsAPI() {
 	try {
-		const data = await (await fetch("https://api.alquran.cloud/v1/surah")).json();
-		if (data?.code === 200 && Array.isArray(data.data)) return {
-			surahs: data.data,
-			fromFallback: false
-		};
+		const cachedRaw = localStorage.getItem(SURAH_LIST_CACHE_KEY);
+		if (cachedRaw) {
+			const parsed = JSON.parse(cachedRaw);
+			if (Array.isArray(parsed) && parsed.length === 114) return {
+				surahs: parsed,
+				fromFallback: false
+			};
+		}
+	} catch {}
+	try {
+		const data = await fetchJsonWithTimeout("https://api.alquran.cloud/v1/surah", 6500);
+		if (data?.code === 200 && Array.isArray(data.data)) {
+			try {
+				localStorage.setItem(SURAH_LIST_CACHE_KEY, JSON.stringify(data.data));
+			} catch {}
+			return {
+				surahs: data.data,
+				fromFallback: false
+			};
+		}
 	} catch {}
 	return {
 		surahs: FALLBACK_SURAH_LIST,
@@ -13936,7 +13963,9 @@ async function fetchAllSurahsAPI() {
 	};
 }
 async function fetchSurahAyahsAPI(surahNumber, ruOrEngName) {
-	const data = await (await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,ru.kuliev,ar.alafasy,en.transliteration`)).json();
+	const cached = surahAyahsMemoryCache.get(surahNumber);
+	if (cached) return cached;
+	const data = await fetchJsonWithTimeout(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,ru.kuliev,ar.alafasy,en.transliteration`, 8500);
 	if (data?.code !== 200 || !Array.isArray(data.data) || data.data.length < 4) throw new Error("Failed to load surah");
 	const arabicEd = data.data[0].ayahs;
 	const russianEd = data.data[1].ayahs;
@@ -13944,7 +13973,7 @@ async function fetchSurahAyahsAPI(surahNumber, ruOrEngName) {
 	const translitEd = data.data[3].ayahs;
 	const verifiedCyr = VERIFIED_CYRILLIC_TRANSCRIPTIONS[surahNumber];
 	const resolvedName = ruOrEngName || SURAH_NAMES_RU[surahNumber] || data.data[0].englishName;
-	return arabicEd.map((a, idx) => ({
+	const mapped = arabicEd.map((a, idx) => ({
 		key: `${surahNumber}:${a.numberInSurah}`,
 		surahNumber,
 		numberInSurah: a.numberInSurah,
@@ -13954,6 +13983,12 @@ async function fetchSurahAyahsAPI(surahNumber, ruOrEngName) {
 		cyrillic: verifiedCyr?.[idx] ? verifiedCyr[idx] : convertLatinTranslitToCyrillic(translitEd[idx]?.text || ""),
 		surahName: resolvedName
 	}));
+	if (surahAyahsMemoryCache.size >= 16) {
+		const oldestKey = surahAyahsMemoryCache.keys().next().value;
+		if (oldestKey !== void 0) surahAyahsMemoryCache.delete(oldestKey);
+	}
+	surahAyahsMemoryCache.set(surahNumber, mapped);
+	return mapped;
 }
 // src/utils/soundEngine.ts
 var uiAudioCtx = null;
@@ -14120,18 +14155,27 @@ var MemorizeTab = ({ visible, slideClass, showTranscription, onPlayWordAudio, on
 	});
 	const mediaRecorderRef = (0, import_react.useRef)(null);
 	const chunksRef = (0, import_react.useRef)([]);
+	const lastRecordedUrlRef = (0, import_react.useRef)(null);
+	const surahReqIdRef = (0, import_react.useRef)(0);
+	(0, import_react.useEffect)(() => {
+		return () => {
+			if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") mediaRecorderRef.current.stop();
+			if (lastRecordedUrlRef.current) URL.revokeObjectURL(lastRecordedUrlRef.current);
+		};
+	}, []);
 	const loadSurah = async (surahNum) => {
+		const reqId = ++surahReqIdRef.current;
 		setSelectedSurah(surahNum);
 		setLoading(true);
 		setErrorMsg(null);
 		setRevealedWords({});
 		try {
 			const list = await fetchSurahAyahsAPI(surahNum, SURAH_NAMES_RU[surahNum]);
-			setAyahs(list);
+			if (surahReqIdRef.current === reqId) setAyahs(list);
 		} catch {
-			setErrorMsg("Ошибка загрузки суры. Проверьте подключение и повторите попытку.");
+			if (surahReqIdRef.current === reqId) setErrorMsg("Ошибка загрузки суры. Проверьте подключение и повторите попытку.");
 		} finally {
-			setLoading(false);
+			if (surahReqIdRef.current === reqId) setLoading(false);
 		}
 	};
 	(0, import_react.useEffect)(() => {
@@ -14172,8 +14216,10 @@ var MemorizeTab = ({ visible, slideClass, showTranscription, onPlayWordAudio, on
 			};
 			mr.onstop = () => {
 				stream.getTracks().forEach((t) => t.stop());
+				if (lastRecordedUrlRef.current) URL.revokeObjectURL(lastRecordedUrlRef.current);
 				const mimeType = mr.mimeType || "audio/webm";
 				const userAudioUrl = URL.createObjectURL(new Blob(chunksRef.current, { type: mimeType }));
+				lastRecordedUrlRef.current = userAudioUrl;
 				onPlayVoiceComparison(ayah, userAudioUrl, () => setRecordingIdx(null));
 			};
 			mr.start(200);
@@ -14512,7 +14558,7 @@ var MemorizeTab = ({ visible, slideClass, showTranscription, onPlayWordAudio, on
 						children: ARABIC_ALPHABET_28.map((item, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 							type: "button",
 							onClick: () => onPlayWordAudio(item.wbw, `Буква «${item.name}» (${item.letter})`, `Пример: ${item.exampleAr} — ${item.exampleTr}`),
-							className: "spring-tap sheet-subcard p-4 space-y-2 cursor-pointer card-spring-enter text-left",
+							className: "spring-tap perf-card-vis sheet-subcard p-4 space-y-2 cursor-pointer card-spring-enter text-left",
 							style: idx < 14 ? { animationDelay: `${idx * 20}ms` } : void 0,
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -15174,14 +15220,21 @@ var PrayerTab = ({ visible, slideClass, prayerState, currentPrayerKey, prayerLog
 	}, [visible, activeTool]);
 	(0, import_react.useEffect)(() => {
 		if (!compassListening) return;
-		const handler = (e) => {
+		let receivedAbsolute = false;
+		const handleOrientation = (e, isAbsoluteEvent) => {
+			if (!isAbsoluteEvent && receivedAbsolute) return;
+			if (isAbsoluteEvent) receivedAbsolute = true;
 			const webkitHeading = e.webkitCompassHeading;
 			const heading = typeof webkitHeading !== "undefined" ? webkitHeading : e.alpha !== null ? 360 - e.alpha : null;
 			if (heading !== null && !Number.isNaN(heading)) setCompassHeading(Math.round(heading));
 		};
-		window.addEventListener("deviceorientation", handler, true);
+		const onAbs = (e) => handleOrientation(e, true);
+		const onStd = (e) => handleOrientation(e, !!e.absolute);
+		window.addEventListener("deviceorientationabsolute", onAbs, true);
+		window.addEventListener("deviceorientation", onStd, true);
 		return () => {
-			window.removeEventListener("deviceorientation", handler, true);
+			window.removeEventListener("deviceorientationabsolute", onAbs, true);
+			window.removeEventListener("deviceorientation", onStd, true);
 		};
 	}, [compassListening]);
 	if (!visible) return null;
@@ -15440,19 +15493,19 @@ var PrayerTab = ({ visible, slideClass, prayerState, currentPrayerKey, prayerLog
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 						type: "button",
 						onClick: () => scrollToToolsAndOpen("tasbih"),
-						className: "action-pill-btn spring-tap flex-1 py-3.5 px-3 flex items-center justify-center gap-1.5 text-xs",
+						className: "action-pill-btn spring-tap flex-1 py-3.5 px-2 sm:px-3 flex items-center justify-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs whitespace-nowrap",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SolidIcon, {
 							name: "fingerprint",
-							className: "w-4 h-4 text-amberCore"
+							className: "w-4 h-4 text-amberCore shrink-0"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Тасбих 33×" })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 						type: "button",
 						onClick: () => scrollToToolsAndOpen("qibla"),
-						className: "action-pill-btn spring-tap flex-1 py-3.5 px-3 flex items-center justify-center gap-1.5 text-xs",
+						className: "action-pill-btn spring-tap flex-1 py-3.5 px-2 sm:px-3 flex items-center justify-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs whitespace-nowrap",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SolidIcon, {
 							name: "compass",
-							className: "w-4 h-4 text-rubyAccent"
+							className: "w-4 h-4 text-rubyAccent shrink-0"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Кибла 360°" })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
@@ -15469,10 +15522,10 @@ var PrayerTab = ({ visible, slideClass, prayerState, currentPrayerKey, prayerLog
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 						type: "button",
 						onClick: handleExportICS,
-						className: "action-pill-btn spring-tap flex-1 py-3.5 px-3 flex items-center justify-center gap-1.5 text-xs",
+						className: "action-pill-btn spring-tap flex-1 py-3.5 px-2 sm:px-3 flex items-center justify-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs whitespace-nowrap",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SolidIcon, {
 							name: "calendar-check-2",
-							className: "w-4 h-4 text-emeraldAccent"
+							className: "w-4 h-4 text-emeraldAccent shrink-0"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: icsBusyLabel || "Календарь" })]
 					})
 				]
@@ -16059,6 +16112,7 @@ var QuranTab = ({ visible, slideClass, showTranscription, externalOpenSurahNum, 
 	const [readerLoading, setReaderLoading] = (0, import_react.useState)(false);
 	const [readerError, setReaderError] = (0, import_react.useState)(null);
 	const readerContainerRef = (0, import_react.useRef)(null);
+	const surahRequestIdRef = (0, import_react.useRef)(0);
 	(0, import_react.useEffect)(() => {
 		if (!visible || surahs.length > 0 || loadingSurahs) return;
 		setLoadingSurahs(true);
@@ -16069,6 +16123,7 @@ var QuranTab = ({ visible, slideClass, showTranscription, externalOpenSurahNum, 
 		loadingSurahs
 	]);
 	const openSurahReader = async (surahNumber, engName, arabName) => {
+		const reqId = ++surahRequestIdRef.current;
 		AyaSoundEngine.select();
 		setReaderMeta({
 			num: surahNumber,
@@ -16086,11 +16141,11 @@ var QuranTab = ({ visible, slideClass, showTranscription, externalOpenSurahNum, 
 		});
 		try {
 			const ayahs = await fetchSurahAyahsAPI(surahNumber, engName);
-			setReaderAyahs(ayahs);
+			if (surahRequestIdRef.current === reqId) setReaderAyahs(ayahs);
 		} catch {
-			setReaderError("Не удалось загрузить суру. Проверьте подключение к интернету и повторите попытку.");
+			if (surahRequestIdRef.current === reqId) setReaderError("Не удалось загрузить суру. Проверьте подключение к интернету и повторите попытку.");
 		} finally {
-			setReaderLoading(false);
+			if (surahRequestIdRef.current === reqId) setReaderLoading(false);
 		}
 	};
 	(0, import_react.useEffect)(() => {
@@ -16269,7 +16324,7 @@ var QuranTab = ({ visible, slideClass, showTranscription, externalOpenSurahNum, 
 					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 						type: "button",
 						onClick: () => openSurahReader(s.number, ruName, s.name),
-						className: "spring-tap sheet-card p-4 flex items-center justify-between cursor-pointer card-spring-enter text-left",
+						className: "spring-tap perf-card-vis sheet-card p-4 flex items-center justify-between cursor-pointer card-spring-enter text-left",
 						style: idx < 16 ? { animationDelay: `${idx * 22}ms` } : void 0,
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "flex items-center gap-3.5 min-w-0",
@@ -16905,18 +16960,26 @@ async function generateStatusImageBlob(card, showTranscription) {
 		img.src = card.image;
 	});
 	drawBackgroundAndText(img);
+	const releaseCanvas = () => {
+		canvas.width = 0;
+		canvas.height = 0;
+	};
 	return new Promise((resolve) => {
+		const finish = (blob) => {
+			releaseCanvas();
+			resolve(blob);
+		};
 		try {
 			canvas.toBlob((blob) => {
-				if (blob) resolve(blob);
+				if (blob) finish(blob);
 				else {
 					drawBackgroundAndText(null);
-					canvas.toBlob((fallbackBlob) => resolve(fallbackBlob), "image/jpeg", .95);
+					canvas.toBlob((fallbackBlob) => finish(fallbackBlob), "image/jpeg", .95);
 				}
 			}, "image/jpeg", .95);
 		} catch {
 			drawBackgroundAndText(null);
-			canvas.toBlob((fallbackBlob) => resolve(fallbackBlob), "image/jpeg", .95);
+			canvas.toBlob((fallbackBlob) => finish(fallbackBlob), "image/jpeg", .95);
 		}
 	});
 }
@@ -17241,7 +17304,7 @@ var StatusTab = ({ visible, slideClass, showTranscription }) => {
 						type: "button",
 						onClick: () => openModal(item),
 						"aria-label": `${item.source}: ${item.russian}`,
-						className: "spring-tap relative aspect-[9/16] rounded-[26px] overflow-hidden cursor-pointer group shadow-lg bg-stone-900 text-white card-spring-enter text-center",
+						className: "spring-tap perf-card-vis relative aspect-[9/16] rounded-[26px] overflow-hidden cursor-pointer group shadow-lg bg-stone-900 text-white card-spring-enter text-center",
 						style: idx < 15 ? { animationDelay: `${idx * 24}ms` } : void 0,
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
@@ -17253,6 +17316,7 @@ var StatusTab = ({ visible, slideClass, showTranscription }) => {
 								},
 								alt: item.source,
 								loading: "lazy",
+								decoding: "async",
 								className: "absolute inset-0 w-full h-full object-cover status-photo-exposure",
 								style: { filter: "brightness(0.55) contrast(1.06)" }
 							}),
@@ -17297,6 +17361,7 @@ var StatusTab = ({ visible, slideClass, showTranscription }) => {
 						id: "modal-status-img",
 						src: activeCard.image,
 						referrerPolicy: "no-referrer",
+						decoding: "async",
 						onError: (e) => {
 							const fallbackSvg = createOfflineDesertDataURL(activeCard.fallbackSeed || 0);
 							if (e.currentTarget.src !== fallbackSvg) e.currentTarget.src = fallbackSvg;
@@ -17390,6 +17455,7 @@ var StatusTab = ({ visible, slideClass, showTranscription }) => {
 										},
 										alt: `Фон ${idx + 1}`,
 										loading: "lazy",
+										decoding: "async",
 										className: "w-full h-full object-cover"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 										className: "absolute bottom-0.5 right-1 text-[8px] font-extrabold text-white drop-shadow",
@@ -17691,11 +17757,11 @@ function App() {
 		syncSoundEnginePrefs(prayerState.soundEnabled, prayerState.hapticEnabled);
 	}, [prayerState.soundEnabled, prayerState.hapticEnabled]);
 	(0, import_react.useEffect)(() => {
-		const onPointerDown = (e) => {
+		const onClick = (e) => {
 			if (e.target?.closest("button, .spring-tap, .tx-prayer-row")) AyaSoundEngine.tap();
 		};
-		document.addEventListener("pointerdown", onPointerDown, { passive: true });
-		return () => document.removeEventListener("pointerdown", onPointerDown);
+		document.addEventListener("click", onClick, { passive: true });
+		return () => document.removeEventListener("click", onClick);
 	}, []);
 	(0, import_react.useEffect)(() => {
 		try {
@@ -17725,7 +17791,7 @@ function App() {
 	}, []);
 	(0, import_react.useEffect)(() => {
 		refreshPrayerTimes();
-		const tickId = window.setInterval(() => {
+		const runTick = () => {
 			const now = Date.now();
 			setNowMs(now);
 			const st = prayerStateRef.current;
@@ -17783,11 +17849,19 @@ function App() {
 					}
 				});
 			}
+		};
+		const tickId = window.setInterval(() => {
+			if (document.visibilityState === "visible") runTick();
 		}, 1e3);
+		const onVisibilityChange = () => {
+			if (document.visibilityState === "visible") runTick();
+		};
+		document.addEventListener("visibilitychange", onVisibilityChange);
 		const refreshId = window.setInterval(() => refreshPrayerTimes(), 432e5);
 		return () => {
 			window.clearInterval(tickId);
 			window.clearInterval(refreshId);
+			document.removeEventListener("visibilitychange", onVisibilityChange);
 		};
 	}, [refreshPrayerTimes]);
 	(0, import_react.useEffect)(() => {
@@ -17814,6 +17888,7 @@ function App() {
 	}, [refreshPrayerTimes]);
 	(0, import_react.useEffect)(() => {
 		const audio = new Audio();
+		audio.preload = "none";
 		audioRef.current = audio;
 		const onTimeUpdate = () => {
 			if (audio.duration && !Number.isNaN(audio.duration)) {
@@ -17827,11 +17902,16 @@ function App() {
 			setIslandPlayState(true);
 		};
 		const onPause = () => setIslandPlayState(false);
+		const onError = () => {
+			setIslandPlayState(false);
+			setIslandSubtitle("Ошибка аудиопотока • проверьте сеть");
+		};
 		audio.addEventListener("timeupdate", onTimeUpdate);
 		audio.addEventListener("waiting", onWaiting);
 		audio.addEventListener("playing", onPlaying);
 		audio.addEventListener("play", onPlaying);
 		audio.addEventListener("pause", onPause);
+		audio.addEventListener("error", onError);
 		return () => {
 			audio.pause();
 			audio.removeEventListener("timeupdate", onTimeUpdate);
@@ -17839,6 +17919,7 @@ function App() {
 			audio.removeEventListener("playing", onPlaying);
 			audio.removeEventListener("play", onPlaying);
 			audio.removeEventListener("pause", onPause);
+			audio.removeEventListener("error", onError);
 		};
 	}, []);
 	const scheduleHideIsland = (0, import_react.useCallback)((delayMs = 1e3) => {
@@ -18018,6 +18099,10 @@ function App() {
 		setSlideClass(newIdx >= oldIdx ? "tab-slide-right" : "tab-slide-left");
 		setCurrentTab(tabName);
 		if (MAIN_TABS.includes(tabName)) setLastMainTab(tabName);
+		if (window.scrollY > 40) window.scrollTo({
+			top: 0,
+			behavior: "smooth"
+		});
 	};
 	const handleSelectCity = async (lat, lng, cityName) => {
 		AyaSoundEngine.select();
@@ -18917,6 +19002,10 @@ function App() {
     top: calc(var(--spacing) * -6);
   }
 
+  .top-1 {
+    top: var(--spacing);
+  }
+
   .top-1\/2 {
     top: 50%;
   }
@@ -18937,8 +19026,16 @@ function App() {
     right: var(--spacing);
   }
 
+  .right-3 {
+    right: calc(var(--spacing) * 3);
+  }
+
   .right-3\.5 {
     right: calc(var(--spacing) * 3.5);
+  }
+
+  .bottom-0 {
+    bottom: 0;
   }
 
   .bottom-0\.5 {
@@ -18949,8 +19046,16 @@ function App() {
     bottom: calc(var(--spacing) * 3);
   }
 
+  .left-1 {
+    left: var(--spacing);
+  }
+
   .left-1\/2 {
     left: 50%;
+  }
+
+  .left-3 {
+    left: calc(var(--spacing) * 3);
   }
 
   .left-3\.5 {
@@ -19035,6 +19140,10 @@ function App() {
     margin-top: calc(var(--spacing) * -24);
   }
 
+  .mt-0 {
+    margin-top: 0;
+  }
+
   .mt-0\.5 {
     margin-top: calc(var(--spacing) * .5);
   }
@@ -19059,8 +19168,16 @@ function App() {
     margin-top: calc(var(--spacing) * 5);
   }
 
+  .mb-1 {
+    margin-bottom: var(--spacing);
+  }
+
   .mb-1\.5 {
     margin-bottom: calc(var(--spacing) * 1.5);
+  }
+
+  .ml-1 {
+    margin-left: var(--spacing);
   }
 
   .ml-1\.5 {
@@ -19087,12 +19204,20 @@ function App() {
     display: none;
   }
 
+  .inline {
+    display: inline;
+  }
+
   .inline-block {
     display: inline-block;
   }
 
   .inline-flex {
     display: inline-flex;
+  }
+
+  .table {
+    display: table;
   }
 
   .aspect-\[9\/16\] {
@@ -19303,8 +19428,22 @@ function App() {
     flex-shrink: 0;
   }
 
+  .border-collapse {
+    border-collapse: collapse;
+  }
+
+  .-translate-x-1 {
+    --tw-translate-x: calc(var(--spacing) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+
+  .-translate-y-1 {
+    --tw-translate-y: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
 
@@ -19323,6 +19462,10 @@ function App() {
 
   .cursor-pointer {
     cursor: pointer;
+  }
+
+  .resize {
+    resize: both;
   }
 
   .scroll-mt-4 {
@@ -19373,6 +19516,10 @@ function App() {
     justify-content: center;
   }
 
+  .gap-0 {
+    gap: 0;
+  }
+
   .gap-0\.5 {
     gap: calc(var(--spacing) * .5);
   }
@@ -19399,6 +19546,11 @@ function App() {
 
   .gap-3\.5 {
     gap: calc(var(--spacing) * 3.5);
+  }
+
+  :where(.space-y-0 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block: 0;
   }
 
   :where(.space-y-0\.5 > :not(:last-child)) {
@@ -19547,6 +19699,10 @@ function App() {
     border-top-width: 1px;
   }
 
+  .border-amberCore {
+    border-color: var(--color-amberCore);
+  }
+
   .border-amberCore\/40 {
     border-color: #f606;
   }
@@ -19559,6 +19715,10 @@ function App() {
 
   .border-amberGlow {
     border-color: var(--color-amberGlow);
+  }
+
+  .border-black {
+    border-color: var(--color-black);
   }
 
   .border-black\/5 {
@@ -19759,6 +19919,10 @@ function App() {
     }
   }
 
+  .bg-blue-500 {
+    background-color: var(--color-blue-500);
+  }
+
   .bg-blue-500\/15 {
     background-color: #3080ff26;
   }
@@ -19787,6 +19951,10 @@ function App() {
     }
   }
 
+  .bg-indigo-500 {
+    background-color: var(--color-indigo-500);
+  }
+
   .bg-indigo-500\/15 {
     background-color: #625fff26;
   }
@@ -19799,6 +19967,10 @@ function App() {
 
   .bg-indigo-600 {
     background-color: var(--color-indigo-600);
+  }
+
+  .bg-indigoAccent {
+    background-color: var(--color-indigoAccent);
   }
 
   .bg-indigoAccent\/15 {
@@ -19829,6 +20001,10 @@ function App() {
     }
   }
 
+  .bg-red-500 {
+    background-color: var(--color-red-500);
+  }
+
   .bg-red-500\/10 {
     background-color: #fb2c361a;
   }
@@ -19853,6 +20029,10 @@ function App() {
     background-color: var(--color-red-600);
   }
 
+  .bg-rose-500 {
+    background-color: var(--color-rose-500);
+  }
+
   .bg-rose-500\/15 {
     background-color: #ff235726;
   }
@@ -19867,6 +20047,10 @@ function App() {
     background-color: var(--color-rose-600);
   }
 
+  .bg-rubyAccent {
+    background-color: var(--color-rubyAccent);
+  }
+
   .bg-rubyAccent\/15 {
     background-color: #e11d4826;
   }
@@ -19875,6 +20059,10 @@ function App() {
     .bg-rubyAccent\/15 {
       background-color: color-mix(in oklab, var(--color-rubyAccent) 15%, transparent);
     }
+  }
+
+  .bg-skyAccent {
+    background-color: var(--color-skyAccent);
   }
 
   .bg-skyAccent\/15 {
@@ -19935,6 +20123,11 @@ function App() {
     background-image: linear-gradient(var(--tw-gradient-stops));
   }
 
+  .from-black {
+    --tw-gradient-from: var(--color-black);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+
   .from-black\/30 {
     --tw-gradient-from: #0000004d;
   }
@@ -19977,6 +20170,11 @@ function App() {
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
 
+  .from-white {
+    --tw-gradient-from: var(--color-white);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+
   .from-white\/55 {
     --tw-gradient-from: #ffffff8c;
   }
@@ -19989,6 +20187,12 @@ function App() {
 
   .from-white\/55 {
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+
+  .via-black {
+    --tw-gradient-via: var(--color-black);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
   }
 
   .via-black\/48 {
@@ -20036,6 +20240,12 @@ function App() {
     --tw-gradient-stops: var(--tw-gradient-via-stops);
   }
 
+  .via-white {
+    --tw-gradient-via: var(--color-white);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
+
   .via-white\/65 {
     --tw-gradient-via: #ffffffa6;
   }
@@ -20049,6 +20259,11 @@ function App() {
   .via-white\/65 {
     --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
+
+  .to-black {
+    --tw-gradient-to: var(--color-black);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
 
   .to-black\/82 {
@@ -20081,6 +20296,11 @@ function App() {
 
   .to-transparent {
     --tw-gradient-to: transparent;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+
+  .to-white {
+    --tw-gradient-to: var(--color-white);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
 
@@ -20174,6 +20394,10 @@ function App() {
     padding-inline: calc(var(--spacing) * 6);
   }
 
+  .py-0 {
+    padding-block: 0;
+  }
+
   .py-0\.5 {
     padding-block: calc(var(--spacing) * .5);
   }
@@ -20210,6 +20434,10 @@ function App() {
     padding-block: calc(var(--spacing) * 5);
   }
 
+  .pt-0 {
+    padding-top: 0;
+  }
+
   .pt-0\.5 {
     padding-top: calc(var(--spacing) * .5);
   }
@@ -20244,6 +20472,10 @@ function App() {
 
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
+  }
+
+  .pb-3 {
+    padding-bottom: calc(var(--spacing) * 3);
   }
 
   .pb-3\.5 {
@@ -20514,6 +20746,10 @@ function App() {
     letter-spacing: var(--tracking-widest);
   }
 
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
+
   .whitespace-pre-line {
     white-space: pre-line;
   }
@@ -20679,6 +20915,10 @@ function App() {
     text-decoration-line: underline;
   }
 
+  .placeholder-obsidian::placeholder {
+    color: var(--color-obsidian);
+  }
+
   .placeholder-obsidian\/50::placeholder {
     color: #12111080;
   }
@@ -20762,6 +21002,11 @@ function App() {
   .outline {
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
+  }
+
+  .blur {
+    --tw-blur: blur(8px);
+    filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
   }
 
   .drop-shadow {
@@ -20923,6 +21168,10 @@ function App() {
       gap: var(--spacing);
     }
 
+    .sm\:gap-1\.5 {
+      gap: calc(var(--spacing) * 1.5);
+    }
+
     .sm\:p-4 {
       padding: calc(var(--spacing) * 4);
     }
@@ -20941,6 +21190,10 @@ function App() {
 
     .sm\:px-2 {
       padding-inline: calc(var(--spacing) * 2);
+    }
+
+    .sm\:px-3 {
+      padding-inline: calc(var(--spacing) * 3);
     }
 
     .sm\:px-4 {
@@ -20979,6 +21232,11 @@ function App() {
     .sm\:text-sm {
       font-size: var(--text-sm);
       line-height: var(--tw-leading, var(--text-sm--line-height));
+    }
+
+    .sm\:text-xs {
+      font-size: var(--text-xs);
+      line-height: var(--tw-leading, var(--text-xs--line-height));
     }
 
     .sm\:text-\[11px\] {
@@ -21041,11 +21299,16 @@ function App() {
   font-family: ui-rounded, SF Pro Rounded, -apple-system, BlinkMacSystemFont, Nunito, sans-serif;
 }
 
+button, a, input, select, [role="button"], [role="switch"] {
+  touch-action: manipulation;
+}
+
 html, body {
   color-scheme: light;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
   background-color: #8f1e00;
-  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -21058,7 +21321,7 @@ html.dark, html.dark body {
 
 .orbix-app-shell {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding-top: var(--safe-top);
   padding-bottom: calc(var(--safe-bottom) + 94px);
   color: #121110;
@@ -21075,8 +21338,10 @@ html.dark .orbix-app-shell {
 .ambient-chaos-orb {
   pointer-events: none;
   z-index: 1;
+  contain: layout style paint;
   border-radius: 50%;
   position: fixed;
+  transform: translate3d(0, 0, 0);
 }
 
 .orb-1 {
@@ -21199,6 +21464,7 @@ html.dark .action-pill-btn {
   -webkit-backdrop-filter: blur(28px) saturate(190%);
   -webkit-user-select: none;
   user-select: none;
+  will-change: transform;
   background: linear-gradient(135deg, #ffffffc2 0%, #fff4e699 100%);
   border: 1px solid #ffffffd9;
   border-radius: 9999px;
@@ -21206,7 +21472,7 @@ html.dark .action-pill-btn {
   height: 60px;
   position: fixed;
   overflow: hidden;
-  transform: translateX(-50%);
+  transform: translate3d(-50%, 0, 0);
   box-shadow: inset 0 1.5px 1px #fffffff5, 0 18px 42px -6px #2d10043d;
 }
 
@@ -21536,6 +21802,21 @@ details summary::-webkit-details-marker {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.perf-card-vis {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 96px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-slide-right, .tab-slide-left, .card-spring-enter, .modal-spring-card, .wave-bar {
+    animation: none !important;
+  }
+
+  .spring-tap, #nav-glider, .nav-item-btn, .ios-switch-thumb, #dynamic-island {
+    transition-duration: .01ms !important;
+  }
 }
 
 @property --tw-translate-x {
