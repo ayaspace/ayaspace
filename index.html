@@ -867,11 +867,11 @@
     const FAQ_ITEMS = [
       {
         q: 'Как установить уведомления о намазе в Календарь iPhone / Android?',
-        a: '• В Safari: нажмите «Календарь» → зелёную кнопку «Скачать календарь (.ics)» → «Загрузить» → откройте файл в Загрузках (↓) → нажмите «Добавить все».\n• Если приложение открыто с экрана «Домой»: нажмите зелёную кнопку «Добавить в Календарь (.ics)» и в меню iPhone выберите «Календарь» или «Сохранить в Файлы» → откройте файл → «Добавить все». Либо нажмите чёрную кнопку «Скопировать ссылку для Safari» и откройте её в Safari.'
+        a: '1. Нажмите «Календарь» (или «Все 5 намазов на 30 дней .ics»).\n2. Нажмите зелёную кнопку «Добавить в Календарь (.ics)».\n3. Откроется окно с расписанием намазов — нажмите «Добавить все» (или «+») в правом верхнем углу.'
       },
       {
-        q: 'Что делать, если меню «Поделиться» не показывает Календарь?',
-        a: 'Выберите в меню «Сохранить в Файлы» (и откройте файл в приложении «Файлы») или отправьте файл себе в Telegram («Избранное») / WhatsApp — нажмите на него в чате, и iPhone сразу откроет «Добавить все».'
+        q: 'Что делать, если из ярлыка «Домой» файл не открылся?',
+        a: 'Если ваша версия iOS не открывает .ics напрямую из ярлыка на экране «Домой», нажмите чёрную кнопку «Скопировать ссылку для Safari», откройте Safari и вставьте ссылку — там окно «Добавить все» откроется сразу.'
       },
       {
         q: 'Как удалить или отключить уведомления календаря намазов с телефона?',
@@ -1286,7 +1286,7 @@
       }
       lines.push('END:VCALENDAR');
       const icsContent = lines.join('\r\n');
-      const fileName = 'ayaspace-' + (fajrOnly ? 'fajr-' : 'namaz-') + mShort + '-30days.ics';
+      const fileName = 'ayaspace-' + (fajrOnly ? 'fajr-' : 'namaz-') + (appState.madhhabKey || 'hanafi') + '-30days.ics';
       if (lastGeneratedIcsBlobUrl) {
         try { URL.revokeObjectURL(lastGeneratedIcsBlobUrl); } catch {}
       }
@@ -1415,13 +1415,9 @@
         const box = document.getElementById('calendar-helper-box');
         const modal = document.getElementById('calendar-helper-modal');
         if (box && modal) {
-          const primaryBtnHtml = isStandalone
-            ? `<button type="button" onclick="openCalendarFromHomeScreenPwa()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
-                 ${svgIcon('calendar-check-2', 17)}<span>Добавить в Календарь (.ics)</span>
-               </button>`
-            : `<a href="${payload.blobUrl}" download="${escapeHtml(payload.fileName)}" onclick="onDownloadIcsClick()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
-                 ${svgIcon('calendar-check-2', 17)}<span>Скачать календарь (.ics)</span>
-               </a>`;
+          const primaryBtnHtml = `<a href="${payload.blobUrl}" download="${escapeHtml(payload.fileName)}" onclick="onDownloadIcsClick()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
+               ${svgIcon('calendar-check-2', 17)}<span>Добавить в Календарь (.ics)</span>
+             </a>`;
 
           const secondaryBtnHtml = isStandalone
             ? `<button type="button" onclick="copySafariCalendarLink()" class="pill-btn pill-btn-wrap bg-obsidian spring-tap" style="width:100%;padding:13px 16px;font-size:13px;">
@@ -1433,16 +1429,16 @@
 
           const guideHtml = isStandalone
             ? `<div style="display:flex;flex-direction:column;gap:6px;">
-                 <div><b>Как добавить с экрана «Домой»:</b></div>
-                 <div>1. Нажмите <b>зелёную кнопку</b> — откроется меню iPhone с файлом <b>.ics</b>.</div>
-                 <div>2. Нажмите <b>«Календарь»</b> или <b>«Сохранить в Файлы»</b> (или отправьте файл себе в Telegram) → откройте его → <b>«Добавить все»</b>.</div>
-                 <div>3. <b>Через Safari (в 1 клик):</b> нажмите чёрную кнопку <b>«Скопировать ссылку для Safari»</b>, вставьте её в Safari и нажмите зелёную кнопку там.</div>
+                 <div><b>Как добавить (2 шага):</b></div>
+                 <div>1. Нажмите зелёную кнопку <b>«Добавить в Календарь (.ics)»</b>.</div>
+                 <div>2. Когда откроется окно с расписанием — нажмите <b>«Добавить все»</b> (или <b>«+»</b>) вверху справа.</div>
+                 <div style="opacity:0.78;">Если окно не открылось с экрана «Домой», нажмите чёрную кнопку <b>«Скопировать ссылку для Safari»</b> и откройте её в Safari.</div>
                </div>`
             : `<div style="display:flex;flex-direction:column;gap:6px;">
                  <div><b>Как добавить (2 шага):</b></div>
-                 <div>1. Нажмите <b>зелёную кнопку</b> → <b>«Загрузить»</b>.</div>
-                 <div>2. Откройте файл в Загрузках (значок <b>↓</b> в Safari) → нажмите <b>«Добавить все»</b> вверху справа.</div>
-                 <div style="opacity:0.78;"><b>Совет:</b> чтобы потом легко удалить уведомления, при добавлении выберите отдельный календарь «Намаз».</div>
+                 <div>1. Нажмите зелёную кнопку <b>«Добавить в Календарь (.ics)»</b> → <b>«Загрузить»</b>.</div>
+                 <div>2. Нажмите на файл в окне/загрузках → <b>«Добавить все»</b> вверху справа.</div>
+                 <div style="opacity:0.78;"><b>Совет:</b> при добавлении выберите отдельный календарь «Намаз», чтобы потом легко удалить все уведомления.</div>
                </div>`;
 
           box.innerHTML = `
