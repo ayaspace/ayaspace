@@ -140,7 +140,7 @@
       padding: 0;
     }
 
-    input, select {
+    input, select, textarea {
       font: inherit;
       color: inherit;
     }
@@ -148,11 +148,40 @@
     .hidden { display: none !important; }
     .tabular-nums { font-variant-numeric: tabular-nums; }
     .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .arabic-text { direction: rtl; font-family: "Scheherazade New", serif; line-height: 2; }
+    .arabic-text {
+      direction: rtl;
+      font-family: "Scheherazade New", serif;
+      line-height: 2.05;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .arabic-words-flow {
+      direction: rtl;
+      font-family: "Scheherazade New", serif;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: baseline;
+      gap: 6px 5px;
+      line-height: 1.95;
+      width: 100%;
+    }
+    .cyrillic-box {
+      width: 100%;
+      box-sizing: border-box;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: pre-line;
+      line-height: 1.58;
+      text-align: left;
+      direction: ltr;
+    }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    details summary { list-style: none; }
+    details summary { list-style: none; cursor: pointer; }
     details summary::-webkit-details-marker { display: none; }
+    .faq-details[open] .faq-chevron { transform: rotate(180deg); }
+    .faq-chevron { transition: transform 0.22s var(--apple-ease); }
 
     /* Оболочка приложения */
     .orbix-app-shell {
@@ -219,12 +248,13 @@
     .sheet-card {
       z-index: 10;
       color: #121110;
-      contain: layout style;
       background: linear-gradient(145deg, #fffdfac9, #fff8f0ad 55%, #ffebd2ba);
       border: 1px solid #ffffffde;
       border-radius: 32px;
       position: relative;
       padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
       box-shadow: inset 0 1.5px 1px #fffffff0, inset 0 -1px 1.5px #ff821e24, 0 12px 28px -8px #4118061c, 0 3px 8px #280e040a;
     }
 
@@ -426,10 +456,10 @@
     .ios-switch.inactive { background-color: #786e6459; }
     .ios-switch.active .ios-switch-thumb { transform: translate3d(22px, 0, 0); }
 
-    /* Скрытие слов (заучивание) */
-    .word-hidden { cursor: pointer; user-select: none; -webkit-user-select: none; background: #ff660024; border: 1px dashed #ff660080; border-radius: 10px; margin: 0 2px; padding: 0 8px; display: inline-block; color: transparent !important; transition: opacity 0.22s ease; }
-    .word-blur { filter: blur(7px); cursor: pointer; user-select: none; -webkit-user-select: none; padding: 0 4px; display: inline-block; transition: filter 0.26s var(--apple-ease); }
-    .word-revealed { filter: blur(0px); background: #ff660029; border-radius: 10px; padding: 0 8px; display: inline-block; color: #d9460f !important; transition: filter 0.26s var(--apple-ease); }
+    /* Скрытие слов (заучивание) — без сбоев верстки на iPhone 13 Pro */
+    .word-hidden { cursor: pointer; user-select: none; -webkit-user-select: none; background: #ff660024; border: 1px dashed #ff660080; border-radius: 10px; padding: 1px 8px; display: inline-block; max-width: 100%; color: transparent !important; transition: opacity 0.22s ease; }
+    .word-blur { filter: blur(7px); cursor: pointer; user-select: none; -webkit-user-select: none; padding: 1px 5px; display: inline-block; max-width: 100%; transition: filter 0.26s var(--apple-ease); }
+    .word-revealed { filter: blur(0px); background: #ff660029; border-radius: 10px; padding: 1px 8px; display: inline-block; max-width: 100%; color: #d9460f !important; transition: filter 0.26s var(--apple-ease); }
     html.dark .word-revealed { color: #ffa726 !important; }
 
     /* Сетка и вспомогательные классы */
@@ -445,11 +475,13 @@
       .grid-madhhab { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
 
-    .pill-btn { padding: 8px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; }
+    .pill-btn { padding: 8px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; text-decoration: none; }
     .bg-obsidian { background: #121110; color: #fff; }
     html.dark .bg-obsidian { background: #2c1d17; border: 1px solid rgba(255, 255, 255, 0.24); color: #fff; }
     .bg-amber { background: #ff6600; color: #fff; }
     .bg-emerald { background: #10b981; color: #121110; }
+    .bg-whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #fff; box-shadow: 0 8px 20px -4px rgba(37, 211, 102, 0.45); }
+    .bg-telegram { background: linear-gradient(135deg, #2AABEE 0%, #229ED9 100%); color: #fff; box-shadow: 0 8px 20px -4px rgba(42, 171, 238, 0.4); }
     .text-amber { color: #ff6600; }
     .text-emerald { color: #10b981; }
     .text-indigo { color: #6366f1; }
@@ -471,13 +503,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px;
+      padding: 12px;
       overflow-y: auto;
     }
 
     .perf-card-vis {
-      content-visibility: auto;
-      contain-intrinsic-size: auto 76px;
+      width: 100%;
     }
 
     .story-card {
@@ -490,8 +521,6 @@
       text-align: center;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
       width: 100%;
-      content-visibility: auto;
-      contain-intrinsic-size: auto 240px;
     }
     .story-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) contrast(1.06); transition: transform 0.45s var(--apple-ease); }
     .story-card:hover img { transform: scale(1.03); }
@@ -553,12 +582,17 @@
 
   <!-- Модальное окно подсказки сур для намаза -->
   <div id="surah-hint-modal" role="dialog" aria-modal="true" class="modal-backdrop hidden">
-    <div id="surah-hint-box" class="modal-spring-card sheet-card" style="width:100%;max-width:448px;margin:auto;max-height:85vh;display:flex;flex-direction:column;gap:16px;"></div>
+    <div id="surah-hint-box" class="modal-spring-card sheet-card" style="width:100%;max-width:448px;margin:auto;max-height:85vh;display:flex;flex-direction:column;gap:16px;overflow-y:auto;"></div>
   </div>
 
-  <!-- Модальное окно редактора статусов 1080x1920 -->
-  <div id="status-modal" role="dialog" aria-modal="true" aria-label="Редактор сторис" class="modal-backdrop hidden">
-    <div id="status-modal-inner" class="modal-spring-card" style="position:relative;width:100%;max-width:355px;aspect-ratio:9/16;border-radius:34px;overflow:hidden;border:1px solid rgba(255,255,255,0.2);display:flex;flex-direction:column;justify-content:space-between;background:#000;margin:auto;"></div>
+  <!-- Модальное окно конструктора статусов и сторис 1080x1920 -->
+  <div id="status-modal" role="dialog" aria-modal="true" aria-label="Конструктор сторис и статусов" class="modal-backdrop hidden">
+    <div id="status-modal-inner" class="modal-spring-card" style="position:relative;width:100%;max-width:420px;margin:auto;display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+
+  <!-- Модальное окно мгновенного открытия Календаря (для iOS PWA / Safari / Android) -->
+  <div id="calendar-helper-modal" role="dialog" aria-modal="true" aria-label="Добавление расписания намазов в Календарь" class="modal-backdrop hidden" style="z-index:160;">
+    <div id="calendar-helper-box" class="modal-spring-card sheet-card" style="width:100%;max-width:430px;margin:auto;"></div>
   </div>
 
   <input id="custom-status-file-input" type="file" accept="image/*" class="hidden" />
@@ -627,6 +661,15 @@
       <section id="tab-memorize" class="aya-stack hidden"></section>
       <section id="tab-status" class="aya-stack hidden"></section>
       <section id="tab-settings" class="aya-stack hidden"></section>
+
+      <footer class="sheet-card" style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="width:8px;height:8px;border-radius:9999px;background:#10b981;display:inline-block;"></span>
+          <span style="opacity:0.75;font-weight:700;">Проект AyaSpace • Связь с автором:</span>
+          <a href="https://t.me/aitral" target="_blank" rel="noopener noreferrer" style="color:#0284c7;font-weight:800;text-decoration:none;">@aitral</a>
+        </div>
+        <button type="button" onclick="switchTab('settings');setTimeout(()=>document.getElementById('faq-section')?.scrollIntoView({behavior:'smooth'}),120)" style="font-size:11.5px;font-weight:800;color:#ff6600;">Частые вопросы (FAQ)</button>
+      </footer>
     </main>
   </div>
 
@@ -662,6 +705,191 @@
       STATUS_FONT_PRESETS, ALL_STATUS_POOL
     } = AYA_DATA;
 
+    const TELEGRAM_AUTHOR_URL = 'https://t.me/aitral';
+    const TELEGRAM_AUTHOR_HANDLE = '@aitral';
+
+    // Дополнение базы проверенных кириллических транскрипций для длинных и средних сур (чтобы на iPhone 13 Pro не было сбоев переноса)
+    Object.assign(VERIFIED_CYRILLIC_TRANSCRIPTIONS, {
+      "95": [
+        "Ват-тини ваз-зайтун",
+        "Ва тури синин",
+        "Ва хазаль-балядиль-амин",
+        "Лякад халякналь-инсана фи ахсани таквим",
+        "Сумма рададнаху асфаля сафилин",
+        "Илляль-лязина аману ва ‘амилюс-салихати фа-ляхум аджрун гайру мамнун",
+        "Фа-ма йукяззибукя ба’ду бид-дин",
+        "А-лейса Ллаху би-ахкямиль-хакимин"
+      ],
+      "96": [
+        "Икра’ бисми Раббикяль-лязи халяк",
+        "Халякаль-инсана мин ‘аляк",
+        "Икра’ ва Раббукяль-Акрам",
+        "Аллязи ‘алляма биль-калям",
+        "‘Аллямаль-инсана ма лям йа’лям",
+        "Кялля инналь-инсана ля-йатга",
+        "Ан ра’аху стагна",
+        "Инна иля Раббикя р-рудж’а",
+        "А-ра’айталь-лязи йанха",
+        "‘Абдан иза салля",
+        "А-ра’айта ин кяна ‘аляль-худа",
+        "Ау амара бит-таква",
+        "А-ра’айта ин кяззаба ва тавалля",
+        "А-лям йа’лям би-анна Ллаха йара",
+        "Кялля ля’ин лям йантахи ля-насфа’ан бин-насыйа",
+        "Насыйатин кязибатин хаты’а",
+        "Фаль-йад’у надийах",
+        "Са-над’уз-забанийа",
+        "Кялля ля туты’ху васджуд вактариб"
+      ],
+      "98": [
+        "Лям йакуниль-лязина кяфару мин ахлиль-китаби валь-мушрикина мунфаккина хатта та’тийахумуль-баййина",
+        "Расулюн мина Ллахи йатлю сухуфан мутаххара",
+        "Фиха кутубун каййима",
+        "Ва ма тафарракаль-лязина утуль-китаба илля мин ба’ди ма джа’атхумуль-баййина",
+        "Ва ма умиру илля ли-йа’буду Ллаха мухлисына ляхуд-дина хунафа’а ва йукымус-салята ва йу’туз-закята, ва заликя динуль-каййима",
+        "Инналь-лязина кяфару мин ахлиль-китаби валь-мушрикина фи нари джаханнама халидина фиха, уляикя хум шарруль-бариййа",
+        "Инналь-лязина аману ва ‘амилюс-салихати уляикя хум хайруль-бариййа",
+        "Джаза’ухум ‘инда Раббихим джаннату ‘аднин таджри мин тахтихаль-анхару халидина фиха абада, радыйа Ллаху ‘анхум ва раду ‘анх, заликя ли-ман хашийа Раббах"
+      ],
+      "99": [
+        "Иза зульзилятиль-арду зильзаляха",
+        "Ва ахраджатиль-арду аскаляха",
+        "Ва каляль-инсану ма ляха",
+        "Йаума’изин тухаддису ахбараха",
+        "Би-анна Раббакя ауха ляха",
+        "Йаума’изин йасдурун-насу аштатан ли-йурау а’маляхум",
+        "Фа-ман йа’маль мискаля зарратин хайран йарах",
+        "Ва ман йа’маль мискаля зарратин шарран йарах"
+      ],
+      "100": [
+        "Валь-‘адийати дабха",
+        "Фаль-мурийати кадха",
+        "Фаль-мугырати субха",
+        "Фа-асарна бихи нак’а",
+        "Фа-васатна бихи джам’а",
+        "Инналь-инсана ли-Раббихи ля-кянуд",
+        "Ва иннаху ‘аля заликя ля-шахид",
+        "Ва иннаху ли-хуббиль-хайри ля-шадид",
+        "А-фаля йа’ляму иза бу’сира ма филь-кубур",
+        "Ва хуссыля ма фис-судур",
+        "Инна Раббахум бихим йаума’изин ля-хабир"
+      ],
+      "101": [
+        "Аль-кари’а",
+        "Маль-кари’а",
+        "Ва ма адракя маль-кари’а",
+        "Йаума йакунун-насу кяль-фарашиль-мабсус",
+        "Ва такунуль-джибалю кяль-‘ихниль-манфуш",
+        "Фа-амма ман сакулят мавазинух",
+        "Фа-хува фи ‘ишатин радыйа",
+        "Ва амма ман хаффат мавазинух",
+        "Фа-уммуху хавийа",
+        "Ва ма адракя ма хийа",
+        "Нарун хамийа"
+      ],
+      "102": [
+        "Альхакумут-такясур",
+        "Хатта зуртумуль-макабир",
+        "Кялля сауфа та’лямун",
+        "Сумма кялля сауфа та’лямун",
+        "Кялля ляу та’лямуна ‘ильмаль-йакын",
+        "Ля-таравунналь-джахим",
+        "Сумма ля-таравуннаха ‘айналь-йакын",
+        "Сумма ля-тус’алюнна йаума’изин ‘анин-на’им"
+      ],
+      "104": [
+        "Вайлюн ли-кулли хумазатин люмаза",
+        "Аллязи джама’а малян ва ‘аддадах",
+        "Йахсабу анна маляху ахлядах",
+        "Кялля ля-йунбазанна филь-хутама",
+        "Ва ма адракя маль-хутама",
+        "Нару Ллахиль-мукада",
+        "Алляти таттали’у ‘аляль-аф’ида",
+        "Иннаха ‘алейхим му’сада",
+        "Фи ‘амадин мумаддада"
+      ],
+      "105": [
+        "А-лям тара кяйфа фа’аля Раббукя би-асхабиль-филь",
+        "А-лям йадж’аль кяйдахум фи тадлиль",
+        "Ва арсаля ‘алейхим тайран абабиль",
+        "Тармихим би-хиджаратин мин сиджджиль",
+        "Фа-джа’аляхум кя-‘асфин ма’куль"
+      ],
+      "106": [
+        "Ли-иляфи курайш",
+        "Иляфихим рихляташ-шита’и вас-сайф",
+        "Фаль-йа’буду Рабба хазаль-байт",
+        "Аллязи ат’амахум мин джу’ин ва аманахум мин хауф"
+      ],
+      "107": [
+        "А-ра’айталь-лязи йукяззибу бид-дин",
+        "Фа-заликяль-лязи йаду’’уль-йатим",
+        "Ва ля йахудду ‘аля та’амиль-мискин",
+        "Фа-вайлюн лиль-мусаллин",
+        "Аллязина хум ‘ан салятихим сахун",
+        "Аллязина хум йура’ун",
+        "Ва йамна’уналь-ма’ун"
+      ],
+      "111": [
+        "Таббат йада Аби Ляхабин ва табб",
+        "Ма агна ‘анху малюху ва ма кясаб",
+        "Са-йасля наран зата ляхаб",
+        "Вамра’атуху хаммаляталь-хатаб",
+        "Фи джидиха хаблюн мин масад"
+      ]
+    });
+
+    // Расширяем коллекцию статусов до 84 вдохновляющих карточек во всех категориях
+    ALL_STATUS_POOL.push(
+      { category: 'sabr', fontIndex: 1, arabic: 'وَلَنَبْلُوَنَّكُم بِشَيْءٍ مِّنَ الْخَوْفِ وَالْجُوعِ', cyrillic: 'Ва ля-наблюваннакум би-шай’ин миналь-хауфи валь-джу’', russian: 'Испытания приходят не для того, чтобы сломить тебя, а чтобы возвысить твою степень перед Аллахом.', source: 'Сура Аль-Бакара • 2:155' },
+      { category: 'sabr', fontIndex: 2, arabic: 'رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِينَ', cyrillic: 'Раббана африг ‘алейна сабран ва таваффана муслимин', russian: '«Господь наш! Пролей на нас терпение и упокой нас мусульманами».', source: 'Сура Аль-Араф • 7:126' },
+      { category: 'sabr', fontIndex: 0, arabic: 'إِنَّمَا أَشْكُو بَثِّي وَحُزْنِي إِلَى اللَّهِ', cyrillic: 'Иннама ашку басси ва хузни иля Ллях', russian: '«Я жалуюсь на свою скорбь и печаль только Аллаху».', source: 'Сура Юсуф • 12:86' },
+      { category: 'sabr', fontIndex: 3, arabic: 'وَاللَّهُ يُحِبُّ الصَّابِرِينَ', cyrillic: 'Ва Ллаху йухиббус-сабирин', russian: 'Аллах любит терпеливых. Каждая секунда твоего сабра записана у Господа миров.', source: 'Сура Али Имран • 3:146' },
+      { category: 'ayahs', fontIndex: 0, arabic: 'نَبِّئْ عِبَادِي أَنِّي أَنَا الْغَفُورُ الرَّحِيمُ', cyrillic: 'Набби’ ‘ибади анни Аналь-Гафурур-Рахим', russian: '«Сообщи Моим рабам, что Я — Прощающий, Милосердный».', source: 'Сура Аль-Хиджр • 15:49' },
+      { category: 'ayahs', fontIndex: 2, arabic: 'رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي', cyrillic: 'Рабби шрах ли садри ва йассир ли амри', russian: '«Господи! Раскрой для меня мою грудь и облегчи мне моё дело!»', source: 'Сура Та Ха • 20:25–26' },
+      { category: 'ayahs', fontIndex: 1, arabic: 'وَقُولُوا لِلنَّاسِ حُسْنًا', cyrillic: 'Ва кулю лин-наси хусна', russian: '«Говорите людям прекрасное и доброе».', source: 'Сура Аль-Бакара • 2:83' },
+      { category: 'ayahs', fontIndex: 4, arabic: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً', cyrillic: 'Раббана атина фид-дунья хасанатан ва филь-ахирати хасана', russian: '«Господь наш! Даруй нам добро в этом мире и добро в Последней жизни».', source: 'Сура Аль-Бакара • 2:201' },
+      { category: 'hadith', fontIndex: 1, arabic: 'الدُّعَاءُ هُوَ الْعِبَادَةُ', cyrillic: 'Ад-ду’ау хуваль-‘ибада', russian: '«Дуа (мольба) — это и есть суть поклонения».', source: 'Сунан ат-Тирмизи • 2969' },
+      { category: 'hadith', fontIndex: 0, arabic: 'مَنْ لَا يَرْحَمُ لَا يُرْحَمُ', cyrillic: 'Ман ля йархаму ля йурхам', russian: '«Кто не проявляет милосердия к людям, к тому не проявит милосердия Аллах».', source: 'Сахих аль-Бухари • 5997' },
+      { category: 'hadith', fontIndex: 3, arabic: 'الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ', cyrillic: 'Аль-муслиму ман салималь-муслимуна мин лисанихи ва йадих', russian: 'Истинный мусульманин — тот, от языка и рук которого находятся в безопасности другие люди.', source: 'Сахих аль-Бухари • 10' },
+      { category: 'hadith', fontIndex: 2, arabic: 'يسِّرُوا وَلَا تُعَسِّرُوا، وَبَشِّرُوا وَلَا تُنَفِّرُوا', cyrillic: 'Йассиру ва ля ту’ассиру, ва башширу ва ля тунаффиру', russian: '«Облегчайте и не усложняйте, радуйте доброй вестью и не отталкивайте!»', source: 'Сахих аль-Бухари • 69' },
+      { category: 'quotes', fontIndex: 0, arabic: 'الصَّلَاةُ صِلَةٌ بَيْنَ الْعَبْدِ وَرَبِّهِ', cyrillic: 'Ас-саляту сылятун байналь-‘абди ва Раббих', russian: 'Пять намазов в день — это пять свиданий с Творцом, на которых с души смывается усталость мира.', source: 'Духовное напоминание' },
+      { category: 'quotes', fontIndex: 2, arabic: 'الْقَنَاعَةُ كَنْزٌ لَا يَفْنَى', cyrillic: 'Аль-кана’ату кянзун ля йафна', russian: 'Довольство тем, что дал Аллах — это сокровище, которое никогда не иссякнет.', source: 'Мудрость ислама' },
+      { category: 'quotes', fontIndex: 4, arabic: 'حُسْنُ الظَّنِّ بِاللَّهِ', cyrillic: 'Хуснуз-занни би-Ллях', russian: 'Думай об Аллахе только хорошее: Он отвечает на дуа в самый лучший и мудрый момент.', source: 'Упование (Таваккуль)' },
+      { category: 'quotes', fontIndex: 1, arabic: 'الْكَلِمَةُ الطَّيِّبَةُ تُحْيِي الْقُلُوبَ', cyrillic: 'Аль-кялимату т-таййибату тухйиль-кулюб', russian: 'Береги язык от сплетен и осуждения — и ты почувствуешь удивительную лёгкость в сердце.', source: 'Адаб верующего' },
+      { category: 'jumuah', fontIndex: 0, arabic: 'فَاسْعَوْا إِلَىٰ ذِكْرِ اللَّهِ', cyrillic: 'Фас’ау иля зикри Ллях', russian: 'Когда звучит призыв на пятничный намаз — оставьте мирские заботы и устремитесь к поминанию Аллаха!', source: 'Сура Аль-Джумуа • 62:9' },
+      { category: 'jumuah', fontIndex: 3, arabic: 'اللَّهُمَّ اجْعَلْ هَذِهِ الْجُمُعَةَ فَرَجًا لِكُلِّ مَهْمُومٍ', cyrillic: 'Аллахумма дж’аль хазихиль-джуму’ата фараджан', russian: 'О Аллах, сделай эту пятницу облегчением для каждого, чьё сердце опечалено!', source: 'Дуа в пятницу' },
+      { category: 'eid', fontIndex: 0, arabic: 'أَعَادَهُ اللَّهُ عَلَيْنَا وَعَلَيْكُمْ بِالْخَيْرِ وَالْبَرَكَاتِ', cyrillic: 'А’адаху Ллаху ‘алейна ва ‘алейкум биль-хайри валь-баракят', russian: 'Пусть Всевышний одарит ваш дом здоровьем, достатком и крепким иманом!', source: 'Праздничное дуа' },
+      { category: 'eid', fontIndex: 4, arabic: 'كُلُّ عَامٍ وَأَنْتُمْ إِلَى اللَّهِ أَقْرَبُ', cyrillic: 'Куллю ‘амин ва антум иля Ллахи акраб', russian: 'Пусть с каждым праздником наши сердца становятся чище и ближе к Всевышнему Аллаху!', source: 'Ид Мубарак' }
+    );
+
+    const FAQ_ITEMS = [
+      {
+        q: 'Как установить уведомления о намазе в Календарь iPhone / Android?',
+        a: '1. На главной странице или в Настройках нажмите зелёную кнопку «Календарь» (или «Все 5 намазов на 30 дней .ics»).\n2. Откроется окно с прямой кнопкой «Открыть в Календаре iPhone / Android» — нажмите на неё.\n3. В появившемся системном окне нажмите «Добавить все» (в правом верхнем углу). Готово! Телефон будет сам напоминать за 10 минут до намаза и в момент наступления намаза даже без интернета.'
+      },
+      {
+        q: 'Почему не открывается календарь, когда приложение уже на главном экране (Домой)?',
+        a: 'На iPhone в режиме иконки на экране «Домой» (PWA) система iOS блокирует обычную загрузку файлов с задержкой сети. Мы полностью исправили это: теперь расписание формируется мгновенно за 0 секунд без ожидания сети и открывается через прямую системную ссылку Календаря iOS. Просто нажмите кнопку «Календарь» → «Открыть в Календаре iPhone».'
+      },
+      {
+        q: 'Как удалить или отключить уведомления календаря намазов с телефона?',
+        a: 'Удалить все добавленные напоминания можно за 5 секунд:\n• На iPhone: откройте стандартное приложение «Календарь» → в самом низу экрана нажмите «Календари» → если расписание добавлено в отдельный календарь, нажмите «i» рядом с ним и выберите «Удалить календарь». Либо в поиске приложения «Календарь» введите «намаз» и удалите ненужные события.\n• Настройки iOS: Настройки → Календарь → Учётные записи → Подписные календари → Удалить.'
+      },
+      {
+        q: 'Как поделиться картинкой статуса в WhatsApp или сохранить в Галерею iPhone?',
+        a: '1. Перейдите во вкладку «Статус» и нажмите на любую карточку.\n2. Выберите любую цитату/аят из списка или напишите свой текст, выберите шрифт или загрузите своё фото.\n3. Нажмите зелёную кнопку «Поделиться в WhatsApp»: на телефоне откроется меню отправки готовой картинки 1080×1920 прямо в Статус или чат WhatsApp!\n4. Чтобы сохранить в Фото на iPhone: нажмите «Скачать 1080×1920» → в системном меню выберите «Сохранить изображение».'
+      },
+      {
+        q: 'Как включить или отключить русскую (кириллическую) транскрипцию аятов?',
+        a: 'Переключатель «Транскрипция» находится прямо под «Аятом для размышления» на главной странице, во вкладке «Обучение», а также в разделе «Настройки → Кириллическая транскрипция». Все длинные аяты адаптированы под экран iPhone 13 Pro и другие смартфоны.'
+      },
+      {
+        q: 'Чем отличается время намаза Аср в Ханафитском и Шафиитском мазхабах?',
+        a: 'В Шафиитском, Маликитском и Ханбалитском мазхабах время намаза Аср наступает, когда тень предмета становится равной его длине (плюс полуденная тень). В Ханафитском мазхабе — когда тень достигает двойной длины предмета (поэтому Аср наступает на 35–50 минут позже). Вы можете переключить свой мазхаб в 1 клик в Настройках.'
+      }
+    ];
+
     const SCHEDULE_ITEMS = [
       { key: 'Fajr', name: 'Утренний (Фаджр)', icon: 'moon-star', obligatory: true, rakaats: 2, qasrRakaats: 2, idleBg: 'rgba(59,130,246,0.15)', idleFg: '#2563eb', activeBg: '#2563eb' },
       { key: 'Sunrise', name: 'Восход (Шурук)', icon: 'sunrise', obligatory: false, rakaats: 0, qasrRakaats: 0, idleBg: 'rgba(245,158,11,0.15)', idleFg: '#d97706', activeBg: '#f59e0b' },
@@ -696,7 +924,13 @@
       'arrow-right': '<path d="M5 12h13.5M13 6.3l5.8 5.7-5.8 5.7" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round"/>',
       'image-plus': '<path fill-rule="evenodd" d="M5.6 4.2h9.2a.9.9 0 1 1 0 1.8H5.6A1.8 1.8 0 0 0 3.8 7.8v8.4l4.1-4.3a1.4 1.4 0 0 1 2.02 0l2.88 3 1.7-1.6a1.4 1.4 0 0 1 1.94.02l2.16 2.18v-3a.9.9 0 1 1 1.8 0v4.1a3.2 3.2 0 0 1-3.2 3.2H5.6a3.2 3.2 0 0 1-3.2-3.2V7.8a3.2 3.2 0 0 1 3.2-3.6ZM8.3 8a1.45 1.45 0 1 0 0 2.9 1.45 1.45 0 0 0 0-2.9Z"/><path d="M18.6 3.2v4.8M16.2 5.6H21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
       'alarm-clock': '<path fill-rule="evenodd" d="M12 4.6a7.8 7.8 0 1 0 0 15.6 7.8 7.8 0 0 0 0-15.6Zm-.85 3.6v4.3c0 .3.15.58.4.74l2.85 1.85a.85.85 0 1 0 .92-1.43l-2.47-1.6V8.2a.85.85 0 0 0-1.7 0Z"/><path d="M4.2 6.2 7.2 3.3M19.8 6.2 16.8 3.3M6.2 19.2 4.8 20.8M17.8 19.2l1.4 1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
-      'download': '<g fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v10.8M8.5 10.8 12 14.5l3.5-3.7"/><path d="M5 14.8v3.7A2.3 2.3 0 0 0 7.3 20.8h9.4a2.3 2.3 0 0 0 2.3-2.3v-3.7"/></g>'
+      'download': '<g fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v10.8M8.5 10.8 12 14.5l3.5-3.7"/><path d="M5 14.8v3.7A2.3 2.3 0 0 0 7.3 20.8h9.4a2.3 2.3 0 0 0 2.3-2.3v-3.7"/></g>',
+      'whatsapp': '<path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.18-4.94-4.37-.14-.19-1.18-1.57-1.18-2.99 0-1.42.74-2.12 1.01-2.41.26-.29.58-.36.77-.36.19 0 .38.01.55.01.18 0 .41-.07.64.49.24.58.82 2 .89 2.14.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.3-.12.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.29 2.33 1.44.29.14.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.65-.14.26.1 1.68.79 1.97.94.29.14.48.22.55.34.07.12.07.7-.17 1.38Z"/>',
+      'telegram': '<path d="M21.4 3.4a1.3 1.3 0 0 0-1.35-.2L2.8 10.1a1.15 1.15 0 0 0 .06 2.16l4.4 1.45 1.7 5.25c.22.68 1.08.88 1.58.37l2.52-2.55 4.65 3.42c.68.5 1.65.13 1.83-.7L22.1 4.65a1.3 1.3 0 0 0-.7-1.25ZM9.1 13.3l8.65-5.35-6.95 6.85-.28 3.05-1.42-4.55Z"/>',
+      'share-2': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></g>',
+      'edit-3': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></g>',
+      'chevron-down': '<path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+      'help-circle': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><circle cx="12" cy="17.2" r="0.6" fill="currentColor"/></g>'
     };
 
     function svgIcon(name, size = 16, style = '', cls = '') {
@@ -971,84 +1205,156 @@
       } catch {}
       return 'Моя геопозиция';
     }
-    async function exportPrayersToICS(fajrOnly = false) {
-      const mShort = (MADHHAB_INFO[appState.madhhabKey] || MADHHAB_INFO.hanafi).short;
+    async function precacheCalendarDays() {
       try {
         const now = getCityNowParts(appState.timezone);
         const y1 = now.year, m1 = now.month;
         const nDate = new Date(y1, m1, 1);
         const y2 = nDate.getFullYear(), m2 = nDate.getMonth() + 1;
-        let days = [], tz = appState.timezone || 'Europe/Moscow';
-        try {
-          const u1 = 'https://api.aladhan.com/v1/calendar/' + y1 + '/' + m1 + '?latitude=' + appState.lat + '&longitude=' + appState.lng + '&method=' + appState.method + '&school=' + appState.school;
-          const u2 = 'https://api.aladhan.com/v1/calendar/' + y2 + '/' + m2 + '?latitude=' + appState.lat + '&longitude=' + appState.lng + '&method=' + appState.method + '&school=' + appState.school;
-          const [r1, r2] = await Promise.all([fetchJsonWithTimeout(u1, 6500), fetchJsonWithTimeout(u2, 6500)]);
-          days = [...(r1.data || []), ...(r2.data || [])];
-          if (days[0] && days[0].meta && days[0].meta.timezone) tz = days[0].meta.timezone;
-        } catch { days = []; }
-        if (!days.length) {
-          const base = new Date(y1, m1 - 1, now.day);
-          for (let i = 0; i < 30; i++) {
-            const d = new Date(base.getTime() + i * 86400000);
-            days.push({
-              date: { gregorian: { date: String(d.getDate()).padStart(2, '0') + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + d.getFullYear() } },
-              timings: getDeterministicFallbackTimings(appState.lat, appState.lng, appState.school, d)
-            });
-          }
+        const u1 = 'https://api.aladhan.com/v1/calendar/' + y1 + '/' + m1 + '?latitude=' + appState.lat + '&longitude=' + appState.lng + '&method=' + appState.method + '&school=' + appState.school;
+        const u2 = 'https://api.aladhan.com/v1/calendar/' + y2 + '/' + m2 + '?latitude=' + appState.lat + '&longitude=' + appState.lng + '&method=' + appState.method + '&school=' + appState.school;
+        const [r1, r2] = await Promise.all([fetchJsonWithTimeout(u1, 6500), fetchJsonWithTimeout(u2, 6500)]);
+        const days = [...(r1.data || []), ...(r2.data || [])];
+        if (days.length) {
+          appState.cachedCalendarDays = days;
+          if (days[0] && days[0].meta && days[0].meta.timezone) appState.timezone = days[0].meta.timezone;
         }
-        const todayInt = y1 * 10000 + m1 * 100 + now.day;
-        const dtStamp = formatUtcIcsStamp(Date.now());
-        const geoId = appState.lat.toFixed(2) + '-' + appState.lng.toFixed(2) + '-s' + appState.school;
-        const list = fajrOnly ? [{ key: 'Fajr', title: 'Утренний намаз (Фаджр)' }] : [
-          { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
-          { key: 'Dhuhr', title: 'Обеденный намаз (Зухр)' },
-          { key: 'Asr', title: 'Послеобеденный намаз (Аср)' },
-          { key: 'Maghrib', title: 'Вечерний намаз (Магриб)' },
-          { key: 'Isha', title: 'Ночной намаз (Иша)' }
-        ];
-        const lines = [
-          'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AyaSpace//Prayer Calendar 30 Days//RU',
-          'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
-          'X-WR-CALNAME:' + escapeIcs('Намаз — ' + appState.city + ' (' + mShort + ')'),
-          'X-WR-TIMEZONE:' + tz
-        ];
-        let count = 0;
-        for (const day of days) {
-          if (count >= 30) break;
-          const [ddStr, mmStr, yyStr] = day.date.gregorian.date.split('-');
-          const dd = parseInt(ddStr, 10), mm = parseInt(mmStr, 10), yy = parseInt(yyStr, 10);
-          if (yy * 10000 + mm * 100 + dd < todayInt) continue;
-          count++;
-          list.forEach(p => {
-            const clean = day.timings[p.key].split(' ')[0];
-            const [hh, min] = clean.split(':').map(Number);
-            const startMs = cityLocalToUtcMs(yy, mm, dd, hh, min, tz);
-            const endMs = startMs + 15 * 60000;
-            lines.push(
-              'BEGIN:VEVENT',
-              'UID:ayaspace-' + p.key + '-' + yyStr + mmStr + ddStr + '-' + geoId + '@ayaspace.app',
-              'DTSTAMP:' + dtStamp,
-              'DTSTART:' + formatUtcIcsStamp(startMs),
-              'DTEND:' + formatUtcIcsStamp(endMs),
-              'SUMMARY:' + escapeIcs('🌙 ' + p.title + ' (' + clean + ')'),
-              'DESCRIPTION:' + escapeIcs('Время намаза для г. ' + appState.city + ' (Мазхаб: ' + mShort + ') — AyaSpace'),
-              'BEGIN:VALARM', 'TRIGGER:-PT10M', 'ACTION:DISPLAY', 'DESCRIPTION:' + escapeIcs('⏳ Через 10 минут: ' + p.title), 'END:VALARM',
-              'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:' + escapeIcs('🌙 Наступило время: ' + p.title), 'END:VALARM',
-              'END:VEVENT'
-            );
+      } catch {}
+    }
+
+    function buildIcsContentSync(fajrOnly = false) {
+      const mShort = (MADHHAB_INFO[appState.madhhabKey] || MADHHAB_INFO.hanafi).short;
+      const now = getCityNowParts(appState.timezone);
+      const y1 = now.year, m1 = now.month;
+      const tz = appState.timezone || 'Europe/Moscow';
+      let days = Array.isArray(appState.cachedCalendarDays) && appState.cachedCalendarDays.length ? appState.cachedCalendarDays : [];
+      if (!days.length) {
+        const base = new Date(y1, m1 - 1, now.day);
+        for (let i = 0; i < 30; i++) {
+          const d = new Date(base.getTime() + i * 86400000);
+          days.push({
+            date: { gregorian: { date: String(d.getDate()).padStart(2, '0') + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + d.getFullYear() } },
+            timings: (i === 0 && appState.timings) ? appState.timings : getDeterministicFallbackTimings(appState.lat, appState.lng, appState.school, d)
           });
         }
-        lines.push('END:VCALENDAR');
+      }
+      const todayInt = y1 * 10000 + m1 * 100 + now.day;
+      const dtStamp = formatUtcIcsStamp(Date.now());
+      const geoId = appState.lat.toFixed(2) + '-' + appState.lng.toFixed(2) + '-s' + appState.school;
+      const list = fajrOnly ? [{ key: 'Fajr', title: 'Утренний намаз (Фаджр)' }] : [
+        { key: 'Fajr', title: 'Утренний намаз (Фаджр)' },
+        { key: 'Dhuhr', title: 'Обеденный намаз (Зухр)' },
+        { key: 'Asr', title: 'Послеобеденный намаз (Аср)' },
+        { key: 'Maghrib', title: 'Вечерний намаз (Магриб)' },
+        { key: 'Isha', title: 'Ночной намаз (Иша)' }
+      ];
+      const calTitle = (fajrOnly ? 'Фаджр — ' : 'Намаз — ') + appState.city + ' (' + mShort + ')';
+      const lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AyaSpace//Prayer Calendar 30 Days//RU',
+        'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+        'X-WR-CALNAME:' + escapeIcs(calTitle),
+        'X-WR-TIMEZONE:' + tz
+      ];
+      let count = 0;
+      for (const day of days) {
+        if (count >= 30) break;
+        const [ddStr, mmStr, yyStr] = day.date.gregorian.date.split('-');
+        const dd = parseInt(ddStr, 10), mm = parseInt(mmStr, 10), yy = parseInt(yyStr, 10);
+        if (yy * 10000 + mm * 100 + dd < todayInt) continue;
+        count++;
+        list.forEach(p => {
+          const clean = (day.timings[p.key] || '05:00').split(' ')[0];
+          const [hh, min] = clean.split(':').map(Number);
+          const startMs = cityLocalToUtcMs(yy, mm, dd, hh, min, tz);
+          const endMs = startMs + 15 * 60000;
+          lines.push(
+            'BEGIN:VEVENT',
+            'UID:ayaspace-' + p.key + '-' + yyStr + mmStr + ddStr + '-' + geoId + '@ayaspace.app',
+            'DTSTAMP:' + dtStamp,
+            'DTSTART:' + formatUtcIcsStamp(startMs),
+            'DTEND:' + formatUtcIcsStamp(endMs),
+            'SUMMARY:' + escapeIcs('🌙 ' + p.title + ' (' + clean + ')'),
+            'DESCRIPTION:' + escapeIcs('Время намаза для г. ' + appState.city + ' (Мазхаб: ' + mShort + ') — AyaSpace'),
+            'BEGIN:VALARM', 'TRIGGER:-PT10M', 'ACTION:DISPLAY', 'DESCRIPTION:' + escapeIcs('⏳ Через 10 минут: ' + p.title), 'END:VALARM',
+            'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:' + escapeIcs('🌙 Наступило время: ' + p.title), 'END:VALARM',
+            'END:VEVENT'
+          );
+        });
+      }
+      lines.push('END:VCALENDAR');
+      const icsContent = lines.join('\r\n');
+      const fileName = 'ayaspace-' + (fajrOnly ? 'fajr-' : 'namaz-') + mShort + '-30days.ics';
+      const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+      return { icsContent, fileName, dataUri, calTitle };
+    }
+
+    let lastGeneratedIcs = null;
+    window.shareIcsCalendarFile = async () => {
+      if (!lastGeneratedIcs) return;
+      try {
+        const file = new File([lastGeneratedIcs.icsContent], lastGeneratedIcs.fileName, { type: 'text/calendar;charset=utf-8' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: lastGeneratedIcs.calTitle,
+            text: 'Расписание намазов на 30 дней — ' + appState.city
+          });
+          return;
+        }
+      } catch {}
+      window.location.assign(lastGeneratedIcs.dataUri);
+    };
+
+    function exportPrayersToICS(fajrOnly = false) {
+      try {
+        const payload = buildIcsContentSync(fajrOnly);
+        lastGeneratedIcs = payload;
         AyaSoundEngine.complete();
-        const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'ayaspace-' + appState.city + '-' + mShort + '-30days.ics';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 2500);
+
+        // Открываем вспомогательное модальное окно с прямой ссылкой data:text/calendar (100% работает в iOS PWA на главном экране)
+        const box = document.getElementById('calendar-helper-box');
+        const modal = document.getElementById('calendar-helper-modal');
+        if (box && modal) {
+          box.innerHTML = `
+            <div class="aya-stack-sm">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="width:40px;height:40px;border-radius:9999px;background:rgba(16,185,129,0.16);color:#10b981;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${svgIcon('calendar-check-2', 20)}</span>
+                  <div>
+                    <h3 style="margin:0;font-size:16px;font-weight:800;">Календарь намазов готов</h3>
+                    <span style="font-size:11.5px;opacity:0.65;">${escapeHtml(payload.calTitle)} • 30 дней</span>
+                  </div>
+                </div>
+                <button type="button" aria-label="Закрыть" onclick="document.getElementById('calendar-helper-modal').classList.add('hidden')" class="sheet-subcard pill-btn" style="padding:8px;">${svgIcon('x', 15)}</button>
+              </div>
+              <p style="margin:0;font-size:12.5px;opacity:0.82;line-height:1.45;">
+                В расписание уже встроены <b>2 автоматических уведомления</b> на каждый намаз: за 10 минут до начала и точно в момент наступления.
+              </p>
+              <a href="${payload.dataUri}" download="${payload.fileName}" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:15px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
+                ${svgIcon('calendar-check-2', 17)}<span>Открыть в Календаре iPhone / Android</span>
+              </a>
+              <button type="button" onclick="shareIcsCalendarFile()" class="pill-btn bg-obsidian spring-tap" style="width:100%;padding:13px;font-size:12.5px;">
+                ${svgIcon('share-2', 15)}<span>Через меню «Поделиться» (если приложение на Домой)</span>
+              </button>
+              <div class="sheet-subcard" style="padding:12px;font-size:11.5px;line-height:1.45;opacity:0.85;">
+                <b>Как добавить на iPhone:</b> нажмите зелёную кнопку выше → в открывшемся окне iOS нажмите <b>«Добавить все»</b> (или «Подписаться»).<br/>
+                <b>Как удалить при необходимости:</b> откройте стандартное приложение «Календарь» → «Календари» внизу экрана → выберите список или удалите ненужные события.
+              </div>
+            </div>
+          `;
+          modal.classList.remove('hidden');
+        }
+
+        // Одновременно запускаем мгновенное открытие в рамках синхронного жеста пользователя
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        if (!isStandalone) {
+          const a = document.createElement('a');
+          a.href = payload.dataUri;
+          a.download = payload.fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
         return true;
       } catch {
         AyaSoundEngine.error();
@@ -1077,6 +1383,7 @@
       webNotifEnabled: readBool('aya_web_notif', false),
       theme: readStr('aya_theme', 'light') === 'dark' ? 'dark' : 'light',
       timings: null,
+      cachedCalendarDays: [],
       hijriText: 'Загрузка календаря Хиджры...'
     };
     appState.timings = getDeterministicFallbackTimings(appState.lat, appState.lng, appState.school);
@@ -1215,6 +1522,7 @@
         appState.timings = getDeterministicFallbackTimings(appState.lat, appState.lng, appState.school);
         appState.hijriText = 'Расчётное расписание (офлайн)';
       }
+      precacheCalendarDays();
       markDirty('prayer', 'settings');
       renderHeaderAndHero(false);
       if (uiState.activeTab === 'prayer') renderPrayerTab();
@@ -1412,7 +1720,7 @@
             <span class="sheet-subcard tabular-nums" style="padding:4px 12px;font-size:11px;font-weight:700;">Смена через <b id="ayah-3h-countdown" class="text-emerald">${remStr}</b></span>
           </div>
           <p class="arabic-text" style="margin:0;font-size:26px;text-align:right;">${ayah3h.arabic}</p>
-          ${appState.showTranscription ? `<p class="sheet-subcard text-amber" style="margin:0;padding:10px;font-size:12px;font-style:italic;font-weight:600;">${ayah3h.cyrillic}</p>` : ''}
+          ${appState.showTranscription ? `<p class="sheet-subcard text-amber cyrillic-box" style="margin:0;padding:10px;font-size:12px;font-style:italic;font-weight:600;">${ayah3h.cyrillic}</p>` : ''}
           <p style="margin:0;font-size:14px;opacity:0.85;">${ayah3h.russian}</p>
           <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding-top:4px;">
             <b>${ayah3h.source}</b>
@@ -1505,7 +1813,7 @@
               <span class="text-ruby" style="font-size:11px;font-weight:800;text-transform:uppercase;">${c.badge} • ${c.source}</span>
               <h3 style="margin:0;font-size:15px;font-weight:800;">${c.title}</h3>
               <p class="arabic-text sheet-subcard text-amber" style="margin:0;padding:12px;font-size:22px;text-align:right;">${c.arabic}</p>
-              ${appState.showTranscription ? `<p class="text-amber" style="margin:0;font-size:12px;font-style:italic;">${c.translit}</p>` : ''}
+              ${appState.showTranscription ? `<p class="text-amber cyrillic-box" style="margin:0;font-size:12px;font-style:italic;">${c.translit}</p>` : ''}
               <p style="margin:0;font-size:12px;white-space:pre-line;opacity:0.85;">${c.russian}</p>
             </div>`).join('')}
           </div>` : ''}
@@ -1582,7 +1890,7 @@
               <button type="button" onclick="playAudioUrl('${a.audio}','${escapeHtml(uiState.openedSurah.name)} — Аят ${a.numberInSurah}','Мишари аль-Афаси')" class="pill-btn bg-emerald">${svgIcon('volume-2', 13)}<span>Слушать</span></button>
             </div>
             <p class="arabic-text" style="margin:0;font-size:26px;text-align:right;">${a.arabic}</p>
-            ${appState.showTranscription ? `<p class="sheet-subcard text-amber" style="margin:0;padding:10px;font-size:12px;font-style:italic;">${a.cyrillic}</p>` : ''}
+            ${appState.showTranscription ? `<p class="sheet-subcard text-amber cyrillic-box" style="margin:0;padding:10px;font-size:12px;font-style:italic;">${a.cyrillic}</p>` : ''}
             <p style="margin:0;font-size:14px;opacity:0.85;">${a.russian}</p>
           </div>`).join('') : '<div class="sheet-card" style="text-align:center;font-size:13px;opacity:0.7;">Загрузка текста суры...</div>'}
         </div>` : `<div id="quran-surah-grid" class="grid-auto-2">${renderSurahGridHtml()}</div>`}
@@ -1595,7 +1903,7 @@
       const u = res.data[0].ayahs, ru = res.data[1].ayahs, au = res.data[2].ayahs, tr = res.data[3] ? res.data[3].ayahs : [];
       const ver = VERIFIED_CYRILLIC_TRANSCRIPTIONS[num];
       const list = u.map((a, i) => {
-        let arab = a.text || '';
+        let arab = (a.text || '').replace(/[\u06DF\u06E0\u06E2\u06E3\u06E5\u06E6\u06E8\u06EA-\u06ED]/gu, '');
         if (i === 0 && num !== 1 && num !== 9) {
           arab = arab.replace(/^بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\s*/u, '').trim() || arab;
         }
@@ -1643,9 +1951,12 @@
       }
       root.innerHTML = `
         <div class="sheet-card aya-stack-sm">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
             <div><h2 style="margin:0;font-size:18px;font-weight:800;">Обучение</h2><p style="margin:0;font-size:12px;opacity:0.6;">Заучивание сур и арабский алфавит</p></div>
-            <span class="sheet-subcard pill-btn">Выучено: <b class="text-emerald">${Object.keys(uiState.memLearned).length}</b></span>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <button type="button" onclick="toggleTranscription()" class="pill-btn ${appState.showTranscription?'bg-amber':'sheet-subcard'}" style="padding:7px 11px;font-size:11px;">Кириллица: ${appState.showTranscription?'Вкл':'Выкл'}</button>
+              <span class="sheet-subcard pill-btn">Выучено: <b class="text-emerald">${Object.keys(uiState.memLearned).length}</b></span>
+            </div>
           </div>
           <div class="grid-2">
             <button type="button" onclick="uiState.memSubTab='surahs';renderMemorizeTab()" class="pill-btn ${uiState.memSubTab==='surahs'?'bg-obsidian':'sheet-subcard'}">Заучивание сур</button>
@@ -1656,7 +1967,7 @@
         ${uiState.memSubTab === 'surahs' ? `
           <div class="sheet-card aya-stack-sm">
             <select onchange="uiState.memSurahNum=Number(this.value);uiState.memAyahs=[];renderMemorizeTab()" class="sheet-subcard" style="width:100%;padding:12px 16px;border:0;font-weight:800;font-size:13px;">
-              ${[1,114,113,112,110,109,108,103,97,94,93].map(n => `<option value="${n}" ${uiState.memSurahNum===n?'selected':''}>${n}. ${SURAH_NAMES_RU[n] || ('Сура '+n)}</option>`).join('')}
+              ${[1,114,113,112,111,110,109,108,107,106,105,104,103,102,101,100,99,98,97,96,95,94,93,67,36].map(n => `<option value="${n}" ${uiState.memSurahNum===n?'selected':''}>${n}. ${SURAH_NAMES_RU[n] || ('Сура '+n)}</option>`).join('')}
             </select>
             <div class="grid-3">
               ${[{k:'read',l:'Чтение'},{k:'half',l:'Скрыть 50%'},{k:'full',l:'Скрыть всё'}].map(m => `<button type="button" onclick="uiState.memMode='${m.k}';uiState.memRevealed={};renderMemorizeTab()" class="pill-btn ${uiState.memMode===m.k?'bg-obsidian':'sheet-subcard'}">${m.l}</button>`).join('')}
@@ -1678,17 +1989,17 @@
                   <button type="button" onclick="toggleMemorized('${a.key}')" class="pill-btn ${done?'bg-emerald':'sheet-subcard'}">${done ? svgIcon('check', 13) + '<span>Выучено</span>' : 'Запомнил'}</button>
                 </div>
               </div>
-              <div class="arabic-text" style="font-size:26px;text-align:right;">
-                ${a.arabic.split(' ').map((w, wi) => {
+              <div class="arabic-text arabic-words-flow" style="font-size:25px;">
+                ${a.arabic.split(/\s+/).filter(Boolean).map((w, wi) => {
                   const wk = a.key + '_' + wi;
                   const h50 = uiState.memMode === 'half' && wi % 2 === 1;
-                  if (uiState.memMode === 'read' || (uiState.memMode === 'half' && !h50)) return '<span>' + w + ' </span>';
-                  if (uiState.memRevealed[wk]) return '<span class="word-revealed">' + w + ' </span>';
+                  if (uiState.memMode === 'read' || (uiState.memMode === 'half' && !h50)) return '<span>' + w + '</span>';
+                  if (uiState.memRevealed[wk]) return '<span class="word-revealed">' + w + '</span>';
                   return `<button type="button" onclick="revealMemWord(this,'${wk}')" class="${h50?'word-hidden':'word-blur'} arabic-text">${w}</button>`;
                 }).join('')}
               </div>
-              ${appState.showTranscription && a.cyrillic ? `<p class="sheet-subcard text-amber" style="margin:0;padding:10px;font-size:12px;font-style:italic;">${a.cyrillic}</p>` : ''}
-              <p style="margin:0;font-size:12px;opacity:0.75;">${a.russian}</p>
+              ${appState.showTranscription && a.cyrillic ? `<div class="sheet-subcard text-amber cyrillic-box">${a.cyrillic}</div>` : ''}
+              <p style="margin:0;font-size:12.5px;line-height:1.5;opacity:0.82;overflow-wrap:anywhere;">${a.russian}</p>
             </div>`;
           }).join('') : `<div class="sheet-card" style="text-align:center;font-size:13px;opacity:0.75;">${svgIcon('loader-2', 16, 'margin-right:6px;animation:spin 1s linear infinite;')}Загрузка аятов суры...</div>`}
         ` : `
@@ -1713,22 +2024,36 @@
     function renderStatusTab() {
       dirtyTabs.status = false;
       const root = document.getElementById('tab-status');
-      const items = ALL_STATUS_POOL.map((s, i) => ({
+      const allMapped = ALL_STATUS_POOL.map((s, i) => ({
         id: i + 1, ...s,
         image: REAL_NATURE_PHOTOS[(i + uiState.statusShuffle) % REAL_NATURE_PHOTOS.length]
-      })).filter(x => uiState.statusFilter === 'all' || x.category === uiState.statusFilter);
+      }));
+      const items = allMapped.filter(x => uiState.statusFilter === 'all' || x.category === uiState.statusFilter);
+      const countCat = (k) => k === 'all' ? allMapped.length : allMapped.filter(x => x.category === k).length;
 
       root.innerHTML = `
         <div class="sheet-card aya-stack-sm">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
-            <div><h2 style="margin:0;font-size:18px;font-weight:800;">Статусы и сторис</h2><p style="margin:0;font-size:12px;opacity:0.6;">64 текста • 30 фонов</p></div>
-            <div style="display:flex;gap:6px;">
+            <div>
+              <h2 style="margin:0;font-size:18px;font-weight:800;">Статусы и сторис</h2>
+              <p style="margin:0;font-size:12px;opacity:0.65;">Показано: <b>${items.length}</b> из <b>${allMapped.length}</b> текстов • ${REAL_NATURE_PHOTOS.length} фонов</p>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" onclick="openStatusModal(1)" class="pill-btn bg-amber">${svgIcon('edit-3', 13)}<span>Конструктор</span></button>
               <button type="button" onclick="document.getElementById('custom-status-file-input').click()" class="pill-btn bg-emerald">${svgIcon('image-plus', 14)}<span>Своё фото</span></button>
-              <button type="button" onclick="uiState.statusShuffle++;renderStatusTab()" class="pill-btn bg-obsidian">${svgIcon('refresh-cw', 13)}<span>Фоны</span></button>
+              <button type="button" onclick="uiState.statusShuffle++;try{localStorage.setItem('aya_status_shuffle_offset',String(uiState.statusShuffle))}catch{};renderStatusTab()" class="pill-btn bg-obsidian">${svgIcon('refresh-cw', 13)}<span>Фоны</span></button>
             </div>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            ${[{k:'all',l:'Все'},{k:'sabr',l:'Сабр'},{k:'ayahs',l:'Аяты'},{k:'hadith',l:'Хадисы'},{k:'quotes',l:'Мудрость'},{k:'jumuah',l:'Пятница'},{k:'eid',l:'Праздники'}].map(f => `<button type="button" onclick="uiState.statusFilter='${f.k}';renderStatusTab()" class="pill-btn ${uiState.statusFilter===f.k?'bg-amber':'sheet-subcard'}">${f.l}</button>`).join('')}
+            ${[
+              {k:'all',l:'Все'},
+              {k:'sabr',l:'Сабр'},
+              {k:'ayahs',l:'Аяты'},
+              {k:'hadith',l:'Хадисы'},
+              {k:'quotes',l:'Мудрость'},
+              {k:'jumuah',l:'Пятница'},
+              {k:'eid',l:'Праздники'}
+            ].map(f => `<button type="button" onclick="uiState.statusFilter='${f.k}';renderStatusTab()" class="pill-btn ${uiState.statusFilter===f.k?'bg-amber':'sheet-subcard'}">${f.l} <span style="opacity:0.75;font-size:10px;">(${countCat(f.k)})</span></button>`).join('')}
           </div>
         </div>
         <div class="grid-status">
@@ -1805,6 +2130,40 @@
             <span><b>Тактильная вибрация</b></span>
             <span class="ios-switch ${appState.hapticEnabled?'active':'inactive'}"><span class="ios-switch-thumb"></span></span>
           </button>
+        </div>
+
+        <div class="sheet-card aya-stack-sm">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:42px;height:42px;border-radius:9999px;background:rgba(2,132,199,0.16);color:#0284c7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${svgIcon('telegram', 20)}</span>
+            <div>
+              <h3 style="margin:0;font-size:16px;font-weight:800;">Связь с автором и поддержка</h3>
+              <p style="margin:2px 0 0;font-size:12px;opacity:0.7;">Отзывы, предложения по улучшению AyaSpace и вопросы</p>
+            </div>
+          </div>
+          <a href="${TELEGRAM_AUTHOR_URL}" target="_blank" rel="noopener noreferrer" class="pill-btn spring-tap" style="width:100%;padding:14px;background:#0284c7;color:#fff;text-decoration:none;font-size:13.5px;box-shadow:0 8px 20px rgba(2,132,199,0.28);">
+            ${svgIcon('telegram', 16)}<span>Написать в Telegram ${TELEGRAM_AUTHOR_HANDLE}</span>
+          </a>
+        </div>
+
+        <div id="faq-section" class="sheet-card aya-stack-sm">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:34px;height:34px;border-radius:9999px;background:rgba(255,102,0,0.15);color:#ff6600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${svgIcon('help-circle', 18)}</span>
+            <div>
+              <h3 style="margin:0;font-size:16px;font-weight:800;">Частые вопросы (FAQ)</h3>
+              <p style="margin:0;font-size:11.5px;opacity:0.65;">Как установить или удалить уведомления в Календаре, сторис и экран «Домой»</p>
+            </div>
+          </div>
+          <div class="aya-stack-xs">
+            ${FAQ_ITEMS.map((item, idx) => `
+              <details class="sheet-subcard faq-details" style="padding:13px 15px;border-radius:18px;" ${idx === 0 || idx === 1 ? 'open' : ''}>
+                <summary>
+                  <span>${escapeHtml(item.q)}</span>
+                  <span class="faq-chevron" style="flex-shrink:0;opacity:0.7;">${svgIcon('chevron-down', 16)}</span>
+                </summary>
+                <p style="margin:10px 0 0;font-size:12.5px;line-height:1.5;opacity:0.85;">${escapeHtml(item.a)}</p>
+              </details>
+            `).join('')}
+          </div>
         </div>
       `;
     }
@@ -2030,88 +2389,263 @@
       document.getElementById('surah-hint-modal').classList.remove('hidden');
     };
 
-    const modalStatusState = { id: 1, fontIdx: 0, darkInk: false, img: '' };
-    function renderStatusModalInner() {
-      const s = ALL_STATUS_POOL[modalStatusState.id - 1];
-      if (!s) return;
-      const preset = STATUS_FONT_PRESETS[modalStatusState.fontIdx % STATUS_FONT_PRESETS.length];
-      const txtColor = modalStatusState.darkInk ? '#121110' : '#ffffff';
-      const overlayBg = modalStatusState.darkInk ? 'linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.72))' : 'linear-gradient(180deg,rgba(0,0,0,0.34),rgba(0,0,0,0.76))';
-      document.getElementById('status-modal-inner').innerHTML = `
-        <img src="${modalStatusState.img}" onerror="this.onerror=null;this.src=createOfflineDesertSvg(${modalStatusState.id})" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(${modalStatusState.darkInk ? '1.05' : '0.58'});" />
-        <div style="position:absolute;inset:0;background:${overlayBg};pointer-events:none;"></div>
-        <div style="position:relative;z-index:2;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:6px;">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <button type="button" onclick="modalStatusState.fontIdx++;renderStatusModalInner()" class="pill-btn" style="background:rgba(0,0,0,0.55);color:#fff;">Aa ${preset.label}</button>
-            <button type="button" onclick="modalStatusState.darkInk=!modalStatusState.darkInk;renderStatusModalInner()" class="pill-btn" style="background:rgba(0,0,0,0.55);color:#fff;">${modalStatusState.darkInk ? 'Светлый текст' : 'Тёмный текст'}</button>
-            <button type="button" onclick="document.getElementById('custom-status-file-input').click()" class="pill-btn bg-emerald">${svgIcon('image-plus', 13)}<span>Своё фото</span></button>
-          </div>
-          <button type="button" aria-label="Закрыть редактор" onclick="document.getElementById('status-modal').classList.add('hidden')" class="pill-btn" style="background:rgba(0,0,0,0.6);color:#fff;padding:8px;">${svgIcon('x', 15)}</button>
-        </div>
-        <div style="position:relative;z-index:2;padding:20px;text-align:center;color:${txtColor};margin:auto;">
-          <p class="arabic-text" style="font-size:21px;margin:0 0 8px;">${s.arabic}</p>
-          <p class="${preset.cssClass}" style="font-size:15px;margin:0 0 8px;">${s.russian}</p>
-          <span style="font-size:10px;opacity:0.78;">${s.source}</span>
-        </div>
-        <div style="position:relative;z-index:2;padding:14px;display:flex;gap:8px;">
-          <button type="button" onclick="downloadStatusPng()" class="pill-btn bg-emerald" style="flex:1;padding:12px;">${svgIcon('download', 14)}<span>Скачать 1080×1920</span></button>
-          <button type="button" onclick="document.getElementById('status-modal').classList.add('hidden')" class="pill-btn bg-obsidian" style="padding:12px 16px;">Готово</button>
-        </div>
-      `;
-    }
-    window.renderStatusModalInner = renderStatusModalInner;
-    window.openStatusModal = (id, overrideImg) => {
-      const s = ALL_STATUS_POOL[id - 1];
-      if (!s) return;
+    const modalStatusState = {
+      id: 1,
+      fontIdx: 0,
+      darkInk: false,
+      img: '',
+      bgIdx: 0,
+      editOpen: false,
+      arabicText: '',
+      russianText: '',
+      sourceText: '',
+      readyDataUrl: '',
+      readyBlob: null
+    };
+
+    function syncModalTextFromPool(id) {
+      const s = ALL_STATUS_POOL[id - 1] || ALL_STATUS_POOL[0];
       modalStatusState.id = id;
       modalStatusState.fontIdx = s.fontIndex || 0;
-      modalStatusState.darkInk = false;
-      modalStatusState.img = overrideImg || REAL_NATURE_PHOTOS[(id - 1 + uiState.statusShuffle) % REAL_NATURE_PHOTOS.length];
-      renderStatusModalInner();
-      document.getElementById('status-modal').classList.remove('hidden');
-    };
-    window.downloadStatusPng = () => {
-      const s = ALL_STATUS_POOL[modalStatusState.id - 1];
-      if (!s) return;
+      modalStatusState.arabicText = s.arabic || '';
+      modalStatusState.russianText = s.russian || '';
+      modalStatusState.sourceText = s.source || '';
+    }
+
+    function wrapCanvasLines(ctx, text, maxWidth) {
+      const words = String(text || '').split(/\s+/).filter(Boolean);
+      const lines = [];
+      let cur = '';
+      for (const w of words) {
+        const test = cur ? cur + ' ' + w : w;
+        if (ctx.measureText(test).width > maxWidth && cur) {
+          lines.push(cur);
+          cur = w;
+        } else {
+          cur = test;
+        }
+      }
+      if (cur) lines.push(cur);
+      return lines.length ? lines : [''];
+    }
+
+    function preRenderStoryCanvas() {
       const c = document.createElement('canvas');
-      c.width = 1080; c.height = 1920;
+      c.width = 1080;
+      c.height = 1920;
       const ctx = c.getContext('2d');
-      const drawText = () => {
-        ctx.fillStyle = modalStatusState.darkInk ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.48)';
+      if (!ctx) return;
+
+      const drawOverlayAndText = () => {
+        ctx.fillStyle = modalStatusState.darkInk ? 'rgba(255,255,255,0.48)' : 'rgba(0,0,0,0.52)';
         ctx.fillRect(0, 0, 1080, 1920);
         ctx.fillStyle = modalStatusState.darkInk ? '#121110' : '#ffffff';
         ctx.textAlign = 'center';
+
+        // Арабский текст
         ctx.font = 'bold 54px "Scheherazade New", serif';
-        ctx.fillText(s.arabic, 540, 820, 920);
-        ctx.font = '600 42px Nunito, sans-serif';
-        const words = s.russian.split(' '), lines = [];
-        let cur = '';
-        words.forEach(w => { if ((cur + ' ' + w).length > 34) { lines.push(cur); cur = w; } else cur = cur ? cur + ' ' + w : w; });
-        if (cur) lines.push(cur);
-        lines.forEach((ln, idx) => ctx.fillText(ln, 540, 960 + idx * 58, 920));
+        const arLines = wrapCanvasLines(ctx, modalStatusState.arabicText, 920);
+        let y = 740 - Math.max(0, (arLines.length - 1) * 35);
+        arLines.forEach(ln => {
+          ctx.fillText(ln, 540, y, 940);
+          y += 74;
+        });
+
+        // Русский текст
+        y += 40;
+        ctx.font = '700 42px Nunito, sans-serif';
+        const ruLines = wrapCanvasLines(ctx, modalStatusState.russianText, 900);
+        ruLines.forEach(ln => {
+          ctx.fillText(ln, 540, y, 920);
+          y += 58;
+        });
+
+        // Источник
         ctx.font = 'bold 28px Nunito, sans-serif';
-        ctx.fillText(s.source + ' • AyaSpace', 540, 1740, 920);
-        const a = document.createElement('a');
-        a.href = c.toDataURL('image/png');
-        a.download = 'ayaspace-story-' + modalStatusState.id + '.png';
-        a.click();
-        AyaSoundEngine.complete();
+        ctx.fillText((modalStatusState.sourceText || 'AyaSpace') + ' • AyaSpace', 540, 1750, 920);
+
+        try {
+          modalStatusState.readyDataUrl = c.toDataURL('image/png');
+          c.toBlob(blob => { if (blob) modalStatusState.readyBlob = blob; }, 'image/png');
+        } catch {}
       };
+
       const im = new Image();
       im.crossOrigin = 'anonymous';
       im.onload = () => {
         const ratio = Math.max(1080 / im.width, 1920 / im.height);
         const w = im.width * ratio, h = im.height * ratio;
         ctx.drawImage(im, (1080 - w) / 2, (1920 - h) / 2, w, h);
-        drawText();
+        drawOverlayAndText();
       };
       im.onerror = () => {
         const g = ctx.createLinearGradient(0, 0, 1080, 1920);
-        g.addColorStop(0, '#6E1404'); g.addColorStop(1, '#FF6A00');
-        ctx.fillStyle = g; ctx.fillRect(0, 0, 1080, 1920);
-        drawText();
+        g.addColorStop(0, '#6E1404');
+        g.addColorStop(0.5, '#9E2A08');
+        g.addColorStop(1, '#FF6A00');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 1080, 1920);
+        drawOverlayAndText();
       };
-      im.src = modalStatusState.img;
+      im.src = modalStatusState.img || createOfflineDesertSvg(modalStatusState.id);
+    }
+
+    window.selectStatusQuoteInModal = (newId) => {
+      const total = ALL_STATUS_POOL.length;
+      const wrapped = ((Number(newId) - 1 + total) % total) + 1;
+      syncModalTextFromPool(wrapped);
+      renderStatusModalInner();
+    };
+
+    window.cycleStatusBgInModal = () => {
+      modalStatusState.bgIdx = (modalStatusState.bgIdx + 1) % REAL_NATURE_PHOTOS.length;
+      modalStatusState.img = REAL_NATURE_PHOTOS[modalStatusState.bgIdx];
+      renderStatusModalInner();
+    };
+
+    window.updateCustomStatusField = (field, val) => {
+      if (field === 'ar') modalStatusState.arabicText = val;
+      if (field === 'ru') modalStatusState.russianText = val;
+      if (field === 'src') modalStatusState.sourceText = val;
+      const arEl = document.getElementById('status-preview-ar');
+      const ruEl = document.getElementById('status-preview-ru');
+      const srcEl = document.getElementById('status-preview-src');
+      if (arEl) arEl.textContent = modalStatusState.arabicText;
+      if (ruEl) ruEl.textContent = modalStatusState.russianText;
+      if (srcEl) srcEl.textContent = modalStatusState.sourceText;
+      preRenderStoryCanvas();
+    };
+
+    function renderStatusModalInner() {
+      const preset = STATUS_FONT_PRESETS[modalStatusState.fontIdx % STATUS_FONT_PRESETS.length];
+      const txtColor = modalStatusState.darkInk ? '#121110' : '#ffffff';
+      const overlayBg = modalStatusState.darkInk ? 'linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.75))' : 'linear-gradient(180deg,rgba(0,0,0,0.34),rgba(0,0,0,0.78))';
+
+      document.getElementById('status-modal-inner').innerHTML = `
+        <!-- Панель выбора аята / цитаты и редактирования своего текста -->
+        <div class="sheet-card aya-stack-xs" style="padding:12px 14px;border-radius:24px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+            <span style="font-size:11.5px;font-weight:800;opacity:0.8;">Цитата / Аят (${modalStatusState.id} из ${ALL_STATUS_POOL.length})</span>
+            <div style="display:flex;gap:5px;">
+              <button type="button" onclick="selectStatusQuoteInModal(${modalStatusState.id - 1})" class="sheet-subcard pill-btn" style="padding:6px 10px;" aria-label="Предыдущая цитата">${svgIcon('arrow-left', 13)}</button>
+              <button type="button" onclick="selectStatusQuoteInModal(${modalStatusState.id + 1})" class="sheet-subcard pill-btn" style="padding:6px 10px;" aria-label="Следующая цитата">${svgIcon('arrow-right', 13)}</button>
+              <button type="button" onclick="modalStatusState.editOpen=!modalStatusState.editOpen;renderStatusModalInner()" class="pill-btn ${modalStatusState.editOpen ? 'bg-amber' : 'sheet-subcard'}" style="padding:6px 10px;font-size:11px;">${svgIcon('edit-3', 12)}<span>Свой текст</span></button>
+              <button type="button" aria-label="Закрыть конструктор" onclick="document.getElementById('status-modal').classList.add('hidden')" class="sheet-subcard pill-btn" style="padding:6px 9px;">${svgIcon('x', 14)}</button>
+            </div>
+          </div>
+          <select onchange="selectStatusQuoteInModal(Number(this.value))" class="sheet-subcard" style="width:100%;padding:9px 12px;border:0;font-size:12px;font-weight:700;outline:none;">
+            ${ALL_STATUS_POOL.map((item, idx) => `<option value="${idx + 1}" ${modalStatusState.id === idx + 1 ? 'selected' : ''}>${idx + 1}. ${escapeHtml(item.source)} — ${escapeHtml(item.russian.slice(0, 42))}...</option>`).join('')}
+          </select>
+          ${modalStatusState.editOpen ? `
+            <div class="aya-stack-xs" style="padding-top:4px;">
+              <input type="text" value="${escapeHtml(modalStatusState.arabicText)}" oninput="updateCustomStatusField('ar', this.value)" placeholder="Арабский текст (необязательно)..." class="sheet-subcard" style="width:100%;padding:8px 12px;border:0;font-size:13px;text-align:right;" />
+              <textarea rows="2" oninput="updateCustomStatusField('ru', this.value)" placeholder="Ваш текст цитаты или аята..." class="sheet-subcard" style="width:100%;padding:8px 12px;border:0;font-size:12.5px;resize:none;font-family:inherit;">${escapeHtml(modalStatusState.russianText)}</textarea>
+              <input type="text" value="${escapeHtml(modalStatusState.sourceText)}" oninput="updateCustomStatusField('src', this.value)" placeholder="Подпись / Источник (например: Сура Аш-Шарх • 94:6)" class="sheet-subcard" style="width:100%;padding:8px 12px;border:0;font-size:12px;" />
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Превью 9:16 сторис -->
+        <div style="position:relative;aspect-ratio:9/16;width:100%;max-width:${modalStatusState.editOpen ? '240px' : '295px'};margin:0 auto;border-radius:26px;overflow:hidden;background:#1c1917;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 18px 42px rgba(0,0,0,0.45);">
+          <img src="${modalStatusState.img}" onerror="this.onerror=null;this.src=createOfflineDesertSvg(${modalStatusState.id})" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(${modalStatusState.darkInk ? '1.05' : '0.58'});" />
+          <div style="position:absolute;inset:0;background:${overlayBg};pointer-events:none;"></div>
+          <div style="position:relative;z-index:2;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
+            <button type="button" onclick="modalStatusState.fontIdx++;renderStatusModalInner()" class="pill-btn" style="background:rgba(0,0,0,0.58);color:#fff;font-size:11px;padding:7px 11px;">Aa ${preset.label}</button>
+            <button type="button" onclick="modalStatusState.darkInk=!modalStatusState.darkInk;renderStatusModalInner()" class="pill-btn" style="background:rgba(0,0,0,0.58);color:#fff;font-size:11px;padding:7px 11px;">${modalStatusState.darkInk ? 'Светлый' : 'Тёмный'}</button>
+            <button type="button" onclick="cycleStatusBgInModal()" class="pill-btn" style="background:rgba(0,0,0,0.58);color:#fff;font-size:11px;padding:7px 11px;">${svgIcon('refresh-cw', 12)}<span>Фон</span></button>
+            <button type="button" onclick="document.getElementById('custom-status-file-input').click()" class="pill-btn bg-emerald" style="font-size:11px;padding:7px 11px;">${svgIcon('image-plus', 12)}<span>Фото</span></button>
+          </div>
+          <div style="position:relative;z-index:2;padding:18px;text-align:center;color:${txtColor};margin:auto;max-height:72%;overflow-y:auto;">
+            <p id="status-preview-ar" class="arabic-text" style="font-size:20px;margin:0 0 8px;">${escapeHtml(modalStatusState.arabicText)}</p>
+            <p id="status-preview-ru" class="${preset.cssClass}" style="font-size:14.5px;margin:0 0 8px;line-height:1.42;">${escapeHtml(modalStatusState.russianText)}</p>
+            <span id="status-preview-src" style="font-size:10px;opacity:0.82;font-weight:800;text-transform:uppercase;">${escapeHtml(modalStatusState.sourceText)}</span>
+          </div>
+          <div style="position:relative;z-index:2;padding:10px 14px;text-align:center;font-size:10px;color:${txtColor};opacity:0.65;font-weight:700;">
+            1080×1920 Full HD • AyaSpace
+          </div>
+        </div>
+
+        <!-- Кнопки действий: акцент на WhatsApp и мгновенное сохранение картинки -->
+        <div class="sheet-card aya-stack-xs" style="padding:12px;border-radius:24px;">
+          <button type="button" onclick="shareStatusWhatsApp()" class="pill-btn spring-tap" style="width:100%;padding:14px;font-size:13.5px;background:#25D366;color:#fff;box-shadow:0 10px 24px rgba(37,211,102,0.35);">
+            ${svgIcon('whatsapp', 17)}<span>Поделиться в WhatsApp (Сторис / Чат)</span>
+          </button>
+          <div style="display:flex;gap:8px;">
+            <button type="button" onclick="downloadStatusPng()" class="pill-btn bg-obsidian spring-tap" style="flex:1;padding:12px;font-size:12px;">
+              ${svgIcon('download', 14)}<span>Скачать 1080×1920</span>
+            </button>
+            <button type="button" onclick="document.getElementById('status-modal').classList.add('hidden')" class="pill-btn sheet-subcard" style="padding:12px 16px;font-size:12px;">Готово</button>
+          </div>
+        </div>
+      `;
+      preRenderStoryCanvas();
+    }
+    window.renderStatusModalInner = renderStatusModalInner;
+
+    window.openStatusModal = (id, overrideImg) => {
+      syncModalTextFromPool(id || 1);
+      modalStatusState.darkInk = false;
+      modalStatusState.editOpen = false;
+      modalStatusState.bgIdx = ((id || 1) - 1 + uiState.statusShuffle) % REAL_NATURE_PHOTOS.length;
+      modalStatusState.img = overrideImg || REAL_NATURE_PHOTOS[modalStatusState.bgIdx];
+      renderStatusModalInner();
+      document.getElementById('status-modal').classList.remove('hidden');
+    };
+
+    window.shareStatusWhatsApp = async () => {
+      AyaSoundEngine.complete();
+      const shareText = (modalStatusState.arabicText ? modalStatusState.arabicText + '\n\n' : '') +
+        modalStatusState.russianText + '\n— ' + (modalStatusState.sourceText || 'AyaSpace');
+      try {
+        if (modalStatusState.readyBlob && navigator.canShare) {
+          const file = new File([modalStatusState.readyBlob], 'ayaspace-story-' + modalStatusState.id + '.png', { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: 'Сторис AyaSpace',
+              text: shareText
+            });
+            return;
+          }
+        }
+      } catch {}
+      const waUrl = 'https://wa.me/?text=' + encodeURIComponent(shareText);
+      const a = document.createElement('a');
+      a.href = waUrl;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+
+    window.downloadStatusPng = async () => {
+      AyaSoundEngine.complete();
+      const fileName = 'ayaspace-story-' + modalStatusState.id + '.png';
+      // На iPhone PWA / iOS Safari используем системное меню Поделиться -> «Сохранить изображение» (100% сохраняет в Фото)
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isIOS && modalStatusState.readyBlob && navigator.canShare) {
+        try {
+          const file = new File([modalStatusState.readyBlob], fileName, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: 'Сохранить сторис 1080×1920'
+            });
+            return;
+          }
+        } catch {}
+      }
+      if (modalStatusState.readyDataUrl) {
+        const a = document.createElement('a');
+        a.href = modalStatusState.readyDataUrl;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        preRenderStoryCanvas();
+      }
     };
 
     let cityDebounce = null;
@@ -2197,11 +2731,15 @@
       } else if (uiState.onbStep === 3) {
         box.innerHTML = `
           <div class="aya-stack-sm">
-            <h2 style="margin:0;font-size:20px;font-weight:800;color:#fff;">Мазхаб (${appState.city})</h2>
+            <h2 style="margin:0;font-size:20px;font-weight:800;color:#fff;">Мазхаб и уведомления (${appState.city})</h2>
             <div class="grid-2">
               ${Object.keys(MADHHAB_INFO).map(k => `<button type="button" onclick="selectMadhhab('${k}')" class="pill-btn spring-tap" style="background:${appState.madhhabKey===k?'#fff':'rgba(255,255,255,0.2)'};color:${appState.madhhabKey===k?'#121110':'#fff'};padding:12px;">${MADHHAB_INFO[k].name}</button>`).join('')}
             </div>
-            <button type="button" onclick="exportPrayersToICS(false)" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:12px;">${svgIcon('calendar-check-2', 14)}<span>Добавить 5 намазов на 30 дней (.ics)</span></button>
+            <div style="background:rgba(0,0,0,0.25);padding:12px 14px;border-radius:20px;color:#fff;font-size:12px;line-height:1.45;">
+              <b>🌙 Уведомления в Календарь iPhone / Android:</b><br/>
+              Добавляет расписание всех 5 намазов на 30 дней с напоминанием за 10 минут и в момент намаза (работает даже без интернета).
+            </div>
+            <button type="button" onclick="exportPrayersToICS(false)" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:14px;font-size:13px;box-shadow:0 10px 24px rgba(16,185,129,0.35);">${svgIcon('calendar-check-2', 16)}<span>Добавить 5 намазов на 30 дней (.ics)</span></button>
             <button type="button" onclick="uiState.onbStep=4;renderOnboarding()" class="pill-btn spring-tap" style="width:100%;padding:14px;background:#fff;color:#121110;"><span>Далее</span>${svgIcon('arrow-right', 15)}</button>
           </div>`;
       } else {
@@ -2210,6 +2748,10 @@
             <h2 style="margin:0;font-size:22px;font-weight:800;color:#fff;">Добавьте на экран «Домой»</h2>
             <div style="background:#fff;color:#121110;padding:14px;border-radius:20px;font-size:12px;"><b>iPhone (Safari):</b> Поделиться → На экран «Домой»</div>
             <div style="background:#fff;color:#121110;padding:14px;border-radius:20px;font-size:12px;"><b>Android (Chrome):</b> Меню браузера → Установить приложение</div>
+            <div style="background:rgba(0,0,0,0.22);color:#fff;padding:12px 14px;border-radius:18px;font-size:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span>Вопросы и поддержка в Telegram:</span>
+              <a href="${TELEGRAM_AUTHOR_URL}" target="_blank" rel="noopener noreferrer" style="color:#fff;font-weight:800;text-decoration:underline;">${TELEGRAM_AUTHOR_HANDLE}</a>
+            </div>
             <button type="button" onclick="localStorage.setItem('aya_onboarding_done','true');document.getElementById('onboarding-overlay').classList.add('hidden');AyaSoundEngine.complete()" class="pill-btn bg-obsidian spring-tap" style="width:100%;padding:16px;">${svgIcon('check', 15)}<span>Войти в AyaSpace</span></button>
           </div>`;
       }
