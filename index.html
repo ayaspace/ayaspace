@@ -475,7 +475,8 @@
       .grid-madhhab { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
 
-    .pill-btn { padding: 8px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; text-decoration: none; }
+    .pill-btn { padding: 8px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; text-decoration: none; max-width: 100%; box-sizing: border-box; }
+    .pill-btn-wrap { white-space: normal; text-align: center; line-height: 1.3; max-width: 100%; box-sizing: border-box; }
     .bg-obsidian { background: #121110; color: #fff; }
     html.dark .bg-obsidian { background: #2c1d17; border: 1px solid rgba(255, 255, 255, 0.24); color: #fff; }
     .bg-amber { background: #ff6600; color: #fff; }
@@ -866,15 +867,15 @@
     const FAQ_ITEMS = [
       {
         q: 'Как установить уведомления о намазе в Календарь iPhone / Android?',
-        a: '1. На главной странице или в Настройках нажмите зелёную кнопку «Календарь» (или «Все 5 намазов на 30 дней .ics»).\n2. Откроется окно с прямой кнопкой «Открыть в Календаре iPhone / Android» — нажмите на неё.\n3. В появившемся системном окне нажмите «Добавить все» (в правом верхнем углу). Готово! Телефон будет сам напоминать за 10 минут до намаза и в момент наступления намаза даже без интернета.'
+        a: '1. На главной странице или в Настройках нажмите кнопку «Календарь» (или «Все 5 намазов на 30 дней .ics»).\n2. Если вы открыли приложение с экрана «Домой» (ярлык), нажмите зелёную кнопку «Открыть в Safari и добавить в Календарь». Если открылся встроенный просмотр с компасом 🧭 внизу справа — нажмите на 🧭 («Открыть в Safari»).\n3. В Safari нажмите зелёную кнопку «Скачать календарь (.ics)» → «Загрузить» → откройте файл в Загрузках (↓) → нажмите «Добавить все» вверху справа.'
       },
       {
-        q: 'Почему не открывается календарь, когда приложение уже на главном экране (Домой)?',
-        a: 'На iPhone в режиме иконки на экране «Домой» (PWA) система iOS блокирует обычную загрузку файлов с задержкой сети. Мы полностью исправили это: теперь расписание формируется мгновенно за 0 секунд без ожидания сети и открывается через прямую системную ссылку Календаря iOS. Просто нажмите кнопку «Календарь» → «Открыть в Календаре iPhone».'
+        q: 'Что делать после нажатия чёрной кнопки «Поделиться файлом (.ics)»?',
+        a: 'Когда откроется стандартное меню iPhone «Поделиться», выберите один из двух простых вариантов:\n• «Сохранить в Файлы» → затем откройте приложение «Файлы» и нажмите на сохранённый файл .ics → «Добавить все».\n• Отправить себе в Telegram («Избранное») или WhatsApp → нажать на отправленный файл прямо в чате → «Добавить все».'
       },
       {
         q: 'Как удалить или отключить уведомления календаря намазов с телефона?',
-        a: 'Удалить все добавленные напоминания можно за 5 секунд:\n• На iPhone: откройте стандартное приложение «Календарь» → в самом низу экрана нажмите «Календари» → если расписание добавлено в отдельный календарь, нажмите «i» рядом с ним и выберите «Удалить календарь». Либо в поиске приложения «Календарь» введите «намаз» и удалите ненужные события.\n• Настройки iOS: Настройки → Календарь → Учётные записи → Подписные календари → Удалить.'
+        a: 'Удалить все добавленные напоминания можно за 5 секунд:\n• Совет при добавлении: на экране «Добавить все» нажмите строку «Календарь» и выберите/создайте отдельный календарь «Намаз».\n• Чтобы удалить потом: откройте приложение «Календарь» → внизу нажмите «Календари» → нажмите «i» рядом с календарём «Намаз» → «Удалить календарь». Либо в поиске Календаря введите «Намаз» и удалите ненужные события.'
       },
       {
         q: 'Как поделиться картинкой статуса в WhatsApp или сохранить в Галерею iPhone?',
@@ -930,7 +931,9 @@
       'share-2': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></g>',
       'edit-3': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></g>',
       'chevron-down': '<path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
-      'help-circle': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><circle cx="12" cy="17.2" r="0.6" fill="currentColor"/></g>'
+      'help-circle': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><circle cx="12" cy="17.2" r="0.6" fill="currentColor"/></g>',
+      'external-link': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></g>',
+      'copy': '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></g>'
     };
 
     function svgIcon(name, size = 16, style = '', cls = '') {
@@ -1284,76 +1287,155 @@
       lines.push('END:VCALENDAR');
       const icsContent = lines.join('\r\n');
       const fileName = 'ayaspace-' + (fajrOnly ? 'fajr-' : 'namaz-') + mShort + '-30days.ics';
-      const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-      return { icsContent, fileName, dataUri, calTitle };
+      if (lastGeneratedIcsBlobUrl) {
+        try { URL.revokeObjectURL(lastGeneratedIcsBlobUrl); } catch {}
+      }
+      const icsBlob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      lastGeneratedIcsBlobUrl = URL.createObjectURL(icsBlob);
+      return { icsContent, fileName, blobUrl: lastGeneratedIcsBlobUrl, calTitle, fajrOnly };
     }
 
     let lastGeneratedIcs = null;
+    let lastGeneratedIcsBlobUrl = null;
+
+    function isIosStandalonePwa() {
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function buildSafariExportUrl(fajrOnly = false) {
+      const u = new URL(window.location.href);
+      u.hash = '';
+      u.searchParams.set('autostart', '1');
+      u.searchParams.set('cal_export', fajrOnly ? 'fajr' : 'all');
+      u.searchParams.set('city', appState.city || 'Москва');
+      u.searchParams.set('lat', String(appState.lat || 55.7558));
+      u.searchParams.set('lng', String(appState.lng || 37.6173));
+      if (appState.timezone) u.searchParams.set('tz', appState.timezone);
+      u.searchParams.set('school', String(appState.school));
+      u.searchParams.set('madhhab', appState.madhhabKey || 'hanafi');
+      return u.toString();
+    }
+
+    function setCalendarHelperStatus(html, isWarn = false) {
+      const statusEl = document.getElementById('cal-action-status');
+      if (!statusEl) return;
+      statusEl.innerHTML = html;
+      statusEl.classList.remove('hidden');
+      statusEl.style.background = isWarn ? 'rgba(255,102,0,0.14)' : 'rgba(16,185,129,0.14)';
+      statusEl.style.border = isWarn ? '1px solid rgba(255,102,0,0.35)' : '1px solid rgba(16,185,129,0.35)';
+    }
+
+    window.onOpenSafariCalendarClick = () => {
+      setCalendarHelperStatus('Открываем страницу в браузере Safari. Если откроется окно предпросмотра — нажмите значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»), а затем нажмите зелёную кнопку.');
+    };
+
+    window.onDownloadIcsClick = () => {
+      setCalendarHelperStatus('Файл сформирован! В окне Safari нажмите <b>«Загрузить»</b> → откройте значок <b>↓ Загрузки</b> у адресной строки → нажмите на файл → <b>«Добавить все»</b>.<br/><span style="opacity:0.8;">Если загрузка не началась (вы открыли из ярлыка «Домой»), нажмите значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»).</span>');
+    };
+
+    window.copySafariCalendarLink = async () => {
+      if (!lastGeneratedIcs) return;
+      const safariUrl = buildSafariExportUrl(lastGeneratedIcs.fajrOnly);
+      try {
+        await navigator.clipboard.writeText(safariUrl);
+        setCalendarHelperStatus('Ссылка скопирована! Откройте приложение <b>Safari</b> на iPhone, вставьте ссылку в адресную строку и нажмите зелёную кнопку.');
+      } catch {
+        setCalendarHelperStatus('Нажмите зелёную кнопку «Открыть в Safari» выше — откроется та же страница с вашим городом.', true);
+      }
+    };
+
     window.shareIcsCalendarFile = async () => {
       if (!lastGeneratedIcs) return;
+      const safariUrl = buildSafariExportUrl(lastGeneratedIcs.fajrOnly);
       try {
-        const file = new File([lastGeneratedIcs.icsContent], lastGeneratedIcs.fileName, { type: 'text/calendar;charset=utf-8' });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        const file = new File([lastGeneratedIcs.icsContent], lastGeneratedIcs.fileName, { type: 'text/calendar' });
+        if (navigator.share) {
+          if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file] });
+            setCalendarHelperStatus('Готово! Если вы выбрали <b>«Сохранить в Файлы»</b> — откройте приложение «Файлы» и нажмите на файл <b>.ics</b> → <b>«Добавить все»</b>. Если отправили в Telegram/WhatsApp — нажмите на файл прямо в чате.');
+            return;
+          }
           await navigator.share({
-            files: [file],
             title: lastGeneratedIcs.calTitle,
-            text: 'Расписание намазов на 30 дней — ' + appState.city
+            text: 'Откройте в Safari для добавления расписания намазов (' + appState.city + '):',
+            url: safariUrl
           });
+          setCalendarHelperStatus('В открывшемся меню выберите <b>«Открыть в Safari»</b> или <b>«Скопировать»</b>, затем откройте ссылку в Safari и нажмите зелёную кнопку.');
           return;
         }
-      } catch {}
-      window.location.assign(lastGeneratedIcs.dataUri);
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;
+      }
+
+      if (!isIosStandalonePwa()) {
+        const a = document.createElement('a');
+        a.href = lastGeneratedIcs.blobUrl;
+        a.download = lastGeneratedIcs.fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setCalendarHelperStatus('Файл <b>' + escapeHtml(lastGeneratedIcs.fileName) + '</b> загружен. Откройте его из Загрузок (↓) и нажмите <b>«Добавить все»</b>.');
+      } else {
+        window.copySafariCalendarLink();
+      }
     };
 
     function exportPrayersToICS(fajrOnly = false) {
       try {
         const payload = buildIcsContentSync(fajrOnly);
         lastGeneratedIcs = payload;
+        const isStandalone = isIosStandalonePwa();
+        const safariUrl = buildSafariExportUrl(fajrOnly);
         AyaSoundEngine.complete();
 
-        // Открываем вспомогательное модальное окно с прямой ссылкой data:text/calendar (100% работает в iOS PWA на главном экране)
         const box = document.getElementById('calendar-helper-box');
         const modal = document.getElementById('calendar-helper-modal');
         if (box && modal) {
+          const primaryBtnHtml = isStandalone
+            ? `<a href="${escapeHtml(safariUrl)}" target="_blank" rel="noopener noreferrer" onclick="onOpenSafariCalendarClick()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
+                 ${svgIcon('external-link', 17)}<span>Открыть в Safari и добавить (.ics)</span>
+               </a>`
+            : `<a href="${payload.blobUrl}" download="${escapeHtml(payload.fileName)}" onclick="onDownloadIcsClick()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
+                 ${svgIcon('calendar-check-2', 17)}<span>Скачать календарь (.ics)</span>
+               </a>`;
+
+          const guideHtml = isStandalone
+            ? `<b>Почему так в режиме «Домой»:</b> iPhone блокирует скачивание файлов календаря <b>.ics</b> внутри ярлыка на рабочем столе — поэтому открываем эту же страницу в Safari.<br/><br/>
+               <b>1.</b> Нажмите зелёную кнопку <b>«Открыть в Safari»</b>. Если сверху/снизу появится рамка браузера — нажмите на значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»).<br/>
+               <b>2.</b> В Safari нажмите зелёную кнопку <b>«Скачать календарь (.ics)»</b> → <b>«Загрузить»</b> → откройте файл (значок <b>↓</b> у адресной строки) → нажмите <b>«Добавить все»</b>.<br/>
+               <b>3. Чёрная кнопка «Поделиться»:</b> выберите в меню iPhone <b>«Сохранить в Файлы»</b> или отправьте в свой Telegram («Избранное»), а затем нажмите на файл → <b>«Добавить все»</b>.`
+            : `<b>Шаг 1 (Зелёная кнопка):</b> нажмите <b>«Скачать календарь (.ics)»</b> и подтвердите <b>«Загрузить»</b>. Если загрузка не пошла — нажмите значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»).<br/>
+               <b>Шаг 2 (В iPhone):</b> нажмите на значок <b>↓ Загрузки</b> рядом с адресной строкой Safari → откройте файл → нажмите <b>«Добавить все»</b> в правом верхнем углу.<br/>
+               <b>Чёрная кнопка «Поделиться»:</b> выберите <b>«Сохранить в Файлы»</b> или отправьте себе в Telegram/WhatsApp, затем нажмите на файл в чате → <b>«Добавить все»</b>.<br/>
+               <b>Как легко удалить позже:</b> при добавлении нажмите строку <b>«Календарь»</b> и выберите отдельный календарь «Намаз».`;
+
           box.innerHTML = `
-            <div class="aya-stack-sm">
+            <div class="aya-stack-sm" style="max-height:82vh;overflow-y:auto;">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-                <div style="display:flex;align-items:center;gap:10px;">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;">
                   <span style="width:40px;height:40px;border-radius:9999px;background:rgba(16,185,129,0.16);color:#10b981;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${svgIcon('calendar-check-2', 20)}</span>
-                  <div>
+                  <div style="min-width:0;">
                     <h3 style="margin:0;font-size:16px;font-weight:800;">Календарь намазов готов</h3>
-                    <span style="font-size:11.5px;opacity:0.65;">${escapeHtml(payload.calTitle)} • 30 дней</span>
+                    <span style="font-size:11.5px;opacity:0.68;">${escapeHtml(payload.calTitle)} • 30 дней</span>
                   </div>
                 </div>
-                <button type="button" aria-label="Закрыть" onclick="document.getElementById('calendar-helper-modal').classList.add('hidden')" class="sheet-subcard pill-btn" style="padding:8px;">${svgIcon('x', 15)}</button>
+                <button type="button" aria-label="Закрыть" onclick="document.getElementById('calendar-helper-modal').classList.add('hidden')" class="sheet-subcard pill-btn" style="padding:8px;flex-shrink:0;">${svgIcon('x', 15)}</button>
               </div>
-              <p style="margin:0;font-size:12.5px;opacity:0.82;line-height:1.45;">
+              <p style="margin:0;font-size:12.5px;opacity:0.85;line-height:1.45;">
                 В расписание уже встроены <b>2 автоматических уведомления</b> на каждый намаз: за 10 минут до начала и точно в момент наступления.
               </p>
-              <a href="${payload.dataUri}" download="${payload.fileName}" class="pill-btn bg-emerald spring-tap" style="width:100%;padding:15px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
-                ${svgIcon('calendar-check-2', 17)}<span>Открыть в Календаре iPhone / Android</span>
-              </a>
-              <button type="button" onclick="shareIcsCalendarFile()" class="pill-btn bg-obsidian spring-tap" style="width:100%;padding:13px;font-size:12.5px;">
-                ${svgIcon('share-2', 15)}<span>Через меню «Поделиться» (если приложение на Домой)</span>
+              ${primaryBtnHtml}
+              <button type="button" onclick="shareIcsCalendarFile()" class="pill-btn pill-btn-wrap bg-obsidian spring-tap" style="width:100%;padding:13px 16px;font-size:13px;">
+                ${svgIcon('share-2', 16)}<span>Поделиться файлом (.ics)</span>
               </button>
-              <div class="sheet-subcard" style="padding:12px;font-size:11.5px;line-height:1.45;opacity:0.85;">
-                <b>Как добавить на iPhone:</b> нажмите зелёную кнопку выше → в открывшемся окне iOS нажмите <b>«Добавить все»</b> (или «Подписаться»).<br/>
-                <b>Как удалить при необходимости:</b> откройте стандартное приложение «Календарь» → «Календари» внизу экрана → выберите список или удалите ненужные события.
+              <div id="cal-action-status" class="hidden" style="padding:10px 12px;border-radius:14px;font-size:12px;line-height:1.45;"></div>
+              <div class="sheet-subcard" style="padding:12px;font-size:11.5px;line-height:1.5;opacity:0.9;">
+                ${guideHtml}
+                ${isStandalone ? `<div style="margin-top:10px;"><button type="button" onclick="copySafariCalendarLink()" class="pill-btn pill-btn-wrap" style="width:100%;padding:9px 12px;background:rgba(128,128,128,0.14);color:inherit;font-size:11.5px;">${svgIcon('copy', 13)}<span>Скопировать ссылку для Safari</span></button></div>` : ''}
               </div>
             </div>
           `;
           modal.classList.remove('hidden');
-        }
-
-        // Одновременно запускаем мгновенное открытие в рамках синхронного жеста пользователя
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        if (!isStandalone) {
-          const a = document.createElement('a');
-          a.href = payload.dataUri;
-          a.download = payload.fileName;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
         }
         return true;
       } catch {
@@ -2814,12 +2896,30 @@
     setInterval(() => { if (document.visibilityState === 'visible') tickClockAndNotifications(); }, 1000);
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') tickClockAndNotifications(); });
 
-    const autostart = new URLSearchParams(window.location.search).get('autostart') === '1';
-    if (!autostart && readStr('aya_onboarding_done', 'false') !== 'true') openOnboarding();
+    const urlParams = new URLSearchParams(window.location.search);
+    const autostart = urlParams.get('autostart') === '1';
+    const calExportMode = urlParams.get('cal_export');
+    if (calExportMode === 'all' || calExportMode === 'fajr') {
+      const pCity = urlParams.get('city');
+      const pLat = parseFloat(urlParams.get('lat') || '');
+      const pLng = parseFloat(urlParams.get('lng') || '');
+      const pTz = urlParams.get('tz');
+      const pSchool = urlParams.get('school');
+      const pMadhhab = urlParams.get('madhhab');
+      if (pCity) appState.city = pCity;
+      if (Number.isFinite(pLat) && Number.isFinite(pLng)) { appState.lat = pLat; appState.lng = pLng; }
+      if (pTz) appState.timezone = pTz;
+      if (pSchool === '0' || pSchool === '1') appState.school = Number(pSchool);
+      if (pMadhhab && MADHHAB_INFO[pMadhhab]) appState.madhhabKey = pMadhhab;
+    }
+    if (!autostart && !calExportMode && readStr('aya_onboarding_done', 'false') !== 'true') openOnboarding();
     updateNavPositions();
     renderHeaderAndHero();
     renderPrayerTab();
     refreshPrayerTimes();
+    if (calExportMode === 'all' || calExportMode === 'fajr') {
+      exportPrayersToICS(calExportMode === 'fajr');
+    }
   </script>
 </body>
 </html>
