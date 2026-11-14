@@ -867,15 +867,15 @@
     const FAQ_ITEMS = [
       {
         q: 'Как установить уведомления о намазе в Календарь iPhone / Android?',
-        a: '1. На главной странице или в Настройках нажмите кнопку «Календарь» (или «Все 5 намазов на 30 дней .ics»).\n2. Если вы открыли приложение с экрана «Домой» (ярлык), нажмите зелёную кнопку «Открыть в Safari и добавить в Календарь». Если открылся встроенный просмотр с компасом 🧭 внизу справа — нажмите на 🧭 («Открыть в Safari»).\n3. В Safari нажмите зелёную кнопку «Скачать календарь (.ics)» → «Загрузить» → откройте файл в Загрузках (↓) → нажмите «Добавить все» вверху справа.'
+        a: '• В Safari: нажмите «Календарь» → зелёную кнопку «Скачать календарь (.ics)» → «Загрузить» → откройте файл в Загрузках (↓) → нажмите «Добавить все».\n• Если приложение открыто с экрана «Домой»: нажмите зелёную кнопку «Добавить в Календарь (.ics)» и в меню iPhone выберите «Календарь» или «Сохранить в Файлы» → откройте файл → «Добавить все». Либо нажмите чёрную кнопку «Скопировать ссылку для Safari» и откройте её в Safari.'
       },
       {
-        q: 'Что делать после нажатия чёрной кнопки «Поделиться файлом (.ics)»?',
-        a: 'Когда откроется стандартное меню iPhone «Поделиться», выберите один из двух простых вариантов:\n• «Сохранить в Файлы» → затем откройте приложение «Файлы» и нажмите на сохранённый файл .ics → «Добавить все».\n• Отправить себе в Telegram («Избранное») или WhatsApp → нажать на отправленный файл прямо в чате → «Добавить все».'
+        q: 'Что делать, если меню «Поделиться» не показывает Календарь?',
+        a: 'Выберите в меню «Сохранить в Файлы» (и откройте файл в приложении «Файлы») или отправьте файл себе в Telegram («Избранное») / WhatsApp — нажмите на него в чате, и iPhone сразу откроет «Добавить все».'
       },
       {
         q: 'Как удалить или отключить уведомления календаря намазов с телефона?',
-        a: 'Удалить все добавленные напоминания можно за 5 секунд:\n• Совет при добавлении: на экране «Добавить все» нажмите строку «Календарь» и выберите/создайте отдельный календарь «Намаз».\n• Чтобы удалить потом: откройте приложение «Календарь» → внизу нажмите «Календари» → нажмите «i» рядом с календарём «Намаз» → «Удалить календарь». Либо в поиске Календаря введите «Намаз» и удалите ненужные события.'
+        a: '• Совет при добавлении: на экране «Добавить все» нажмите строку «Календарь» и выберите/создайте отдельный календарь «Намаз».\n• Чтобы удалить потом: откройте приложение «Календарь» → внизу нажмите «Календари» → нажмите «i» рядом с календарём «Намаз» → «Удалить календарь».'
       },
       {
         q: 'Как поделиться картинкой статуса в WhatsApp или сохранить в Галерею iPhone?',
@@ -1298,8 +1298,14 @@
     let lastGeneratedIcs = null;
     let lastGeneratedIcsBlobUrl = null;
 
+    function isIosDevice() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+
     function isIosStandalonePwa() {
-      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      return standalone && isIosDevice();
     }
 
     function buildSafariExportUrl(fajrOnly = false) {
@@ -1325,12 +1331,8 @@
       statusEl.style.border = isWarn ? '1px solid rgba(255,102,0,0.35)' : '1px solid rgba(16,185,129,0.35)';
     }
 
-    window.onOpenSafariCalendarClick = () => {
-      setCalendarHelperStatus('Открываем страницу в браузере Safari. Если откроется окно предпросмотра — нажмите значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»), а затем нажмите зелёную кнопку.');
-    };
-
     window.onDownloadIcsClick = () => {
-      setCalendarHelperStatus('Файл сформирован! В окне Safari нажмите <b>«Загрузить»</b> → откройте значок <b>↓ Загрузки</b> у адресной строки → нажмите на файл → <b>«Добавить все»</b>.<br/><span style="opacity:0.8;">Если загрузка не началась (вы открыли из ярлыка «Домой»), нажмите значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»).</span>');
+      setCalendarHelperStatus('Нажмите <b>«Загрузить»</b> → откройте файл в Загрузках (значок <b>↓</b> в Safari) → нажмите <b>«Добавить все»</b>.');
     };
 
     window.copySafariCalendarLink = async () => {
@@ -1338,10 +1340,34 @@
       const safariUrl = buildSafariExportUrl(lastGeneratedIcs.fajrOnly);
       try {
         await navigator.clipboard.writeText(safariUrl);
-        setCalendarHelperStatus('Ссылка скопирована! Откройте приложение <b>Safari</b> на iPhone, вставьте ссылку в адресную строку и нажмите зелёную кнопку.');
+        setCalendarHelperStatus('<b>Ссылка скопирована!</b> Откройте браузер <b>Safari</b>, вставьте ссылку в строку адреса и нажмите там зелёную кнопку.');
       } catch {
-        setCalendarHelperStatus('Нажмите зелёную кнопку «Открыть в Safari» выше — откроется та же страница с вашим городом.', true);
+        setCalendarHelperStatus('Скопируйте ссылку ниже и откройте её в Safari:<br/><input type="text" readonly value="' + escapeHtml(safariUrl) + '" onclick="this.select()" style="width:100%;margin-top:6px;padding:6px 8px;border-radius:8px;border:1px solid rgba(128,128,128,0.3);font-size:11px;background:rgba(255,255,255,0.7);color:#121110;" />', true);
       }
+    };
+
+    window.openCalendarFromHomeScreenPwa = async () => {
+      if (!lastGeneratedIcs) return;
+      const file = new File([lastGeneratedIcs.icsContent], lastGeneratedIcs.fileName, { type: 'text/calendar' });
+      const safariUrl = buildSafariExportUrl(lastGeneratedIcs.fajrOnly);
+      try {
+        if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+          await navigator.share({ files: [file] });
+          setCalendarHelperStatus('В меню выберите <b>«Календарь»</b> или <b>«Сохранить в Файлы»</b> (или отправьте себе в Telegram), затем нажмите на файл → <b>«Добавить все»</b>.');
+          return;
+        }
+        if (navigator.share) {
+          await navigator.share({
+            title: lastGeneratedIcs.calTitle,
+            url: safariUrl
+          });
+          setCalendarHelperStatus('Выберите <b>«Открыть в Safari»</b> или <b>«Скопировать»</b> и откройте ссылку в Safari.');
+          return;
+        }
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;
+      }
+      window.copySafariCalendarLink();
     };
 
     window.shareIcsCalendarFile = async () => {
@@ -1352,15 +1378,14 @@
         if (navigator.share) {
           if (!navigator.canShare || navigator.canShare({ files: [file] })) {
             await navigator.share({ files: [file] });
-            setCalendarHelperStatus('Готово! Если вы выбрали <b>«Сохранить в Файлы»</b> — откройте приложение «Файлы» и нажмите на файл <b>.ics</b> → <b>«Добавить все»</b>. Если отправили в Telegram/WhatsApp — нажмите на файл прямо в чате.');
+            setCalendarHelperStatus('Если выбрали <b>«Сохранить в Файлы»</b> или <b>Telegram</b> — откройте файл <b>.ics</b> и нажмите <b>«Добавить все»</b>.');
             return;
           }
           await navigator.share({
             title: lastGeneratedIcs.calTitle,
-            text: 'Откройте в Safari для добавления расписания намазов (' + appState.city + '):',
             url: safariUrl
           });
-          setCalendarHelperStatus('В открывшемся меню выберите <b>«Открыть в Safari»</b> или <b>«Скопировать»</b>, затем откройте ссылку в Safari и нажмите зелёную кнопку.');
+          setCalendarHelperStatus('Выберите <b>«Открыть в Safari»</b> или <b>«Скопировать»</b>.');
           return;
         }
       } catch (err) {
@@ -1374,7 +1399,7 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        setCalendarHelperStatus('Файл <b>' + escapeHtml(lastGeneratedIcs.fileName) + '</b> загружен. Откройте его из Загрузок (↓) и нажмите <b>«Добавить все»</b>.');
+        setCalendarHelperStatus('Файл <b>' + escapeHtml(lastGeneratedIcs.fileName) + '</b> загружен. Откройте его и нажмите <b>«Добавить все»</b>.');
       } else {
         window.copySafariCalendarLink();
       }
@@ -1385,29 +1410,40 @@
         const payload = buildIcsContentSync(fajrOnly);
         lastGeneratedIcs = payload;
         const isStandalone = isIosStandalonePwa();
-        const safariUrl = buildSafariExportUrl(fajrOnly);
         AyaSoundEngine.complete();
 
         const box = document.getElementById('calendar-helper-box');
         const modal = document.getElementById('calendar-helper-modal');
         if (box && modal) {
           const primaryBtnHtml = isStandalone
-            ? `<a href="${escapeHtml(safariUrl)}" target="_blank" rel="noopener noreferrer" onclick="onOpenSafariCalendarClick()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
-                 ${svgIcon('external-link', 17)}<span>Открыть в Safari и добавить (.ics)</span>
-               </a>`
+            ? `<button type="button" onclick="openCalendarFromHomeScreenPwa()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
+                 ${svgIcon('calendar-check-2', 17)}<span>Добавить в Календарь (.ics)</span>
+               </button>`
             : `<a href="${payload.blobUrl}" download="${escapeHtml(payload.fileName)}" onclick="onDownloadIcsClick()" class="pill-btn pill-btn-wrap bg-emerald spring-tap" style="width:100%;padding:14px 16px;font-size:13.5px;text-decoration:none;box-shadow:0 10px 24px rgba(16,185,129,0.3);">
                  ${svgIcon('calendar-check-2', 17)}<span>Скачать календарь (.ics)</span>
                </a>`;
 
+          const secondaryBtnHtml = isStandalone
+            ? `<button type="button" onclick="copySafariCalendarLink()" class="pill-btn pill-btn-wrap bg-obsidian spring-tap" style="width:100%;padding:13px 16px;font-size:13px;">
+                 ${svgIcon('copy', 16)}<span>Скопировать ссылку для Safari</span>
+               </button>`
+            : `<button type="button" onclick="shareIcsCalendarFile()" class="pill-btn pill-btn-wrap bg-obsidian spring-tap" style="width:100%;padding:13px 16px;font-size:13px;">
+                 ${svgIcon('share-2', 16)}<span>Поделиться файлом (.ics)</span>
+               </button>`;
+
           const guideHtml = isStandalone
-            ? `<b>Почему так в режиме «Домой»:</b> iPhone блокирует скачивание файлов календаря <b>.ics</b> внутри ярлыка на рабочем столе — поэтому открываем эту же страницу в Safari.<br/><br/>
-               <b>1.</b> Нажмите зелёную кнопку <b>«Открыть в Safari»</b>. Если сверху/снизу появится рамка браузера — нажмите на значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»).<br/>
-               <b>2.</b> В Safari нажмите зелёную кнопку <b>«Скачать календарь (.ics)»</b> → <b>«Загрузить»</b> → откройте файл (значок <b>↓</b> у адресной строки) → нажмите <b>«Добавить все»</b>.<br/>
-               <b>3. Чёрная кнопка «Поделиться»:</b> выберите в меню iPhone <b>«Сохранить в Файлы»</b> или отправьте в свой Telegram («Избранное»), а затем нажмите на файл → <b>«Добавить все»</b>.`
-            : `<b>Шаг 1 (Зелёная кнопка):</b> нажмите <b>«Скачать календарь (.ics)»</b> и подтвердите <b>«Загрузить»</b>. Если загрузка не пошла — нажмите значок компаса <b>🧭 внизу справа</b> («Открыть в Safari»).<br/>
-               <b>Шаг 2 (В iPhone):</b> нажмите на значок <b>↓ Загрузки</b> рядом с адресной строкой Safari → откройте файл → нажмите <b>«Добавить все»</b> в правом верхнем углу.<br/>
-               <b>Чёрная кнопка «Поделиться»:</b> выберите <b>«Сохранить в Файлы»</b> или отправьте себе в Telegram/WhatsApp, затем нажмите на файл в чате → <b>«Добавить все»</b>.<br/>
-               <b>Как легко удалить позже:</b> при добавлении нажмите строку <b>«Календарь»</b> и выберите отдельный календарь «Намаз».`;
+            ? `<div style="display:flex;flex-direction:column;gap:6px;">
+                 <div><b>Как добавить с экрана «Домой»:</b></div>
+                 <div>1. Нажмите <b>зелёную кнопку</b> — откроется меню iPhone с файлом <b>.ics</b>.</div>
+                 <div>2. Нажмите <b>«Календарь»</b> или <b>«Сохранить в Файлы»</b> (или отправьте файл себе в Telegram) → откройте его → <b>«Добавить все»</b>.</div>
+                 <div>3. <b>Через Safari (в 1 клик):</b> нажмите чёрную кнопку <b>«Скопировать ссылку для Safari»</b>, вставьте её в Safari и нажмите зелёную кнопку там.</div>
+               </div>`
+            : `<div style="display:flex;flex-direction:column;gap:6px;">
+                 <div><b>Как добавить (2 шага):</b></div>
+                 <div>1. Нажмите <b>зелёную кнопку</b> → <b>«Загрузить»</b>.</div>
+                 <div>2. Откройте файл в Загрузках (значок <b>↓</b> в Safari) → нажмите <b>«Добавить все»</b> вверху справа.</div>
+                 <div style="opacity:0.78;"><b>Совет:</b> чтобы потом легко удалить уведомления, при добавлении выберите отдельный календарь «Намаз».</div>
+               </div>`;
 
           box.innerHTML = `
             <div class="aya-stack-sm" style="max-height:82vh;overflow-y:auto;">
@@ -1425,13 +1461,10 @@
                 В расписание уже встроены <b>2 автоматических уведомления</b> на каждый намаз: за 10 минут до начала и точно в момент наступления.
               </p>
               ${primaryBtnHtml}
-              <button type="button" onclick="shareIcsCalendarFile()" class="pill-btn pill-btn-wrap bg-obsidian spring-tap" style="width:100%;padding:13px 16px;font-size:13px;">
-                ${svgIcon('share-2', 16)}<span>Поделиться файлом (.ics)</span>
-              </button>
+              ${secondaryBtnHtml}
               <div id="cal-action-status" class="hidden" style="padding:10px 12px;border-radius:14px;font-size:12px;line-height:1.45;"></div>
-              <div class="sheet-subcard" style="padding:12px;font-size:11.5px;line-height:1.5;opacity:0.9;">
+              <div class="sheet-subcard" style="padding:12px;font-size:11.5px;line-height:1.45;opacity:0.9;">
                 ${guideHtml}
-                ${isStandalone ? `<div style="margin-top:10px;"><button type="button" onclick="copySafariCalendarLink()" class="pill-btn pill-btn-wrap" style="width:100%;padding:9px 12px;background:rgba(128,128,128,0.14);color:inherit;font-size:11.5px;">${svgIcon('copy', 13)}<span>Скопировать ссылку для Safari</span></button></div>` : ''}
               </div>
             </div>
           `;
